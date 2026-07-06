@@ -27,6 +27,11 @@ export default function Admin() {
               <h3 style={{ marginTop: 12 }}>Manage Properties</h3>
               <p style={{ marginTop: 10 }}>Add or remove property listings and details.</p>
             </Link>
+            <Link href="/admin/blogs" className="admin-card">
+              <div className="service-card-kicker">Publications</div>
+              <h3 style={{ marginTop: 12 }}>Manage Blogs</h3>
+              <p style={{ marginTop: 10 }}>Write, edit, and delete insights and articles.</p>
+            </Link>
             <Link href="/admin/enquiries" className="admin-card">
               <div className="service-card-kicker">Leads</div>
               <h3 style={{ marginTop: 12 }}>View Enquiries</h3>

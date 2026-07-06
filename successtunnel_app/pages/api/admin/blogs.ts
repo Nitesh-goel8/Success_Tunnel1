@@ -4,7 +4,7 @@ import { getTokenFromReq, verifyToken } from '../../../lib/auth'
 
 function requireAuth(req: NextApiRequest) {
   const token = getTokenFromReq(req)
-  const payload = verifyToken(token)
+  const payload = verifyToken(token as string)
   return payload
 }
 
@@ -13,26 +13,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!user) return res.status(401).json({ error: 'unauthenticated' })
 
   if (req.method === 'GET') {
-    const properties = await prisma.property.findMany()
-    return res.json(properties)
+    const posts = await prisma.blogPost.findMany({ orderBy: { id: 'desc' } })
+    return res.json(posts)
   }
 
   if (req.method === 'POST') {
-    const { title, slug, type, city, price, area, bedrooms, bathrooms, description, images } = req.body
-    if (!title || !slug) return res.status(400).json({ error: 'Title and slug are required' })
+    const { title, slug, excerpt, content, featuredImage } = req.body
+    if (!title || !slug || !content) {
+      return res.status(400).json({ error: 'Title, slug, and content are required' })
+    }
     try {
-      const p = await prisma.property.create({
+      const p = await prisma.blogPost.create({
         data: {
           title,
           slug,
-          type: type || 'Residential',
-          city,
-          price: parseFloat(price || '0'),
-          area,
-          bedrooms: bedrooms ? parseInt(bedrooms, 10) : null,
-          bathrooms: bathrooms ? parseInt(bathrooms, 10) : null,
-          description,
-          images: images || '[]'
+          excerpt,
+          content,
+          featuredImage,
+          publishedAt: new Date()
         }
       })
       return res.status(201).json(p)
@@ -44,23 +42,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === 'PUT') {
-    const { id, title, slug, type, city, price, area, bedrooms, bathrooms, description, images } = req.body
+    const { id, title, slug, excerpt, content, featuredImage } = req.body
     if (!id) return res.status(400).json({ error: 'ID is required for editing' })
-    if (!title || !slug) return res.status(400).json({ error: 'Title and slug are required' })
+    if (!title || !slug || !content) {
+      return res.status(400).json({ error: 'Title, slug, and content are required' })
+    }
     try {
-      const p = await prisma.property.update({
+      const p = await prisma.blogPost.update({
         where: { id: parseInt(id, 10) },
         data: {
           title,
           slug,
-          type: type || 'Residential',
-          city,
-          price: parseFloat(price || '0'),
-          area,
-          bedrooms: bedrooms ? parseInt(bedrooms, 10) : null,
-          bathrooms: bathrooms ? parseInt(bathrooms, 10) : null,
-          description,
-          images: images || '[]'
+          excerpt,
+          content,
+          featuredImage
         }
       })
       return res.json(p)
@@ -74,7 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { id } = req.body
     if (!id) return res.status(400).json({ error: 'ID is required for deletion' })
     try {
-      await prisma.property.delete({ where: { id: parseInt(id, 10) } })
+      await prisma.blogPost.delete({ where: { id: parseInt(id, 10) } })
       return res.json({ ok: true })
     } catch (err: any) {
       console.error(err)
