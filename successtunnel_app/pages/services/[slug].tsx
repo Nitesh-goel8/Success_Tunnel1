@@ -214,14 +214,33 @@ export const getStaticPaths = async () => {
   const slugs = ['consultancy', 'finance', 'education', 'investment', 'real-estate', 'rental-space'];
   return {
     paths: slugs.map((slug) => ({ params: { slug } })),
-    fallback: false,
-  };
-};
+    fallback: 'blocking',
+  }
+}
 
 export const getStaticProps = async ({ params }: { params: { slug: string } }) => {
-  const { slug } = params;
-  // Use the fallback data defined at the top of the file. In a real app you could fetch from a CMS or DB here.
-  const service = { title: slug.charAt(0).toUpperCase() + slug.slice(1), slug, excerpt: 'Sample service description.' };
-  const subservices = fallbackSubservices[slug] || [];
-  return { props: { service, subservices } };
+  const { slug } = params
+  // Attempt to load from DB first.
+  try {
+    const service = await prisma.service.findUnique({ where: { slug } })
+    const subservices = await prisma.subservice.findMany({ where: { serviceId: service?.id } })
+    if (service) {
+      return {
+        props: {
+          service: JSON.parse(JSON.stringify(service)),
+          subservices: JSON.parse(JSON.stringify(subservices)),
+        },
+        revalidate: 86400, // re‑validate daily
+      }
+    }
+  } catch (e) {
+    // DB error – fall back to static data.
+  }
+  // Fallback data when DB missing or slug not in DB.
+  const service = { title: slug.charAt(0).toUpperCase() + slug.slice(1), slug, excerpt: 'Sample service description.' }
+  const subservices = fallbackSubservices[slug] || []
+  return {
+    props: { service, subservices },
+    revalidate: 86400,
+  }
 };
