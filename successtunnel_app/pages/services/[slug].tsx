@@ -210,10 +210,8 @@ export default function ServiceDetail({ service, subservices }: { service: any; 
 }
 
 export const getStaticPaths = async () => {
-  // Pre‑define the service slugs that exist in the site. Add more here if you create new services.
-  const slugs = ['consultancy', 'finance', 'education', 'investment', 'real-estate', 'rental-space'];
   return {
-    paths: slugs.map((slug) => ({ params: { slug } })),
+    paths: [],
     fallback: 'blocking',
   }
 }
