@@ -2422,3 +2422,332 @@ html, body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ==========================================================================
+   NEW SEMANTIC CSS CLASSES (replaced inline styles for responsive control)
+   ========================================================================== */
+
+/* Homepage hero padding */
+.homepage-hero {
+  padding-top: 80px;
+  padding-bottom: 40px;
+  overflow: hidden;
+}
+
+/* Hero copy: left-aligned on desktop */
+.hero-copy {
+  text-align: left;
+}
+
+/* Hero actions: left-aligned on desktop */
+.hero-actions {
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+/* About section: 2-col desktop grid */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* About stats: 2×2 grid */
+.about-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Awards banner row */
+.awards-row {
+  background: var(--primary);
+  border-radius: 24px;
+  padding: 40px 48px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ==========================================================================
+   MOBILE CONGESTION FIX — breathing room for small screens
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+  /* ── Hero ── */
+  .homepage-hero {
+    padding-top: 40px !important;
+    padding-bottom: 24px !important;
+  }
+  .hero-copy {
+    text-align: center !important;
+  }
+  .hero-actions {
+    justify-content: center;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .hero-actions .btn {
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ── About section ── */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .about-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  /* ── Awards row ── */
+  .awards-row {
+    padding: 28px 24px;
+    gap: 20px;
+    border-radius: 18px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* ── Section surface: more breathing room between cards ── */
+  .section-surface {
+    width: calc(100% - 32px);
+    padding: 40px 24px;
+    margin: 20px auto;
+    border-radius: 20px;
+  }
+
+  /* ── Reduce section vertical padding ── */
+  section {
+    padding: 52px 0;
+  }
+
+  /* ── Impact / Blog / Insights grids ── */
+  .impact-grid,
+  .reflections-grid,
+  .insights-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* ── Expertise cards: tighter padding ── */
+  .expertise-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .expertise-card {
+    padding: 28px 22px;
+  }
+
+  /* ── Industries ── */
+  .industries-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .industry-card-item {
+    padding: 20px 10px;
+    border-radius: 14px;
+    gap: 10px;
+  }
+  .industry-card-item span {
+    font-size: 0.82rem;
+  }
+
+  /* ── Hero metrics bar: 2 cols ── */
+  .hero-metrics-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 20px;
+  }
+
+  /* ── CTA banner ── */
+  .cta-banner-container {
+    padding: 44px 24px;
+    margin-top: 24px;
+    border-radius: 20px;
+  }
+  .cta-banner-container h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+  .cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .cta-btn-primary,
+  .cta-btn-secondary {
+    text-align: center;
+    padding: 14px 24px;
+    border-radius: 12px;
+  }
+
+  /* ── Contact section ── */
+  .contact-section-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .contact-form-card {
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
+
+  /* ── Footer ── */
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .site-footer {
+    padding: 52px 0 24px;
+  }
+
+  /* ── Reflection cards ── */
+  .reflection-card {
+    padding: 24px 20px;
+    min-height: auto;
+  }
+
+  /* ── Section header row ── */
+  .section-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  /* ── Nav: hide pill buttons ── */
+  .nav-pill {
+    display: none;
+  }
+}
+
+/* ── 480px: Small phones ── */
+@media (max-width: 480px) {
+
+  .container {
+    width: calc(100% - 24px);
+  }
+
+  .homepage-hero {
+    padding-top: 28px !important;
+    padding-bottom: 16px !important;
+  }
+
+  section {
+    padding: 40px 0;
+  }
+
+  /* Hero heading tight */
+  .hero-copy h1 {
+    font-size: clamp(1.75rem, 9vw, 2.2rem) !important;
+    line-height: 1.15 !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Hero metrics bar: 2 cols */
+  .hero-metrics-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 16px;
+  }
+  .hero-metric-text {
+    font-size: 0.72rem;
+  }
+
+  /* About stats: 2 cols */
+  .about-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  /* Awards row: single col */
+  .awards-row {
+    padding: 22px 18px;
+    border-radius: 14px;
+    gap: 16px;
+  }
+
+  /* Industries: 2 cols only */
+  .industries-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  /* Section surface: very tight */
+  .section-surface {
+    width: calc(100% - 20px);
+    padding: 28px 16px;
+    border-radius: 16px;
+    margin: 14px auto;
+  }
+
+  /* Footer: stack */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* CTA */
+  .cta-banner-container {
+    padding: 32px 18px;
+    border-radius: 16px;
+  }
+
+  /* Expertise cards */
+  .expertise-card {
+    padding: 22px 18px;
+  }
+
+  /* Reflection cards */
+  .reflection-card {
+    padding: 20px 16px;
+  }
+
+  /* Contact form */
+  .contact-form-card {
+    padding: 20px 14px;
+  }
+
+  /* Timeline */
+  .timeline-flow-badge {
+    width: 44px;
+    height: 44px;
+    font-size: 0.88rem;
+  }
+  .timeline-flow::after {
+    left: 22px;
+  }
+  .timeline-flow-content {
+    padding: 16px 14px;
+  }
+  .timeline-flow-content h3 {
+    font-size: 1.05rem;
+  }
+
+  /* Quick contacts: icon only */
+  .quick-contact {
+    right: 10px;
+    bottom: 10px;
+  }
+  .quick-contact a {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    padding: 0;
+  }
+  .quick-contact-label {
+    display: none;
+  }
+}

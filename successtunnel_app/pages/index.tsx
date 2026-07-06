@@ -125,9 +125,9 @@ export default function Home({ services }: { services: any[] }) {
       <Nav />
       <main>
         {/* 1. Hero Section */}
-        <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
+        <section className="hero-section homepage-hero">
           <div className="container hero-grid" style={{ alignItems: 'center' }}>
-            <div className="hero-copy" style={{ textAlign: 'left' }}>
+            <div className="hero-copy">
               <h1 style={{ 
                 fontSize: 'clamp(2.4rem, 5.5vw, 4.6rem)', 
                 lineHeight: '1.05', 
@@ -149,7 +149,7 @@ export default function Home({ services }: { services: any[] }) {
               }}>
                 Strategic consultancy, finance, education, investment, and real estate solutions — designed to accelerate your growth and secure your future.
               </p>
-              <div className="hero-actions" style={{ justifyContent: 'flex-start', gap: '16px' }}>
+              <div className="hero-actions">
                 <a href="#contact" className="btn btn-primary" style={{ padding: '16px 28px' }}>
                   Book Consultation &rarr;
                 </a>
@@ -356,7 +356,7 @@ export default function Home({ services }: { services: any[] }) {
         {/* About Us Section */}
         <section className="section-surface" id="about" style={{ background: '#f8fafc', scrollMarginTop: '100px' }}>
           <div className="container">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
+            <div className="about-grid">
               <div>
                 <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)' }}>ABOUT US</span>
                 <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', color: 'var(--primary)', fontWeight: 800, lineHeight: '1.15', margin: '16px 0 20px', letterSpacing: '-0.03em' }}>
@@ -373,7 +373,7 @@ export default function Home({ services }: { services: any[] }) {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div className="about-stats-grid">
                 {[
                   { number: '10+', label: 'Years of Experience' },
                   { number: '1000+', label: 'Clients Served' },
@@ -429,7 +429,7 @@ export default function Home({ services }: { services: any[] }) {
             </div>
 
             {/* Awards Row */}
-            <div style={{ background: 'var(--primary)', borderRadius: '24px', padding: '40px 48px', display: 'flex', gap: '40px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className="awards-row">
               <div>
                 <h3 style={{ color: '#fff', fontWeight: 800, fontSize: '1.4rem', margin: '0 0 8px' }}>Recognized for Excellence</h3>
                 <p style={{ color: 'rgba(255,255,255,0.65)', margin: 0, fontSize: '0.95rem' }}>Industry awards and association recognitions</p>
