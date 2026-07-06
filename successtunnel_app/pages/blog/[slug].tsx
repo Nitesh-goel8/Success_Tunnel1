@@ -117,11 +117,34 @@ export default function BlogDetail({ post, related }: { post: any; related: any[
   )
 }
 
-export async function getServerSideProps(ctx: any) {
+export async function getStaticPaths() {
+  try {
+    const posts = await prisma.blogPost.findMany({ select: { slug: true } })
+    const paths = posts.map(p => ({ params: { slug: p.slug } }))
+    return {
+      paths,
+      fallback: 'blocking'
+    }
+  } catch (error) {
+    const paths = samplePosts.map(p => ({ params: { slug: p.slug } }))
+    return {
+      paths,
+      fallback: 'blocking'
+    }
+  }
+}
+
+export async function getStaticProps(ctx: any) {
   const { slug } = ctx.params
 
   try {
     const post = await prisma.blogPost.findUnique({ where: { slug } })
+    if (!post) {
+      return {
+        notFound: true,
+        revalidate: 60
+      }
+    }
     const related = await prisma.blogPost.findMany({
       where: { slug: { not: slug } },
       take: 3,
@@ -130,17 +153,25 @@ export async function getServerSideProps(ctx: any) {
 
     return {
       props: {
-        post: post ? JSON.parse(JSON.stringify(post)) : null,
-        related: JSON.parse(JSON.stringify(related)),
+        post: JSON.parse(JSON.stringify(post)),
+        related: JSON.parse(JSON.stringify(related))
       },
+      revalidate: 60
     }
   } catch (error) {
-    const fallbackPost = samplePosts.find(item => item.slug === slug) || samplePosts[0]
+    const fallbackPost = samplePosts.find(item => item.slug === slug)
+    if (!fallbackPost) {
+      return {
+        notFound: true,
+        revalidate: 60
+      }
+    }
     return {
       props: {
         post: fallbackPost,
-        related: samplePosts.filter(item => item.slug !== fallbackPost.slug).slice(0, 3),
+        related: samplePosts.filter(item => item.slug !== fallbackPost.slug).slice(0, 3)
       },
+      revalidate: 60
     }
   }
 }

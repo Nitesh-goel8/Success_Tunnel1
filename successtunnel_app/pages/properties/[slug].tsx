@@ -128,13 +128,49 @@ export default function PropertyDetail({ property }: { property: any }) {
   )
 }
 
-export async function getServerSideProps(ctx: any) {
+export async function getStaticPaths() {
+  try {
+    const properties = await prisma.property.findMany({ select: { slug: true } })
+    const paths = properties.map(p => ({ params: { slug: p.slug } }))
+    return {
+      paths,
+      fallback: 'blocking'
+    }
+  } catch (error) {
+    const paths = sampleProperties.map(p => ({ params: { slug: p.slug } }))
+    return {
+      paths,
+      fallback: 'blocking'
+    }
+  }
+}
+
+export async function getStaticProps(ctx: any) {
   const { slug } = ctx.params
 
   try {
     const property = await prisma.property.findUnique({ where: { slug } })
-    return { props: { property: property ? JSON.parse(JSON.stringify(property)) : null } }
+    if (!property) {
+      return {
+        notFound: true,
+        revalidate: 60
+      }
+    }
+    return {
+      props: { property: JSON.parse(JSON.stringify(property)) },
+      revalidate: 60
+    }
   } catch (error) {
-    return { props: { property: sampleProperties.find(item => item.slug === slug) || sampleProperties[0] } }
+    const fallbackProperty = sampleProperties.find(item => item.slug === slug)
+    if (!fallbackProperty) {
+      return {
+        notFound: true,
+        revalidate: 60
+      }
+    }
+    return {
+      props: { property: fallbackProperty },
+      revalidate: 60
+    }
   }
 }
