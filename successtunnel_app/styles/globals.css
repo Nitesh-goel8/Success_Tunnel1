@@ -2102,4 +2102,323 @@ section{padding:96px 0}
   color: var(--theme-color, var(--accent)) !important;
 }
 
+/* ==========================================================================
+   COMPREHENSIVE MOBILE RESPONSIVE OVERRIDES
+   ========================================================================== */
 
+/* ── Base fix: stop any element from causing horizontal overflow ── */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* ── 768px and below: Tablet & large mobile ── */
+@media (max-width: 768px) {
+
+  /* Container tightened */
+  .container {
+    width: calc(100% - 32px);
+  }
+
+  /* Sections */
+  section {
+    padding: 60px 0;
+  }
+
+  /* Hero grid stacks vertically */
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  /* Hide the hero visual panel on mobile to save space */
+  .hero-visual,
+  .split-media {
+    display: none;
+  }
+
+  /* Hero copy: center & full width */
+  .hero-copy {
+    text-align: center !important;
+  }
+  .hero-copy h1 {
+    max-width: 100%;
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+  }
+  .hero-actions {
+    justify-content: center;
+  }
+  .hero-note {
+    text-align: center;
+  }
+
+  /* Stats & metrics: 2 col */
+  .hero-metrics,
+  .stats-grid,
+  .partner-logos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Metrics bar on homepage hero: 2 col */
+  .hero-metrics-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* Section surface: reduce padding */
+  .section-surface {
+    width: calc(100% - 32px);
+    padding: 40px 24px;
+    border-radius: 20px;
+    margin: 28px auto;
+  }
+
+  /* All 3-col grids become 1-col */
+  .services-grid,
+  .industry-grid,
+  .value-grid,
+  .article-grid,
+  .property-grid,
+  .pillars-grid,
+  .impact-grid,
+  .reflections-grid,
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Expertise grid: single column */
+  .expertise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Industries: 2 columns */
+  .industries-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  /* Timeline: single column */
+  .timeline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Split grids */
+  .split-grid,
+  .article-hero,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* Contact section stacks */
+  .contact-section-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Contact form card: reduce padding */
+  .contact-form-card {
+    padding: 28px 20px;
+  }
+
+  /* Form input grid: single col */
+  .form-input-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Footer stacks */
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  /* Section header row wraps */
+  .section-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  /* CTA banner */
+  .cta-banner-container {
+    padding: 52px 28px;
+    border-radius: 20px;
+  }
+  .cta-banner-container h2 {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+  }
+  .cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .cta-btn-primary,
+  .cta-btn-secondary {
+    text-align: center;
+    padding: 16px 24px;
+  }
+
+  /* Callout banner */
+  .callout-banner {
+    padding: 36px 24px;
+  }
+
+  /* Hero diagram: hide on mobile — too complex for small screens */
+  .hero-diagram-container {
+    display: none;
+  }
+
+  /* Admin grid: single col */
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 480px and below: Small phones ── */
+@media (max-width: 480px) {
+
+  /* Container even tighter */
+  .container {
+    width: calc(100% - 24px);
+  }
+
+  /* Hero section top padding */
+  .hero-section {
+    padding-top: 36px !important;
+    padding-bottom: 24px !important;
+  }
+
+  /* Hero heading smaller */
+  .hero-copy h1 {
+    font-size: clamp(1.8rem, 9vw, 2.4rem) !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  /* Hero paragraph text */
+  .hero-copy p {
+    font-size: 1rem !important;
+  }
+
+  /* Hero CTA buttons: stack and full width */
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-actions .btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Stats: single column */
+  .hero-metrics,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Metrics bar: single col */
+  .hero-metrics-bar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Section surface: full-width feel */
+  .section-surface {
+    width: calc(100% - 24px);
+    padding: 32px 18px;
+    border-radius: 16px;
+    margin: 20px auto;
+  }
+
+  /* Industries: 2 columns on small screens */
+  .industries-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .industry-card-item {
+    padding: 20px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Expertise cards: full padding reduction */
+  .expertise-card {
+    padding: 28px 22px;
+  }
+
+  /* Footer: single column */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* CTA banner */
+  .cta-banner-container {
+    padding: 40px 20px;
+    border-radius: 16px;
+  }
+
+  /* Contact form card */
+  .contact-form-card {
+    padding: 24px 16px;
+  }
+
+  /* Timeline flow: adjust badge size */
+  .timeline-flow-badge {
+    width: 48px;
+    height: 48px;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+  .timeline-flow {
+    gap: 20px;
+  }
+  .timeline-flow::after {
+    left: 24px;
+  }
+  .timeline-flow-content {
+    padding: 18px 16px;
+  }
+
+  /* Reflection (testimonial) cards */
+  .reflection-card {
+    padding: 24px 18px;
+    min-height: auto;
+  }
+
+  /* Impact (case study) image height */
+  .impact-img-container {
+    height: 180px;
+  }
+
+  /* Navigation pills on mobile */
+  .nav-pill {
+    display: none;
+  }
+
+  /* Quick contact buttons: compact */
+  .quick-contact {
+    right: 12px;
+    bottom: 12px;
+  }
+  .quick-contact a {
+    min-width: 44px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+  }
+  .quick-contact-label {
+    display: none;
+  }
+
+  /* Form grids: always single column */
+  .form-grid,
+  .form-input-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Partner logos: 2 cols */
+  .partner-logos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
