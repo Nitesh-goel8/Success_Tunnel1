@@ -3,6 +3,10 @@ import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import { prisma } from '../../lib/prisma'
 import { sampleServices } from '../../lib/sampleData'
+import {
+  HiBriefcase, HiChartBar, HiAcademicCap, HiTrendingUp, HiOfficeBuilding, HiKey
+} from 'react-icons/hi'
+import { FaBullseye, FaBolt, FaGem } from 'react-icons/fa'
 
 const coreServices = [
   { title: 'Consultancy', slug: 'consultancy', excerpt: 'Strategic planning and operational optimization for scaling enterprises.' },
@@ -14,9 +18,9 @@ const coreServices = [
 ]
 
 const benefits = [
-  { icon: '🎯', title: 'Coordinated Strategy', text: 'All your service needs (taxes, finance, property) managed by a single unified team to avoid disjointed planning.' },
-  { icon: '⚡', title: 'Rapid Execution', text: 'Direct regulatory channels, automated workflows, and centralized communication lines for faster completions.' },
-  { icon: '💎', title: 'Premium Experience', text: 'Enjoy a calm, transparent, and dedicated advisory experience with complete clarity at every stage.' }
+  { icon: <FaBullseye size={22} />, title: 'Coordinated Strategy', text: 'All your service needs (taxes, finance, property) managed by a single unified team to avoid disjointed planning.' },
+  { icon: <FaBolt size={22} />, title: 'Rapid Execution', text: 'Direct regulatory channels, automated workflows, and centralized communication lines for faster completions.' },
+  { icon: <FaGem size={22} />, title: 'Premium Experience', text: 'Enjoy a calm, transparent, and dedicated advisory experience with complete clarity at every stage.' }
 ]
 
 const processFlow = [
@@ -83,13 +87,13 @@ export default function Services({ services }: { services: any[] }) {
 
             <div className="expertise-grid">
               {serviceItems.map(service => (
-                <div key={service.slug} className="expertise-card">
+                <div key={service.slug} className={`expertise-card theme-${service.slug}`}>
                   <div className="expertise-icon-wrapper">
-                    {service.slug === 'consultancy' ? '💼' : 
-                     service.slug === 'finance' ? '📊' : 
-                     service.slug === 'education' ? '🎓' : 
-                     service.slug === 'investment' ? '📈' : 
-                     service.slug === 'real-estate' ? '🏢' : '🔑'}
+                    {service.slug === 'consultancy' ? <HiBriefcase size={28} /> :
+                     service.slug === 'finance' ? <HiChartBar size={28} /> :
+                     service.slug === 'education' ? <HiAcademicCap size={28} /> :
+                     service.slug === 'investment' ? <HiTrendingUp size={28} /> :
+                     service.slug === 'real-estate' ? <HiOfficeBuilding size={28} /> : <HiKey size={28} />}
                   </div>
                   <h3>{service.title}</h3>
                   <p>{service.excerpt}</p>

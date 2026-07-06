@@ -216,22 +216,22 @@ export default function Home({ services }: { services: any[] }) {
               </div>
 
               {/* 6 Circular/Rounded Branches */}
-              <Link href="/services/consultancy" className="hero-outer-node" style={{ top: '65px', left: '40px' }}>
+              <Link href="/services/consultancy" className="hero-outer-node theme-consultancy" style={{ top: '65px', left: '40px' }}>
                 <span><HiBriefcase size={15} /></span> Consultancy
               </Link>
-              <Link href="/services/finance" className="hero-outer-node" style={{ top: '65px', right: '40px' }}>
+              <Link href="/services/finance" className="hero-outer-node theme-finance" style={{ top: '65px', right: '40px' }}>
                 <span><HiChartBar size={15} /></span> Finance
               </Link>
-              <Link href="/services/education" className="hero-outer-node" style={{ top: '228px', right: '10px' }}>
+              <Link href="/services/education" className="hero-outer-node theme-education" style={{ top: '228px', right: '10px' }}>
                 <span><HiAcademicCap size={15} /></span> Education
               </Link>
-              <Link href="/services/investment" className="hero-outer-node" style={{ bottom: '65px', right: '40px' }}>
+              <Link href="/services/investment" className="hero-outer-node theme-investment" style={{ bottom: '65px', right: '40px' }}>
                 <span><HiTrendingUp size={15} /></span> Investment
               </Link>
-              <Link href="/services/real-estate" className="hero-outer-node" style={{ bottom: '65px', left: '40px' }}>
+              <Link href="/services/real-estate" className="hero-outer-node theme-real-estate" style={{ bottom: '65px', left: '40px' }}>
                 <span><HiOfficeBuilding size={15} /></span> Real Estate
               </Link>
-              <Link href="/services/rental-space" className="hero-outer-node" style={{ top: '228px', left: '10px' }}>
+              <Link href="/services/rental-space" className="hero-outer-node theme-rental-space" style={{ top: '228px', left: '10px' }}>
                 <span><HiKey size={15} /></span> Rental Space
               </Link>
             </div>
@@ -266,7 +266,7 @@ export default function Home({ services }: { services: any[] }) {
 
             <div className="expertise-grid">
               {serviceItems.map(service => (
-                <div key={service.slug} className="expertise-card">
+                <div key={service.slug} className={`expertise-card theme-${service.slug}`}>
                   <div className="expertise-icon-wrapper">
                     {service.slug === 'consultancy' ? <HiBriefcase size={28} /> :
                      service.slug === 'finance' ? <HiChartBar size={28} /> :

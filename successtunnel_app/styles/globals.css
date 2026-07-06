@@ -2042,4 +2042,64 @@ section{padding:96px 0}
   }
 }
 
+/* Service-specific Color Themes (Professional Accents) */
+.theme-consultancy {
+  --theme-color: #1a56db;     /* Trustworthy Blue */
+  --theme-bg: #e1effe;
+}
+.theme-finance {
+  --theme-color: #046c4e;     /* Growth Emerald Green */
+  --theme-bg: #def7ec;
+}
+.theme-education {
+  --theme-color: #7e3af2;     /* Wise Purple */
+  --theme-bg: #f3e8ff;
+}
+.theme-investment {
+  --theme-color: #0369a1;     /* Deep Sky Teal/Blue */
+  --theme-bg: #e0f2fe;
+}
+.theme-real-estate {
+  --theme-color: #b45309;     /* Professional Gold/Bronze */
+  --theme-bg: #fef3c7;
+}
+.theme-rental-space {
+  --theme-color: #c2410c;     /* Workspace Rust Orange */
+  --theme-bg: #ffedd5;
+}
+
+/* Connect CSS classes to use these theme variables */
+.hero-outer-node.theme-consultancy:hover,
+.expertise-card.theme-consultancy:hover { border-color: var(--theme-color) !important; }
+.hero-outer-node.theme-finance:hover,
+.expertise-card.theme-finance:hover { border-color: var(--theme-color) !important; }
+.hero-outer-node.theme-education:hover,
+.expertise-card.theme-education:hover { border-color: var(--theme-color) !important; }
+.hero-outer-node.theme-investment:hover,
+.expertise-card.theme-investment:hover { border-color: var(--theme-color) !important; }
+.hero-outer-node.theme-real-estate:hover,
+.expertise-card.theme-real-estate:hover { border-color: var(--theme-color) !important; }
+.hero-outer-node.theme-rental-space:hover,
+.expertise-card.theme-rental-space:hover { border-color: var(--theme-color) !important; }
+
+/* Icon wrappers utilize variables */
+.hero-outer-node span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--theme-bg, var(--primary-soft));
+  color: var(--theme-color, var(--primary));
+  font-size: 1rem;
+}
+.expertise-icon-wrapper {
+  background: var(--theme-bg, var(--primary-soft)) !important;
+  color: var(--theme-color, var(--primary)) !important;
+}
+.expertise-card-link {
+  color: var(--theme-color, var(--accent)) !important;
+}
+
 
