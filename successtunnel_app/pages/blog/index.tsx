@@ -160,11 +160,17 @@ export default function Blog({ posts }: { posts: any[] }) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     const posts = await prisma.blogPost.findMany({ orderBy: { publishedAt: 'desc' } })
-    return { props: { posts: JSON.parse(JSON.stringify(posts)) } }
+    return {
+      props: { posts: JSON.parse(JSON.stringify(posts)) },
+      revalidate: 60
+    }
   } catch (error) {
-    return { props: { posts: samplePosts } }
+    return {
+      props: { posts: samplePosts },
+      revalidate: 60
+    }
   }
 }

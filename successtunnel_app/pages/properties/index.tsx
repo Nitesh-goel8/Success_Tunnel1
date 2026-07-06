@@ -109,11 +109,17 @@ export default function Properties({ properties }: { properties: any[] }) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     const properties = await prisma.property.findMany()
-    return { props: { properties: JSON.parse(JSON.stringify(properties)) } }
+    return {
+      props: { properties: JSON.parse(JSON.stringify(properties)) },
+      revalidate: 60
+    }
   } catch (error) {
-    return { props: { properties: sampleProperties } }
+    return {
+      props: { properties: sampleProperties },
+      revalidate: 60
+    }
   }
 }

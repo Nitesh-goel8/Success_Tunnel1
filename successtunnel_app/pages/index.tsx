@@ -527,12 +527,18 @@ export default function Home({ services }: { services: any[] }) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     const services = await prisma.service.findMany({ take: 6 })
-    return { props: { services: JSON.parse(JSON.stringify(services)) } }
+    return {
+      props: { services: JSON.parse(JSON.stringify(services)) },
+      revalidate: 60
+    }
   } catch (error) {
-    return { props: { services: sampleServices } }
+    return {
+      props: { services: sampleServices },
+      revalidate: 60
+    }
   }
 }
 
