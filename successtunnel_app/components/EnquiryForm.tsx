@@ -75,6 +75,7 @@ export default function EnquiryForm({
             placeholder="+91 98765 43210"
             value={form.phone}
             onChange={onChange}
+            required
           />
         </div>
         <div className="field-group">
@@ -97,6 +98,7 @@ export default function EnquiryForm({
             placeholder="Consultancy / Finance / Education / Property"
             value={form.service}
             onChange={onChange}
+            required
           />
         </div>
         <div className="field-group field-full">

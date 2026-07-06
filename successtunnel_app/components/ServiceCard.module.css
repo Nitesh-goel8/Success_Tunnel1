@@ -1,0 +1,33 @@
+.card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-medium);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+}
+.icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.title {
+  font-size: 1.25rem;
+  margin: 0.5rem 0;
+  color: var(--primary);
+}
+.desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+.link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+}

@@ -1,22 +1,37 @@
-import Link from 'next/link'
+import React from 'react';
+import Link from 'next/link';
+import styles from './ServiceCard.module.css';
 
 export default function ServiceCard({
   service,
   href,
 }: {
-  service: { id: number; title: string; slug: string; excerpt?: string; icon?: string }
+  service: { title: string; slug: string; excerpt?: string; description?: string; icon?: any }
   href?: string
 }) {
-  const iconText = service.icon || service.title.split(' ').map(part => part[0]).slice(0, 2).join('')
-  const targetHref = href || `/services/${service.slug}`
+  const descriptionText = service.excerpt || service.description || '';
+  const targetHref = href || `/services/${service.slug}`;
+  
+  const getIcon = (slug: string) => {
+    switch (slug) {
+      case 'consultancy': return '💼';
+      case 'finance': return '📊';
+      case 'education': return '🎓';
+      case 'investment': return '📈';
+      case 'real-estate': return '🏢';
+      case 'rental-space': return '🔑';
+      default: return '✨';
+    }
+  };
 
   return (
-    <Link href={targetHref} className="service-card" aria-label={`View ${service.title}`}>
-      <div className="service-card-icon">{iconText}</div>
-      <div className="service-card-kicker">Specialized service</div>
-      <h3>{service.title}</h3>
-      <p>{service.excerpt}</p>
-      <span className="service-card-cta">Explore service →</span>
-    </Link>
-  )
+    <div className={styles.card}>
+      <div className={styles.icon}>{getIcon(service.slug)}</div>
+      <h3 className={styles.title}>{service.title}</h3>
+      <p className={styles.desc}>{descriptionText}</p>
+      <Link href={targetHref} className={styles.link}>
+        Learn More →
+      </Link>
+    </div>
+  );
 }

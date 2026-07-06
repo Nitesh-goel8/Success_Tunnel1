@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 const links = [
   { href: '/services/consultancy', label: 'Consultancy' },
@@ -24,8 +25,16 @@ export default function Nav() {
   return (
     <header className="site-header">
       <div className="container nav-inner">
-        <Link href="/" className="brand">
-          Success Tunnel
+        <Link href="/" className="brand" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+          <Image
+            src="/logo.jpeg"
+            alt="SuccessTunnel Logo"
+            width={44}
+            height={44}
+            style={{ borderRadius: '8px', objectFit: 'contain', background: '#fff', boxShadow: '0 2px 8px rgba(22, 93, 245, 0.12)' }}
+            priority
+          />
+          <span>SuccessTunnel</span>
         </Link>
 
         <button className="nav-toggle" type="button" onClick={() => setOpen(value => !value)} aria-expanded={open}>
@@ -36,10 +45,7 @@ export default function Nav() {
           {links.map(link => {
             const isActive =
               activePath === link.href ||
-              (link.href.startsWith('/services') && activePath.startsWith(link.href)) ||
-              (link.href === '/services/real-estate' &&
-                (activePath.startsWith('/services/real-estate') || activePath.startsWith('/properties'))) ||
-              (link.href === '/services/rental-space' && activePath.startsWith('/services/rental-space'))
+              (link.href !== '/' && activePath.startsWith(link.href))
 
             return (
               <Link key={link.label} href={link.href} className={`nav-link ${isActive ? 'active' : ''}`}>
@@ -50,8 +56,8 @@ export default function Nav() {
         </nav>
 
         <div className="nav-actions">
-          <Link href="/#contact" className="btn btn-nav">
-            Get Started
+          <Link href="/contact" className="btn btn-nav" style={{ borderRadius: '12px', padding: '10px 20px', gap: '6px' }}>
+            Book Consultation &rarr;
           </Link>
         </div>
       </div>

@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import PropertyCard from '../../components/PropertyCard'
@@ -8,121 +10,96 @@ const filterChips = ['All', 'Residential', 'Commercial', 'Mumbai', 'Delhi', 'Ben
 
 export default function Properties({ properties }: { properties: any[] }) {
   const propertyItems = Array.from(new Map([...(properties || []), ...sampleProperties].map(item => [item.slug, item])).values())
+  const [activeFilter, setActiveFilter] = useState('All')
+
+  const filteredProperties = propertyItems.filter(p => {
+    if (activeFilter === 'All') return true
+    if (activeFilter === 'Residential') return p.type?.toLowerCase() === 'residential'
+    if (activeFilter === 'Commercial') return p.type?.toLowerCase() === 'commercial'
+    return p.city?.toLowerCase() === activeFilter.toLowerCase()
+  })
 
   return (
     <div>
       <Nav />
       <main>
-        <section className="page-hero">
-          <div className="container article-hero">
-            <div>
-              <span className="eyebrow">Property advisory</span>
-              <h1 style={{ margin: '18px 0 0', fontSize: 'clamp(3rem, 7vw, 5rem)', lineHeight: 0.98, letterSpacing: '-.05em' }}>
-                Premium spaces for living, working and investing.
-              </h1>
-              <p style={{ margin: '18px 0 0', maxWidth: 700, color: 'var(--muted)', fontSize: '1.06rem' }}>
-                Explore carefully selected properties and rental opportunities designed to keep the buying experience
-                clear and confident.
-              </p>
-              <div className="hero-actions">
-                <a href="#properties-list" className="btn btn-primary">
-                  Browse Listings
-                </a>
-                <a href="/#contact" className="btn btn-secondary">
-                  Speak With Us
-                </a>
-              </div>
-            </div>
-
-            <div className="article-feature">
-              <div className="service-card-kicker">Market snapshot</div>
-              <h2 style={{ margin: '14px 0 0', fontSize: '2rem', lineHeight: 1.04, letterSpacing: '-.04em' }}>
-                A polished property experience with the right level of guidance.
-              </h2>
-              <p style={{ marginTop: 14 }}>
-                We keep the listing experience compact, premium and useful for quick comparison.
-              </p>
-              <div className="hero-board-grid" style={{ marginTop: 18 }}>
-                <div className="mini-card">
-                  <strong>Residential</strong>
-                  <span>Homes and villas</span>
-                </div>
-                <div className="mini-card">
-                  <strong>Commercial</strong>
-                  <span>Offices and retail units</span>
-                </div>
-                <div className="mini-card">
-                  <strong>Rental</strong>
-                  <span>Space and lease support</span>
-                </div>
-                <div className="mini-card">
-                  <strong>Support</strong>
-                  <span>Shortlist and enquiry help</span>
-                </div>
-              </div>
-            </div>
+        {/* Properties Hero */}
+        <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '60px' }}>
+          <div className="container" style={{ textAlign: 'center', maxWidth: '800px' }}>
+            <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)', marginBottom: '24px' }}>REAL ESTATE</span>
+            <h1 style={{ 
+              fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', 
+              lineHeight: '1.1', 
+              letterSpacing: '-0.04em',
+              fontWeight: 800,
+              color: 'var(--primary)',
+              margin: '20px auto 30px'
+            }}>
+              Curated Properties &amp; Workspaces
+            </h1>
+            <p style={{ fontSize: '1.2rem', color: 'var(--muted)', lineHeight: '1.65' }}>
+              Explore handpicked premium commercial office spaces, rental units, and high-value residential properties.
+            </p>
           </div>
         </section>
 
-        <section className="container">
-          <div className="partner-strip">
-            <div className="partner-label">Filters</div>
-            <div className="property-toolbar">
+        {/* Filters Toolbar */}
+        <section className="container" style={{ paddingBottom: '20px' }}>
+          <div style={{ background: 'var(--surface)', borderRadius: '16px', padding: '16px 24px', border: '1px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap' }}>
+            <span style={{ fontWeight: 700, color: 'var(--primary)' }}>Filter Listings</span>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               {filterChips.map(chip => (
-                <span key={chip} className="property-chip">
+                <button 
+                  key={chip} 
+                  onClick={() => setActiveFilter(chip)}
+                  style={{
+                    border: '1px solid var(--line)',
+                    background: activeFilter === chip ? 'var(--primary)' : 'var(--surface)',
+                    color: activeFilter === chip ? '#fff' : 'var(--primary)',
+                    padding: '8px 16px',
+                    borderRadius: '999px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
                   {chip}
-                </span>
+                </button>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="stats-band">
-          <div className="container stats-grid">
-            <div className="stat-card">
-              <span>Featured property types</span>
-              <strong>03</strong>
-            </div>
-            <div className="stat-card">
-              <span>Key cities</span>
-              <strong>04</strong>
-            </div>
-            <div className="stat-card">
-              <span>Listings available</span>
-              <strong>04</strong>
-            </div>
-            <div className="stat-card">
-              <span>Support</span>
-              <strong>24h</strong>
-            </div>
-          </div>
-        </section>
-
+        {/* Listings Section */}
         <section className="section-surface" id="properties-list">
-          <div className="section-heading">
-            <span className="eyebrow">Available listings</span>
-            <h2>Curated properties and rental spaces.</h2>
-            <p>Use this as a starting point for a short conversation about location, budget and fit.</p>
-          </div>
+          <div className="container">
+            <div className="section-header-row">
+              <div className="section-header-left">
+                <h2>Featured Properties ({filteredProperties.length})</h2>
+              </div>
+            </div>
 
-          <div className="property-grid">
-            {propertyItems.map(property => (
-              <PropertyCard key={property.slug} p={property} />
-            ))}
+            <div className="property-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '30px' }}>
+              {filteredProperties.map(property => (
+                <PropertyCard key={property.slug} p={property} />
+              ))}
+            </div>
+
+            {filteredProperties.length === 0 && (
+              <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--muted)' }}>
+                No listings found matching the selected filter.
+              </div>
+            )}
           </div>
         </section>
 
+        {/* Callout */}
         <section className="container">
-          <div className="callout-banner">
-            <h2>Looking for a specific property type?</h2>
-            <p>Send us your requirements and we’ll help you narrow the shortlist quickly.</p>
-            <div className="callout-actions">
-              <a href="/#contact" className="btn btn-ghost">
-                Share Requirements
-              </a>
-              <a href="/services" className="btn btn-secondary">
-                Explore Services
-              </a>
+          <div className="cta-banner-container">
+            <h2>Looking for a Specific Office space or Property?</h2>
+            <div className="cta-actions">
+              <Link href="/contact" className="cta-btn-primary">Share Requirements</Link>
+              <Link href="/services" className="cta-btn-secondary">Explore Services</Link>
             </div>
           </div>
         </section>

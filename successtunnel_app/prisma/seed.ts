@@ -1,13 +1,26 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import { samplePosts, sampleProperties, sampleServices } from '../lib/sampleData'
+
 const prisma = new PrismaClient()
+
+const consultancySubservices = [
+  { title: 'Income Tax', slug: 'income-tax', content: 'Income tax filing, planning and compliance support.' },
+  { title: 'GST', slug: 'gst', content: 'GST registration, return filing and compliance workflow.' },
+  { title: 'MSME Registration', slug: 'msme-registration', content: 'Guided MSME registration support for eligible businesses.' },
+  { title: 'Trademark', slug: 'trademark', content: 'Trademark filing and brand protection guidance.' },
+]
+
 async function main() {
   const adminEmail = process.env.ADMIN_EMAIL || 'admin@successtunnel.in'
   const adminPassword = process.env.ADMIN_PASSWORD || 'admin1234'
   const hashed = await bcrypt.hash(adminPassword, 10)
+
   await prisma.user.upsert({
     where: { email: adminEmail },
-    update: {},
+    update: {
+      password: hashed
+    },
     create: {
       name: 'Admin',
       email: adminEmail,
@@ -15,28 +28,87 @@ async function main() {
     }
   })
 
-  const consultancy = await prisma.service.upsert({
-    where: { slug: 'consultancy' },
-    update: {},
-    create: {
-      title: 'Consultancy',
-      slug: 'consultancy',
-      excerpt: 'Strategic advisory services.'
-    }
-  })
+  for (const service of sampleServices) {
+    await prisma.service.upsert({
+      where: { slug: service.slug },
+      update: {
+        title: service.title,
+        excerpt: service.excerpt,
+        icon: service.icon
+      },
+      create: {
+        title: service.title,
+        slug: service.slug,
+        excerpt: service.excerpt,
+        icon: service.icon
+      }
+    })
+  }
 
-  await prisma.subservice.createMany({
-    data: [
-      { serviceId: consultancy.id, title: 'Income Tax', slug: 'income-tax', content: 'Income tax services.' },
-      { serviceId: consultancy.id, title: 'GST', slug: 'gst', content: 'GST registration and compliance.' }
-    ]
-  })
+  const consultancy = await prisma.service.findUniqueOrThrow({ where: { slug: 'consultancy' } })
 
-  await prisma.property.createMany({
-    data: [
-      { title: 'Luxury Villa', slug: 'luxury-villa', type: 'Residential', city: 'Mumbai', price: 12500000, area: '4500 sqft', bedrooms: 4, bathrooms: 4, images: '[]' }
-    ]
-  })
+  for (const subservice of consultancySubservices) {
+    await prisma.subservice.upsert({
+      where: { slug: subservice.slug },
+      update: {
+        title: subservice.title,
+        content: subservice.content,
+        serviceId: consultancy.id
+      },
+      create: {
+        ...subservice,
+        serviceId: consultancy.id
+      }
+    })
+  }
+
+  for (const property of sampleProperties) {
+    await prisma.property.upsert({
+      where: { slug: property.slug },
+      update: {
+        title: property.title,
+        type: property.type,
+        city: property.city,
+        price: property.price,
+        area: property.area,
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        description: property.description,
+        images: '[]'
+      },
+      create: {
+        title: property.title,
+        slug: property.slug,
+        type: property.type,
+        city: property.city,
+        price: property.price,
+        area: property.area,
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        description: property.description,
+        images: '[]'
+      }
+    })
+  }
+
+  for (const post of samplePosts) {
+    await prisma.blogPost.upsert({
+      where: { slug: post.slug },
+      update: {
+        title: post.title,
+        excerpt: post.excerpt,
+        content: post.content,
+        publishedAt: new Date()
+      },
+      create: {
+        title: post.title,
+        slug: post.slug,
+        excerpt: post.excerpt,
+        content: post.content,
+        publishedAt: new Date()
+      }
+    })
+  }
 
   console.log('Seed completed')
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import { prisma } from '../../lib/prisma'
@@ -8,9 +9,14 @@ const topicChips = ['Consultancy', 'Finance', 'Education', 'Investment', 'Real E
 
 export default function Blog({ posts }: { posts: any[] }) {
   const blogItems = Array.from(new Map([...(posts || []), ...samplePosts].map(item => [item.slug, item])).values())
+  const [activeTopic, setActiveTopic] = useState('All')
 
   const featured = blogItems[0]
-  const latest = blogItems.slice(1, 7)
+
+  const filteredPosts = blogItems.filter(p => {
+    if (activeTopic === 'All') return true
+    return p.category?.toLowerCase() === activeTopic.toLowerCase()
+  })
 
   return (
     <div>
@@ -57,11 +63,25 @@ export default function Blog({ posts }: { posts: any[] }) {
         <section className="container">
           <div className="partner-strip">
             <div className="partner-label">Browse by topic</div>
-            <div className="property-toolbar">
-              {topicChips.map(topic => (
-                <span key={topic} className="property-chip">
+            <div className="property-toolbar" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              {['All', ...topicChips].map(topic => (
+                <button
+                  key={topic}
+                  onClick={() => setActiveTopic(topic)}
+                  style={{
+                    border: '1px solid var(--line)',
+                    background: activeTopic === topic ? 'var(--primary)' : 'var(--surface)',
+                    color: activeTopic === topic ? '#fff' : 'var(--accent)',
+                    padding: '10px 18px',
+                    borderRadius: '999px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    fontSize: '0.9rem',
+                  }}
+                >
                   {topic}
-                </span>
+                </button>
               ))}
             </div>
           </div>
@@ -75,7 +95,7 @@ export default function Blog({ posts }: { posts: any[] }) {
           </div>
 
           <div className="article-grid">
-            {blogItems.map(post => (
+            {filteredPosts.map(post => (
               <article key={post.slug} className="article-card">
                 <div className="article-meta">{post.category || 'Insight'}</div>
                 <h3>{post.title}</h3>
@@ -86,6 +106,12 @@ export default function Blog({ posts }: { posts: any[] }) {
               </article>
             ))}
           </div>
+
+          {filteredPosts.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--muted)' }}>
+              No articles found matching this topic.
+            </div>
+          )}
         </section>
 
         <section className="section-surface">

@@ -39,6 +39,9 @@ What's included:
 - Prisma schema and seed script
 - Docker Compose for Postgres + Adminer
 
+Backend/database setup:
+- See `BACKEND_SETUP.md` for the full PostgreSQL, Prisma, seed, admin, and service-flow guide.
+
 Next steps:
 - Add SMTP integration for enquiry emails
 - Add authentication and admin UI for content management

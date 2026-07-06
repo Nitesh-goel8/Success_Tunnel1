@@ -7,3 +7,5 @@ dist/
 *.log
 homepage-current.png
 successtunnel_app/tsconfig.tsbuildinfo
+*.db
+*.db-journal
