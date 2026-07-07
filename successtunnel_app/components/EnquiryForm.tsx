@@ -16,6 +16,7 @@ export default function EnquiryForm({
 }: EnquiryFormProps) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', city: '', service: '', message: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const onChange = (event: any) => {
     setForm({ ...form, [event.target.name]: event.target.value })
@@ -24,12 +25,23 @@ export default function EnquiryForm({
   const submit = async (event: any) => {
     event.preventDefault()
     setStatus('sending')
+    setErrorMessage('')
+
+    // Client-side validation: check phone digits length
+    const phoneDigits = form.phone.replace(/\D/g, '')
+    if (phoneDigits.length < 10) {
+      setErrorMessage('Mobile number must have at least 10 digits.')
+      setStatus('error')
+      return
+    }
 
     try {
       await axios.post('/api/enquiries', { ...form, page })
       setStatus('sent')
       setForm({ name: '', email: '', phone: '', city: '', service: '', message: '' })
-    } catch (error) {
+    } catch (error: any) {
+      const msg = error.response?.data?.error || error.message || 'Please try again.'
+      setErrorMessage(msg)
       setStatus('error')
     }
   }
@@ -122,7 +134,11 @@ export default function EnquiryForm({
       </div>
 
       {status === 'sent' && <p className="form-status success">Enquiry sent successfully.</p>}
-      {status === 'error' && <p className="form-status error">Unable to send enquiry. Please try again.</p>}
+      {status === 'error' && (
+        <p className="form-status error">
+          Unable to send enquiry. {errorMessage || 'Please try again.'}
+        </p>
+      )}
     </form>
   )
 }
