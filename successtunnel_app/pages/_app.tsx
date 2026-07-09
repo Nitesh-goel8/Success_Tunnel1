@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import QuickContact from '../components/QuickContact'
 import Chatbot from '../components/Chatbot'
+import { Analytics } from '@vercel/analytics/next'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -14,6 +15,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
       <QuickContact />
       <Chatbot />
+      {/* Vercel Analytics — tracks all page views automatically */}
+      <Analytics />
     </>
   )
 }
