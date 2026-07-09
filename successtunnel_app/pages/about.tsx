@@ -185,20 +185,14 @@ export default function About() {
           </div>
         </section>
 
-        {/* Certifications */}
+        {/* Associations */}
         <section className="section-surface" style={{ background: '#f8fafc' }}>
           <div className="container" style={{ textAlign: 'center' }}>
-            <span className="eyebrow" style={{ marginBottom: '24px' }}>COMPLIANCE</span>
+            <span className="eyebrow" style={{ marginBottom: '24px' }}>ASSOCIATIONS</span>
             <h2 style={{ fontSize: '2.2rem', color: 'var(--primary)', margin: '0 0 48px', fontWeight: 700 }}>
-              Certifications &amp; Associations
+              Strategic Partners &amp; Associations
             </h2>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', opacity: 0.85 }}>
-              <div style={{ background: 'var(--surface)', padding: '24px 32px', borderRadius: '16px', border: '1px solid var(--line)', fontWeight: 700 }}>
-                📜 Government Registered
-              </div>
-              <div style={{ background: 'var(--surface)', padding: '24px 32px', borderRadius: '16px', border: '1px solid var(--line)', fontWeight: 700 }}>
-                🌐 ISO 9001 Certified
-              </div>
               <div style={{ background: 'var(--surface)', padding: '24px 32px', borderRadius: '16px', border: '1px solid var(--line)', fontWeight: 700 }}>
                 🤝 Strategic Enterprise Partner
               </div>

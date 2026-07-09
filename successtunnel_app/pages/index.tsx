@@ -27,11 +27,9 @@ const coreServices = [
 const trustedBrands = [
   'Partner Companies',
   'Client Companies',
-  'Government Registrations',
   'Associations',
   'Partner Companies',
   'Client Companies',
-  'Government Registrations',
   'Associations',
 ]
 
@@ -172,10 +170,6 @@ export default function Home({ services }: { services: any[] }) {
                   <div className="hero-metric-icon"><HiGlobeAlt size={22} /></div>
                   <div className="hero-metric-text">Pan India<br/>Presence</div>
                 </div>
-                <div className="hero-metric-item">
-                  <div className="hero-metric-icon"><HiChatAlt2 size={22} /></div>
-                  <div className="hero-metric-text">Free<br/>Consultation</div>
-                </div>
               </div>
             </div>
 
@@ -241,7 +235,7 @@ export default function Home({ services }: { services: any[] }) {
         {/* 2. Trusted Companies Section */}
         <section className="trusted-logos-section">
           <div className="container">
-            <div className="trusted-title">Strategic Partner Companies &amp; Government Registrations</div>
+            <div className="trusted-title">Strategic Partner Companies &amp; Associations</div>
             <div className="logo-slider">
               <div className="logo-slide-track">
                 {trustedBrands.map((brand, idx) => (
@@ -250,43 +244,6 @@ export default function Home({ services }: { services: any[] }) {
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 3. Our Expertise (What We Do) */}
-        <section className="section-surface">
-          <div className="container">
-            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-              <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)' }}>OUR EXPERTISE</span>
-              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--primary)', fontWeight: 700, margin: '12px 0 0' }}>
-                Premium Solutions for Every Stage
-              </h2>
-            </div>
-
-            <div className="expertise-grid">
-              {serviceItems.map(service => (
-                <div key={service.slug} className={`expertise-card theme-${service.slug}`}>
-                  <div className="expertise-icon-wrapper">
-                    {service.slug === 'consultancy' ? <HiBriefcase size={28} /> :
-                     service.slug === 'finance' ? <HiChartBar size={28} /> :
-                     service.slug === 'education' ? <HiAcademicCap size={28} /> :
-                     service.slug === 'investment' ? <HiTrendingUp size={28} /> :
-                     service.slug === 'real-estate' ? <HiOfficeBuilding size={28} /> : <HiKey size={28} />}
-                  </div>
-                  <h3>{service.title}</h3>
-                  <p>{service.excerpt}</p>
-                  <Link href={`/services/${service.slug}`} className="expertise-card-link">
-                    Learn More &rarr;
-                  </Link>
-                </div>
-              ))}
-            </div>
-            
-            <div style={{ textAlign: 'center', marginTop: '48px' }}>
-              <Link href="/services" className="btn btn-secondary">
-                View All Services &rarr;
-              </Link>
             </div>
           </div>
         </section>
@@ -407,7 +364,6 @@ export default function Home({ services }: { services: any[] }) {
                 { icon: <HiClipboardList size={30} />, number: '500+', label: 'Projects Completed', desc: 'Successfully delivered advisory, financial, and property projects.' },
                 { icon: <HiStar size={30} />, number: '98%', label: 'Client Satisfaction', desc: 'Near-perfect satisfaction scores across all service categories.' },
                 { icon: <HiGlobeAlt size={30} />, number: 'Pan India', label: 'Presence', desc: 'Serving clients across Haryana, Delhi NCR, and major Indian cities.' },
-                { icon: <HiChatAlt2 size={30} />, number: 'Free', label: 'First Consultation', desc: 'Book a no-obligation first consultation with our principal advisor.' },
               ].map((item, i) => (
                 <div key={i} style={{
                   background: 'var(--surface)',

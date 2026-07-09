@@ -124,7 +124,7 @@ export default function Contact() {
                 page="ContactPage"
                 title="Send us your enquiry"
                 subtitle="We usually respond within one business day."
-                buttonLabel="Send Enquiry — It's Free"
+                buttonLabel="Send Enquiry"
               />
             </div>
           </div>

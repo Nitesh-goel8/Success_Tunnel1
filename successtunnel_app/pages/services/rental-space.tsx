@@ -1,5 +1,6 @@
 import PageShell from '../../components/PageShell'
 import CategoryHub from '../../components/CategoryHub'
+import RentalPaymentButton from '../../components/RentalPaymentButton'
 
 const cards = [
   { title: 'Houses/Flats/PG', icon: 'HP', excerpt: 'Residential rental space for different budgets and needs.' },
@@ -32,7 +33,7 @@ export default function RentalSpace() {
           <span className="service-card-kicker">Rental category</span>
           <h3>Commercial and residential rental options in one place.</h3>
           <p>Designed to make space discovery and enquiry simple.</p>
-          <div className="hero-board-grid">
+          <div className="hero-board-grid" style={{ marginBottom: '24px' }}>
             <div className="mini-card">
               <strong>Usage</strong>
               <span>Homes, offices and retail</span>
@@ -42,6 +43,7 @@ export default function RentalSpace() {
               <span>Send your rental requirements</span>
             </div>
           </div>
+          <RentalPaymentButton rentalTitle="Premium Corporate/Residential Rental Space" defaultAmount={1000} />
         </div>
       }
     >

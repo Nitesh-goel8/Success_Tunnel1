@@ -2423,6 +2423,104 @@ html, body {
   }
 }
 
+
+/* ==========================================================================
+   PAYMENT GATEWAY & SYSTEM CONFIG STYLES
+   ========================================================================== */
+
+.payment-gateway-wrapper {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.payment-alert {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.payment-alert.success-alert {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.payment-alert.error-alert {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+}
+
+.payment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.payment-modal-card {
+  background: #fff;
+  border-radius: 24px;
+  width: min(500px, 100%);
+  padding: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  animation: fade-in-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--line);
+}
+
+.payment-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.payment-modal-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.close-modal-btn:hover {
+  background: #f1f5f9;
+  color: var(--primary);
+}
+
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 /* ==========================================================================
    NEW SEMANTIC CSS CLASSES (replaced inline styles for responsive control)
    ========================================================================== */
