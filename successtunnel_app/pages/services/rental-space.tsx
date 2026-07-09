@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import PageShell from '../../components/PageShell'
 import CategoryHub from '../../components/CategoryHub'
 import RentalPaymentButton from '../../components/RentalPaymentButton'
@@ -23,6 +24,19 @@ const faqs = [
 ]
 
 export default function RentalSpace() {
+  const router = useRouter()
+
+  // Pre-fill support: if user came from /properties with ?property=... &amount=...
+  const prefilledTitle = router.query.property
+    ? decodeURIComponent(router.query.property as string)
+    : 'Premium Corporate/Residential Rental Space'
+  
+  const prefilledAmount = router.query.amount
+    ? Number(router.query.amount)
+    : 1000
+
+  const isPreFilled = !!router.query.property
+
   return (
     <PageShell
       eyebrow="Rental Space"
@@ -33,6 +47,16 @@ export default function RentalSpace() {
           <span className="service-card-kicker">Rental category</span>
           <h3>Commercial and residential rental options in one place.</h3>
           <p>Designed to make space discovery and enquiry simple.</p>
+
+          {/* Show pre-fill badge if came from a property listing */}
+          {isPreFilled && (
+            <div style={{ background: 'rgba(22, 93, 245, 0.08)', border: '1px solid rgba(22, 93, 245, 0.2)', borderRadius: '12px', padding: '14px 16px', marginBottom: '20px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '6px' }}>📍 Pre-selected Property</div>
+              <strong style={{ color: 'var(--primary)', fontSize: '0.95rem', display: 'block' }}>{prefilledTitle}</strong>
+              <span style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>Token: ₹{prefilledAmount.toLocaleString('en-IN')}</span>
+            </div>
+          )}
+
           <div className="hero-board-grid" style={{ marginBottom: '24px' }}>
             <div className="mini-card">
               <strong>Usage</strong>
@@ -43,7 +67,10 @@ export default function RentalSpace() {
               <span>Send your rental requirements</span>
             </div>
           </div>
-          <RentalPaymentButton rentalTitle="Premium Corporate/Residential Rental Space" defaultAmount={1000} />
+          <RentalPaymentButton
+            rentalTitle={prefilledTitle}
+            defaultAmount={prefilledAmount}
+          />
         </div>
       }
     >
@@ -61,7 +88,7 @@ export default function RentalSpace() {
         steps={steps}
         faqs={faqs}
         ctaTitle="Need help finding the right space?"
-        ctaDescription="Share the location and budget and we’ll guide the search."
+        ctaDescription="Share the location and budget and we'll guide the search."
         formPage="rental-space"
         formTitle="Request rental support"
       />

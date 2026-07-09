@@ -114,6 +114,7 @@ export default function AdminPayments() {
                     <th style={{ padding: '12px' }}>Amount (INR)</th>
                     <th style={{ padding: '12px' }}>Status</th>
                     <th style={{ padding: '12px' }}>Date</th>
+                    <th style={{ padding: '12px' }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -131,7 +132,7 @@ export default function AdminPayments() {
                         {item.paymentId && <div style={{ color: 'green' }}>PayId: {item.paymentId}</div>}
                       </td>
                       <td style={{ padding: '16px 12px', fontWeight: 700, color: 'var(--primary)' }}>
-                        ₹{item.amount / 100}
+                        ₹{item.amount.toLocaleString('en-IN')}
                       </td>
                       <td style={{ padding: '16px 12px' }}>
                         <span
@@ -143,13 +144,13 @@ export default function AdminPayments() {
                             fontWeight: 700,
                             textTransform: 'uppercase',
                             background:
-                              item.status === 'paid'
+                              item.status === 'paid' || item.status === 'captured'
                                 ? 'rgba(16, 185, 129, 0.12)'
                                 : item.status === 'failed'
                                 ? 'rgba(239, 68, 68, 0.12)'
                                 : 'rgba(245, 158, 11, 0.12)',
                             color:
-                              item.status === 'paid'
+                              item.status === 'paid' || item.status === 'captured'
                                 ? '#059669'
                                 : item.status === 'failed'
                                 ? '#dc2626'
@@ -160,13 +161,27 @@ export default function AdminPayments() {
                         </span>
                       </td>
                       <td style={{ padding: '16px 12px', color: 'var(--muted)' }}>
-                        {new Date(item.createdAt).toLocaleString()}
+                        {new Date(item.createdAt).toLocaleDateString('en-IN')}
+                      </td>
+                      <td style={{ padding: '16px 12px' }}>
+                        {item.status === 'captured' || item.status === 'paid' ? (
+                          <a
+                            href={`/client/invoice?paymentId=${item.paymentId}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none', fontSize: '0.85rem' }}
+                          >
+                            Invoice 🖨️
+                          </a>
+                        ) : (
+                          <span style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>—</span>
+                        )}
                       </td>
                     </tr>
                   ))}
                   {payments.length === 0 && (
                     <tr>
-                      <td colSpan={7} style={{ textAlign: 'center', padding: '32px', color: 'var(--muted)' }}>
+                      <td colSpan={8} style={{ textAlign: 'center', padding: '32px', color: 'var(--muted)' }}>
                         No payment records found.
                       </td>
                     </tr>
