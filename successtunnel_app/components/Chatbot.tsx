@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import {
-  IoChatbubblesOutline,
   IoClose,
   IoSend,
   IoRefreshOutline,
-  IoSparklesOutline,
   IoPersonOutline,
 } from 'react-icons/io5'
 import { TbRobot } from 'react-icons/tb'
@@ -77,7 +75,7 @@ export default function Chatbot() {
   }
 
   return (
-    <div style={{ position: 'fixed', right: '22px', bottom: '22px', zIndex: 1000, fontFamily: "'Inter', sans-serif" }}>
+    <div className="chatbot-launcher" style={{ position: 'fixed', right: '22px', bottom: '22px', zIndex: 1000, fontFamily: "'Inter', sans-serif" }}>
 
       {/* Closed State: Floating Bubble */}
       {!isOpen && (
@@ -87,12 +85,14 @@ export default function Chatbot() {
             background: 'linear-gradient(135deg, #0b3a86, #165df5)',
             color: '#fff',
             border: 'none',
-            width: '54px',
+            minWidth: '84px',
             height: '54px',
-            borderRadius: '50%',
-            display: 'flex',
+            padding: '0 16px 0 12px',
+            borderRadius: '999px',
+            display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
+            gap: '8px',
             cursor: 'pointer',
             boxShadow: '0 8px 28px rgba(22, 93, 245, 0.40)',
             transition: 'transform 0.2s ease, box-shadow 0.2s ease',
@@ -107,7 +107,19 @@ export default function Chatbot() {
           }}
           aria-label="Open AI Chatbot"
         >
-          <IoChatbubblesOutline size={24} />
+          <span style={{
+            width: '30px',
+            height: '30px',
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.16)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <TbRobot size={18} />
+          </span>
+          <span style={{ fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.01em' }}>Bot</span>
         </button>
       )}
 
@@ -149,11 +161,11 @@ export default function Chatbot() {
               </div>
               <div>
                 <h4 style={{ margin: 0, fontSize: '0.93rem', fontWeight: 800, fontFamily: 'Sora, sans-serif', letterSpacing: '-0.01em' }}>
-                  SuccessTunnel Bot
+                  AI Bot
                 </h4>
                 <span style={{ fontSize: '0.7rem', opacity: 0.8, display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <span style={{ width: '6px', height: '6px', background: '#10b981', borderRadius: '50%', display: 'inline-block' }} />
-                  RAG Knowledge Advisor
+                  Ask about GST, tax, and education
                 </span>
               </div>
             </div>
@@ -235,7 +247,7 @@ export default function Chatbot() {
           {messages.length === 1 && (
             <div style={{ padding: '10px 14px', background: '#fff', borderTop: '1px solid var(--line)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '7px' }}>
-                <IoSparklesOutline size={12} color="var(--muted)" />
+                <TbRobot size={12} color="var(--muted)" />
                 <span style={{ fontSize: '0.7rem', color: 'var(--muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Try asking</span>
               </div>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>

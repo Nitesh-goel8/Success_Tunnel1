@@ -1,6 +1,6 @@
+import Link from 'next/link'
 import PageShell from '../../components/PageShell'
 import CategoryHub from '../../components/CategoryHub'
-import Link from 'next/link'
 
 const cards = [
   { title: 'Study Content', icon: 'SC', excerpt: 'Notes and structured learning content.' },
@@ -27,20 +27,20 @@ export default function Education() {
     <PageShell
       eyebrow="Education"
       title="Learning support with structure."
-      description="A premium educational section for study content, notes and training."
+      description="A premium education service page that points to the main learning hub."
       aside={
         <div className="hero-board">
           <span className="service-card-kicker">Education category</span>
-          <h3>Study material, blog content and practical courses.</h3>
-          <p>Designed to support learning journeys with easy navigation.</p>
+          <h3>One hub for study content, notes and training.</h3>
+          <p>Use the dedicated education hub for a cleaner learning library.</p>
           <div className="hero-board-grid">
             <div className="mini-card">
-              <strong>Content</strong>
-              <span>Notes, blogs and training</span>
+              <strong>Focus</strong>
+              <span>Simple learning flow</span>
             </div>
             <div className="mini-card">
-              <strong>Mode</strong>
-              <span>Self-study and guided help</span>
+              <strong>Route</strong>
+              <span>Dedicated education hub</span>
             </div>
           </div>
         </div>
@@ -48,8 +48,8 @@ export default function Education() {
     >
       <CategoryHub
         eyebrow="Education services"
-        title="Content and training for learners."
-        description="A clean hub for study content, educational articles and downloadable material."
+        title="Support for learners."
+        description="Use this page as a simple service overview and keep the actual library in the education hub."
         stats={[
           { label: 'Resources', value: '04' },
           { label: 'Response time', value: '24h' },
@@ -60,15 +60,15 @@ export default function Education() {
         steps={steps}
         faqs={faqs}
         ctaTitle="Need the right study path?"
-        ctaDescription="Send a request and we’ll help guide you to the best fit."
+        ctaDescription="Send a request and we will help guide you to the best fit."
         formPage="education"
         formTitle="Request education support"
       />
       <section className="section-surface" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="callout-banner">
-            <h2>Looking for courses, notes, or learning tools?</h2>
-            <p>The full education hub now lives in the dedicated education section with videos, notes, downloads, calculators, and more.</p>
+            <h2>Open the main education hub when you are ready.</h2>
+            <p>The education page is the primary place for courses, notes, videos, downloads, and tools.</p>
             <div className="cta-actions">
               <Link href="/education" className="cta-btn-primary">Open education hub</Link>
             </div>

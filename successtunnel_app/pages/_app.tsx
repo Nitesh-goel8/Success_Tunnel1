@@ -33,13 +33,15 @@ function DefaultHead() {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
+  const analyticsDebug = process.env.NEXT_PUBLIC_VERCEL_ANALYTICS_DEBUG === 'true'
+
   return (
     <SiteSettingsProvider>
       <DefaultHead />
       <Component {...pageProps} />
       <QuickContact />
       <Chatbot />
-      <Analytics />
+      <Analytics debug={analyticsDebug} />
     </SiteSettingsProvider>
   )
 }

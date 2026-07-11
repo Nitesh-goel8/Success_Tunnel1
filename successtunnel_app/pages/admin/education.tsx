@@ -127,7 +127,7 @@ export default function AdminEducation() {
           <div className="section-heading" style={{ textAlign: 'left', margin: '0 0 22px' }}>
             <span className="eyebrow">Admin CMS</span>
             <h2>Education Hub</h2>
-            <p>Manage courses, notes, videos, tools, downloads, calculators, and other learning content from one place.</p>
+            <p>Manage short learning items, notes, courses, videos, downloads, and tools from one place.</p>
           </div>
 
           {message && (
@@ -147,6 +147,9 @@ export default function AdminEducation() {
                 <Field label="Thumbnail URL" name="thumbnailUrl" value={form.thumbnailUrl} onChange={onChange} placeholder="/images/education-thumb.jpg" />
                 <Field label="Asset URL" name="assetUrl" value={form.assetUrl} onChange={onChange} placeholder="/videos/sample.mp4 or /pdfs/sample.pdf" />
               </div>
+              <p style={{ marginTop: 6, marginBottom: 16, color: 'var(--muted)', fontSize: '0.9rem' }}>
+                Thumbnail is optional, but it makes every item look much friendlier on the public page.
+              </p>
 
               <div className="field-group">
                 <label className="field-label">Excerpt</label>
@@ -186,6 +189,7 @@ export default function AdminEducation() {
               <thead>
                 <tr>
                   <th>Title</th>
+                  <th>Thumb</th>
                   <th>Type</th>
                   <th>Status</th>
                   <th>Popup</th>
@@ -198,6 +202,17 @@ export default function AdminEducation() {
                     <td>
                       <div style={{ fontWeight: 700 }}>{item.title}</div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>{item.slug}</div>
+                    </td>
+                    <td>
+                      {item.thumbnailUrl ? (
+                        <img
+                          src={item.thumbnailUrl}
+                          alt={item.title}
+                          style={{ width: 72, height: 48, objectFit: 'cover', borderRadius: 10, border: '1px solid var(--line)' }}
+                        />
+                      ) : (
+                        <span style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>None</span>
+                      )}
                     </td>
                     <td>{item.contentType}</td>
                     <td>{item.isPublished ? 'Published' : 'Draft'}</td>
@@ -216,7 +231,7 @@ export default function AdminEducation() {
                 ))}
                 {items.length === 0 && (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: '24px', color: 'var(--muted)' }}>
+                    <td colSpan={6} style={{ textAlign: 'center', padding: '24px', color: 'var(--muted)' }}>
                       No education content added yet.
                     </td>
                   </tr>

@@ -21,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         prisma.blogPost.count(),
       ])
       const totalEducationContent = await prisma.educationContent.count()
+      const totalUsers = await prisma.user.count()
 
       // Fetch all payments to calculate revenue timeline
       const payments = await prisma.rentalPayment.findMany({
@@ -55,7 +56,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Group enquiries by category
       const enquiries = await prisma.enquiry.findMany({
-        select: { service: true }
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          city: true,
+          service: true,
+          page: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 12,
       })
 
       const categoriesMap: { [key: string]: number } = {
@@ -82,14 +94,78 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         value: categoriesMap[label]
       }))
 
+      const topServices = Object.entries(categoriesMap)
+        .map(([label, value]) => ({ label, value }))
+        .sort((a, b) => b.value - a.value)
+
+      const recentPayments = await prisma.rentalPayment.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 8,
+        select: {
+          id: true,
+          customerName: true,
+          rentalTitle: true,
+          amount: true,
+          currency: true,
+          status: true,
+          createdAt: true,
+        },
+      })
+
+      const recentPosts = await prisma.blogPost.findMany({
+        orderBy: { publishedAt: 'desc' },
+        take: 5,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          excerpt: true,
+          publishedAt: true,
+        },
+      })
+
+      const recentProperties = await prisma.property.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          city: true,
+          type: true,
+          price: true,
+          createdAt: true,
+        },
+      })
+
+      const recentServices = await prisma.service.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          excerpt: true,
+          createdAt: true,
+        },
+      })
+
       return res.json({
         totalEnquiries,
         totalServices,
         totalProperties,
         totalBlogs,
         totalEducationContent,
+        totalUsers,
         revenueTimeline,
         enquiryCategories,
+        topServices,
+        recentEnquiries: enquiries,
+        recentPayments,
+        recentPosts,
+        recentProperties,
+        recentServices,
+        lastSyncAt: new Date().toISOString(),
       })
     } catch (error: any) {
       return res.status(500).json({ error: error.message })

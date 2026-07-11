@@ -31,10 +31,10 @@ export default function PropertyDetail({ property }: { property: any }) {
               </p>
               <div className="hero-actions">
                 <a href="#enquiry" className="btn btn-primary">
-                  Enquire Now
+                  Enquire now
                 </a>
                 <a href="/properties" className="btn btn-secondary">
-                  Back to Listings
+                  Back to listings
                 </a>
               </div>
             </div>
@@ -63,10 +63,9 @@ export default function PropertyDetail({ property }: { property: any }) {
           <div className="split-grid">
             <div className="split-content">
               <span className="eyebrow">Property overview</span>
-              <h2>Clean details, simple comparison and direct next steps.</h2>
+              <h2>Clean details, simple comparison, direct next steps.</h2>
               <p>
-                This page is designed to help you review the listing quickly and then move to a conversation when you
-                are ready.
+                This page is designed to help you review the listing quickly and then move to a conversation when you are ready.
               </p>
               <ul className="bullet-list">
                 <li>Easy to scan listing summary</li>
@@ -131,16 +130,14 @@ export default function PropertyDetail({ property }: { property: any }) {
 export async function getStaticPaths() {
   try {
     const properties = await prisma.property.findMany({ select: { slug: true } })
-    const paths = properties.map(p => ({ params: { slug: p.slug } }))
     return {
-      paths,
-      fallback: 'blocking'
+      paths: properties.map(p => ({ params: { slug: p.slug } })),
+      fallback: 'blocking',
     }
-  } catch (error) {
-    const paths = sampleProperties.map(p => ({ params: { slug: p.slug } }))
+  } catch {
     return {
-      paths,
-      fallback: 'blocking'
+      paths: sampleProperties.map(p => ({ params: { slug: p.slug } })),
+      fallback: 'blocking',
     }
   }
 }
@@ -153,24 +150,24 @@ export async function getStaticProps(ctx: any) {
     if (!property) {
       return {
         notFound: true,
-        revalidate: 60
+        revalidate: 60,
       }
     }
     return {
       props: { property: JSON.parse(JSON.stringify(property)) },
-      revalidate: 60
+      revalidate: 60,
     }
-  } catch (error) {
+  } catch {
     const fallbackProperty = sampleProperties.find(item => item.slug === slug)
     if (!fallbackProperty) {
       return {
         notFound: true,
-        revalidate: 60
+        revalidate: 60,
       }
     }
     return {
       props: { property: fallbackProperty },
-      revalidate: 60
+      revalidate: 60,
     }
   }
 }

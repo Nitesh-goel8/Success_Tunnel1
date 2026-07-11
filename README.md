@@ -107,19 +107,24 @@ successtunnel_mainwebsite/
 
 ## Local Development
 
-From the app directory:
+From the repository root:
 
 ```bash
-cd successtunnel_app
 npm install
-docker-compose up -d
-npm run prisma:generate
 npm run prisma:push
 npm run seed
 npm run dev
 ```
 
 Open `http://localhost:3000`.
+
+## Production / Vercel
+
+- Use the root `package.json` scripts for `build`, `dev`, `start`, `prisma:push`, and `seed`.
+- `vercel.json` is set up so Vercel can build the Next.js app from the repository root.
+- Prisma client generation runs during install, while database syncing is available as an explicit command when you need it.
+- In the Vercel dashboard, open your project and enable `Analytics` from the sidebar, then redeploy and promote the latest deployment to production.
+- If you want browser console confirmation while testing, set `NEXT_PUBLIC_VERCEL_ANALYTICS_DEBUG=true` in Vercel env vars.
 
 ## Environment Variables
 

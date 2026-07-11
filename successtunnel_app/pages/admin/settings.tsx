@@ -100,7 +100,7 @@ export default function AdminSettings() {
                   <h4 style={{ margin: '0 0 8px 0', borderBottom: '1px solid var(--line)', paddingBottom: '8px', color: 'var(--primary)' }}>Brand & SEO</h4>
                   <Field label="Business Name" name="businessName" value={settings.businessName} onChange={handleInputChange} placeholder="Success Tunnel" />
                   <Field label="Site Title" name="siteTitle" value={settings.siteTitle} onChange={handleInputChange} placeholder="Success Tunnel" />
-                  <Field label="Site Tagline" name="siteTagline" value={settings.siteTagline} onChange={handleInputChange} placeholder="A Fastest Way to Big Success" />
+                  <Field label="Site Tagline" name="siteTagline" value={settings.siteTagline} onChange={handleInputChange} placeholder="Strategy, education, and growth under one roof" />
                   <Field label="Canonical Site URL" name="siteUrl" value={settings.siteUrl} onChange={handleInputChange} placeholder="https://successtunnel.in" />
                   <TextField label="Site Description" name="siteDescription" value={settings.siteDescription} onChange={handleInputChange} placeholder="Short SEO-friendly business description" />
                 </div>

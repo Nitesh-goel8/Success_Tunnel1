@@ -1,7 +1,25 @@
-export const DEFAULT_SITE_SETTINGS = {
+export interface SiteSettings {
+  businessName: string
+  siteTitle: string
+  siteTagline: string
+  siteDescription: string
+  siteUrl: string
+  contactEmail: string
+  contactPhone1: string
+  contactPhone2: string
+  officeAddress: string
+  whatsappNumber: string
+  workingHours: string
+  mapEmbedUrl: string
+  mapLink: string
+  contactPerson: string
+  contactRole: string
+}
+
+export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   businessName: 'Success Tunnel',
   siteTitle: 'Success Tunnel',
-  siteTagline: 'A Fastest Way to Big Success',
+  siteTagline: 'Strategy, education, and growth under one roof',
   siteDescription:
     'Success Tunnel provides consultancy, finance, education, investment, real estate, and rental space services for growing businesses and individuals.',
   siteUrl: 'https://successtunnel.in',
@@ -16,9 +34,7 @@ export const DEFAULT_SITE_SETTINGS = {
   mapLink: 'https://maps.app.goo.gl/n4wZ51qrRY1zSPeb8',
   contactPerson: 'Neeraj Aggarwal',
   contactRole: 'Chartered Accountant & Principal Advisor',
-} as const
-
-export type SiteSettings = typeof DEFAULT_SITE_SETTINGS
+}
 
 export const PUBLIC_SITE_SETTING_KEYS = Object.keys(DEFAULT_SITE_SETTINGS) as Array<keyof SiteSettings>
 
@@ -35,9 +51,16 @@ export const PRIVATE_SITE_SETTING_KEYS = [
 ] as const
 
 export function normalizeSiteSettings(values?: Partial<Record<string, string>>): SiteSettings {
+  const legacyTaglines = new Set(['A Fastest Way to Big Success'])
+  const siteTagline =
+    values?.siteTagline && !legacyTaglines.has(values.siteTagline.trim())
+      ? values.siteTagline
+      : DEFAULT_SITE_SETTINGS.siteTagline
+
   return {
     ...DEFAULT_SITE_SETTINGS,
     ...values,
+    siteTagline,
   }
 }
 

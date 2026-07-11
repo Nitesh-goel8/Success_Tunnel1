@@ -23,10 +23,10 @@ export default function BlogDetail({ post, related }: { post: any; related: any[
               </p>
               <div className="hero-actions">
                 <a href="/blog" className="btn btn-primary">
-                  Back to Blog
+                  Back to blog
                 </a>
-                <a href="/#contact" className="btn btn-secondary">
-                  Talk to Advisory
+                <a href="/contact" className="btn btn-secondary">
+                  Talk to advisory
                 </a>
               </div>
             </div>
@@ -34,27 +34,27 @@ export default function BlogDetail({ post, related }: { post: any; related: any[
             <div className="article-feature">
               <div className="service-card-kicker">Article snapshot</div>
               <h2 style={{ margin: '14px 0 0', fontSize: '2rem', lineHeight: 1.04, letterSpacing: '-.04em' }}>
-                Practical guidance for better decisions.
+                Practical context, then clear next steps.
               </h2>
               <p style={{ marginTop: 14 }}>
-                Use this article as a starting point, then contact us if you want help applying it to your situation.
+                Read the article as a starting point, then ask us to translate it into an action plan for your case.
               </p>
               <div className="hero-board-grid" style={{ marginTop: 18 }}>
-                <div className="mini-card">
-                  <strong>Read time</strong>
-                  <span>5 minutes</span>
-                </div>
                 <div className="mini-card">
                   <strong>Topic</strong>
                   <span>{post.category || 'General'}</span>
                 </div>
                 <div className="mini-card">
-                  <strong>Outcome</strong>
-                  <span>Clarity, structure and next steps</span>
-                </div>
-                <div className="mini-card">
                   <strong>Format</strong>
                   <span>Editorial insight</span>
+                </div>
+                <div className="mini-card">
+                  <strong>Use case</strong>
+                  <span>Decision support</span>
+                </div>
+                <div className="mini-card">
+                  <strong>Next step</strong>
+                  <span>Book a consultation</span>
                 </div>
               </div>
             </div>
@@ -75,17 +75,17 @@ export default function BlogDetail({ post, related }: { post: any; related: any[
             </div>
 
             <div className="panel-card">
-              <div className="service-card-kicker">Related note</div>
-              <h3 style={{ marginTop: 12 }}>Need help applying this topic?</h3>
+              <div className="service-card-kicker">Need help?</div>
+              <h3 style={{ marginTop: 12 }}>Turn this into a practical plan.</h3>
               <p style={{ marginTop: 10 }}>
-                We can turn any article into a specific action plan for your business or personal situation.
+                We can translate any article topic into a specific next-step conversation for your business or personal situation.
               </p>
               <div className="split-actions">
-                <a href="/#contact" className="btn btn-primary">
-                  Book Consultation
+                <a href="/contact" className="btn btn-primary">
+                  Book consultation
                 </a>
                 <a href="/services" className="btn btn-secondary">
-                  Explore Services
+                  Explore services
                 </a>
               </div>
             </div>
@@ -120,16 +120,14 @@ export default function BlogDetail({ post, related }: { post: any; related: any[
 export async function getStaticPaths() {
   try {
     const posts = await prisma.blogPost.findMany({ select: { slug: true } })
-    const paths = posts.map(p => ({ params: { slug: p.slug } }))
     return {
-      paths,
-      fallback: 'blocking'
+      paths: posts.map(p => ({ params: { slug: p.slug } })),
+      fallback: 'blocking',
     }
-  } catch (error) {
-    const paths = samplePosts.map(p => ({ params: { slug: p.slug } }))
+  } catch {
     return {
-      paths,
-      fallback: 'blocking'
+      paths: samplePosts.map(p => ({ params: { slug: p.slug } })),
+      fallback: 'blocking',
     }
   }
 }
@@ -142,9 +140,10 @@ export async function getStaticProps(ctx: any) {
     if (!post) {
       return {
         notFound: true,
-        revalidate: 60
+        revalidate: 60,
       }
     }
+
     const related = await prisma.blogPost.findMany({
       where: { slug: { not: slug } },
       take: 3,
@@ -154,24 +153,25 @@ export async function getStaticProps(ctx: any) {
     return {
       props: {
         post: JSON.parse(JSON.stringify(post)),
-        related: JSON.parse(JSON.stringify(related))
+        related: JSON.parse(JSON.stringify(related)),
       },
-      revalidate: 60
+      revalidate: 60,
     }
-  } catch (error) {
+  } catch {
     const fallbackPost = samplePosts.find(item => item.slug === slug)
     if (!fallbackPost) {
       return {
         notFound: true,
-        revalidate: 60
+        revalidate: 60,
       }
     }
+
     return {
       props: {
         post: fallbackPost,
-        related: samplePosts.filter(item => item.slug !== fallbackPost.slug).slice(0, 3)
+        related: samplePosts.filter(item => item.slug !== fallbackPost.slug).slice(0, 3),
       },
-      revalidate: 60
+      revalidate: 60,
     }
   }
 }

@@ -10,7 +10,7 @@
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
-    "prisma:push": "prisma db push",
+    "prisma:push": "prisma db push --skip-generate",
     "prisma:studio": "prisma studio",
     "seed": "ts-node --project tsconfig.seed.json prisma/seed.ts",
     "setup": "prisma db push && ts-node --project tsconfig.seed.json prisma/seed.ts"
