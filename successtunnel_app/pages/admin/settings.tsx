@@ -153,7 +153,7 @@ export default function AdminSettings() {
                 <button className="btn btn-primary" type="submit" style={{ width: 'fit-content', padding: '14px 28px' }}>
                   Save Configuration
                 </button>
-                <Link href="/admin" className="btn btn-secondary">
+                <Link href="/admin/dashboard" className="btn btn-secondary">
                   Back to Dashboard
                 </Link>
               </div>

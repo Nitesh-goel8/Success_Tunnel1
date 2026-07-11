@@ -8,10 +8,10 @@ export default function Login() {
   const router = useRouter()
 
   const submit = async (event: any) => {
-    event.preventDefault()
-    try {
-      await axios.post('/api/admin/login', { email, password })
-      router.push('/admin')
+      event.preventDefault()
+      try {
+        await axios.post('/api/admin/login', { email, password })
+      router.push('/admin/dashboard')
     } catch (error) {
       alert('Login failed')
     }

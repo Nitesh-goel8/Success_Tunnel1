@@ -199,8 +199,8 @@ export default function EducationIndex({ items }: { items: EducationItem[] }) {
                     <Link href={`/education/${featured.slug}`} className="cta-btn-primary">
                       {featured.ctaLabel || 'Open item'}
                     </Link>
-                    <Link href="/admin/education" className="cta-btn-secondary">
-                      Manage content
+                    <Link href="/contact" className="cta-btn-secondary">
+                      Request update
                     </Link>
                   </div>
                 </div>

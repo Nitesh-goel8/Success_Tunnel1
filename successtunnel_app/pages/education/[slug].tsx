@@ -106,8 +106,8 @@ export default function EducationItemPage({ item, related }: { item: EducationIt
                 <a href={actionHref} target="_blank" rel="noreferrer" className="cta-btn-primary">
                   {item.ctaLabel || 'Open content'}
                 </a>
-                <Link href="/admin/education" className="cta-btn-secondary">
-                  Manage content
+                <Link href="/contact" className="cta-btn-secondary">
+                  Request update
                 </Link>
               </div>
             </div>

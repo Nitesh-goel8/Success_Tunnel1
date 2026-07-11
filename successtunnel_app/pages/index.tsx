@@ -139,7 +139,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                 margin: '0 0 24px 0',
                 fontFamily: "'Sora', sans-serif"
               }}>
-                A smarter way<br />
+                A Fastest Way<br />
                 <span style={{ background: 'linear-gradient(135deg, var(--accent), #0b3a86)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>to Big Success.</span>
               </h1>
               <p style={{ 
