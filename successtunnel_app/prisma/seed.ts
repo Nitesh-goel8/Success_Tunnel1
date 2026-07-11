@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { samplePosts, sampleProperties, sampleServices } from '../lib/sampleData'
+import { EDUCATION_FALLBACK_CONTENT } from '../lib/educationContent'
 
 const prisma = new PrismaClient()
 
@@ -106,6 +107,44 @@ async function main() {
         excerpt: post.excerpt,
         content: post.content,
         publishedAt: new Date()
+      }
+    })
+  }
+
+  for (const item of EDUCATION_FALLBACK_CONTENT) {
+    const seedItem = item as any
+    await prisma.educationContent.upsert({
+      where: { slug: seedItem.slug },
+      update: {
+        title: seedItem.title,
+        contentType: seedItem.contentType,
+        category: seedItem.category,
+        excerpt: seedItem.excerpt,
+        body: seedItem.body,
+        thumbnailUrl: seedItem.thumbnailUrl || null,
+        assetUrl: seedItem.assetUrl || null,
+        externalUrl: seedItem.externalUrl || null,
+        ctaLabel: seedItem.ctaLabel || null,
+        isPublished: true,
+        isFeatured: !!seedItem.isFeatured,
+        showOnHomePopup: !!seedItem.showOnHomePopup,
+        publishedAt: new Date(),
+      },
+      create: {
+        title: seedItem.title,
+        slug: seedItem.slug,
+        contentType: seedItem.contentType,
+        category: seedItem.category || null,
+        excerpt: seedItem.excerpt || null,
+        body: seedItem.body || null,
+        thumbnailUrl: seedItem.thumbnailUrl || null,
+        assetUrl: seedItem.assetUrl || null,
+        externalUrl: seedItem.externalUrl || null,
+        ctaLabel: seedItem.ctaLabel || null,
+        isPublished: true,
+        isFeatured: !!seedItem.isFeatured,
+        showOnHomePopup: !!seedItem.showOnHomePopup,
+        publishedAt: new Date(),
       }
     })
   }

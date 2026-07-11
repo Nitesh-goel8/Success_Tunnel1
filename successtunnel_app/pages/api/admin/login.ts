@@ -12,6 +12,7 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
   const ok = await bcrypt.compare(password, user.password)
   if(!ok) return res.status(401).json({error:'invalid credentials'})
   const token = signToken({id:user.id,email:user.email,role:user.role})
-  res.setHeader('Set-Cookie', `st_auth=${token}; HttpOnly; Path=/; Max-Age=${60*60*24*7}`)
+  const secure = process.env.NODE_ENV === 'production' ? '; Secure' : ''
+  res.setHeader('Set-Cookie', `st_auth=${token}; HttpOnly; Path=/; Max-Age=${60*60*24*7}; SameSite=Lax${secure}`)
   return res.json({ok:true})
 }

@@ -1,9 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../lib/prisma'
+import { checkRateLimit } from '../../lib/rateLimit'
+import { sendEnquiryNotification } from '../../lib/email'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end()
-  const { name, email, phone, city, service, message, page } = req.body
+  const { name, email, phone, city, service, message, page, website } = req.body
+
+  if (website) return res.status(400).json({ error: 'spam detected' })
+
+  const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown'
+  const rateLimit = checkRateLimit(`enquiry:${ip}`, 5, 15 * 60 * 1000)
+  if (!rateLimit.allowed) {
+    return res.status(429).json({ error: 'Too many enquiries sent from this connection. Please try again later.' })
+  }
+
   const cleanEmail = String(email || '').trim().toLowerCase()
   const cleanPhone = String(phone || '').trim()
   const phoneDigits = cleanPhone.replace(/\D/g, '')
@@ -24,7 +35,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         page: page ? String(page).trim() : null
       }
     })
-    // TODO: send email notification (SMTP)
+
+    const notificationSetting = await prisma.siteSetting.findUnique({ where: { key: 'enquiryNotificationEmail' } })
+    const destinationEmail = process.env.ENQUIRY_NOTIFICATION_EMAIL || notificationSetting?.value || process.env.ADMIN_EMAIL
+    if (destinationEmail) {
+      const html = `
+        <h2>New Success Tunnel Enquiry</h2>
+        <p><strong>Name:</strong> ${String(name).trim()}</p>
+        <p><strong>Email:</strong> ${cleanEmail}</p>
+        <p><strong>Phone:</strong> ${cleanPhone}</p>
+        <p><strong>City:</strong> ${city ? String(city).trim() : '-'}</p>
+        <p><strong>Service:</strong> ${service ? String(service).trim() : '-'}</p>
+        <p><strong>Source Page:</strong> ${page ? String(page).trim() : '-'}</p>
+        <p><strong>Message:</strong><br />${message ? String(message).trim().replace(/\n/g, '<br />') : '-'}</p>
+        <p><strong>Enquiry ID:</strong> ${e.id}</p>
+      `
+
+      try {
+        await sendEnquiryNotification({
+          to: destinationEmail,
+          replyTo: cleanEmail,
+          subject: `New enquiry from ${String(name).trim()}`,
+          html,
+        })
+      } catch (mailError) {
+        console.error('Failed to send enquiry notification:', mailError)
+      }
+    }
+
     return res.status(201).json({ ok: true, id: e.id })
   } catch (err) {
     console.error("Enquiry API Error:", err);

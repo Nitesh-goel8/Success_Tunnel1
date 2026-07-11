@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../lib/prisma'
 import { getTokenFromReq, verifyToken } from '../../../lib/auth'
+import { PRIVATE_SITE_SETTING_KEYS, PUBLIC_SITE_SETTING_KEYS } from '../../../lib/siteSettings'
 
 function requireAuth(req: NextApiRequest) {
   const token = getTokenFromReq(req)
@@ -9,17 +10,19 @@ function requireAuth(req: NextApiRequest) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Check auth for writing, but allow GET request to be public so public pages can fetch it if needed.
-  if (req.method !== 'GET') {
-    const user = requireAuth(req)
-    if (!user) return res.status(401).json({ error: 'unauthenticated' })
+  const user = requireAuth(req)
+  if (req.method !== 'GET' && !user) {
+    return res.status(401).json({ error: 'unauthenticated' })
   }
 
   if (req.method === 'GET') {
     try {
       const settings = await prisma.siteSetting.findMany()
+      const allowedKeys = new Set<string>(user ? [...PUBLIC_SITE_SETTING_KEYS, ...PRIVATE_SITE_SETTING_KEYS] : PUBLIC_SITE_SETTING_KEYS)
       const settingsMap = settings.reduce((acc, curr) => {
-        acc[curr.key] = curr.value
+        if (allowedKeys.has(curr.key)) {
+          acc[curr.key] = curr.value
+        }
         return acc;
       }, {} as Record<string, string>)
       return res.json(settingsMap)
@@ -35,8 +38,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: 'body must be a key-value object' })
       }
 
-      // Upsert each setting
-      const promises = Object.entries(body).map(([key, value]) => {
+      const allowedKeys = new Set<string>([...PUBLIC_SITE_SETTING_KEYS, ...PRIVATE_SITE_SETTING_KEYS])
+      const entries = Object.entries(body).filter(([key]) => allowedKeys.has(key))
+      if (entries.length === 0) {
+        return res.status(400).json({ error: 'no valid settings provided' })
+      }
+
+      const promises = entries.map(([key, value]) => {
         return prisma.siteSetting.upsert({
           where: { key },
           update: { value: String(value) },

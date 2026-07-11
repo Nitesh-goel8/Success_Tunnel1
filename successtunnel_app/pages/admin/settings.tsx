@@ -1,22 +1,26 @@
 import { useEffect, useState } from 'react'
-import Nav from '../../components/Nav'
-import Footer from '../../components/Footer'
-import axios from 'axios'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
+import axios from 'axios'
+import Footer from '../../components/Footer'
+import Nav from '../../components/Nav'
+import { DEFAULT_SITE_SETTINGS } from '../../lib/siteSettings'
+
+const initialSettings = {
+  ...DEFAULT_SITE_SETTINGS,
+  razorpayKeyId: '',
+  razorpayKeySecret: '',
+  enquiryNotificationEmail: '',
+  smtpHost: '',
+  smtpPort: '587',
+  smtpSecure: 'false',
+  smtpUser: '',
+  smtpPass: '',
+  smtpFromEmail: '',
+}
 
 export default function AdminSettings() {
-  const [settings, setSettings] = useState({
-    siteTagline: 'A Fastest Way to Big Success',
-    contactEmail: 'successtunnel.in@gmail.com',
-    contactPhone1: '+91 89507 71205',
-    contactPhone2: '+91 72061 89559',
-    officeAddress: 'First Floor, Sudarshan Tower, Tau Devi Lal Complex, Behind Hive Hotel, Panipat 132103, Haryana, India',
-    whatsappNumber: '+918950771205',
-    workingHours: 'Mon – Sat: 10:00 AM – 6:00 PM',
-    razorpayKeyId: '',
-    razorpayKeySecret: ''
-  })
+  const [settings, setSettings] = useState(initialSettings)
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')
 
@@ -25,7 +29,7 @@ export default function AdminSettings() {
       try {
         const response = await axios.get('/api/admin/settings')
         const data = response.data
-        setSettings(prev => ({
+        setSettings((prev) => ({
           ...prev,
           ...data
         }))
@@ -43,9 +47,9 @@ export default function AdminSettings() {
     setMessage('')
     try {
       await axios.post('/api/admin/settings', settings)
-      setMessage('Settings updated successfully!')
+      setMessage('Settings updated successfully.')
     } catch (err: any) {
-      setMessage('Error updating settings: ' + (err.response?.data?.error || err.message))
+      setMessage(`Error updating settings: ${err.response?.data?.error || err.message}`)
     }
   }
 
@@ -78,7 +82,7 @@ export default function AdminSettings() {
           <div className="section-heading" style={{ textAlign: 'left', margin: '0 0 28px' }}>
             <span className="eyebrow">System Config</span>
             <h2>Site Settings</h2>
-            <p>Manage site-wide details, contact parameters, business hours, and payment configurations.</p>
+            <p>Manage site-wide business details, public SEO information, contact methods, and payment/email integrations.</p>
           </div>
 
           {message && (
@@ -92,123 +96,57 @@ export default function AdminSettings() {
               <h3 style={{ marginBottom: 20 }}>Edit Configuration</h3>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', marginBottom: '24px' }}>
-                {/* Brand & Meta Info */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <h4 style={{ margin: '0 0 8px 0', borderBottom: '1px solid var(--line)', paddingBottom: '8px', color: 'var(--primary)' }}>General Info</h4>
-                  <div className="field-group">
-                    <label className="field-label">Site Tagline / Headline</label>
-                    <input
-                      type="text"
-                      name="siteTagline"
-                      value={settings.siteTagline}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      placeholder="e.g. A Fastest Way to Big Success"
-                    />
-                  </div>
-                  <div className="field-group">
-                    <label className="field-label">WhatsApp Contact Number (with country code)</label>
-                    <input
-                      type="text"
-                      name="whatsappNumber"
-                      value={settings.whatsappNumber}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      placeholder="e.g. +918950771205"
-                    />
-                  </div>
-                  <div className="field-group">
-                    <label className="field-label">Working Hours Description</label>
-                    <input
-                      type="text"
-                      name="workingHours"
-                      value={settings.workingHours}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      placeholder="e.g. Mon – Sat: 10:00 AM – 6:00 PM"
-                    />
-                  </div>
+                  <h4 style={{ margin: '0 0 8px 0', borderBottom: '1px solid var(--line)', paddingBottom: '8px', color: 'var(--primary)' }}>Brand & SEO</h4>
+                  <Field label="Business Name" name="businessName" value={settings.businessName} onChange={handleInputChange} placeholder="Success Tunnel" />
+                  <Field label="Site Title" name="siteTitle" value={settings.siteTitle} onChange={handleInputChange} placeholder="Success Tunnel" />
+                  <Field label="Site Tagline" name="siteTagline" value={settings.siteTagline} onChange={handleInputChange} placeholder="A Fastest Way to Big Success" />
+                  <Field label="Canonical Site URL" name="siteUrl" value={settings.siteUrl} onChange={handleInputChange} placeholder="https://successtunnel.in" />
+                  <TextField label="Site Description" name="siteDescription" value={settings.siteDescription} onChange={handleInputChange} placeholder="Short SEO-friendly business description" />
                 </div>
 
-                {/* Contact Coordinates */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <h4 style={{ margin: '0 0 8px 0', borderBottom: '1px solid var(--line)', paddingBottom: '8px', color: 'var(--primary)' }}>Contact Details</h4>
-                  <div className="field-group">
-                    <label className="field-label">Primary Support Email</label>
-                    <input
-                      type="email"
-                      name="contactEmail"
-                      value={settings.contactEmail}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      placeholder="e.g. support@successtunnel.in"
-                    />
-                  </div>
-                  <div className="field-group">
-                    <label className="field-label">Primary Contact Phone</label>
-                    <input
-                      type="text"
-                      name="contactPhone1"
-                      value={settings.contactPhone1}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      placeholder="e.g. +91 89507 71205"
-                    />
-                  </div>
-                  <div className="field-group">
-                    <label className="field-label">Secondary Contact Phone</label>
-                    <input
-                      type="text"
-                      name="contactPhone2"
-                      value={settings.contactPhone2}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      placeholder="e.g. +91 72061 89559"
-                    />
-                  </div>
+                  <Field label="Primary Support Email" name="contactEmail" value={settings.contactEmail} onChange={handleInputChange} placeholder="support@successtunnel.in" />
+                  <Field label="Primary Contact Phone" name="contactPhone1" value={settings.contactPhone1} onChange={handleInputChange} placeholder="+91 89507 71205" />
+                  <Field label="Secondary Contact Phone" name="contactPhone2" value={settings.contactPhone2} onChange={handleInputChange} placeholder="+91 72061 89559" />
+                  <Field label="WhatsApp Number" name="whatsappNumber" value={settings.whatsappNumber} onChange={handleInputChange} placeholder="+918950771205" />
+                  <Field label="Working Hours" name="workingHours" value={settings.workingHours} onChange={handleInputChange} placeholder="Mon - Sat: 10:00 AM - 6:00 PM" />
+                  <Field label="Contact Person" name="contactPerson" value={settings.contactPerson} onChange={handleInputChange} placeholder="Neeraj Aggarwal" />
+                  <Field label="Contact Role" name="contactRole" value={settings.contactRole} onChange={handleInputChange} placeholder="Chartered Accountant & Principal Advisor" />
                 </div>
               </div>
 
-              <div className="field-group" style={{ marginBottom: '24px' }}>
-                <label className="field-label">Office Address (Physical Location)</label>
-                <textarea
-                  name="officeAddress"
-                  value={settings.officeAddress}
-                  onChange={handleInputChange}
-                  className="form-textarea"
-                  style={{ minHeight: '80px' }}
-                  placeholder="Full office address..."
-                />
+              <TextField label="Office Address" name="officeAddress" value={settings.officeAddress} onChange={handleInputChange} placeholder="Full office address..." />
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', margin: '24px 0 32px' }}>
+                <Field label="Map Embed URL" name="mapEmbedUrl" value={settings.mapEmbedUrl} onChange={handleInputChange} placeholder="Google Maps embed URL" />
+                <Field label="Public Map Link" name="mapLink" value={settings.mapLink} onChange={handleInputChange} placeholder="Google Maps share link" />
               </div>
 
-              <h4 style={{ margin: '32px 0 8px 0', borderBottom: '1px solid var(--line)', paddingBottom: '8px', color: 'var(--primary)' }}>Razorpay Credentials (Rental space payment gateway)</h4>
+              <h4 style={{ margin: '32px 0 8px 0', borderBottom: '1px solid var(--line)', paddingBottom: '8px', color: 'var(--primary)' }}>Razorpay Credentials</h4>
               <p style={{ fontSize: '0.82rem', color: 'var(--muted)', margin: '0 0 20px 0' }}>
-                Provide API credentials from your Razorpay Merchant dashboard. Use test credentials (e.g. starting with rzp_test_) for sandbox verification.
+                These database values are used only when environment variables are not present.
               </p>
-              
+
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', marginBottom: '32px' }}>
-                <div className="field-group">
-                  <label className="field-label">Razorpay Key ID</label>
-                  <input
-                    type="text"
-                    name="razorpayKeyId"
-                    value={settings.razorpayKeyId}
-                    onChange={handleInputChange}
-                    className="form-input"
-                    placeholder="rzp_test_..."
-                  />
-                </div>
-                <div className="field-group">
-                  <label className="field-label">Razorpay Key Secret</label>
-                  <input
-                    type="password"
-                    name="razorpayKeySecret"
-                    value={settings.razorpayKeySecret}
-                    onChange={handleInputChange}
-                    className="form-input"
-                    placeholder="••••••••••••••••"
-                  />
-                </div>
+                <Field label="Razorpay Key ID" name="razorpayKeyId" value={settings.razorpayKeyId} onChange={handleInputChange} placeholder="rzp_test_..." />
+                <Field label="Razorpay Key Secret" name="razorpayKeySecret" value={settings.razorpayKeySecret} onChange={handleInputChange} placeholder="Secret key" type="password" />
+              </div>
+
+              <h4 style={{ margin: '32px 0 8px 0', borderBottom: '1px solid var(--line)', paddingBottom: '8px', color: 'var(--primary)' }}>Email Notifications</h4>
+              <p style={{ fontSize: '0.82rem', color: 'var(--muted)', margin: '0 0 20px 0' }}>
+                For production, storing these in environment variables is still recommended.
+              </p>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+                <Field label="Notification Email" name="enquiryNotificationEmail" value={settings.enquiryNotificationEmail} onChange={handleInputChange} placeholder="enquiries@successtunnel.in" />
+                <Field label="SMTP Host" name="smtpHost" value={settings.smtpHost} onChange={handleInputChange} placeholder="smtp.example.com" />
+                <Field label="SMTP Port" name="smtpPort" value={settings.smtpPort} onChange={handleInputChange} placeholder="587" />
+                <Field label="SMTP Secure" name="smtpSecure" value={settings.smtpSecure} onChange={handleInputChange} placeholder="true or false" />
+                <Field label="SMTP Username" name="smtpUser" value={settings.smtpUser} onChange={handleInputChange} placeholder="SMTP username" />
+                <Field label="SMTP Password" name="smtpPass" value={settings.smtpPass} onChange={handleInputChange} placeholder="SMTP password" type="password" />
+                <Field label="SMTP From Email" name="smtpFromEmail" value={settings.smtpFromEmail} onChange={handleInputChange} placeholder="no-reply@example.com" />
               </div>
 
               <div style={{ display: 'flex', gap: '12px' }}>
@@ -224,6 +162,64 @@ export default function AdminSettings() {
         </div>
       </main>
       <Footer />
+    </div>
+  )
+}
+
+function Field({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  type = 'text'
+}: {
+  label: string
+  name: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  placeholder: string
+  type?: string
+}) {
+  return (
+    <div className="field-group">
+      <label className="field-label">{label}</label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="form-input"
+        placeholder={placeholder}
+      />
+    </div>
+  )
+}
+
+function TextField({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder
+}: {
+  label: string
+  name: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  placeholder: string
+}) {
+  return (
+    <div className="field-group">
+      <label className="field-label">{label}</label>
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="form-textarea"
+        style={{ minHeight: '100px' }}
+        placeholder={placeholder}
+      />
     </div>
   )
 }

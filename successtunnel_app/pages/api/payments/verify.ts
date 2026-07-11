@@ -2,6 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../lib/prisma'
 import crypto from 'crypto'
 
+async function getStoredSetting(key: string) {
+  const row = await prisma.siteSetting.findUnique({ where: { key } })
+  return row?.value || null
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).end()
@@ -13,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Missing signature verification parameters' })
   }
 
-  const keySecret = process.env.RAZORPAY_KEY_SECRET
+  const keySecret = process.env.RAZORPAY_KEY_SECRET || await getStoredSetting('razorpayKeySecret')
 
   if (!keySecret) {
     return res.status(500).json({ error: 'Razorpay secret not configured on server' })
@@ -47,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await prisma.rentalPayment.update({
       where: { orderId: razorpay_order_id },
       data: {
-        status: 'paid',
+        status: 'captured',
         paymentId: razorpay_payment_id
       }
     })

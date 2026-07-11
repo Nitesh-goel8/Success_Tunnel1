@@ -55,12 +55,12 @@ export default function AdminPayments() {
                 All Transactions
               </button>
               <button
-                className={`btn ${filter === 'paid' ? 'btn-primary' : 'btn-secondary'}`}
+                className={`btn ${filter === 'captured' ? 'btn-primary' : 'btn-secondary'}`}
                 style={{ padding: '8px 16px', fontSize: '0.88rem', borderRadius: '10px' }}
-                onClick={() => handleFilterChange('paid')}
+                onClick={() => handleFilterChange('captured')}
                 type="button"
               >
-                Paid
+                Captured
               </button>
               <button
                 className={`btn ${filter === 'created' ? 'btn-primary' : 'btn-secondary'}`}

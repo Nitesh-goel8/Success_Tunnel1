@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { useSiteSettings } from './SiteSettingsProvider'
 
 const links = [
   { href: '/services/consultancy', label: 'Consultancy' },
   { href: '/services/finance', label: 'Finance' },
-  { href: '/services/education', label: 'Education' },
+  { href: '/education', label: 'Education' },
   { href: '/services/investment', label: 'Investment' },
   { href: '/services/real-estate', label: 'Real Estate' },
   { href: '/services/rental-space', label: 'Rental Space' },
@@ -15,6 +16,7 @@ const links = [
 export default function Nav() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const settings = useSiteSettings()
 
   useEffect(() => {
     setOpen(false)
@@ -34,7 +36,7 @@ export default function Nav() {
             style={{ borderRadius: '8px', objectFit: 'contain', background: '#fff', boxShadow: '0 2px 8px rgba(22, 93, 245, 0.12)' }}
             priority
           />
-          <span>SuccessTunnel</span>
+          <span>{settings.businessName}</span>
         </Link>
 
         <button className="nav-toggle" type="button" onClick={() => setOpen(value => !value)} aria-expanded={open} aria-label="Toggle navigation">

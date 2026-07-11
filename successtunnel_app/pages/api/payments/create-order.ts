@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../lib/prisma'
 
+async function getStoredSetting(key: string) {
+  const row = await prisma.siteSetting.findUnique({ where: { key } })
+  return row?.value || null
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).end()
@@ -12,8 +17,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Missing required parameters' })
   }
 
-  const keyId = process.env.RAZORPAY_KEY_ID
-  const keySecret = process.env.RAZORPAY_KEY_SECRET
+  const parsedAmount = Number(amount)
+  if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+    return res.status(400).json({ error: 'Amount must be greater than zero' })
+  }
+
+  const keyId = process.env.RAZORPAY_KEY_ID || await getStoredSetting('razorpayKeyId')
+  const keySecret = process.env.RAZORPAY_KEY_SECRET || await getStoredSetting('razorpayKeySecret')
 
   if (!keyId || !keySecret) {
     return res.status(500).json({ error: 'Razorpay keys not configured on server' })
@@ -21,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // Razorpay amount is in paise (e.g. 500 INR = 50000 paise)
-    const amountInPaise = Math.round(Number(amount) * 100)
+    const amountInPaise = Math.round(parsedAmount * 100)
 
     // Call Razorpay API
     const authHeader = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64')

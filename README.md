@@ -1,162 +1,151 @@
-# Success Tunnel — Production Website
+# Success Tunnel Main Website
 
-Success Tunnel is a premium enterprise professional service portal built to showcase core advisory services (Consultancy, Finance, Education, Investment, Real Estate, and Rental Space), capture customer leads, offer downloadable learning materials, and manage real estate listings.
+This repository contains the Success Tunnel website project. The main application lives in `successtunnel_app/` and is built with Next.js, TypeScript, Prisma, and PostgreSQL.
 
-It is implemented as a modern **Next.js** application integrated with **Prisma ORM**, powered by a **PostgreSQL** database (hosted on **Supabase**), styled using custom **Vanilla CSS** for luxury brand aesthetics, and deployed on **Vercel**.
+## Current Project Status
 
----
+### What is already built
+- Public marketing site with pages for home, about, contact, services, blog, properties, resources, privacy, and terms.
+- Dynamic service, property, and blog detail routes.
+- Admin login and admin dashboard pages.
+- Admin CRUD APIs for services, subservices, properties, blogs, enquiries, payments, and site settings.
+- Education video CMS for publishing direct-file learning videos from the admin dashboard.
+- Prisma schema with models for users, services, subservices, blog posts, properties, enquiries, rental payments, and site settings.
+- Lead capture flow that validates and stores enquiries in the database.
+- Rental payment flow wired to Razorpay order creation and signature verification.
+- Basic client portal routes for signup, login, dashboard, and invoice pages.
+- Seed data and fallback content so the app can render even when the database is incomplete.
 
-## Technical Stack
-- **Framework:** Next.js 13 (Pages Router)
-- **Database ORM:** Prisma ORM
-- **Database Provider:** PostgreSQL (Supabase)
-- **Language:** TypeScript
-- **Styling:** Custom CSS (scoped and global variables)
-- **State/Auth:** JWT-based custom session token authentication for Admin
+### What is partially implemented
+- Premium homepage and main service experience are more polished than the rest of the site.
+- Admin dashboard statistics and charts are present, but depend on real data quality.
+- Chat assistant exists as a simple keyword-based knowledge API, not a real AI-backed assistant.
+- Settings management exists, but many brand and business values are still placeholders.
 
----
+### What is still missing or should be improved
+- Real business content has not fully replaced sample content and fallback data.
+- SMTP/email notifications for enquiries are not implemented yet.
+- Spam protection, rate limiting, and stronger cookie/security hardening are still needed.
+- SEO essentials like sitemap, robots, structured data, and page-level metadata need a proper pass.
+- Blog, property, and some service pages still need visual consistency and content cleanup.
+- `.env.example` previously contained sensitive-looking values and has been sanitized.
 
-## Directory Structure
+## Repo Structure
+
 ```text
 successtunnel_mainwebsite/
-├── successtunnel_app/        # Core Next.js Application
-│   ├── components/           # Reusable React components (Nav, Footer, EnquiryForm, Chatbot)
-│   ├── data/                 # Static / Fallback data
-│   ├── lib/                  # Database connections, authentication utilities, and helper scripts
-│   ├── pages/                # Next.js Pages (Client Pages & API Endpoints)
-│   │   ├── admin/            # Protected Admin Dashboard Pages (Services, Properties, Blogs, Enquiries)
-│   │   ├── api/              # API Route endpoints for Enquiries, Admin operations, and Services
-│   │   ├── blog/             # Thought leadership blog section
-│   │   ├── properties/       # Property showcase listings and details
-│   │   └── services/         # Service hub pages (consultancy, finance, education, etc.)
-│   ├── prisma/               # Database Schema (`schema.prisma`) and Seed scripts
-│   ├── public/               # Static assets (logos, icons, illustrations)
-│   ├── styles/               # Global CSS variables and responsive design tokens
-│   ├── package.json          # Node dependencies & npm commands
-│   └── tsconfig.json         # TypeScript configuration
-└── README.md                 # Project Documentation (This file)
+|-- successtunnel_app/           # Actual Next.js application
+|   |-- components/             # Shared UI components
+|   |-- lib/                    # Prisma client, auth helpers, fallback data, chatbot knowledge
+|   |-- pages/                  # Public pages, admin pages, client pages, API routes
+|   |-- prisma/                 # Prisma schema and seed script
+|   |-- public/                 # Static assets
+|   |-- styles/                 # Global styling
+|   |-- .env.example            # Safe environment template
+|   |-- docker-compose.yml      # Local PostgreSQL/Adminer stack
+|   |-- package.json            # App scripts and dependencies
+|-- BRANCHING.md                # Git workflow notes
+|-- CUSTOMIZATION_REQUIREMENTS.md
+|-- PROJECT_BRIEF.md
+|-- README.md                   # Main project source of truth
 ```
 
----
+## Key Implementation Notes
 
-## Latency Optimization (CDN Caching)
-To achieve sub-50ms Time-to-First-Byte (TTFB) and optimal performance under load, all main customer-facing landing pages have been optimized to use **Incremental Static Regeneration (ISR)** instead of Server-Side Rendering (SSR).
-- Pages are statically compiled at build time.
-- They are served instantly from the Vercel Edge CDN without waiting for a database roundtrip.
-- Next.js automatically revalidates pages in the background (configured for a maximum of every **60 seconds** per page) whenever new database entries (blogs, properties, or services) are added or updated in the Admin Dashboard.
+### Public site
+- Homepage, service catalogue, service detail, properties, blog, resources, and contact flows exist.
+- Several pages merge database content with `sampleData.ts`, which means placeholders can appear until real records are added.
 
----
+### Admin side
+- Admin authentication uses a JWT stored in the `st_auth` cookie.
+- Admin APIs currently support create, read, update, and delete for core content areas.
+- Enquiries can be viewed and exported from the admin area.
 
-## Local Setup & Development
+### Payments
+- Razorpay order creation and payment verification routes are present.
+- Payment records are stored in the `RentalPayment` table.
+- Status naming should be reviewed because stats expect `captured` while verification currently saves `paid`.
 
-### 1. Prerequisites
-- **Node.js:** v18.0.0 or higher
-- **Git:** Installed
+### Data layer
+- Prisma is set up correctly for PostgreSQL.
+- Seed scripts create initial admin/content data from `lib/sampleData.ts`.
+- The current app depends on seed/fallback content more than a production-ready CMS usually should.
 
-### 2. Environment Configuration
-Navigate to the application folder and copy the environment template:
+## Implementation Plan
+
+### Work Codex can do in this project
+1. Replace fallback/sample content with structured real content once you provide it.
+2. Refactor pages that still use inconsistent layouts or too much inline styling.
+3. Finish SMTP/email notifications for enquiry submissions.
+4. Add spam protection, validation hardening, and safer auth cookie settings.
+5. Fix data inconsistencies such as payment status mismatches and placeholder dependencies.
+6. Improve SEO with metadata, sitemap, robots, and structured data.
+7. Improve accessibility, responsive polish, and cross-page design consistency.
+8. Clean admin workflows and expand fields where your business process needs more data.
+9. Prepare deployment configuration and production-readiness checks.
+10. Expand the education video library, homepage promo behavior, and media storage strategy if you want true uploaded files later.
+
+### Work you should do
+1. Provide final business content for homepage, about, services, blog, privacy, terms, and contact pages.
+2. Share real brand assets: logo, colors, fonts, photos, and any style references.
+3. Confirm the final service list and subservice details.
+4. Provide real property listings, blog posts, FAQs, downloads, and calculator requirements.
+5. Decide production credentials and keep secrets only in `.env`, hosting dashboards, or password managers.
+6. Confirm third-party integrations: Razorpay, email provider, WhatsApp, analytics, maps, and CRM.
+7. Review legal/compliance copy before launch.
+8. Approve final deployment target and domain setup.
+
+## Recommended Next Execution Order
+
+1. Finalize business content and brand inputs.
+2. Remove dependency on placeholder/sample content.
+3. Complete enquiry email delivery and anti-spam protection.
+4. Fix production logic gaps in payments, auth, and settings.
+5. Finish design consistency across blog, properties, resources, and remaining service pages.
+6. Add SEO, analytics, accessibility, and launch checks.
+7. Run full QA, build, and deployment verification.
+
+## Local Development
+
+From the app directory:
+
 ```bash
 cd successtunnel_app
-cp .env.example .env
-```
-Open `.env` and fill in the configuration details:
-```env
-DATABASE_URL="postgresql://<username>:<password>@<host>:<port>/<dbname>"
-NEXTAUTH_SECRET="your-32-character-random-secret"
-JWT_SECRET="your-32-character-random-jwt-secret"
-ADMIN_EMAIL="admin@successtunnel.in"
-ADMIN_PASSWORD="ChooseAStrongPassword"
-```
-
-### 3. Install Dependencies
-Run the install command inside the application directory:
-```bash
 npm install
-```
-
-### 4. Database Setup & Seeding
-Push the database schema to your local or remote database and populate the initial seed data (default admin account, sample blogs, properties, and services):
-```bash
-# Generate Prisma Client
+docker-compose up -d
 npm run prisma:generate
-
-# Sync schema and push to database
 npm run prisma:push
-
-# Populate seed content
 npm run seed
-```
-
-### 5. Running the Local Server
-Start the Next.js development server:
-```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your web browser.
 
----
+Open `http://localhost:3000`.
 
-## Step-by-Step Supabase Deployment Guide
+## Environment Variables
 
-Supabase provides the hosted PostgreSQL database that powers Success Tunnel.
+Create `successtunnel_app/.env` from `successtunnel_app/.env.example` and fill in:
 
-1. **Sign Up & Create Project:**
-   - Go to [Supabase](https://supabase.com) and sign in.
-   - Click **New Project** and select your Organization.
-   - Choose a project Name (e.g., `success-tunnel`), set a secure **Database Password** (save this password!), and pick the nearest regional server.
+```env
+DATABASE_URL=
+NEXTAUTH_SECRET=
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
+JWT_SECRET=
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+NEXT_PUBLIC_RAZORPAY_KEY_ID=
+```
 
-2. **Obtain Connection String:**
-   - Navigate to **Project Settings** (gear icon) > **Database**.
-   - Under the **Connection String** section, copy the **URI** connection string.
-   - Choose the **Transaction** tab (port `5432` or pooler connection on port `6543`) for production use.
-   - Replace `[YOUR-PASSWORD]` in the connection string with the database password you chose.
+## Cleanup Done
 
-3. **Initialize Database Schema:**
-   - Locally, update the `DATABASE_URL` in your `.env` file to this new Supabase URI.
-   - Execute the schema migration and seed scripts:
-     ```bash
-     npx prisma db push
-     npx prisma db seed
-     ```
-   - Verify in your Supabase project dashboard (Table Editor) that the `User`, `Service`, `Subservice`, `BlogPost`, `Property`, and `Enquiry` tables are created and seeded with baseline data.
+- Consolidated the main project documentation into this root README.
+- Sanitized the environment template to remove real-looking credentials.
+- Identified the root-level Node install as unnecessary because the actual app dependencies belong in `successtunnel_app/`.
 
----
+## Important Risks To Address
 
-## Step-by-Step Vercel Deployment Guide
-
-Vercel hosts the Next.js frontend application with serverless edge functions.
-
-1. **Import Repository:**
-   - Log in to your [Vercel Dashboard](https://vercel.com).
-   - Click **Add New** > **Project**.
-   - Select and import your GitHub repository containing the codebase.
-
-2. **Configure Build & Directory Options:**
-   - **Root Directory:** Since the Next.js application lives inside a subfolder, edit the **Root Directory** setting and select `successtunnel_app`.
-   - **Framework Preset:** Verify it is set to **Next.js**.
-   - **Build Command:** The default build command will run:
-     `prisma db push && ts-node --project tsconfig.seed.json prisma/seed.ts && next build`
-     *Note: During build time, Vercel will automatically generate the Prisma Client and verify the database is up-to-date.*
-
-3. **Add Environment Variables:**
-   Expand the **Environment Variables** section and add the following keys matching your `.env` configuration:
-   - `DATABASE_URL` (Supabase Connection URI)
-   - `NEXTAUTH_SECRET` (Generate a random security string)
-   - `JWT_SECRET` (Generate a random JWT verification string)
-   - `ADMIN_EMAIL` (Your admin email for admin panel login)
-   - `ADMIN_PASSWORD` (Your admin password for admin panel login)
-
-4. **Deploy:**
-   - Click the **Deploy** button.
-   - Vercel will build the static pages, bundle functions, and deploy the application.
-   - Once completed, you will receive a public production URL (e.g., `https://success-tunnel.vercel.app` or a custom domain if connected).
-
----
-
-## Verification & Production Validation
-
-Before handing over to the client, perform the following validation checklist:
-1. **Type Safety:** Run `npx tsc --noEmit` inside `successtunnel_app` to verify zero TypeScript errors.
-2. **Build Test:** Run `npm run build` locally to confirm Next.js can generate optimized static files without issues.
-3. **Form Integrity:** Submit a lead inquiry on the Contact page and verify it appears immediately in the database (accessible via `https://<your-domain>/admin/enquiries`).
-4. **Admin Console:** Navigate to `/admin/login` and verify you can successfully log in, view current enquiries, and perform CRUD operations on services, properties, and blogs.
+- Fallback sample content is still mixed into production pages.
+- Enquiry submission does not send email notifications yet.
+- Authentication is custom and should be hardened before production use.
+- SEO and anti-spam protections are not complete.
+- Payment flow status handling should be normalized before go-live.

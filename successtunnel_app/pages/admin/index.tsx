@@ -13,6 +13,7 @@ export default function Admin() {
     totalServices: number
     totalProperties: number
     totalBlogs: number
+    totalEducationContent: number
     revenueTimeline: Array<{ label: string; value: number }>
     enquiryCategories: Array<{ label: string; value: number }>
   }>({
@@ -20,6 +21,7 @@ export default function Admin() {
     totalServices: 0,
     totalProperties: 0,
     totalBlogs: 0,
+    totalEducationContent: 0,
     revenueTimeline: [],
     enquiryCategories: [],
   })
@@ -93,6 +95,16 @@ export default function Admin() {
               </div>
               <div style={{ fontSize: '2.5rem', fontWeight: 900, marginTop: '12px', color: 'var(--primary)', fontFamily: "'Sora', sans-serif" }}>
                 {loading ? '...' : stats.totalBlogs}
+              </div>
+            </div>
+
+            <div className="admin-stat-summary-card" style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '18px', padding: '24px', boxShadow: 'var(--shadow)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--muted)' }}>Education Items</span>
+                <HiOutlineBookOpen size={24} style={{ color: 'var(--accent)' }} />
+              </div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 900, marginTop: '12px', color: 'var(--primary)', fontFamily: "'Sora', sans-serif" }}>
+                {loading ? '...' : stats.totalEducationContent}
               </div>
             </div>
           </div>
@@ -220,6 +232,12 @@ export default function Admin() {
               <div className="service-card-kicker" style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase' }}>Publications</div>
               <h3 style={{ marginTop: 12, color: 'var(--primary)', fontWeight: 800 }}>Manage Blogs</h3>
               <p style={{ marginTop: 10, color: 'var(--muted)', fontSize: '0.92rem' }}>Publish new advisory insights, restructure guides and articles.</p>
+            </Link>
+
+            <Link href="/admin/education" className="admin-card" style={{ padding: '28px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '20px', transition: 'all 0.2s' }}>
+              <div className="service-card-kicker" style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase' }}>Education</div>
+              <h3 style={{ marginTop: 12, color: 'var(--primary)', fontWeight: 800 }}>Manage Education</h3>
+              <p style={{ marginTop: 10, color: 'var(--muted)', fontSize: '0.92rem' }}>Add notes, courses, videos, tools, downloads, and calculators from one dashboard.</p>
             </Link>
 
             <Link href="/admin/settings" className="admin-card" style={{ padding: '28px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '20px', transition: 'all 0.2s' }}>

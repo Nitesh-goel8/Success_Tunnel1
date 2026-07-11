@@ -1,5 +1,6 @@
 import PageShell from '../../components/PageShell'
 import CategoryHub from '../../components/CategoryHub'
+import Link from 'next/link'
 
 const cards = [
   { title: 'Study Content', icon: 'SC', excerpt: 'Notes and structured learning content.' },
@@ -63,6 +64,17 @@ export default function Education() {
         formPage="education"
         formTitle="Request education support"
       />
+      <section className="section-surface" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div className="callout-banner">
+            <h2>Looking for courses, notes, or learning tools?</h2>
+            <p>The full education hub now lives in the dedicated education section with videos, notes, downloads, calculators, and more.</p>
+            <div className="cta-actions">
+              <Link href="/education" className="cta-btn-primary">Open education hub</Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </PageShell>
   )
 }

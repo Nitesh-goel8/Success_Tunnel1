@@ -4,8 +4,11 @@ import Image from 'next/image'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import EnquiryForm from '../components/EnquiryForm'
+import EducationVideoPromo from '../components/EducationVideoPromo'
 import { prisma } from '../lib/prisma'
 import { sampleServices } from '../lib/sampleData'
+import { useSiteSettings } from '../components/SiteSettingsProvider'
+import { toTelHref, toWhatsAppHref } from '../lib/siteSettings'
 import {
   HiShieldCheck, HiGlobeAlt, HiUsers, HiStar,
   HiBriefcase, HiChartBar, HiAcademicCap, HiTrendingUp, HiOfficeBuilding, HiKey,
@@ -111,7 +114,8 @@ const blogs = [
   }
 ]
 
-export default function Home({ services }: { services: any[] }) {
+export default function Home({ services, featuredEducationContent }: { services: any[]; featuredEducationContent: any | null }) {
+  const settings = useSiteSettings()
   const serviceItems = Array.from(
     new Map([...(services || []), ...sampleServices, ...coreServices].map(item => [item.slug, item])).values()
   ).slice(0, 6)
@@ -427,7 +431,7 @@ export default function Home({ services }: { services: any[] }) {
                 <div className="contact-icon-wrapper"><HiLocationMarker size={22} /></div>
                 <div className="contact-detail-text">
                   <h4>Office Address</h4>
-                  <p>First Floor, Sudarshan Tower<br />Tau Devi Lal Complex, Behind Hive Hotel<br />Panipat 132103, Haryana, India</p>
+                  <p>{settings.officeAddress}</p>
                 </div>
               </div>
 
@@ -436,8 +440,8 @@ export default function Home({ services }: { services: any[] }) {
                 <div className="contact-detail-text">
                   <h4>Call Us</h4>
                   <p>
-                    <a href="tel:+918950771205" style={{ color: 'var(--primary)', fontWeight: 700, display: 'block' }}>+91 89507 71205</a>
-                    <a href="tel:+917206189559" style={{ color: 'var(--muted)', fontSize: '0.9rem', display: 'block' }}>+91 72061 89559</a>
+                      <a href={`tel:${toTelHref(settings.contactPhone1)}`} style={{ color: 'var(--primary)', fontWeight: 700, display: 'block' }}>{settings.contactPhone1}</a>
+                      <a href={`tel:${toTelHref(settings.contactPhone2)}`} style={{ color: 'var(--muted)', fontSize: '0.9rem', display: 'block' }}>{settings.contactPhone2}</a>
                   </p>
                 </div>
               </div>
@@ -446,7 +450,7 @@ export default function Home({ services }: { services: any[] }) {
                 <div className="contact-icon-wrapper"><HiMail size={22} /></div>
                 <div className="contact-detail-text">
                   <h4>Email Us</h4>
-                  <p><a href="mailto:successtunnel.in@gmail.com" style={{ color: 'var(--primary)', fontWeight: 700 }}>successtunnel.in@gmail.com</a></p>
+                  <p><a href={`mailto:${settings.contactEmail}`} style={{ color: 'var(--primary)', fontWeight: 700 }}>{settings.contactEmail}</a></p>
                 </div>
               </div>
 
@@ -454,7 +458,7 @@ export default function Home({ services }: { services: any[] }) {
                 <div className="contact-icon-wrapper"><FaWhatsapp size={22} /></div>
                 <div className="contact-detail-text">
                   <h4>WhatsApp</h4>
-                  <p><a href="https://wa.me/918950771205" target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', fontWeight: 700 }}>Chat on WhatsApp &rarr;</a></p>
+                  <p><a href={`https://wa.me/${toWhatsAppHref(settings.whatsappNumber)}`} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', fontWeight: 700 }}>Chat on WhatsApp &rarr;</a></p>
                 </div>
               </div>
 
@@ -478,6 +482,7 @@ export default function Home({ services }: { services: any[] }) {
           </div>
         </section>
       </main>
+      <EducationVideoPromo video={featuredEducationContent} />
       <Footer />
     </div>
   )
@@ -486,13 +491,24 @@ export default function Home({ services }: { services: any[] }) {
 export async function getStaticProps() {
   try {
     const services = await prisma.service.findMany({ take: 6 })
+    const featuredEducationContent = await prisma.educationContent.findFirst({
+      where: { isPublished: true, showOnHomePopup: true },
+      orderBy: [
+        { isFeatured: 'desc' },
+        { publishedAt: 'desc' },
+        { createdAt: 'desc' }
+      ]
+    })
     return {
-      props: { services: JSON.parse(JSON.stringify(services)) },
+      props: {
+        services: JSON.parse(JSON.stringify(services)),
+        featuredEducationContent: featuredEducationContent ? JSON.parse(JSON.stringify(featuredEducationContent)) : null
+      },
       revalidate: 60
     }
   } catch (error) {
     return {
-      props: { services: sampleServices },
+      props: { services: sampleServices, featuredEducationContent: null },
       revalidate: 60
     }
   }

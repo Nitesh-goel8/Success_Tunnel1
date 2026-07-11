@@ -4,6 +4,7 @@ import Footer from '../../components/Footer'
 import { samplePosts } from '../../lib/sampleData'
 
 const resourceChannels = [
+  { title: 'Education Hub', href: '/education', icon: '🎬', desc: 'Courses, notes, tools, downloads, videos, and featured learning content.' },
   { title: 'Blogs & Insights', href: '/blog', icon: '📝', desc: 'Expert commentary, market trends, and policy updates.' },
   { title: 'Downloads', href: '/resources/downloads', icon: '📥', desc: 'Essential PDFs, tax filing checklists, and registration forms.' },
   { title: 'Templates', href: '#', icon: '📁', desc: 'Financial planning spreadsheets, sample agreement drafts, and calculators.' },

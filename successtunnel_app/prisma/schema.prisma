@@ -46,6 +46,46 @@ model BlogPost {
   publishedAt DateTime?
 }
 
+model EducationContent {
+  id              Int      @id @default(autoincrement())
+  title           String
+  slug            String   @unique
+  contentType     String
+  category        String?
+  excerpt         String?
+  body            String?
+  thumbnailUrl    String?
+  assetUrl        String?
+  externalUrl     String?
+  ctaLabel        String?
+  isPublished     Boolean  @default(false)
+  isFeatured      Boolean  @default(false)
+  showOnHomePopup Boolean  @default(false)
+  sortOrder       Int      @default(0)
+  publishedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model EducationVideo {
+  id              Int      @id @default(autoincrement())
+  title           String
+  slug            String   @unique
+  excerpt         String?
+  description     String?
+  category        String?
+  duration        String?
+  thumbnailUrl    String?
+  videoUrl        String
+  isPublished     Boolean  @default(false)
+  isFeatured      Boolean  @default(false)
+  showOnHomePopup Boolean  @default(false)
+  sortOrder       Int      @default(0)
+  publishedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
 model Property {
   id        Int      @id @default(autoincrement())
   title     String

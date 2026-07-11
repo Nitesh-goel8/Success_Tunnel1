@@ -20,10 +20,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         prisma.property.count(),
         prisma.blogPost.count(),
       ])
+      const totalEducationContent = await prisma.educationContent.count()
 
       // Fetch all payments to calculate revenue timeline
       const payments = await prisma.rentalPayment.findMany({
-        where: { status: 'captured' },
+        where: { status: { in: ['captured', 'paid'] } },
         select: { amount: true, createdAt: true },
       })
 
@@ -86,6 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         totalServices,
         totalProperties,
         totalBlogs,
+        totalEducationContent,
         revenueTimeline,
         enquiryCategories,
       })

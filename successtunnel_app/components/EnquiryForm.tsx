@@ -14,7 +14,7 @@ export default function EnquiryForm({
   subtitle = 'Share your requirements and our advisory team will respond shortly.',
   buttonLabel = 'Send enquiry',
 }: EnquiryFormProps) {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', city: '', service: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', city: '', service: '', message: '', website: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string>('')
 
@@ -38,7 +38,7 @@ export default function EnquiryForm({
     try {
       await axios.post('/api/enquiries', { ...form, page })
       setStatus('sent')
-      setForm({ name: '', email: '', phone: '', city: '', service: '', message: '' })
+      setForm({ name: '', email: '', phone: '', city: '', service: '', message: '', website: '' })
     } catch (error: any) {
       const msg = error.response?.data?.error || error.message || 'Please try again.'
       setErrorMessage(msg)
@@ -53,6 +53,15 @@ export default function EnquiryForm({
       <p style={{ margin: '12px 0 0', color: 'var(--muted)' }}>{subtitle}</p>
 
       <div className="form-grid" style={{ marginTop: '22px' }}>
+        <input
+          name="website"
+          value={form.website}
+          onChange={onChange}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          style={{ display: 'none' }}
+        />
         <div className="field-group">
           <label className="field-label" htmlFor={`${page || 'enquiry'}-name`}>Full name</label>
           <input
