@@ -58,17 +58,18 @@ Set these in Vercel and in your local `.env` as needed:
 
 ## Production Deployment
 
-1. Set `NEXT_PUBLIC_SITE_URL` to the live domain.
-2. Use a managed PostgreSQL database for `DATABASE_URL`.
-3. Add the rest of the environment variables in Vercel Project Settings.
-4. Run a production build:
+1. Set the Vercel Node.js version to `24.x`.
+2. Set `NEXT_PUBLIC_SITE_URL` to the live domain.
+3. Use a managed PostgreSQL database for `DATABASE_URL`.
+4. Add the rest of the environment variables in Vercel Project Settings.
+5. Run a production build:
 
 ```bash
 npm run build
 ```
 
-5. Deploy to Vercel.
-6. Verify the homepage, admin login, sitemap, and robots file.
+6. Deploy to Vercel.
+7. Verify the homepage, admin login, sitemap, and robots file.
 
 ## Helpful Commands
 

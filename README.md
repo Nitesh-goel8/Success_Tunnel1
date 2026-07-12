@@ -23,7 +23,8 @@ Open `http://localhost:3000`.
 ## Production
 
 - Run `npm run build` from the repository root before deploying.
-- Vercel uses `vercel.json` to install and build the app from `successtunnel_app/`.
+- Vercel uses `vercel.json` to auto-detect whether it is running from the repo root or `successtunnel_app/`.
+- The project targets Node.js `24.x`; set that in Vercel Project Settings as well.
 - Set the production environment variables in Vercel before promoting the deployment.
 - After deployment, verify `/`, `/admin/login`, `/sitemap.xml`, and `/robots.txt`.
 
