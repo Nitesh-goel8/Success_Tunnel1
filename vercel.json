@@ -1,5 +1,5 @@
 {
   "framework": "nextjs",
-  "installCommand": "npm install",
-  "buildCommand": "npm run build"
+  "installCommand": "npm install --prefix successtunnel_app",
+  "buildCommand": "npm run build --prefix successtunnel_app"
 }

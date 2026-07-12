@@ -13,9 +13,8 @@ import {
   HiShieldCheck, HiGlobeAlt, HiUsers, HiStar,
   HiBriefcase, HiChartBar, HiAcademicCap, HiTrendingUp, HiOfficeBuilding, HiKey,
   HiLocationMarker, HiPhone, HiMail, HiClock, HiChatAlt2,
-  HiClipboardList
 } from 'react-icons/hi'
-import { FaWhatsapp, FaRocket, FaIndustry, FaStore, FaUniversity, FaTools, FaTrophy } from 'react-icons/fa'
+import { FaWhatsapp, FaRocket, FaIndustry, FaStore, FaUniversity, FaTools } from 'react-icons/fa'
 import { MdHealthAndSafety } from 'react-icons/md'
 
 const coreServices = [
@@ -149,7 +148,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                 marginBottom: '32px', 
                 maxWidth: '520px' 
               }}>
-                Strategic consultancy, finance, education, investment, and real estate solutions — designed to accelerate your growth and secure your future.
+                Strategic consultancy, finance, education, investment, and real estate solutions designed to accelerate your growth and secure your future.
               </p>
               <div className="hero-actions">
                 <a href="#contact" className="btn btn-primary" style={{ padding: '16px 28px' }}>
@@ -304,7 +303,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                     <p className="reflection-text">"{t.quote}"</p>
                   </div>
                   <div className="reflection-stars">
-                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    <span>★★★★★</span>
                   </div>
                 </div>
               ))}
@@ -327,7 +326,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                   SuccessTunnel was built to eliminate the fragmentation that holds growing businesses back. Instead of juggling multiple advisors, you get one strategic partner for consultancy, finance, education, investment, and real estate.
                 </p>
                 <p style={{ fontSize: '1.05rem', color: 'var(--muted)', lineHeight: '1.75', marginBottom: '32px' }}>
-                  With 10+ years of combined experience and 1000+ clients served, our team is built to deliver results — not just recommendations.
+                  With 10+ years of combined experience and 1000+ clients served, our team is built to deliver results, not just recommendations.
                 </p>
                 <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                   <Link href="/contact" className="cta-btn-primary" style={{ fontSize: '0.95rem' }}>Book Consultation &rarr;</Link>
@@ -345,64 +344,6 @@ export default function Home({ services, featuredEducationContent }: { services:
                     <div style={{ fontSize: '2.2rem', fontWeight: 900, color: 'var(--accent)', fontFamily: 'Sora, sans-serif', lineHeight: 1 }}>{stat.number}</div>
                     <div style={{ fontSize: '0.88rem', color: 'var(--muted)', fontWeight: 600, marginTop: '8px' }}>{stat.label}</div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Achievements Section */}
-        <section className="section-surface" id="achievements" style={{ scrollMarginTop: '100px' }}>
-          <div className="container">
-            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-              <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)' }}>ACHIEVEMENTS</span>
-              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: 'var(--primary)', fontWeight: 800, margin: '16px 0 0', letterSpacing: '-0.03em' }}>
-                Our Milestones
-              </h2>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', marginBottom: '60px' }}>
-              {[
-                { icon: <FaTrophy size={30} />, number: '10+', label: 'Years of Experience', desc: 'A decade of trusted advisory across diverse industries and client scales.' },
-                { icon: <HiUsers size={30} />, number: '1000+', label: 'Clients Served', desc: 'Built long-term partnerships with startups, MSMEs, and enterprise clients.' },
-                { icon: <HiClipboardList size={30} />, number: '500+', label: 'Projects Completed', desc: 'Successfully delivered advisory, financial, and property projects.' },
-                { icon: <HiStar size={30} />, number: '98%', label: 'Client Satisfaction', desc: 'Near-perfect satisfaction scores across all service categories.' },
-                { icon: <HiGlobeAlt size={30} />, number: 'Pan India', label: 'Presence', desc: 'Serving clients across Haryana, Delhi NCR, and major Indian cities.' },
-              ].map((item, i) => (
-                <div key={i} style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--line)',
-                  borderRadius: '20px',
-                  padding: '32px 28px',
-                  boxShadow: '0 8px 30px rgba(15, 23, 42, 0.04)',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px'
-                }}>
-                  <div style={{ fontSize: '2rem' }}>{item.icon}</div>
-                  <div style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--accent)', fontFamily: 'Sora, sans-serif', lineHeight: 1 }}>{item.number}</div>
-                  <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1rem' }}>{item.label}</div>
-                  <p style={{ fontSize: '0.88rem', color: 'var(--muted)', lineHeight: '1.6', margin: 0 }}>{item.desc}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Awards Row */}
-            <div className="awards-row">
-              <div>
-                <h3 style={{ color: '#fff', fontWeight: 800, fontSize: '1.4rem', margin: '0 0 8px' }}>Recognized for Excellence</h3>
-                <p style={{ color: 'rgba(255,255,255,0.65)', margin: 0, fontSize: '0.95rem' }}>Industry awards and association recognitions</p>
-              </div>
-              <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-                {[
-                  { icon: <FaTrophy size={16} />, label: 'Excellence Award 2023' },
-                  { icon: <HiUsers size={16} />, label: 'Strategic Partner 2024' },
-                  { icon: <HiStar size={16} />, label: 'Best Advisory Firm 2025' }
-                ].map((award, i) => (
-                  <span key={i} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', padding: '10px 20px', color: '#fff', fontWeight: 600, fontSize: '0.88rem', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '7px' }}>
-                    {award.icon} {award.label}
-                  </span>
                 ))}
               </div>
             </div>
@@ -466,7 +407,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                 <div className="contact-icon-wrapper"><HiClock size={22} /></div>
                 <div className="contact-detail-text">
                   <h4>Working Hours</h4>
-                  <p>Mon – Sat: 10:00 AM – 6:00 PM</p>
+                  <p>Mon - Sat: 10:00 AM - 6:00 PM</p>
                 </div>
               </div>
             </div>
@@ -475,7 +416,7 @@ export default function Home({ services, featuredEducationContent }: { services:
               <EnquiryForm
                 page="Homepage"
                 title="Request a tailored consultation"
-                subtitle="Tell us what you need and we’ll prepare a focused next step."
+                subtitle="Tell us what you need and we'll prepare a focused next step."
                 buttonLabel="Send Inquiry"
               />
             </div>

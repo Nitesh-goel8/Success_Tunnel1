@@ -1,16 +1,12 @@
 {
   "private": true,
-  "workspaces": [
-    "successtunnel_app"
-  ],
   "scripts": {
-    "dev": "npm run dev --workspace successtunnel_app",
-    "build": "npm run build --workspace successtunnel_app",
-    "start": "npm run start --workspace successtunnel_app",
-    "prisma:generate": "npm run prisma:generate --workspace successtunnel_app",
-    "prisma:push": "npm run prisma:push --workspace successtunnel_app",
-    "seed": "npm run seed --workspace successtunnel_app",
-    "setup": "npm run setup --workspace successtunnel_app",
-    "postinstall": "npm run prisma:generate"
+    "dev": "npm run dev --prefix successtunnel_app",
+    "build": "npm run build --prefix successtunnel_app",
+    "start": "npm run start --prefix successtunnel_app",
+    "prisma:generate": "npm run prisma:generate --prefix successtunnel_app",
+    "prisma:push": "npm run prisma:push --prefix successtunnel_app",
+    "seed": "npm run seed --prefix successtunnel_app",
+    "setup": "npm run setup --prefix successtunnel_app"
   }
 }
