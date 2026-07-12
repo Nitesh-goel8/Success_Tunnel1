@@ -56,13 +56,16 @@ export default function RealEstate() {
           { label: 'Confidence', value: '98%' },
         ]}
         cards={cards}
+        serviceOptions={cards.map(card => card.title)}
+
         steps={steps}
         faqs={faqs}
         ctaTitle="Looking for a specific property type?"
-        ctaDescription="Tell us your target area and budget and we’ll help with the shortlist."
+        ctaDescription="Tell us your target area and budget and we'll help with the shortlist."
         formPage="real-estate"
         formTitle="Request property support"
       />
     </PageShell>
   )
 }
+

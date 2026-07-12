@@ -85,6 +85,8 @@ export default function RentalSpace() {
           { label: 'Speed', value: '24h' },
         ]}
         cards={cards}
+        serviceOptions={cards.map(card => card.title)}
+
         steps={steps}
         faqs={faqs}
         ctaTitle="Need help finding the right space?"
@@ -95,3 +97,4 @@ export default function RentalSpace() {
     </PageShell>
   )
 }
+

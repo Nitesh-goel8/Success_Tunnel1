@@ -415,9 +415,9 @@ export default function Home({ services, featuredEducationContent }: { services:
             <div className="contact-form-card">
               <EnquiryForm
                 page="Homepage"
-                title="Request a tailored consultation"
-                subtitle="Tell us what you need and we'll prepare a focused next step."
-                buttonLabel="Send Inquiry"
+                title="Get a quick callback"
+                subtitle="Tell us what you need and we'll help with the next step."
+                buttonLabel="Request callback"
               />
             </div>
           </div>

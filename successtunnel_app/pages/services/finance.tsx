@@ -19,7 +19,7 @@ const steps = [
 
 const faqs = [
   { question: 'Do you help with both personal and business loans?', answer: 'Yes, we can guide both use cases depending on your need.' },
-  { question: 'Can you explain eligibility?', answer: 'We’ll help you understand the high-level requirements before you proceed.' },
+  { question: 'Can you explain eligibility?', answer: "We'll help you understand the high-level requirements before you proceed." },
   { question: 'Do you support property-backed finance?', answer: 'Yes, loan-against-property style support is part of the finance category.' },
 ]
 
@@ -58,13 +58,16 @@ export default function Finance() {
           { label: 'Confidence', value: '98%' },
         ]}
         cards={cards}
+        serviceOptions={cards.map(card => card.title)}
+
         steps={steps}
         faqs={faqs}
         ctaTitle="Need help comparing finance options?"
-        ctaDescription="Send your requirement and we’ll help narrow the right path."
+        ctaDescription="Send your requirement and we'll help narrow the right path."
         formPage="finance"
         formTitle="Request finance support"
       />
     </PageShell>
   )
 }
+

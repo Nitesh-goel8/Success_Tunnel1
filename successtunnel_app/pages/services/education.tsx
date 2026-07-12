@@ -57,6 +57,8 @@ export default function Education() {
           { label: 'Support', value: 'Guided' },
         ]}
         cards={cards}
+        serviceOptions={cards.map(card => card.title)}
+
         steps={steps}
         faqs={faqs}
         ctaTitle="Need the right study path?"
@@ -78,3 +80,4 @@ export default function Education() {
     </PageShell>
   )
 }
+

@@ -32,6 +32,7 @@ export default function CategoryHub({
   ctaDescription,
   formPage,
   formTitle,
+  serviceOptions,
 }: {
   eyebrow: string
   title: string
@@ -44,6 +45,7 @@ export default function CategoryHub({
   ctaDescription: string
   formPage: string
   formTitle: string
+  serviceOptions?: string[]
 }) {
   return (
     <div className="section-surface" style={{ marginTop: 0 }}>
@@ -72,7 +74,7 @@ export default function CategoryHub({
               <div className="service-card-kicker">Service line</div>
               <h3>{card.title}</h3>
               <p>{card.excerpt}</p>
-              <span className="service-card-cta">Learn more →</span>
+              <span className="service-card-cta">Learn more &rarr;</span>
             </Link>
           )
         })}
@@ -120,7 +122,13 @@ export default function CategoryHub({
       </div>
 
       <div id="contact-form" style={{ marginTop: 24 }}>
-        <EnquiryForm page={formPage} title={formTitle} subtitle="Share your requirements and we’ll respond with the right next step." buttonLabel="Send enquiry" />
+        <EnquiryForm
+          page={formPage}
+          title={formTitle}
+          subtitle="Share your details and we'll call you back with the right next step."
+          buttonLabel="Request callback"
+          serviceOptions={serviceOptions}
+        />
       </div>
     </div>
   )

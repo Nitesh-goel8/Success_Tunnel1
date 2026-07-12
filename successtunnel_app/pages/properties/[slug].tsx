@@ -83,9 +83,9 @@ export default function PropertyDetail({ property }: { property: any }) {
               <div style={{ marginTop: 18 }}>
                 <EnquiryForm
                   page={`property:${property.slug}`}
-                  title="Speak with our property team"
-                  subtitle="Share your budget and timeline and we’ll respond with a useful next step."
-                  buttonLabel="Send enquiry"
+                  title="Talk to our property team"
+                  subtitle="Share your budget and timeline and we'll guide you with the next step."
+                  buttonLabel="Request callback"
                 />
               </div>
             </div>

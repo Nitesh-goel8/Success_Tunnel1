@@ -121,9 +121,9 @@ export default function Contact() {
             <div className="contact-form-card">
               <EnquiryForm
                 page="ContactPage"
-                title="Send us your enquiry"
-                subtitle="We usually respond within one business day."
-                buttonLabel="Send Enquiry"
+                title="Get in touch"
+                subtitle="Share a few details and we'll call you back soon."
+                buttonLabel="Request callback"
               />
             </div>
           </div>

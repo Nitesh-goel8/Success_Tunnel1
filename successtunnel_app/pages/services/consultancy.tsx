@@ -91,14 +91,14 @@ export default function Consultancy() {
           { label: 'Confidence', value: '98%' },
         ]}
         cards={cards}
+        serviceOptions={cards.map(card => card.title)}
         steps={steps}
         faqs={faqs}
         ctaTitle="Ready to begin your consultancy project?"
-        ctaDescription="Start with a quick enquiry and we’ll guide you to the most suitable next step."
+        ctaDescription="Start with a quick enquiry and we'll guide you to the most suitable next step."
         formPage="consultancy"
         formTitle="Speak with our consultancy team"
       />
     </PageShell>
   )
 }
-

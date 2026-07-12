@@ -1,18 +1,30 @@
 import { useState } from 'react'
 import axios from 'axios'
 
+const defaultServiceOptions = [
+  'Consultancy / Tax',
+  'Finance / Loan',
+  'Education / Training',
+  'Investment',
+  'Property / Real Estate',
+  'Rental Space',
+  'Not sure yet',
+]
+
 type EnquiryFormProps = {
   page?: string
   title?: string
   subtitle?: string
   buttonLabel?: string
+  serviceOptions?: string[]
 }
 
 export default function EnquiryForm({
   page,
-  title = 'Request a consultation',
-  subtitle = 'Share your requirements and our advisory team will respond shortly.',
-  buttonLabel = 'Send enquiry',
+  title = 'Request a quick callback',
+  subtitle = 'Share a few details and our team will call you back with the right next step.',
+  buttonLabel = 'Request callback',
+  serviceOptions = defaultServiceOptions,
 }: EnquiryFormProps) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', city: '', service: '', message: '', website: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
@@ -30,7 +42,7 @@ export default function EnquiryForm({
     // Client-side validation: check phone digits length
     const phoneDigits = form.phone.replace(/\D/g, '')
     if (phoneDigits.length < 10) {
-      setErrorMessage('Mobile number must have at least 10 digits.')
+      setErrorMessage('Please enter a valid 10-digit mobile number.')
       setStatus('error')
       return
     }
@@ -48,7 +60,7 @@ export default function EnquiryForm({
 
   return (
     <form className="form-card" onSubmit={submit}>
-      <div className="eyebrow">Get in touch</div>
+      <div className="eyebrow">Quick enquiry</div>
       <h3 style={{ margin: '14px 0 0', fontSize: '1.55rem', letterSpacing: '-.03em' }}>{title}</h3>
       <p style={{ margin: '12px 0 0', color: 'var(--muted)' }}>{subtitle}</p>
 
@@ -63,24 +75,24 @@ export default function EnquiryForm({
           style={{ display: 'none' }}
         />
         <div className="field-group">
-          <label className="field-label" htmlFor={`${page || 'enquiry'}-name`}>Full name</label>
+          <label className="field-label" htmlFor={`${page || 'enquiry'}-name`}>Your name</label>
           <input
             id={`${page || 'enquiry'}-name`}
             className="form-input"
             name="name"
-            placeholder="Johnathan Doe"
+            placeholder="Enter your full name"
             value={form.name}
             onChange={onChange}
             required
           />
         </div>
         <div className="field-group">
-          <label className="field-label" htmlFor={`${page || 'enquiry'}-email`}>Email</label>
+          <label className="field-label" htmlFor={`${page || 'enquiry'}-email`}>Email address</label>
           <input
             id={`${page || 'enquiry'}-email`}
             className="form-input"
             name="email"
-            placeholder="john@company.com"
+            placeholder="Enter your email address"
             type="email"
             value={form.email}
             onChange={onChange}
@@ -88,12 +100,14 @@ export default function EnquiryForm({
           />
         </div>
         <div className="field-group">
-          <label className="field-label" htmlFor={`${page || 'enquiry'}-phone`}>Mobile</label>
+          <label className="field-label" htmlFor={`${page || 'enquiry'}-phone`}>Mobile number</label>
           <input
             id={`${page || 'enquiry'}-phone`}
             className="form-input"
             name="phone"
-            placeholder="+91 98765 43210"
+            placeholder="Enter your 10-digit mobile number"
+            inputMode="tel"
+            autoComplete="tel"
             value={form.phone}
             onChange={onChange}
             required
@@ -105,30 +119,36 @@ export default function EnquiryForm({
             id={`${page || 'enquiry'}-city`}
             className="form-input"
             name="city"
-            placeholder="Mumbai"
+            placeholder="Enter your city"
             value={form.city}
             onChange={onChange}
           />
         </div>
         <div className="field-group field-full">
-          <label className="field-label" htmlFor={`${page || 'enquiry'}-service`}>Service required</label>
-          <input
+          <label className="field-label" htmlFor={`${page || 'enquiry'}-service`}>What do you need help with?</label>
+          <select
             id={`${page || 'enquiry'}-service`}
             className="form-input"
             name="service"
-            placeholder="Consultancy / Finance / Education / Property"
             value={form.service}
             onChange={onChange}
             required
-          />
+          >
+            <option value="">Select your service</option>
+            {serviceOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="field-group field-full">
-          <label className="field-label" htmlFor={`${page || 'enquiry'}-message`}>Message</label>
+          <label className="field-label" htmlFor={`${page || 'enquiry'}-message`}>Tell us more</label>
           <textarea
             id={`${page || 'enquiry'}-message`}
             className="form-textarea"
             name="message"
-            placeholder="Tell us what you need help with"
+            placeholder="Share a few details about your requirement"
             value={form.message}
             onChange={onChange}
           />
@@ -137,15 +157,15 @@ export default function EnquiryForm({
 
       <div className="form-actions">
         <button type="submit" className="btn btn-primary" disabled={status === 'sending'}>
-          {status === 'sending' ? 'Sending...' : buttonLabel}
+          {status === 'sending' ? 'Please wait...' : buttonLabel}
         </button>
-        <span style={{ color: 'var(--muted)', fontSize: '.92rem' }}>We usually respond within one business day.</span>
+        <span style={{ color: 'var(--muted)', fontSize: '.92rem' }}>We usually respond within 1 business day.</span>
       </div>
 
-      {status === 'sent' && <p className="form-status success">Enquiry sent successfully.</p>}
+      {status === 'sent' && <p className="form-status success">Thanks! We’ll get back to you soon.</p>}
       {status === 'error' && (
         <p className="form-status error">
-          Unable to send enquiry. {errorMessage || 'Please try again.'}
+          Unable to send your enquiry. {errorMessage || 'Please try again.'}
         </p>
       )}
     </form>

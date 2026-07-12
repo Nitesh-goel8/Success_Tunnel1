@@ -57,6 +57,8 @@ export default function Investment() {
           { label: 'Confidence', value: '98%' },
         ]}
         cards={cards}
+        serviceOptions={cards.map(card => card.title)}
+
         steps={steps}
         faqs={faqs}
         ctaTitle="Need help choosing the right investment path?"
@@ -67,3 +69,4 @@ export default function Investment() {
     </PageShell>
   )
 }
+

@@ -179,9 +179,9 @@ export default function ServiceDetail({ service, subservices }: { service: any; 
 
             <EnquiryForm
               page={`service:${service.slug}`}
-              title={`Request ${service.title}`}
-              subtitle="Share your requirements and we will prepare the next step."
-              buttonLabel="Send request"
+              title={`Need help with ${service.title}?`}
+              subtitle="Share a few details and we'll call you back with the next step."
+              buttonLabel="Request callback"
             />
           </div>
         </section>
