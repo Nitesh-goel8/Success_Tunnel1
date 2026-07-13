@@ -1,5 +1,27 @@
-import Image from 'next/image'
+﻿import Image from 'next/image'
 import Link from 'next/link'
 import { useSiteSettings } from './SiteSettingsProvider'
 import { toTelHref, toWhatsAppHref } from '../lib/siteSettings'
+<<<<<<< Updated upstream
 export default function Footer() { const settings = useSiteSettings(); return <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><Link href="/" className="brand brand-lockup footer-logo"><Image src="/logo.jpeg" alt="" width={38} height={38} /><span>{settings.businessName}</span></Link><p>{settings.siteTagline}. Clear direction for the business, financial, learning and property decisions that matter.</p><a className="footer-contact-link" href={'tel:' + toTelHref(settings.contactPhone1)}>{settings.contactPhone1}</a></div><div className="footer-column"><h4>Explore</h4><div className="footer-links"><Link href="/services">All services</Link><Link href="/about">About us</Link><Link href="/properties">Properties</Link><Link href="/education">Learning</Link></div></div><div className="footer-column"><h4>Services</h4><div className="footer-links"><Link href="/services/consultancy">Consultancy</Link><Link href="/services/finance">Finance</Link><Link href="/services/investment">Investment</Link><Link href="/services/real-estate">Real estate</Link></div></div><div className="footer-column"><h4>Contact</h4><div className="footer-links"><a href={'mailto:' + settings.contactEmail}>{settings.contactEmail}</a><a href={'https://wa.me/' + toWhatsAppHref(settings.whatsappNumber)} target="_blank" rel="noreferrer">WhatsApp us</a><Link href="/contact#enquiry">Send an enquiry</Link><span>{settings.workingHours}</span></div></div></div><div className="footer-divider"><span>© {new Date().getFullYear()} {settings.businessName}. All rights reserved.</span><span><Link href="/privacy">Privacy</Link> · <Link href="/terms">Terms</Link></span></div></footer> }
+=======
+
+export default function Footer() {
+  const settings = useSiteSettings()
+  return (
+    <footer className="site-footer">
+      <div className="container footer-grid">
+        <div className="footer-brand">
+          <Link href="/" className="brand brand-lockup footer-logo"><Image src="/logo.jpeg" alt="" width={38} height={38} /><span>{settings.businessName}</span></Link>
+          <p>{settings.siteTagline}. One trusted partner for the decisions that move you forward.</p>
+          <a className="footer-contact-link" href={`tel:${toTelHref(settings.contactPhone1)}`}>{settings.contactPhone1}</a>
+        </div>
+        <div className="footer-column"><h4>Explore</h4><div className="footer-links"><Link href="/services">All services</Link><Link href="/about">About us</Link><Link href="/properties">Properties</Link><Link href="/education">Learning</Link></div></div>
+        <div className="footer-column"><h4>Services</h4><div className="footer-links"><Link href="/services/consultancy">Consultancy</Link><Link href="/services/finance">Finance</Link><Link href="/services/investment">Investment</Link><Link href="/services/real-estate">Real estate</Link></div></div>
+        <div className="footer-column"><h4>Contact</h4><div className="footer-links"><a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a><a href={`https://wa.me/${toWhatsAppHref(settings.whatsappNumber)}`} target="_blank" rel="noreferrer">WhatsApp us</a><Link href="/contact">Send an enquiry</Link><span>{settings.workingHours}</span></div></div>
+      </div>
+      <div className="footer-divider"><span>© {new Date().getFullYear()} {settings.businessName}. All rights reserved.</span><span><Link href="/privacy">Privacy</Link> · <Link href="/terms">Terms</Link></span></div>
+    </footer>
+  )
+}
+>>>>>>> Stashed changes

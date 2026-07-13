@@ -15,11 +15,19 @@ export default function PageShell({
   aside: ReactNode
   children: ReactNode
 }) {
+  const theme = eyebrow.toLowerCase().includes('property') || eyebrow.toLowerCase().includes('rental')
+    ? 'theme-sage'
+    : eyebrow.toLowerCase().includes('education') || eyebrow.toLowerCase().includes('learn')
+      ? 'theme-violet'
+      : eyebrow.toLowerCase().includes('finance') || eyebrow.toLowerCase().includes('investment')
+        ? 'theme-blue'
+        : 'theme-coral'
+
   return (
-    <div>
+    <div className={`public-page ${theme}`}>
       <Nav />
       <main>
-        <section className="page-hero">
+        <section className="page-hero page-hero-reframed">
           <div className="container article-hero">
             <div>
               <span className="eyebrow">{eyebrow}</span>
@@ -30,7 +38,7 @@ export default function PageShell({
                 {description}
               </p>
             </div>
-            <div className="article-feature">{aside}</div>
+            <div className="article-feature page-hero-aside">{aside}</div>
           </div>
         </section>
         {children}

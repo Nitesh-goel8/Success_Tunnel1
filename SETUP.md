@@ -56,6 +56,20 @@ Set these in Vercel and in your local `.env` as needed:
 - `SMTP_PASS`
 - `SMTP_FROM_EMAIL`
 
+For the Gmail account used by this app:
+
+```env
+ENQUIRY_NOTIFICATION_EMAIL="successtunnel.in@gmail.com"
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_SECURE="false"
+SMTP_USER="successtunnel.in@gmail.com"
+SMTP_PASS="your_16_character_gmail_app_password"
+SMTP_FROM_EMAIL="successtunnel.in@gmail.com"
+```
+
+Use a Gmail App Password for `SMTP_PASS`; the normal Gmail password will not work.
+
 ## Production Deployment
 
 1. Set the Vercel Node.js version to `24.x`.

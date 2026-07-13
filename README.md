@@ -51,3 +51,17 @@ The app expects values such as:
 - `SMTP_USER`
 - `SMTP_PASS`
 - `SMTP_FROM_EMAIL`
+
+For Gmail SMTP, use:
+
+```env
+ENQUIRY_NOTIFICATION_EMAIL="successtunnel.in@gmail.com"
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_SECURE="false"
+SMTP_USER="successtunnel.in@gmail.com"
+SMTP_PASS="your_16_character_gmail_app_password"
+SMTP_FROM_EMAIL="successtunnel.in@gmail.com"
+```
+
+Gmail requires an App Password, not the normal Gmail login password.
