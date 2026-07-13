@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import GuidedEnquiry from '../components/GuidedEnquiry'
@@ -137,9 +138,10 @@ export default function Home({ services }: { services: any[] }) {
         <div className="friendly-service-grid">
           {serviceItems.map((service: any) => {
             const meta = serviceMeta[service.slug];
-            const Icon = meta.icon;
             return <Link href={`/services/${service.slug}`} key={service.slug} className="friendly-service-card">
-              <Icon />
+              <div className="friendly-service-card-logo">
+                <Image src="/logo.jpeg" alt="" width={52} height={52} />
+              </div>
               <div>
                 <h3>{service.title}</h3>
                 <p>{service.excerpt || meta.description}</p>
