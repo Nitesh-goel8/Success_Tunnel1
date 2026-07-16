@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react'
 import axios from 'axios'
+import { track } from '@vercel/analytics'
 import { HiArrowRight, HiCheck } from 'react-icons/hi'
 
 const fallbackServices = ['Consultancy', 'Finance', 'Education', 'Investment', 'Real Estate', 'Rental Space']
@@ -40,6 +41,7 @@ export default function GuidedEnquiry({
     setError('')
     try {
       await axios.post('/api/enquiries', { ...form, page })
+      track('EnquirySubmitted', { service: form.service, page })
       setStatus('sent')
       setForm({ name: '', email: '', phone: '', city: '', service: selectedService, message: '', website: '' })
     } catch (requestError: any) {

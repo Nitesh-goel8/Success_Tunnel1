@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../lib/prisma'
 import { checkRateLimit } from '../../lib/rateLimit'
 import { sendEnquiryNotification } from '../../lib/email'
+import { pushLeadToCRM } from '../../lib/crm'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end()
@@ -62,6 +63,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.error('Failed to send enquiry notification:', mailError)
       }
     }
+
+    // Push the lead to the CRM (e.g., Salesforce, HubSpot)
+    await pushLeadToCRM({
+      id: e.id,
+      name: String(name).trim(),
+      email: cleanEmail,
+      phone: cleanPhone,
+      city: city ? String(city).trim() : null,
+      service: service ? String(service).trim() : null,
+      message: message ? String(message).trim() : null,
+      page: page ? String(page).trim() : null,
+      source: 'Success Tunnel Website'
+    })
 
     return res.status(201).json({ ok: true, id: e.id })
   } catch (err) {
