@@ -28,6 +28,24 @@ function DefaultHead() {
       <meta name="twitter:title" content={settings.siteTitle} />
       <meta name="twitter:description" content={settings.siteDescription} />
       <link rel="canonical" href={canonicalUrl} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "name": settings.businessName,
+            "url": settings.siteUrl,
+            "logo": `${settings.siteUrl}/logo.jpeg`,
+            "telephone": settings.contactPhone1,
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": settings.officeAddress,
+              "addressCountry": "IN"
+            }
+          })
+        }}
+      />
     </Head>
   )
 }

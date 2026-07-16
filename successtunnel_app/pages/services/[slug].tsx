@@ -1,6 +1,6 @@
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
-import EnquiryForm from '../../components/EnquiryForm'
+import GuidedEnquiry from '../../components/GuidedEnquiry'
 import { prisma } from '../../lib/prisma'
 
 const fallbackSubservices: Record<string, { title: string; text: string }[]> = {
@@ -177,11 +177,11 @@ export default function ServiceDetail({ service, subservices }: { service: any; 
               </div>
             </div>
 
-            <EnquiryForm
+            <GuidedEnquiry
               page={`service:${service.slug}`}
               title={`Need help with ${service.title}?`}
               subtitle="Share a few details and we'll call you back with the next step."
-              buttonLabel="Request callback"
+              selectedService={service.title}
             />
           </div>
         </section>

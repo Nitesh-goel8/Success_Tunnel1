@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
-import EnquiryForm from '../../components/EnquiryForm'
+import GuidedEnquiry from '../../components/GuidedEnquiry'
 import { prisma } from '../../lib/prisma'
 import { sampleProperties } from '../../lib/sampleData'
 
@@ -81,11 +81,11 @@ export default function PropertyDetail({ property }: { property: any }) {
                 Send your interest and we’ll help you move to the next step.
               </p>
               <div style={{ marginTop: 18 }}>
-                <EnquiryForm
+                <GuidedEnquiry
                   page={`property:${property.slug}`}
                   title="Talk to our property team"
                   subtitle="Share your budget and timeline and we'll guide you with the next step."
-                  buttonLabel="Request callback"
+                  selectedService="Real Estate"
                 />
               </div>
             </div>

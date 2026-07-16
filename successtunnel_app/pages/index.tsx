@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
-import EnquiryForm from '../components/EnquiryForm'
+import GuidedEnquiry from '../components/GuidedEnquiry'
 import EducationVideoPromo from '../components/EducationVideoPromo'
 import { prisma } from '../lib/prisma'
 import { sampleServices } from '../lib/sampleData'
@@ -413,11 +413,10 @@ export default function Home({ services, featuredEducationContent }: { services:
             </div>
 
             <div className="contact-form-card">
-              <EnquiryForm
+              <GuidedEnquiry
                 page="Homepage"
                 title="Get a quick callback"
                 subtitle="Tell us what you need and we'll help with the next step."
-                buttonLabel="Request callback"
               />
             </div>
           </div>

@@ -1,4 +1,4 @@
-import EnquiryForm from '../components/EnquiryForm'
+import GuidedEnquiry from '../components/GuidedEnquiry'
 import Footer from '../components/Footer'
 import Nav from '../components/Nav'
 import { useSiteSettings } from '../components/SiteSettingsProvider'
@@ -119,11 +119,10 @@ export default function Contact() {
             </div>
 
             <div className="contact-form-card">
-              <EnquiryForm
+              <GuidedEnquiry
                 page="ContactPage"
                 title="Get in touch"
                 subtitle="Share a few details and we'll call you back soon."
-                buttonLabel="Request callback"
               />
             </div>
           </div>

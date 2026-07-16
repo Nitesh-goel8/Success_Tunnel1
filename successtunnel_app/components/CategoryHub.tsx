@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import EnquiryForm from './EnquiryForm'
+import GuidedEnquiry from './GuidedEnquiry'
 
 type CardItem = {
   title: string
@@ -122,11 +122,10 @@ export default function CategoryHub({
       </div>
 
       <div id="contact-form" style={{ marginTop: 24 }}>
-        <EnquiryForm
+        <GuidedEnquiry
           page={formPage}
           title={formTitle}
           subtitle="Share your details and we'll call you back with the right next step."
-          buttonLabel="Request callback"
           serviceOptions={serviceOptions}
         />
       </div>

@@ -1,53 +1,97 @@
-# Success Tunnel Main Website
+# Success Tunnel Web Application
 
-Success Tunnel is a Next.js + Prisma website for services, properties, blog content, education content, client accounts, and admin lead management.
+Welcome to the **Success Tunnel** main repository. This Next.js application serves as the central hub for the Success Tunnel business, providing access to our diverse range of services including Consultancy, Finance, Real Estate, Investment, and the Education Hub.
 
-## What's Included
-- Public site with home, about, services, properties, blog, resources, contact, privacy, and terms pages
-- Admin area for managing services, properties, blogs, education content, settings, enquiries, and payments
-- API routes for enquiries, authentication, services, properties, payments, and admin analytics
-- Prisma schema backed by PostgreSQL
-- Vercel-ready deployment config at the repository root
+## 🚀 Project Overview
 
-## Quick Start
+Success Tunnel is a Next.js (React) application designed with a premium, responsive UI. It features a scalable architecture powered by Prisma (SQLite/PostgreSQL) for backend data management.
 
-```bash
-npm install --prefix successtunnel_app
-npm run prisma:push
-npm run seed
-npm run dev
+### Key Features
+- **Modern UI/UX**: Built with custom CSS (`globals.css`) emphasizing a sleek, corporate, and dynamic aesthetic with smooth micro-animations.
+- **Service Hub**: Centralized access to Consultancy, Finance, Real Estate, and more.
+- **Education Hub**: A dedicated section (`/education`) containing professional courses and learning materials.
+- **Secure Admin Panel**: A protected dashboard (`/admin`) for content management, requiring authenticated access.
+- **Advanced SEO**: Pre-configured with Schema.org JSON-LD structured data and Open Graph tags to maximize search engine visibility.
+
+---
+
+## 📂 Project Structure
+
+```text
+successtunnel_mainwebsite/
+├── successtunnel_app/
+│   ├── components/       # Reusable UI components (Cards, Nav, Forms, etc.)
+│   ├── lib/              # Utilities, Prisma client, and seed data
+│   ├── pages/            # Next.js file-based routing
+│   │   ├── admin/        # Secure admin dashboard (protected by middleware)
+│   │   ├── api/          # Next.js API routes (backend endpoints)
+│   │   ├── education/    # Success Tunnel Education Hub flows
+│   │   └── services/     # Individual service pages
+│   ├── prisma/           # Database schema and migrations
+│   ├── public/           # Static assets (images, logos)
+│   ├── styles/           # Global stylesheets and CSS modules
+│   └── middleware.ts     # Edge middleware (handles Admin Auth Security)
 ```
 
-Open `http://localhost:3000`.
+---
 
-## Production
+## 🛡️ Security & Authentication
 
-- Run `npm run build` from the repository root before deploying.
-- Vercel uses `vercel.json` to auto-detect whether it is running from the repo root or `successtunnel_app/`.
-- The project targets Node.js `24.x`; set that in Vercel Project Settings as well.
-- Set the production environment variables in Vercel before promoting the deployment.
-- After deployment, verify `/`, `/admin/login`, `/sitemap.xml`, and `/robots.txt`.
+The `/admin` routes are protected by Next.js `middleware.ts`. 
+- Accessing any route under `/admin/*` without a valid `st_auth` cookie will automatically redirect the user to `/admin/login`.
+- The login endpoint (`/api/admin/login`) uses `bcryptjs` to verify credentials against the database.
+- It is impossible to bypass the login screen to access the admin dashboard.
 
-## Setup Guide
+---
 
-Use `SETUP.md` for the full local, database, and deployment checklist.
+## 🌿 Branching Strategy
 
-## Environment Variables
+To keep the repository clean and organized, we follow a strict branching model:
 
-The app expects values such as:
+- **`main`**: The production-ready base branch. All stable features are merged here.
+- **`feature/service-*`**: Branches dedicated to specific service areas (e.g., `feature/service-properties`, `feature/service-education`).
+- **`feature/admin-security`**: Branches used for core administrative or security updates.
 
-- `DATABASE_URL`
-- `NEXT_PUBLIC_SITE_URL`
-- `JWT_SECRET`
-- `ADMIN_EMAIL`
-- `ADMIN_PASSWORD`
-- `RAZORPAY_KEY_ID`
-- `RAZORPAY_KEY_SECRET`
-- `NEXT_PUBLIC_RAZORPAY_KEY_ID`
-- `ENQUIRY_NOTIFICATION_EMAIL`
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_SECURE`
-- `SMTP_USER`
-- `SMTP_PASS`
-- `SMTP_FROM_EMAIL`
+*Note: All legacy or stale branches (like `production-polish`, `codex/professional-ui-redesign`) have been pruned to maintain clarity.*
+
+---
+
+## 🛠️ Local Development Setup
+
+To run the project locally, follow these steps:
+
+### 1. Prerequisites
+- Node.js (v18 or higher recommended)
+- npm or yarn
+
+### 2. Installation
+Navigate into the application directory and install dependencies:
+```bash
+cd successtunnel_app
+npm install
+```
+
+### 3. Database Setup
+The project uses Prisma. Push the schema to your local database (SQLite by default):
+```bash
+npx prisma db push
+```
+*(Optional)* Seed the database with initial data (like the admin user and sample services):
+```bash
+npm run seed
+```
+
+### 4. Running the Development Server
+Start the Next.js development server:
+```bash
+npm run dev
+```
+The application will be available at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## 📈 Future Scaling (Advanced Features)
+As Success Tunnel expands into international markets, consider implementing:
+1. **Internationalization (i18n)**: Adding multi-language support in Next.js to cater to a global audience.
+2. **Automated CRM Routing**: Hooking the `GuidedEnquiry` form directly into Salesforce or HubSpot via API.
+3. **Advanced Analytics**: Integrating Vercel Web Analytics and custom event tracking to monitor user flows through the Education Hub.

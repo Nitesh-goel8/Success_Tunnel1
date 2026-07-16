@@ -79,7 +79,7 @@ export default function EducationIndex({ items }: { items: EducationItem[] }) {
           <div className="container">
             <div style={{ maxWidth: 760 }}>
               <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)' }}>
-                EDUCATION
+                SUCCESS TUNNEL EDUCATION HUB
               </span>
               <h1
                 style={{
@@ -90,10 +90,10 @@ export default function EducationIndex({ items }: { items: EducationItem[] }) {
                   color: 'var(--primary)',
                 }}
               >
-                Simple learning content in one place.
+                Complete Education Flow for Modern Professionals.
               </h1>
-              <p style={{ fontSize: '1rem', color: 'var(--muted)', maxWidth: 700, lineHeight: 1.65, margin: 0 }}>
-                Publish notes, videos, courses, and tools from the dashboard and keep them organized for students.
+              <p style={{ fontSize: '1.1rem', color: 'var(--muted)', maxWidth: 700, lineHeight: 1.65, margin: 0 }}>
+                Explore comprehensive courses, study materials, and practical tools designed to accelerate your corporate and enterprise growth.
               </p>
             </div>
           </div>
