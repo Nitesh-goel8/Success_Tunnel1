@@ -7,49 +7,333 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ----------------------------------------------------------------------
+// Core Authentication & Access Control
+// ----------------------------------------------------------------------
+
 model User {
+  id              Int               @id @default(autoincrement())
+  name            String?
+  email           String            @unique
+  password        String
+  role            String            @default("employee") // super_admin, hr_admin, project_manager, employee, finance_admin
+  departmentId    Int?
+  department      Department?       @relation("DepartmentMembers", fields: [departmentId], references: [id])
+  phone           String?
+  status          String            @default("active") // active, inactive, suspended
+  avatarUrl       String?
+  lastLoginAt     DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+
+  employeeProfile  EmployeeProfile?
+  managedDepts     Department[]      @relation("DepartmentHead")
+  managedProjects  Project[]         @relation("ProjectManager")
+  projectMembers   ProjectMember[]
+  assignedTasks    Task[]            @relation("TaskAssignee")
+  createdTasks     Task[]            @relation("TaskCreator")
+  taskComments     TaskComment[]
+  taskActivities   TaskActivity[]
+  attendance       AttendanceRecord[]
+  leaveRequests    LeaveRequest[]    @relation("UserLeaves")
+  reviewedLeaves   LeaveRequest[]    @relation("LeaveReviewer")
+  uploadedDocs     DocumentRecord[]  @relation("DocUploader")
+  assignedDocs     DocumentRecord[]  @relation("DocTargetUser")
+  expenses         Expense[]         @relation("UserExpenses")
+  reviewedExpenses Expense[]        @relation("ExpenseReviewer")
+  notifications    Notification[]
+  auditLogs        AuditLog[]
+}
+
+// ----------------------------------------------------------------------
+// Organization & Employee Directory
+// ----------------------------------------------------------------------
+
+model Department {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  code        String    @unique // ENG, HR, FIN, MKT, OPS, CNS
+  description String?
+  headId      Int?
+  head        User?     @relation("DepartmentHead", fields: [headId], references: [id])
+  members     User[]    @relation("DepartmentMembers")
+  projects    Project[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+}
+
+model EmployeeProfile {
+  id               Int              @id @default(autoincrement())
+  userId           Int              @unique
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employeeCode     String           @unique // e.g. ST-EMP-101
+  designation      String
+  workLocation     String           @default("Headquarters - Delhi NCR")
+  employmentType   String           @default("Full-time") // Full-time, Part-time, Contract, Intern
+  joiningDate      DateTime         @default(now())
+  emergencyContact String?
+  managerId        Int?
+  manager          EmployeeProfile?  @relation("ManagementHierarchy", fields: [managerId], references: [id])
+  directReports    EmployeeProfile[] @relation("ManagementHierarchy")
+  status           String           @default("ACTIVE") // ACTIVE, INACTIVE, ON_LEAVE, PROBATION, NOTICE
+  isDemo           Boolean          @default(false)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @default(now()) @updatedAt
+}
+
+// ----------------------------------------------------------------------
+// Project & Task Management
+// ----------------------------------------------------------------------
+
+model Project {
+  id                Int             @id @default(autoincrement())
+  projectCode       String          @unique // e.g. ST-PRJ-2026-01
+  name              String
+  description       String?
+  businessObjective String?
+  departmentId      Int?
+  department        Department?     @relation(fields: [departmentId], references: [id])
+  managerId         Int?
+  manager           User?           @relation("ProjectManager", fields: [managerId], references: [id])
+  status            String          @default("IN_PROGRESS") // PLANNED, IN_PROGRESS, ON_HOLD, COMPLETED, CANCELLED
+  priority          String          @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL
+  startDate         DateTime?
+  endDate           DateTime?
+  budget            Float           @default(0.0)
+  progress          Int             @default(0) // 0-100 percentage
+  isDemo            Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @default(now()) @updatedAt
+
+  members           ProjectMember[]
+  tasks             Task[]
+  expenses          Expense[]
+}
+
+model ProjectMember {
   id        Int      @id @default(autoincrement())
-  name      String?
-  email     String   @unique
-  password  String
-  role      String   @default("admin")
+  projectId Int
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   @default("Member") // Lead, Developer, Consultant, Reviewer
+  joinedAt  DateTime @default(now())
+
+  @@unique([projectId, userId])
+}
+
+model Task {
+  id          Int            @id @default(autoincrement())
+  taskCode    String         @unique // e.g. ST-TSK-101
+  title       String
+  description String?
+  projectId   Int
+  project     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assigneeId  Int?
+  assignee    User?          @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  creatorId   Int?
+  creator     User?          @relation("TaskCreator", fields: [creatorId], references: [id])
+  priority    String         @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  status      String         @default("TODO") // BACKLOG, TODO, IN_PROGRESS, IN_REVIEW, BLOCKED, DONE
+  dueDate     DateTime?
+  isDemo      Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @default(now()) @updatedAt
+
+  comments    TaskComment[]
+  activities  TaskActivity[]
+}
+
+model TaskComment {
+  id        Int      @id @default(autoincrement())
+  taskId    Int
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  content   String
   createdAt DateTime @default(now())
 }
 
-model Service {
+model TaskActivity {
   id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  excerpt   String?
-  content   String?
-  icon      String?
+  taskId    Int
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  action    String   // STATUS_CHANGE, ASSIGNED, PRIORITY_CHANGE, COMMENT_ADDED
+  details   String?
   createdAt DateTime @default(now())
+}
+
+// ----------------------------------------------------------------------
+// Attendance & Leave Workflows
+// ----------------------------------------------------------------------
+
+model AttendanceRecord {
+  id                   Int       @id @default(autoincrement())
+  userId               Int
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date                 String    // YYYY-MM-DD
+  checkIn              DateTime
+  checkOut             DateTime?
+  durationMinutes      Int       @default(0)
+  status               String    @default("PRESENT") // PRESENT, HALF_DAY, LATE, REGULARIZED, ON_LEAVE
+  notes                String?
+  correctionRequested  Boolean   @default(false)
+  correctionReason     String?
+  correctionApprovedBy Int?
+  isDemo               Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @default(now()) @updatedAt
+
+  @@unique([userId, date])
+}
+
+model LeavePolicy {
+  id               Int            @id @default(autoincrement())
+  leaveType        String         @unique // ANNUAL, SICK, CASUAL, MATERNITY, PATERNITY, UNPAID
+  title            String
+  totalDaysPerYear Int            @default(12)
+  carryForwardMax  Int            @default(0)
+  description      String?
+  isActive         Boolean        @default(true)
+  requests         LeaveRequest[]
+}
+
+model LeaveRequest {
+  id           Int          @id @default(autoincrement())
+  userId       Int
+  user         User         @relation("UserLeaves", fields: [userId], references: [id], onDelete: Cascade)
+  policyId     Int?
+  policy       LeavePolicy? @relation(fields: [policyId], references: [id])
+  leaveType    String       // ANNUAL, SICK, CASUAL, etc.
+  startDate    DateTime
+  endDate      DateTime
+  totalDays    Int
+  reason       String
+  status       String       @default("PENDING") // PENDING, APPROVED, REJECTED, CANCELLED
+  reviewedById Int?
+  reviewedBy   User?        @relation("LeaveReviewer", fields: [reviewedById], references: [id])
+  reviewReason String?
+  reviewedAt   DateTime?
+  isDemo       Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+}
+
+// ----------------------------------------------------------------------
+// HR Documents & Onboarding
+// ----------------------------------------------------------------------
+
+model DocumentRecord {
+  id             Int       @id @default(autoincrement())
+  userId         Int?      // associated employee (null if company policy)
+  user           User?     @relation("DocTargetUser", fields: [userId], references: [id])
+  uploaderId     Int
+  uploader       User      @relation("DocUploader", fields: [uploaderId], references: [id])
+  title          String
+  category       String    // OFFER_LETTER, AGREEMENT, POLICY, TRAINING, ONBOARDING, IDENTITY, OTHER
+  fileUrl        String
+  fileSize       String?
+  fileType       String?
+  version        String    @default("v1.0")
+  isConfidential Boolean   @default(false)
+  isDemo         Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now()) @updatedAt
+}
+
+// ----------------------------------------------------------------------
+// Finance & Expense Management
+// ----------------------------------------------------------------------
+
+model Expense {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  user         User      @relation("UserExpenses", fields: [userId], references: [id], onDelete: Cascade)
+  projectId    Int?
+  project      Project?  @relation(fields: [projectId], references: [id])
+  category     String    // TRAVEL, SOFTWARE, HARDWARE, OFFICE_SUPPLIES, CLIENT_ENTERTAINMENT, TRAINING, OTHER
+  amount       Float
+  currency     String    @default("INR")
+  expenseDate  DateTime  @default(now())
+  description  String
+  receiptUrl   String?
+  status       String    @default("SUBMITTED") // SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED, REIMBURSED
+  reviewedById Int?
+  reviewedBy   User?     @relation("ExpenseReviewer", fields: [reviewedById], references: [id])
+  reviewNotes  String?
+  isDemo       Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+}
+
+// ----------------------------------------------------------------------
+// Notifications & Audit Trail
+// ----------------------------------------------------------------------
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("SYSTEM") // TASK, LEAVE, ATTENDANCE, EXPENSE, SYSTEM
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  userId     Int?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String   // EMPLOYEE_CREATED, LEAVE_APPROVED, PROJECT_UPDATED, LOGIN_SUCCESS
+  entityType String   // Employee, Leave, Project, Task, Expense, Auth, Department
+  entityId   String?
+  details    String?  // JSON string or formatted summary
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+}
+
+// ----------------------------------------------------------------------
+// Existing Success Tunnel Website CMS Models (Preserved 100%)
+// ----------------------------------------------------------------------
+
+model Service {
+  id          Int          @id @default(autoincrement())
+  title       String
+  slug        String       @unique
+  excerpt     String?
+  content     String?
+  icon        String?
+  createdAt   DateTime     @default(now())
   subservices Subservice[]
 }
 
 model Subservice {
-  id        Int      @id @default(autoincrement())
-  service   Service  @relation(fields: [serviceId], references: [id])
+  id        Int     @id @default(autoincrement())
+  service   Service @relation(fields: [serviceId], references: [id])
   serviceId Int
   title     String
-  slug      String   @unique
+  slug      String  @unique
   content   String?
 }
 
 model BlogPost {
-  id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  excerpt   String?
-  content   String
+  id            Int       @id @default(autoincrement())
+  title         String
+  slug          String    @unique
+  excerpt       String?
+  content       String
   featuredImage String?
-  publishedAt DateTime?
+  publishedAt   DateTime?
 }
 
 model EducationContent {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   title           String
-  slug            String   @unique
+  slug            String    @unique
   contentType     String
   category        String?
   excerpt         String?
@@ -58,47 +342,47 @@ model EducationContent {
   assetUrl        String?
   externalUrl     String?
   ctaLabel        String?
-  isPublished     Boolean  @default(false)
-  isFeatured      Boolean  @default(false)
-  showOnHomePopup Boolean  @default(false)
-  sortOrder       Int      @default(0)
+  isPublished     Boolean   @default(false)
+  isFeatured      Boolean   @default(false)
+  showOnHomePopup Boolean   @default(false)
+  sortOrder       Int       @default(0)
   publishedAt     DateTime?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
 }
 
 model EducationVideo {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   title           String
-  slug            String   @unique
+  slug            String    @unique
   excerpt         String?
   description     String?
   category        String?
   duration        String?
   thumbnailUrl    String?
   videoUrl        String
-  isPublished     Boolean  @default(false)
-  isFeatured      Boolean  @default(false)
-  showOnHomePopup Boolean  @default(false)
-  sortOrder       Int      @default(0)
+  isPublished     Boolean   @default(false)
+  isFeatured      Boolean   @default(false)
+  showOnHomePopup Boolean   @default(false)
+  sortOrder       Int       @default(0)
   publishedAt     DateTime?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
 }
 
 model Property {
-  id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  type      String
-  city      String
-  price     Float
-  area      String?
-  bedrooms  Int?
-  bathrooms Int?
-  images    String?  // json-encoded array
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  type        String
+  city        String
+  price       Float
+  area        String?
+  bedrooms    Int?
+  bathrooms   Int?
+  images      String?  // json-encoded array
   description String?
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 }
 
 model Enquiry {
@@ -125,7 +409,7 @@ model RentalPayment {
   currency      String   @default("INR")
   status        String   @default("created")
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt     DateTime @default(now()) @updatedAt
 }
 
 model SiteSetting {
@@ -133,4 +417,3 @@ model SiteSetting {
   key   String @unique
   value String
 }
-

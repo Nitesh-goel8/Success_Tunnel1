@@ -1,24 +1,130 @@
 import jwt from 'jsonwebtoken'
-import { NextApiRequest } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { prisma } from './prisma'
 
-const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'development' ? 'dev_secret' : '')
+const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_erp_success_tunnel_2026_super_secure'
 
-export function signToken(payload:{[k:string]:any}){
+export type UserRole = 'super_admin' | 'hr_admin' | 'project_manager' | 'finance_admin' | 'employee'
+
+export interface AuthUser {
+  id: number
+  email: string
+  name?: string | null
+  role: string
+  departmentId?: number | null
+  employeeProfileId?: number | null
+}
+
+export function signToken(payload: { [k: string]: any }): string {
   if (!JWT_SECRET) {
     throw new Error('JWT_SECRET is not configured')
   }
-  return jwt.sign(payload, JWT_SECRET, {expiresIn: '7d'})
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' })
 }
 
-export function verifyToken(token?:string){
-  if(!token) return null
-  if (!JWT_SECRET) return null
-  try{ return jwt.verify(token, JWT_SECRET) }catch(err){ return null }
+export function verifyToken(token?: string): AuthUser | null {
+  if (!token || !JWT_SECRET) return null
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as any
+    if (decoded && decoded.id && decoded.email) {
+      return {
+        id: decoded.id,
+        email: decoded.email,
+        name: decoded.name || null,
+        role: decoded.role || 'employee',
+        departmentId: decoded.departmentId || null,
+        employeeProfileId: decoded.employeeProfileId || null,
+      }
+    }
+    return null
+  } catch (err) {
+    return null
+  }
 }
 
-export function getTokenFromReq(req:NextApiRequest): string | undefined {
+export function getTokenFromReq(req: NextApiRequest): string | undefined {
+  // Check Authorization header first
+  const authHeader = req.headers.authorization
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authHeader.substring(7)
+  }
+
+  // Fallback to cookie
   const cookie = req.headers.cookie || ''
-  const match = cookie.split(';').map(s=>s.trim()).find(s=>s.startsWith('st_auth='))
-  if(!match) return undefined
+  const match = cookie
+    .split(';')
+    .map((s) => s.trim())
+    .find((s) => s.startsWith('st_auth='))
+  if (!match) return undefined
   return match.split('=')[1]
+}
+
+export async function authenticateApi(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  allowedRoles?: string[]
+): Promise<AuthUser | null> {
+  const token = getTokenFromReq(req)
+  const user = verifyToken(token)
+
+  if (!user) {
+    res.status(401).json({ error: 'Authentication required. Please log in.' })
+    return null
+  }
+
+  if (allowedRoles && allowedRoles.length > 0) {
+    // Super administrator always has access
+    const isSuperAdmin = user.role === 'super_admin' || user.role === 'admin'
+    const hasRole = allowedRoles.includes(user.role)
+
+    if (!isSuperAdmin && !hasRole) {
+      res.status(403).json({
+        error: `Access denied. Requires one of roles: ${allowedRoles.join(', ')}`,
+      })
+      return null
+    }
+  }
+
+  return user
+}
+
+export async function logAuditAction(options: {
+  userId?: number | null
+  action: string
+  entityType: string
+  entityId?: string | number | null
+  details?: any
+  req?: NextApiRequest
+}) {
+  try {
+    let ip = '127.0.0.1'
+    if (options.req) {
+      const forwarded = options.req.headers['x-forwarded-for']
+      if (typeof forwarded === 'string') {
+        ip = forwarded.split(',')[0].trim()
+      } else if (Array.isArray(forwarded)) {
+        ip = forwarded[0]
+      } else if (options.req.socket?.remoteAddress) {
+        ip = options.req.socket.remoteAddress
+      }
+    }
+
+    const detailsStr =
+      typeof options.details === 'object'
+        ? JSON.stringify(options.details)
+        : options.details ? String(options.details) : null
+
+    await prisma.auditLog.create({
+      data: {
+        userId: options.userId || null,
+        action: options.action,
+        entityType: options.entityType,
+        entityId: options.entityId ? String(options.entityId) : null,
+        details: detailsStr,
+        ipAddress: ip,
+      },
+    })
+  } catch (err) {
+    console.error('Failed to write audit log:', err)
+  }
 }

@@ -1,88 +1,107 @@
-# Success Tunnel Setup
+# Success Tunnel ERP & Corporate Portal Setup Guide
 
-This guide covers local development and production deployment for the website.
+This guide covers local development, automated testing, demo environment data, and production deployment on Vercel for the **Success Tunnel ERP Management Portal**.
 
-## Requirements
+---
 
-- Node.js 18 or newer
-- PostgreSQL database
-- Git
-- Vercel account for production
+## 🚀 Quick Start (Zero-Setup Local Dev)
 
-## Local Setup
+### 1. Prerequisites
+- **Node.js**: v18+ (tested on Node v24.19.0)
+- **npm**: v9+ (tested on npm 11.x)
+- **Git**
 
-1. Install dependencies from the repo root:
-
+### 2. Installation
+From the repository root:
 ```bash
 npm install --prefix successtunnel_app
 ```
 
-2. Create `successtunnel_app/.env` from `successtunnel_app/.env.example`.
-
-3. Point `DATABASE_URL` at your local PostgreSQL database.
-
-4. Prepare the database:
-
+### 3. Database Configuration
+Copy the environment template:
 ```bash
-npm run prisma:push
-npm run seed
+cp successtunnel_app/.env.example successtunnel_app/.env
 ```
 
-5. Start the app:
+For **zero-dependency local development and automated testing**, the system supports a local SQLite database or PostgreSQL:
+- **Local SQLite mode (default local test runner)**:
+  ```bash
+  npm run db:push:sqlite --prefix successtunnel_app
+  ```
+- **PostgreSQL mode (Docker or Remote Managed Postgres/Neon/Supabase)**:
+  ```bash
+  npm run prisma:push --prefix successtunnel_app
+  ```
 
+### 4. Seed Demo Data
+Populate realistic, fictional demo records across all modules (departments, staff, projects, Kanban tasks, attendance, leave requests, policies, and documents):
 ```bash
-npm run dev
+npm run seed --prefix successtunnel_app
 ```
 
-Open `http://localhost:3000`.
-
-## Production Environment Variables
-
-Set these in Vercel and in your local `.env` as needed:
-
-- `DATABASE_URL`
-- `NEXT_PUBLIC_SITE_URL`
-- `JWT_SECRET`
-- `ADMIN_EMAIL`
-- `ADMIN_PASSWORD`
-- `RAZORPAY_KEY_ID`
-- `RAZORPAY_KEY_SECRET`
-- `NEXT_PUBLIC_RAZORPAY_KEY_ID`
-- `ENQUIRY_NOTIFICATION_EMAIL`
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_SECURE`
-- `SMTP_USER`
-- `SMTP_PASS`
-- `SMTP_FROM_EMAIL`
-
-## Production Deployment
-
-1. Set the Vercel Node.js version to `24.x`.
-2. Set `NEXT_PUBLIC_SITE_URL` to the live domain.
-3. Use a managed PostgreSQL database for `DATABASE_URL`.
-4. Add the rest of the environment variables in Vercel Project Settings.
-5. Run a production build:
-
+### 5. Run Automated Tests
+Execute the end-to-end automated test suite:
 ```bash
-npm run build
+npm test --prefix successtunnel_app
 ```
 
-6. Deploy to Vercel.
-7. Verify the homepage, admin login, sitemap, and robots file.
-
-## Helpful Commands
-
+### 6. Start the Local Server
 ```bash
-npm run prisma:generate
-npm run prisma:push
-npm run seed
-npm run build
-npm run dev
+npm run dev --prefix successtunnel_app
 ```
+- **Public Portal**: `http://localhost:3000`
+- **ERP Management Portal**: `http://localhost:3000/portal/login`
+- **Website CMS Admin**: `http://localhost:3000/admin/login`
 
-## Notes
+---
 
-- `vercel.json` already points Vercel at `successtunnel_app`.
-- Keep `NEXT_PUBLIC_SITE_URL` aligned with the production domain.
-- Re-run `npm run prisma:push` whenever the schema changes in a compatible way.
+## 👥 Seeded Demo Accounts (Role-Based Access Control)
+
+All seeded demo credentials use the standard password: `Demo@2026!`
+
+| Role | Email Address | Focus Module & Access Scope |
+| :--- | :--- | :--- |
+| **Super Administrator** | `admin@successtunnel.in` | Unrestricted system-wide control, role assignment, audit logs |
+| **HR Administrator** | `priya.sharma@example.com` | Personnel directory, departments, leave approvals, HR docs |
+| **Project Manager** | `rohit.verma@example.com` | Project roadmap, milestone progress, Kanban task assignments |
+| **Finance Administrator**| `sneha.patel@example.com` | Expense claims review, budget authorizations, financial ledger |
+| **Employee (Staff)** | `amit.kumar@example.com` | Personal dashboard, time clock punch-in/out, leave applications |
+
+*Note: The `/portal/login` screen includes a one-click Quick Demo Role Switcher for instant testing.*
+
+---
+
+## 📂 ERP Module Routes
+
+- **Authentication**: `/portal/login`
+- **Executive Dashboard**: `/portal/dashboard`
+- **Employee Directory**: `/portal/employees`
+- **Departments & Org**: `/portal/departments`
+- **Project Roadmaps**: `/portal/projects`
+- **Task Kanban Board**: `/portal/tasks`
+- **Workforce Attendance**: `/portal/attendance`
+- **Leaves & Holidays**: `/portal/leaves`
+- **Document Center**: `/portal/documents`
+- **Expense Claims**: `/portal/finance`
+- **Analytics & Reports**: `/portal/reports`
+- **Compliance Audit Trail**: `/portal/audit-logs`
+
+---
+
+## 🌐 Production Vercel Deployment
+
+1. **Database**: Provision a PostgreSQL instance (e.g., Neon, Supabase, AWS RDS, or Vercel Postgres).
+2. **Environment Variables**: Configure the following in Vercel Project Settings:
+   - `DATABASE_URL`: `postgresql://user:password@host:5432/db?sslmode=require`
+   - `JWT_SECRET`: Random 32+ character cryptographic secret
+   - `ADMIN_EMAIL`: Initial administrator email
+   - `ADMIN_PASSWORD`: Strong initial administrative password
+   - `NODE_ENV`: `production`
+   - `NEXT_PUBLIC_APP_URL`: Your live domain (e.g. `https://erp.successtunnel.in`)
+3. **Build & Schema Sync**:
+   - `vercel.json` automatically runs `prisma generate` and builds `successtunnel_app`.
+   - Run `npx prisma db push` or migrations against the production database.
+   - Run `npm run seed` to initialize baseline policies and departments.
+4. **Smoke Testing**:
+   - Verify login with administrative credentials.
+   - Verify employee creation, attendance punch, and CSV report downloads.

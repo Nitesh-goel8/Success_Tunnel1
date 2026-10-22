@@ -10,10 +10,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "ts-node --project tsconfig.seed.json tests/erp-portal.test.ts",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:push": "prisma db push --skip-generate",
+    "db:push:sqlite": "prisma db push --schema=prisma/schema.sqlite.prisma",
+    "db:push:pg": "prisma db push --schema=prisma/schema.prisma",
     "prisma:studio": "prisma studio",
     "seed": "ts-node --project tsconfig.seed.json prisma/seed.ts",
     "setup": "prisma db push && ts-node --project tsconfig.seed.json prisma/seed.ts"

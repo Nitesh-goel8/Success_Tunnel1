@@ -7,6 +7,7 @@
     "dev": "npm run dev --prefix successtunnel_app",
     "build": "npm run build --prefix successtunnel_app",
     "start": "npm run start --prefix successtunnel_app",
+    "test": "npm run test --prefix successtunnel_app",
     "prisma:generate": "npm run prisma:generate --prefix successtunnel_app",
     "prisma:push": "npm run prisma:push --prefix successtunnel_app",
     "seed": "npm run seed --prefix successtunnel_app",

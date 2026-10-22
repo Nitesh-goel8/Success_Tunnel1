@@ -51,14 +51,16 @@ function DefaultHead() {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter()
   const analyticsDebug = process.env.NEXT_PUBLIC_VERCEL_ANALYTICS_DEBUG === 'true'
+  const isBackoffice = router.pathname.startsWith('/portal') || router.pathname.startsWith('/admin')
 
   return (
     <SiteSettingsProvider>
       <DefaultHead />
       <Component {...pageProps} />
-      <QuickContact />
-      <Chatbot />
+      {!isBackoffice && <QuickContact />}
+      {!isBackoffice && <Chatbot />}
       <Analytics debug={analyticsDebug} />
     </SiteSettingsProvider>
   )
