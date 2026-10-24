@@ -18,9 +18,9 @@ import {
 import { FaWhatsapp, FaRocket, FaIndustry, FaStore, FaUniversity, FaTools } from 'react-icons/fa'
 import { MdHealthAndSafety } from 'react-icons/md'
 
-// Dynamic import for the signature 3D Enterprise Core (client-side only)
-const EnterpriseHub3D = dynamic(
-  () => import('../components/3d/EnterpriseHub3D'),
+// Dynamic import for the signature 3D Particle Constellation (client-side only)
+const EnterpriseParticleField = dynamic(
+  () => import('../components/3d/EnterpriseParticleField'),
   {
     ssr: false,
     loading: () => (
@@ -28,22 +28,22 @@ const EnterpriseHub3D = dynamic(
         style={{
           width: '100%',
           height: '100%',
-          minHeight: '480px',
-          background: 'linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%)',
-          borderRadius: '24px',
+          minHeight: '440px',
+          background: 'radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%)',
+          borderRadius: '18px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          color: '#ffffff',
+          color: 'var(--text)',
           padding: '24px',
           textAlign: 'center'
         }}
       >
-        <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, marginBottom: '12px' }}>
+        <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: '#2563eb', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, marginBottom: '12px' }}>
           ST
         </div>
-        <p style={{ fontWeight: 700, margin: 0, fontSize: '1rem' }}>Loading Enterprise 3D Core...</p>
+        <p style={{ fontWeight: 700, margin: 0, fontSize: '0.95rem', color: 'var(--primary)' }}>Initializing Particle Stream...</p>
       </div>
     )
   }
@@ -341,41 +341,34 @@ export default function Home({ services, featuredEducationContent }: { services:
                   </div>
                 </div>
 
-                {/* Right Column: Interactive 3D Enterprise Core */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    background: '#ffffff',
-                    border: '1px solid var(--line)',
-                    borderRadius: '24px',
-                    padding: '24px',
-                    boxShadow: 'var(--shadow)',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                {/* Right Column: Dynamic Enterprise Particle Constellation */}
+                <div className="particle-card-wrapper" style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
-                      <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary)' }}>
-                        Interactive Three.js Core
+                      <span className="pulse-dot" />
+                      <span style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--primary)' }}>
+                        Enterprise Synapse Mesh
                       </span>
                     </div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--muted)', fontWeight: 600 }}>
-                      Drag to Rotate &bull; 6 Core Hubs
+                    <span style={{ fontSize: '0.74rem', color: 'var(--muted)', fontWeight: 600, background: '#f1f5f9', padding: '4px 10px', borderRadius: '999px', border: '1px solid #e2e8f0' }}>
+                      Particle Constellation &bull; Click Discipline to Morph
                     </span>
                   </div>
 
-                  {/* The 3D Scene */}
-                  <div style={{ flex: 1, minHeight: '380px', position: 'relative', borderRadius: '16px', overflow: 'hidden', background: 'radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%)' }}>
-                    <EnterpriseHub3D activeServiceIndex={active3DPractice} onSelectService={setActive3DPractice} />
+                  {/* The Particle Canvas Stage */}
+                  <div className="particle-stage" style={{ flex: 1, minHeight: '380px' }}>
+                    <EnterpriseParticleField activeServiceIndex={active3DPractice} onSelectService={setActive3DPractice} />
                   </div>
 
-                  {/* Interactive Practice Selector Ribbon */}
+                  {/* Dynamic Formations Selector Ribbon */}
                   <div style={{ marginTop: '16px' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '8px' }}>
-                      Select Practice Node:
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <span style={{ fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                        Select Corporate Discipline:
+                      </span>
+                      <span style={{ fontSize: '0.74rem', color: 'var(--accent)', fontWeight: 600 }}>
+                        {practicePillars[active3DPractice]?.name}
+                      </span>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
                       {practicePillars.map((p, idx) => {
@@ -385,25 +378,13 @@ export default function Home({ services, featuredEducationContent }: { services:
                             key={p.slug}
                             type="button"
                             onClick={() => setActive3DPractice(idx)}
-                            style={{
-                              padding: '8px 10px',
-                              borderRadius: '8px',
-                              border: '1px solid',
-                              borderColor: isSelected ? 'var(--accent)' : 'var(--line)',
-                              background: isSelected ? '#eff6ff' : '#f8fafc',
-                              color: isSelected ? 'var(--accent)' : 'var(--text)',
-                              fontSize: '0.78rem',
-                              fontWeight: isSelected ? 700 : 500,
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '6px',
-                              transition: 'all 0.15s ease'
-                            }}
+                            className={`morph-pill-btn ${isSelected ? 'is-active' : ''}`}
+                            title={p.desc}
                           >
-                            <span style={{ opacity: isSelected ? 1 : 0.6 }}>{p.icon}</span>
-                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name.split(' ')[1] || p.name}</span>
+                            <span style={{ opacity: isSelected ? 1 : 0.65 }}>{p.icon}</span>
+                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {p.name.split(' ')[1] || p.name}
+                            </span>
                           </button>
                         )
                       })}
