@@ -40,10 +40,10 @@ export default function Nav() {
     <header
       className="site-header"
       style={{
-        background: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.88)',
+        background: scrolled ? 'rgba(8, 13, 24, 0.95)' : 'rgba(8, 13, 24, 0.82)',
         backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid var(--line)',
-        boxShadow: scrolled ? '0 4px 20px rgba(15, 23, 42, 0.05)' : 'none',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+        boxShadow: scrolled ? '0 10px 30px rgba(0, 0, 0, 0.45)' : 'none',
         transition: 'background 0.3s ease, box-shadow 0.3s ease',
       }}
     >
@@ -54,14 +54,14 @@ export default function Nav() {
             alt="Success Tunnel Logo"
             width={40}
             height={40}
-            style={{ borderRadius: '8px', objectFit: 'contain', background: '#ffffff', border: '1px solid var(--line)', padding: '2px' }}
+            style={{ borderRadius: '8px', objectFit: 'contain', background: '#080d18', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '2px' }}
             priority
           />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
               {settings.businessName || 'Success Tunnel'}
             </span>
-            <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.14em', color: 'var(--muted)', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.14em', color: '#8F9CAE', textTransform: 'uppercase' }}>
               Advisory Group &bull; Panipat
             </span>
           </div>
