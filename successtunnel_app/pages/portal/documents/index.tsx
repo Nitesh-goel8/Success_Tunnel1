@@ -15,6 +15,7 @@ import {
 
 export default function DocumentRepository() {
   const [documents, setDocuments] = useState<any[]>([])
+  const [employees, setEmployees] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState('ALL')
   const [search, setSearch] = useState('')
@@ -28,6 +29,7 @@ export default function DocumentRepository() {
   const [fileType, setFileType] = useState('application/pdf')
   const [version, setVersion] = useState('v1.0')
   const [isConfidential, setIsConfidential] = useState(false)
+  const [targetUserId, setTargetUserId] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -49,6 +51,15 @@ export default function DocumentRepository() {
 
   useEffect(() => {
     loadDocuments()
+    async function loadStaff() {
+      try {
+        const res = await axios.get('/api/portal/employees?limit=50')
+        setEmployees(res.data.data || [])
+      } catch (err) {
+        console.error('Failed to load employees for documents', err)
+      }
+    }
+    loadStaff()
   }, [loadDocuments])
 
   const handleUpload = async (e: React.FormEvent) => {
@@ -65,9 +76,11 @@ export default function DocumentRepository() {
         fileType,
         version,
         isConfidential,
+        userId: targetUserId ? parseInt(targetUserId, 10) : null,
       })
       setShowUploadModal(false)
       setTitle('')
+      setTargetUserId('')
       loadDocuments()
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to upload document record')
@@ -329,6 +342,24 @@ export default function DocumentRepository() {
                   </label>
                 </div>
               </div>
+
+              {isConfidential && employees.length > 0 && (
+                <div className={styles.formGroup} style={{ marginTop: '0.5rem' }}>
+                  <label className={styles.label}>Associated Employee (Access restricted to this employee & HR)</label>
+                  <select
+                    value={targetUserId}
+                    onChange={(e) => setTargetUserId(e.target.value)}
+                    className={styles.select}
+                  >
+                    <option value="">Company-Wide Confidential Policy</option>
+                    {employees.map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {e.name} ({e.email})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
                 <button

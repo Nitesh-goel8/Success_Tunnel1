@@ -9,6 +9,9 @@ import {
   HiOutlineCheckCircle,
   HiOutlineUser,
   HiOutlineRefresh,
+  HiOutlineExclamation,
+  HiOutlineX,
+  HiOutlineCheck,
 } from 'react-icons/hi'
 
 export default function AttendanceModule() {
@@ -19,6 +22,15 @@ export default function AttendanceModule() {
   const [selectedUser, setSelectedUser] = useState('')
   const [punching, setPunching] = useState(false)
   const [notes, setNotes] = useState('')
+
+  // Correction Request State
+  const [showCorrectionModal, setShowCorrectionModal] = useState(false)
+  const [correctionDate, setCorrectionDate] = useState('')
+  const [correctionCheckIn, setCorrectionCheckIn] = useState('09:00')
+  const [correctionCheckOut, setCorrectionCheckOut] = useState('18:00')
+  const [correctionReason, setCorrectionReason] = useState('')
+  const [submittingCorrection, setSubmittingCorrection] = useState(false)
+  const [correctionError, setCorrectionError] = useState('')
 
   const loadAttendance = useCallback(async () => {
     setLoading(true)
@@ -44,7 +56,7 @@ export default function AttendanceModule() {
     async function loadStaff() {
       try {
         const res = await axios.get('/api/portal/employees?limit=50')
-        setEmployees(res.data.data)
+        setEmployees(res.data.data || [])
       } catch (err) {
         console.error('Failed to load staff list', err)
       }
@@ -65,6 +77,43 @@ export default function AttendanceModule() {
     }
   }
 
+  const handleCorrectionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSubmittingCorrection(true)
+    setCorrectionError('')
+    try {
+      const fullCheckIn = `${correctionDate}T${correctionCheckIn}:00Z`
+      const fullCheckOut = `${correctionDate}T${correctionCheckOut}:00Z`
+
+      await axios.post('/api/portal/attendance/correction', {
+        date: correctionDate,
+        checkIn: fullCheckIn,
+        checkOut: fullCheckOut,
+        reason: correctionReason,
+      })
+
+      setShowCorrectionModal(false)
+      setCorrectionReason('')
+      loadAttendance()
+    } catch (err: any) {
+      setCorrectionError(err.response?.data?.error || 'Failed to submit correction request')
+    } finally {
+      setSubmittingCorrection(false)
+    }
+  }
+
+  const handleReviewCorrection = async (attendanceId: number, action: 'APPROVE' | 'REJECT') => {
+    try {
+      await axios.put('/api/portal/attendance/correction', {
+        attendanceId,
+        action,
+      })
+      loadAttendance()
+    } catch (err: any) {
+      alert(err.response?.data?.error || `Failed to ${action.toLowerCase()} correction`)
+    }
+  }
+
   const todayStr = new Date().toISOString().split('T')[0]
   const todayRecord = records.find((r) => r.date === todayStr)
 
@@ -73,9 +122,11 @@ export default function AttendanceModule() {
   const totalHours = Math.round(
     records.reduce((acc, r) => acc + (r.durationMinutes || 0), 0) / 60
   )
+  const regularizedCount = records.filter((r) => r.status === 'REGULARIZED').length
+  const pendingCorrections = records.filter((r) => r.correctionRequested)
 
   return (
-    <PortalShell title="Attendance Management" breadcrumbs={[{ label: 'Attendance' }]}>
+    <PortalShell title="Attendance Management" breadcrumbs={[{ label: 'Workforce', href: '/portal/attendance' }, { label: 'Attendance' }]}>
       <Head>
         <title>Attendance — Success Tunnel ERP</title>
       </Head>
@@ -84,17 +135,113 @@ export default function AttendanceModule() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.25rem 0' }}>
-            Workforce Attendance & Time Logs
+            Workforce Attendance & Time Clock
           </h1>
           <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>
-            Daily check-ins, working duration calculation, and monthly attendance tracking.
+            Biometric check-ins, recorded duration calculation, regularization, and monthly logs.
           </p>
         </div>
 
-        <button onClick={loadAttendance} className={`${styles.btn} ${styles.btnSecondary}`}>
-          <HiOutlineRefresh /> Refresh Logs
-        </button>
+        <div style={{ display: 'flex', gap: '0.6rem' }}>
+          <button
+            onClick={() => setShowCorrectionModal(true)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              background: '#ffffff',
+              border: '1px solid #cbd5e1',
+              padding: '0.5rem 0.9rem',
+              borderRadius: '6px',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              color: '#334155',
+            }}
+          >
+            <HiOutlineExclamation /> Request Correction
+          </button>
+          <button onClick={loadAttendance} className={`${styles.btn} ${styles.btnSecondary}`}>
+            <HiOutlineRefresh /> Refresh Logs
+          </button>
+        </div>
       </div>
+
+      {/* Pending Correction Banner for HR Admins */}
+      {pendingCorrections.length > 0 && (
+        <div
+          style={{
+            background: '#fffbeb',
+            border: '1px solid #fde68a',
+            borderRadius: '8px',
+            padding: '1rem',
+            marginBottom: '1.5rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <HiOutlineExclamation style={{ color: '#d97706', fontSize: '1.2rem' }} />
+            <strong style={{ color: '#92400e', fontSize: '0.9rem' }}>
+              Pending Attendance Correction Requests ({pendingCorrections.length})
+            </strong>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {pendingCorrections.map((pc) => (
+              <div
+                key={pc.id}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  background: '#ffffff',
+                  padding: '0.6rem 0.8rem',
+                  borderRadius: '6px',
+                  border: '1px solid #fef3c7',
+                  fontSize: '0.825rem',
+                }}
+              >
+                <div>
+                  <strong>{pc.user?.name || pc.user?.email}</strong> — Date: {pc.date}
+                  <div style={{ color: '#64748b', fontSize: '0.75rem', marginTop: '0.15rem' }}>
+                    Reason: {pc.correctionReason || 'Missed punch'}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: '0.4rem' }}>
+                  <button
+                    onClick={() => handleReviewCorrection(pc.id, 'APPROVE')}
+                    style={{
+                      background: '#10b981',
+                      color: '#ffffff',
+                      border: 'none',
+                      padding: '0.3rem 0.6rem',
+                      borderRadius: '4px',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => handleReviewCorrection(pc.id, 'REJECT')}
+                    style={{
+                      background: '#fee2e2',
+                      color: '#b91c1c',
+                      border: 'none',
+                      padding: '0.3rem 0.6rem',
+                      borderRadius: '4px',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Daily Punch Card */}
       <div className={styles.card} style={{ marginBottom: '1.5rem', background: '#ffffff', borderLeft: '4px solid #2563eb' }}>
@@ -122,54 +269,71 @@ export default function AttendanceModule() {
           </div>
 
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            <input
+              type="text"
+              placeholder="Optional notes..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className={styles.input}
+              style={{ width: '180px' }}
+            />
+
             {!todayRecord ? (
               <button
-                className={`${styles.btn} ${styles.btnPrimary}`}
-                disabled={punching}
                 onClick={() => handlePunch('checkin')}
+                disabled={punching}
+                className={`${styles.btn} ${styles.btnPrimary}`}
+                style={{ background: '#10b981', borderColor: '#10b981' }}
               >
-                <HiOutlineCheckCircle />
-                <span>{punching ? 'Recording...' : 'Check In Now'}</span>
+                <HiOutlineCheckCircle /> Check In
               </button>
             ) : !todayRecord.checkOut ? (
               <button
-                className={`${styles.btn} ${styles.btnSecondary}`}
-                disabled={punching}
                 onClick={() => handlePunch('checkout')}
-                style={{ borderColor: '#f59e0b', color: '#b45309' }}
+                disabled={punching}
+                className={`${styles.btn} ${styles.btnDanger}`}
               >
-                <HiOutlineClock />
-                <span>{punching ? 'Recording...' : 'Check Out Now'}</span>
+                <HiOutlineClock /> Check Out
               </button>
             ) : (
-              <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem' }}>
-                <HiOutlineCheckCircle /> Shift Completed
+              <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ padding: '0.6rem 1rem', fontSize: '0.875rem' }}>
+                Completed for Today
               </span>
             )}
           </div>
         </div>
       </div>
 
-      {/* Monthly Summary Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+      {/* Monthly Statistics Overview */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
         <div className={styles.card} style={{ padding: '1.25rem' }}>
           <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
             Days Recorded
           </div>
           <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a', margin: '0.25rem 0' }}>
-            {totalDays}
+            {totalDays} days
           </div>
-          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>During {selectedMonth}</div>
+          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>In selected month</div>
         </div>
 
         <div className={styles.card} style={{ padding: '1.25rem' }}>
           <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
-            Total Working Hours
+            Total Work Hours
           </div>
-          <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a', margin: '0.25rem 0' }}>
+          <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#2563eb', margin: '0.25rem 0' }}>
             {totalHours} hrs
           </div>
           <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Recorded duration</div>
+        </div>
+
+        <div className={styles.card} style={{ padding: '1.25rem' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+            Regularized Entries
+          </div>
+          <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#8b5cf6', margin: '0.25rem 0' }}>
+            {regularizedCount}
+          </div>
+          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>HR approved corrections</div>
         </div>
 
         <div className={styles.card} style={{ padding: '1.25rem' }}>
@@ -179,7 +343,7 @@ export default function AttendanceModule() {
           <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#10b981', margin: '0.25rem 0' }}>
             {totalDays > 0 ? '98.5%' : '0%'}
           </div>
-          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Timely check-ins</div>
+          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Punctual check-ins</div>
         </div>
       </div>
 
@@ -276,7 +440,15 @@ export default function AttendanceModule() {
                       {r.durationMinutes > 0 ? `${hours}h ${mins}m` : 'In progress'}
                     </td>
                     <td>
-                      <span className={`${styles.badge} ${styles.badgeSuccess}`}>
+                      <span
+                        className={`${styles.badge} ${
+                          r.status === 'REGULARIZED'
+                            ? styles.badgeWarning
+                            : r.status === 'LATE'
+                            ? styles.badgeDanger
+                            : styles.badgeSuccess
+                        }`}
+                      >
                         {r.status}
                       </span>
                     </td>
@@ -287,6 +459,124 @@ export default function AttendanceModule() {
           </tbody>
         </table>
       </div>
+
+      {/* Correction Request Modal */}
+      {showCorrectionModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1100,
+            padding: '1rem',
+          }}
+        >
+          <div
+            style={{
+              background: '#ffffff',
+              borderRadius: '8px',
+              maxWidth: '460px',
+              width: '100%',
+              padding: '1.5rem',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800 }}>Attendance Correction Request</h3>
+              <button
+                onClick={() => setShowCorrectionModal(false)}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
+              >
+                <HiOutlineX />
+              </button>
+            </div>
+
+            {correctionError && (
+              <div style={{ background: '#fee2e2', color: '#b91c1c', padding: '0.6rem', borderRadius: '6px', fontSize: '0.8rem', marginBottom: '1rem' }}>
+                {correctionError}
+              </div>
+            )}
+
+            <form onSubmit={handleCorrectionSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div>
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>Missed / Incorrect Date *</label>
+                <input
+                  type="date"
+                  required
+                  value={correctionDate}
+                  onChange={(e) => setCorrectionDate(e.target.value)}
+                  style={{ width: '100%', padding: '0.45rem', border: '1px solid #cbd5e1', borderRadius: '4px', fontSize: '0.85rem' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                <div>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>Actual Check In Time</label>
+                  <input
+                    type="time"
+                    required
+                    value={correctionCheckIn}
+                    onChange={(e) => setCorrectionCheckIn(e.target.value)}
+                    style={{ width: '100%', padding: '0.45rem', border: '1px solid #cbd5e1', borderRadius: '4px', fontSize: '0.85rem' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>Actual Check Out Time</label>
+                  <input
+                    type="time"
+                    required
+                    value={correctionCheckOut}
+                    onChange={(e) => setCorrectionCheckOut(e.target.value)}
+                    style={{ width: '100%', padding: '0.45rem', border: '1px solid #cbd5e1', borderRadius: '4px', fontSize: '0.85rem' }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>Reason for Regularization *</label>
+                <textarea
+                  required
+                  rows={3}
+                  placeholder="e.g. Biometric reader failure, client site deployment, forgotten swipe..."
+                  value={correctionReason}
+                  onChange={(e) => setCorrectionReason(e.target.value)}
+                  style={{ width: '100%', padding: '0.45rem', border: '1px solid #cbd5e1', borderRadius: '4px', fontSize: '0.85rem' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.5rem' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowCorrectionModal(false)}
+                  style={{ padding: '0.5rem 0.9rem', background: '#f1f5f9', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submittingCorrection}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    background: '#2563eb',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '4px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {submittingCorrection ? 'Submitting...' : 'Submit Request'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </PortalShell>
   )
 }
