@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import { HiOutlineLockClosed, HiOutlineMail, HiOutlineShieldCheck, HiOutlineSparkles } from 'react-icons/hi'
+import { HiOutlineLockClosed, HiOutlineMail, HiOutlineShieldCheck } from 'react-icons/hi'
 
 export default function PortalLogin() {
   const router = useRouter()
@@ -18,7 +18,7 @@ export default function PortalLogin() {
 
     try {
       const res = await axios.post('/api/portal/auth/login', {
-        email,
+        email: email.trim(),
         password,
       })
 
@@ -27,16 +27,10 @@ export default function PortalLogin() {
         router.push(redirect)
       }
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Authentication failed. Please verify credentials.')
+      setError(err.response?.data?.error || 'Authentication failed. Please verify your credentials.')
     } finally {
       setLoading(false)
     }
-  }
-
-  const fillDemoCredentials = (roleEmail: string) => {
-    setEmail(roleEmail)
-    setPassword('Demo@2026!')
-    setError('')
   }
 
   return (
@@ -54,7 +48,7 @@ export default function PortalLogin() {
         fontFamily: "'Inter', sans-serif",
       }}>
         <div style={{
-          maxWidth: '460px',
+          maxWidth: '440px',
           width: '100%',
           background: '#ffffff',
           borderRadius: '12px',
@@ -82,7 +76,7 @@ export default function PortalLogin() {
               Success Tunnel ERP
             </h1>
             <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>
-              Sign in with your organizational credentials to access company workflows.
+              Sign in with your email and password to access the portal.
             </p>
           </div>
 
@@ -169,113 +163,13 @@ export default function PortalLogin() {
                 transition: 'background 0.15s ease',
               }}
             >
-              {loading ? 'Authenticating...' : 'Sign In to Portal'}
+              {loading ? 'Authenticating...' : 'Sign In'}
             </button>
           </form>
 
-          {/* Quick Demo Switcher */}
-          <div style={{
-            marginTop: '2rem',
-            paddingTop: '1.5rem',
-            borderTop: '1px solid #e2e8f0',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '0.75rem',
-            }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Quick Demo Role Switcher
-              </span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.7rem', color: '#d97706', fontWeight: 600 }}>
-                <HiOutlineSparkles /> Demo Mode
-              </span>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.5rem' }}>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('admin@successtunnel.in')}
-                style={{
-                  padding: '0.5rem',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                👑 Super Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('priya.sharma@example.com')}
-                style={{
-                  padding: '0.5rem',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                👥 HR Director
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('rohit.verma@example.com')}
-                style={{
-                  padding: '0.5rem',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                📋 Project Lead
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('sneha.patel@example.com')}
-                style={{
-                  padding: '0.5rem',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                💼 Finance Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('amit.kumar@example.com')}
-                style={{
-                  gridColumn: 'span 2',
-                  padding: '0.5rem',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  textAlign: 'center',
-                }}
-              >
-                💻 Staff Member (Senior Engineer)
-              </button>
-            </div>
+          {/* Footer note */}
+          <div style={{ marginTop: '1.75rem', textAlign: 'center', fontSize: '0.75rem', color: '#94a3b8' }}>
+            Protected by enterprise encryption & rate limiting.
           </div>
         </div>
       </div>

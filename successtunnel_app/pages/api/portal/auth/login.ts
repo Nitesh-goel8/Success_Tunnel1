@@ -16,23 +16,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ? forwarded.split(',')[0].trim()
     : req.socket?.remoteAddress || '127.0.0.1'
 
-  // Apply strict rate limiting: max 10 login attempts per 60 seconds per IP
+  // Apply rate limiting: max 10 login attempts per 60 seconds per IP
   const rateLimitResult = checkRateLimit(`portal_login_${clientIp}`, 10, 60000)
   if (!rateLimitResult.allowed) {
     const retrySec = Math.ceil((rateLimitResult.retryAfterMs || 60000) / 1000)
     res.setHeader('Retry-After', retrySec.toString())
-    await logAuditAction({
-      action: 'LOGIN_RATE_LIMITED',
-      entityType: 'Auth',
-      details: { clientIp, retryAfterSec: retrySec },
-      req,
-    })
+    try {
+      await logAuditAction({
+        action: 'LOGIN_RATE_LIMITED',
+        entityType: 'Auth',
+        details: { clientIp, retryAfterSec: retrySec },
+        req,
+      })
+    } catch (e) {}
     return res.status(429).json({
       error: `Too many login attempts. Please wait ${retrySec} seconds before trying again.`,
     })
   }
 
-  const { email, password } = req.body
+  const { email, password } = req.body || {}
 
   if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
     return res.status(400).json({ error: 'Valid email and password are required' })
@@ -50,43 +52,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
 
     if (!user) {
-      await logAuditAction({
-        action: 'LOGIN_FAILED_UNKNOWN_EMAIL',
-        entityType: 'Auth',
-        details: { attemptedEmail: cleanEmail },
-        req,
-      })
+      try {
+        await logAuditAction({
+          action: 'LOGIN_FAILED_UNKNOWN_EMAIL',
+          entityType: 'Auth',
+          details: { attemptedEmail: cleanEmail },
+          req,
+        })
+      } catch (e) {}
       return res.status(401).json({ error: 'Invalid email or password' })
     }
 
     if (user.status !== 'active') {
-      await logAuditAction({
-        userId: user.id,
-        action: 'LOGIN_BLOCKED_INACTIVE',
-        entityType: 'Auth',
-        details: { email: user.email, status: user.status },
-        req,
-      })
+      try {
+        await logAuditAction({
+          userId: user.id,
+          action: 'LOGIN_BLOCKED_INACTIVE',
+          entityType: 'Auth',
+          details: { email: user.email, status: user.status },
+          req,
+        })
+      } catch (e) {}
       return res.status(403).json({ error: 'Account is deactivated. Contact HR or Administrator.' })
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password)
     if (!passwordMatch) {
-      await logAuditAction({
-        userId: user.id,
-        action: 'LOGIN_FAILED_BAD_PASSWORD',
-        entityType: 'Auth',
-        details: { email: user.email },
-        req,
-      })
+      try {
+        await logAuditAction({
+          userId: user.id,
+          action: 'LOGIN_FAILED_BAD_PASSWORD',
+          entityType: 'Auth',
+          details: { email: user.email },
+          req,
+        })
+      } catch (e) {}
       return res.status(401).json({ error: 'Invalid email or password' })
     }
 
-    // Update lastLoginAt
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { lastLoginAt: new Date() },
-    })
+    // Update lastLoginAt safely
+    try {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { lastLoginAt: new Date() },
+      })
+    } catch (updateErr) {
+      console.warn('Failed to update lastLoginAt:', updateErr)
+    }
 
     const token = signToken({
       id: user.id,
@@ -104,13 +116,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `st_auth=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=Lax${secureFlag}`
     )
 
-    await logAuditAction({
-      userId: user.id,
-      action: 'LOGIN_SUCCESS',
-      entityType: 'Auth',
-      details: { role: user.role, email: user.email },
-      req,
-    })
+    try {
+      await logAuditAction({
+        userId: user.id,
+        action: 'LOGIN_SUCCESS',
+        entityType: 'Auth',
+        details: { role: user.role, email: user.email },
+        req,
+      })
+    } catch (auditErr) {
+      console.warn('Failed to write login audit log:', auditErr)
+    }
 
     return res.status(200).json({
       ok: true,
@@ -126,6 +142,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
   } catch (error: any) {
     console.error('Login error:', error)
-    return res.status(500).json({ error: 'An unexpected server error occurred during authentication' })
+    return res.status(500).json({ error: error?.message || 'An unexpected server error occurred during authentication' })
   }
 }
