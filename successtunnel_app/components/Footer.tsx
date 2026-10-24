@@ -9,7 +9,7 @@ export default function Footer() {
   const settings = useSiteSettings()
 
   return (
-    <footer className="site-footer" style={{ background: '#07172b', color: '#cbd5e1', borderTop: '1px solid #1e293b', paddingTop: '64px', paddingBottom: '32px' }}>
+    <footer className="site-footer" style={{ background: '#080D18', color: 'var(--muted)', borderTop: '1px solid var(--line)', paddingTop: '64px', paddingBottom: '32px' }}>
       <div className="container footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '40px', marginBottom: '48px' }}>
         <div className="footer-brand">
           <div className="brand" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>

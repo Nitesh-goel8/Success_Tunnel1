@@ -18,6 +18,7 @@ export default function Nav() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [servicesDropdown, setServicesDropdown] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const settings = useSiteSettings()
 
   useEffect(() => {
@@ -25,10 +26,26 @@ export default function Nav() {
     setServicesDropdown(false)
   }, [router.asPath])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   const activePath = useMemo(() => router.asPath, [router.asPath])
 
   return (
-    <header className="site-header">
+    <header
+      className="site-header"
+      style={{
+        background: scrolled ? 'rgba(8, 13, 24, 0.94)' : 'rgba(8, 13, 24, 0.8)',
+        backdropFilter: 'blur(20px)',
+        borderBottom: '1px solid var(--line)',
+        transition: 'background 0.3s ease',
+      }}
+    >
       <div className="container nav-inner" style={{ padding: '14px 0' }}>
         <Link href="/" className="brand" style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
           <Image
@@ -36,7 +53,7 @@ export default function Nav() {
             alt="Success Tunnel Logo"
             width={40}
             height={40}
-            style={{ borderRadius: '8px', objectFit: 'contain', background: '#ffffff', border: '1px solid var(--line)', padding: '2px' }}
+            style={{ borderRadius: '8px', objectFit: 'contain', background: '#080d18', border: '1px solid var(--line)', padding: '2px' }}
             priority
           />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -55,6 +72,7 @@ export default function Nav() {
           onClick={() => setOpen(value => !value)}
           aria-expanded={open}
           aria-label="Toggle navigation"
+          style={{ background: 'var(--surface-soft)', border: '1px solid var(--line)', color: 'var(--text)' }}
         >
           {open ? (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -71,7 +89,7 @@ export default function Nav() {
         </button>
 
         <nav className={`nav-main ${open ? 'is-open' : ''}`}>
-          {/* Services dropdown */}
+          {/* Practice Areas dropdown */}
           <div
             className="nav-dropdown"
             onMouseEnter={() => setServicesDropdown(true)}
@@ -94,10 +112,10 @@ export default function Nav() {
                   top: '100%',
                   left: 0,
                   width: '260px',
-                  background: '#ffffff',
+                  background: 'var(--surface)',
                   border: '1px solid var(--line)',
                   borderRadius: '12px',
-                  boxShadow: '0 12px 30px rgba(15, 23, 42, 0.08)',
+                  boxShadow: '0 16px 36px rgba(0, 0, 0, 0.6)',
                   padding: '8px',
                   zIndex: 200,
                   display: 'flex',
@@ -151,10 +169,10 @@ export default function Nav() {
               color: 'var(--muted)',
               fontSize: '0.82rem',
               fontWeight: 600,
-              padding: '6px 12px',
+              padding: '7px 14px',
               borderRadius: '8px',
               border: '1px solid var(--line)',
-              background: 'var(--surface)',
+              background: 'var(--surface-soft)',
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
@@ -172,7 +190,6 @@ export default function Nav() {
               fontSize: '0.88rem',
               fontWeight: 700,
               borderRadius: '10px',
-              boxShadow: 'none',
             }}
           >
             Book Consultation &rarr;
