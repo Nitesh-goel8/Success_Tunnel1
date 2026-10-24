@@ -6,6 +6,21 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_erp_success_tunnel_2026
 
 export type UserRole = 'super_admin' | 'hr_admin' | 'project_manager' | 'finance_admin' | 'employee'
 
+export type ERPModule =
+  | 'ORGANIZATION'
+  | 'EMPLOYEES'
+  | 'PROJECTS'
+  | 'TASKS'
+  | 'ATTENDANCE'
+  | 'LEAVES'
+  | 'DOCUMENTS'
+  | 'FINANCE'
+  | 'REPORTS'
+  | 'AUDIT_LOGS'
+  | 'CRM'
+
+export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'approve'
+
 export interface AuthUser {
   id: number
   email: string
@@ -13,6 +28,55 @@ export interface AuthUser {
   role: string
   departmentId?: number | null
   employeeProfileId?: number | null
+}
+
+/**
+ * Server-side Role-Based Access Control matrix.
+ * Grants fine-grained module-level authorization checks.
+ */
+export function checkModulePermission(
+  role: string,
+  module: ERPModule,
+  action: ActionType = 'view'
+): boolean {
+  if (role === 'super_admin' || role === 'admin') return true
+
+  switch (role) {
+    case 'hr_admin':
+      if (module === 'EMPLOYEES' || module === 'ORGANIZATION' || module === 'DOCUMENTS') return true
+      if (module === 'LEAVES' || module === 'ATTENDANCE') return true
+      if (module === 'AUDIT_LOGS' || module === 'REPORTS') return action === 'view'
+      if (module === 'PROJECTS' || module === 'TASKS') return action === 'view'
+      if (module === 'FINANCE') return action === 'view' || action === 'create' // own expense
+      return false
+
+    case 'project_manager':
+      if (module === 'PROJECTS' || module === 'TASKS') return true
+      if (module === 'EMPLOYEES' || module === 'DOCUMENTS') return action === 'view'
+      if (module === 'REPORTS') return action === 'view'
+      if (module === 'ATTENDANCE' || module === 'LEAVES') return action === 'view' || action === 'create' // self-service
+      if (module === 'FINANCE') return action === 'view' || action === 'create'
+      return false
+
+    case 'finance_admin':
+      if (module === 'FINANCE') return true
+      if (module === 'REPORTS' || module === 'AUDIT_LOGS') return action === 'view'
+      if (module === 'EMPLOYEES' || module === 'PROJECTS' || module === 'DOCUMENTS') return action === 'view'
+      if (module === 'ATTENDANCE' || module === 'LEAVES') return action === 'view' || action === 'create'
+      return false
+
+    case 'employee':
+      if (module === 'EMPLOYEES' || module === 'DOCUMENTS') return action === 'view'
+      if (module === 'ATTENDANCE' || module === 'LEAVES' || module === 'FINANCE') {
+        return action === 'view' || action === 'create'
+      }
+      if (module === 'TASKS') return action === 'view' || action === 'edit' // status changes on assigned tasks
+      if (module === 'PROJECTS') return action === 'view'
+      return false
+
+    default:
+      return false
+  }
 }
 
 export function signToken(payload: { [k: string]: any }): string {

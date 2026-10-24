@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import axios from 'axios'
@@ -19,8 +19,12 @@ import {
   HiOutlineMenu,
   HiOutlineChevronLeft,
   HiOutlineChevronRight,
+  HiOutlineChevronDown,
   HiOutlineExternalLink,
   HiOutlineSparkles,
+  HiOutlineSearch,
+  HiOutlineUser,
+  HiOutlineCheck,
 } from 'react-icons/hi'
 
 export interface BreadcrumbItem {
@@ -47,14 +51,80 @@ interface UserProfile {
   } | null
 }
 
+interface NotificationItem {
+  id: number
+  title: string
+  message: string
+  type: string
+  link?: string | null
+  isRead: boolean
+  createdAt: string
+}
+
+interface SearchResults {
+  navigation: Array<{ label: string; href: string; category: string }>
+  projects: Array<{ id: number; code: string; title: string; status: string; progress: number; href: string }>
+  tasks: Array<{ id: number; code: string; title: string; status: string; priority: string; href: string }>
+  employees: Array<{ id: number; name: string; email: string; designation: string; department: string; employeeCode?: string; href: string }>
+}
+
 export default function PortalShell({ children, title, breadcrumbs = [] }: PortalShellProps) {
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [user, setUser] = useState<UserProfile | null>(null)
-  const [unreadCount, setUnreadCount] = useState(0)
-  const [loading, setLoading] = useState(true)
+  const [, setLoading] = useState(true)
 
+  // Notifications State
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [notifications, setNotifications] = useState<NotificationItem[]>([])
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [loadingNotifications, setLoadingNotifications] = useState(false)
+
+  // Profile Menu State
+  const [showProfileMenu, setShowProfileMenu] = useState(false)
+
+  // Search State
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<SearchResults | null>(null)
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  // Close dropdowns on outside click
+  const notificationRef = useRef<HTMLDivElement>(null)
+  const profileRef = useRef<HTMLDivElement>(null)
+  const searchRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+        setShowNotifications(false)
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setShowProfileMenu(false)
+      }
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSearchDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Keyboard shortcut Ctrl+K / Cmd+K to focus search
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault()
+        searchInputRef.current?.focus()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  // Load current user profile
   useEffect(() => {
     async function loadCurrentUser() {
       try {
@@ -71,6 +141,62 @@ export default function PortalShell({ children, title, breadcrumbs = [] }: Porta
     }
     loadCurrentUser()
   }, [router])
+
+  // Fetch full notifications on popover open
+  const loadNotifications = useCallback(async () => {
+    setLoadingNotifications(true)
+    try {
+      const res = await axios.get('/api/portal/notifications')
+      setNotifications(res.data.notifications || [])
+      setUnreadCount(res.data.unreadCount || 0)
+    } catch (err) {
+      console.error('Failed to load notifications:', err)
+    } finally {
+      setLoadingNotifications(false)
+    }
+  }, [])
+
+  const toggleNotifications = () => {
+    if (!showNotifications) {
+      loadNotifications()
+    }
+    setShowNotifications(!showNotifications)
+    setShowProfileMenu(false)
+  }
+
+  const handleMarkAllRead = async () => {
+    try {
+      await axios.patch('/api/portal/notifications', { markAllRead: true })
+      setUnreadCount(0)
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
+    } catch (err) {
+      console.error('Failed to mark all as read:', err)
+    }
+  }
+
+  // Live Search handler
+  useEffect(() => {
+    if (!searchQuery.trim() || searchQuery.trim().length < 2) {
+      setSearchResults(null)
+      setShowSearchDropdown(false)
+      return
+    }
+
+    const timer = setTimeout(async () => {
+      setIsSearching(true)
+      try {
+        const res = await axios.get(`/api/portal/search?q=${encodeURIComponent(searchQuery.trim())}`)
+        setSearchResults(res.data)
+        setShowSearchDropdown(true)
+      } catch (err) {
+        console.error('Search query failed:', err)
+      } finally {
+        setIsSearching(false)
+      }
+    }, 200)
+
+    return () => clearTimeout(timer)
+  }, [searchQuery])
 
   const handleLogout = async () => {
     try {
@@ -120,7 +246,7 @@ export default function PortalShell({ children, title, breadcrumbs = [] }: Porta
       items: [
         { label: 'Expenses', href: '/portal/finance', icon: HiOutlineCash },
         { label: 'Reports & Analytics', href: '/portal/reports', icon: HiOutlineChartSquareBar },
-        ...(isSuperAdmin || isHrAdmin
+        ...(isSuperAdmin || isHrAdmin || isFinanceAdmin
           ? [{ label: 'Audit Trail', href: '/portal/audit-logs', icon: HiOutlineShieldCheck }]
           : []),
       ],
@@ -185,7 +311,7 @@ export default function PortalShell({ children, title, breadcrumbs = [] }: Porta
           )}
         </nav>
 
-        {/* User Card */}
+        {/* User Card in Sidebar Bottom */}
         <div className={styles.sidebarFooter}>
           <div className={styles.avatar}>
             {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -242,24 +368,278 @@ export default function PortalShell({ children, title, breadcrumbs = [] }: Porta
           </div>
 
           <div className={styles.topbarRight}>
+            {/* Global Search */}
+            <div className={styles.searchContainer} ref={searchRef}>
+              <HiOutlineSearch className={styles.searchIcon} />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Global search (Ctrl+K)..."
+                className={styles.searchInput}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => {
+                  if (searchResults) setShowSearchDropdown(true)
+                }}
+              />
+              <span className={styles.searchShortcut}>Ctrl+K</span>
+
+              {/* Search Results Dropdown */}
+              {showSearchDropdown && searchResults && (
+                <div className={styles.searchDropdown}>
+                  {isSearching && (
+                    <div style={{ padding: '0.75rem 1rem', fontSize: '0.8rem', color: '#64748b' }}>
+                      Searching...
+                    </div>
+                  )}
+
+                  {/* Navigation matches */}
+                  {searchResults.navigation.length > 0 && (
+                    <div>
+                      <div className={styles.searchGroupTitle}>Modules</div>
+                      {searchResults.navigation.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          className={styles.searchResultItem}
+                          onClick={() => {
+                            setShowSearchDropdown(false)
+                            setSearchQuery('')
+                          }}
+                        >
+                          <span className={styles.searchResultTitle}>{item.label}</span>
+                          <span className={styles.searchResultMeta}>{item.category}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Project matches */}
+                  {searchResults.projects.length > 0 && (
+                    <div>
+                      <div className={styles.searchGroupTitle}>Projects</div>
+                      {searchResults.projects.map((p) => (
+                        <Link
+                          key={p.id}
+                          href={p.href}
+                          className={styles.searchResultItem}
+                          onClick={() => {
+                            setShowSearchDropdown(false)
+                            setSearchQuery('')
+                          }}
+                        >
+                          <div>
+                            <div className={styles.searchResultTitle}>{p.title}</div>
+                            <div className={styles.searchResultMeta}>{p.code} • {p.status}</div>
+                          </div>
+                          <span className={styles.searchResultMeta}>{p.progress}%</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Task matches */}
+                  {searchResults.tasks.length > 0 && (
+                    <div>
+                      <div className={styles.searchGroupTitle}>Tasks</div>
+                      {searchResults.tasks.map((t) => (
+                        <Link
+                          key={t.id}
+                          href={t.href}
+                          className={styles.searchResultItem}
+                          onClick={() => {
+                            setShowSearchDropdown(false)
+                            setSearchQuery('')
+                          }}
+                        >
+                          <div>
+                            <div className={styles.searchResultTitle}>{t.title}</div>
+                            <div className={styles.searchResultMeta}>{t.code} • {t.status}</div>
+                          </div>
+                          <span className={styles.searchResultMeta}>{t.priority}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Employee matches */}
+                  {searchResults.employees.length > 0 && (
+                    <div>
+                      <div className={styles.searchGroupTitle}>Employees</div>
+                      {searchResults.employees.map((e) => (
+                        <Link
+                          key={e.id}
+                          href={e.href}
+                          className={styles.searchResultItem}
+                          onClick={() => {
+                            setShowSearchDropdown(false)
+                            setSearchQuery('')
+                          }}
+                        >
+                          <div>
+                            <div className={styles.searchResultTitle}>{e.name}</div>
+                            <div className={styles.searchResultMeta}>{e.designation} • {e.department}</div>
+                          </div>
+                          <span className={styles.searchResultMeta}>{e.employeeCode}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {searchResults.navigation.length === 0 &&
+                    searchResults.projects.length === 0 &&
+                    searchResults.tasks.length === 0 &&
+                    searchResults.employees.length === 0 && (
+                      <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.825rem' }}>
+                        No records matching &ldquo;{searchQuery}&rdquo;
+                      </div>
+                    )}
+                </div>
+              )}
+            </div>
+
+            {/* DEMO ENVIRONMENT Badge */}
             <div className={styles.demoBanner}>
               <HiOutlineSparkles />
               <span>DEMO ENVIRONMENT</span>
             </div>
 
-            <button
-              className={styles.iconBtn}
-              title={`Notifications (${unreadCount} unread)`}
-              onClick={() => router.push('/portal/dashboard#notifications')}
-            >
-              <HiOutlineBell />
-              {unreadCount > 0 && <span className={styles.badgeDot} />}
-            </button>
+            {/* Notification Center */}
+            <div className={styles.popoverContainer} ref={notificationRef}>
+              <button
+                className={styles.iconBtn}
+                title={`Notifications (${unreadCount} unread)`}
+                onClick={toggleNotifications}
+                aria-label="Open notifications center"
+              >
+                <HiOutlineBell />
+                {unreadCount > 0 && <span className={styles.badgeDot} />}
+              </button>
 
-            <button className={styles.logoutBtn} onClick={handleLogout}>
-              <HiOutlineLogout />
-              <span>Logout</span>
-            </button>
+              {showNotifications && (
+                <div className={styles.notificationPopover}>
+                  <div className={styles.notificationHeader}>
+                    <span>Notifications ({unreadCount} unread)</span>
+                    {unreadCount > 0 && (
+                      <button className={styles.markReadBtn} onClick={handleMarkAllRead}>
+                        Mark all as read
+                      </button>
+                    )}
+                  </div>
+
+                  <div className={styles.notificationList}>
+                    {loadingNotifications ? (
+                      <div style={{ padding: '1.5rem', textAlign: 'center', color: '#64748b', fontSize: '0.85rem' }}>
+                        Loading notifications...
+                      </div>
+                    ) : notifications.length === 0 ? (
+                      <div style={{ padding: '2rem 1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>
+                        <HiOutlineCheck style={{ fontSize: '1.5rem', color: '#10b981', marginBottom: '0.25rem' }} />
+                        <div>You are all caught up!</div>
+                        <div style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>No new notifications</div>
+                      </div>
+                    ) : (
+                      notifications.map((n) => (
+                        <div
+                          key={n.id}
+                          className={`${styles.notificationItem} ${!n.isRead ? styles.notificationItemUnread : ''}`}
+                          onClick={() => {
+                            if (n.link) {
+                              setShowNotifications(false)
+                              router.push(n.link)
+                            }
+                          }}
+                        >
+                          <div className={styles.notificationTitle}>
+                            <span>{n.title}</span>
+                          </div>
+                          <div className={styles.notificationMessage}>{n.message}</div>
+                          <div className={styles.notificationTime}>
+                            {new Date(n.createdAt).toLocaleDateString('en-IN', {
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* User Profile Dropdown Menu */}
+            <div className={styles.popoverContainer} ref={profileRef}>
+              <button
+                className={styles.profileMenuTrigger}
+                onClick={() => {
+                  setShowProfileMenu(!showProfileMenu)
+                  setShowNotifications(false)
+                }}
+                aria-label="User profile options"
+              >
+                <div className={styles.avatar} style={{ width: 34, height: 34, fontSize: '0.85rem' }}>
+                  {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                </div>
+                <HiOutlineChevronDown style={{ fontSize: '0.9rem', color: '#64748b' }} />
+              </button>
+
+              {showProfileMenu && (
+                <div className={styles.profileDropdown}>
+                  <div className={styles.profileHeader}>
+                    <div className={styles.profileName}>{user?.name || 'Authorized User'}</div>
+                    <div className={styles.profileEmail}>{user?.email}</div>
+                    <span className={styles.profileRoleBadge}>{roleName}</span>
+                  </div>
+
+                  <Link
+                    href="/portal/attendance"
+                    className={styles.profileMenuItem}
+                    onClick={() => setShowProfileMenu(false)}
+                  >
+                    <HiOutlineClock style={{ fontSize: '1.1rem', color: '#64748b' }} />
+                    <span>My Attendance & Time Clock</span>
+                  </Link>
+
+                  <Link
+                    href="/portal/leaves"
+                    className={styles.profileMenuItem}
+                    onClick={() => setShowProfileMenu(false)}
+                  >
+                    <HiOutlineCalendar style={{ fontSize: '1.1rem', color: '#64748b' }} />
+                    <span>My Leave Requests</span>
+                  </Link>
+
+                  <Link
+                    href="/portal/tasks"
+                    className={styles.profileMenuItem}
+                    onClick={() => setShowProfileMenu(false)}
+                  >
+                    <HiOutlineClipboardList style={{ fontSize: '1.1rem', color: '#64748b' }} />
+                    <span>My Assigned Tasks</span>
+                  </Link>
+
+                  {user?.employeeProfile?.employeeCode && (
+                    <div style={{ padding: '0.4rem 1rem', fontSize: '0.75rem', color: '#94a3b8', borderTop: '1px solid #f1f5f9' }}>
+                      Emp Code: <strong>{user.employeeProfile.employeeCode}</strong>
+                    </div>
+                  )}
+
+                  <div style={{ borderTop: '1px solid #f1f5f9', marginTop: '0.25rem', paddingTop: '0.25rem' }}>
+                    <button
+                      className={styles.profileMenuItem}
+                      style={{ color: '#dc2626' }}
+                      onClick={handleLogout}
+                    >
+                      <HiOutlineLogout style={{ fontSize: '1.1rem' }} />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 

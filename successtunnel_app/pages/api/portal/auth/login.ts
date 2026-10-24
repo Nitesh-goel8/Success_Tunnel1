@@ -2,11 +2,34 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import bcrypt from 'bcryptjs'
 import { prisma } from '../../../../lib/prisma'
 import { signToken, logAuditAction } from '../../../../lib/auth'
+import { checkRateLimit } from '../../../../lib/rateLimit'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST'])
     return res.status(405).json({ error: `Method ${req.method} not allowed` })
+  }
+
+  // Derive client IP for security rate limiting
+  const forwarded = req.headers['x-forwarded-for']
+  const clientIp = typeof forwarded === 'string'
+    ? forwarded.split(',')[0].trim()
+    : req.socket?.remoteAddress || '127.0.0.1'
+
+  // Apply strict rate limiting: max 10 login attempts per 60 seconds per IP
+  const rateLimitResult = checkRateLimit(`portal_login_${clientIp}`, 10, 60000)
+  if (!rateLimitResult.allowed) {
+    const retrySec = Math.ceil((rateLimitResult.retryAfterMs || 60000) / 1000)
+    res.setHeader('Retry-After', retrySec.toString())
+    await logAuditAction({
+      action: 'LOGIN_RATE_LIMITED',
+      entityType: 'Auth',
+      details: { clientIp, retryAfterSec: retrySec },
+      req,
+    })
+    return res.status(429).json({
+      error: `Too many login attempts. Please wait ${retrySec} seconds before trying again.`,
+    })
   }
 
   const { email, password } = req.body
