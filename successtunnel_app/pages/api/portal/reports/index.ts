@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           })
 
           const rows = [
-            ['Employee Code', 'Name', 'Email', 'Role', 'Department', 'Designation', 'Status', 'Location', 'Joining Date'],
+            ['Employee Code', 'Name', 'Email', 'Role', 'Department', 'Designation', 'Status', 'Location', 'Joining Date', 'Environment'],
             ...employees.map((e) => [
               `"${e.employeeProfile?.employeeCode || `ST-EMP-${e.id}`}"`,
               `"${e.name || ''}"`,
@@ -32,6 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               `"${e.employeeProfile?.status || 'ACTIVE'}"`,
               `"${e.employeeProfile?.workLocation || 'Headquarters'}"`,
               `"${e.employeeProfile?.joiningDate ? new Date(e.employeeProfile.joiningDate).toISOString().split('T')[0] : ''}"`,
+              `"${e.employeeProfile?.isDemo ? 'DEMO DATA' : 'PRODUCTION'}"`,
             ]),
           ]
 
@@ -48,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           })
 
           const rows = [
-            ['Task Code', 'Title', 'Project', 'Assignee', 'Priority', 'Status', 'Due Date'],
+            ['Task Code', 'Title', 'Project', 'Assignee', 'Priority', 'Status', 'Due Date', 'Environment'],
             ...tasks.map((t) => [
               `"${t.taskCode}"`,
               `"${t.title.replace(/"/g, '""')}"`,
@@ -57,12 +58,69 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               `"${t.priority}"`,
               `"${t.status}"`,
               `"${t.dueDate ? new Date(t.dueDate).toISOString().split('T')[0] : ''}"`,
+              `"${t.isDemo ? 'DEMO DATA' : 'PRODUCTION'}"`,
             ]),
           ]
 
           const csvContent = rows.map((r) => r.join(',')).join('\n')
           res.setHeader('Content-Type', 'text/csv; charset=utf-8')
           res.setHeader('Content-Disposition', 'attachment; filename="Success_Tunnel_Tasks_Report.csv"')
+          return res.status(200).send(csvContent)
+        }
+
+        if (reportModule === 'invoices') {
+          const invoices = await prisma.invoice.findMany({
+            include: { customer: true, project: true },
+            orderBy: { issueDate: 'desc' },
+          })
+
+          const rows = [
+            ['Invoice Number', 'Customer', 'Project', 'Issue Date', 'Due Date', 'Subtotal', 'Tax (18%)', 'Total Amount', 'Status', 'Environment'],
+            ...invoices.map((inv) => [
+              `"${inv.invoiceNumber}"`,
+              `"${inv.customer?.name || inv.customer?.company || 'Direct Client'}"`,
+              `"${inv.project?.name || '-'}"`,
+              `"${new Date(inv.issueDate).toISOString().split('T')[0]}"`,
+              `"${new Date(inv.dueDate).toISOString().split('T')[0]}"`,
+              inv.subtotal.toFixed(2),
+              inv.taxAmount.toFixed(2),
+              inv.totalAmount.toFixed(2),
+              `"${inv.status}"`,
+              `"${inv.isDemo ? 'DEMO DATA' : 'PRODUCTION'}"`,
+            ]),
+          ]
+
+          const csvContent = rows.map((r) => r.join(',')).join('\n')
+          res.setHeader('Content-Type', 'text/csv; charset=utf-8')
+          res.setHeader('Content-Disposition', 'attachment; filename="Success_Tunnel_Invoices_Report.csv"')
+          return res.status(200).send(csvContent)
+        }
+
+        if (reportModule === 'payments') {
+          const payments = await prisma.payment.findMany({
+            include: { customer: true, invoice: true, project: true },
+            orderBy: { paymentDate: 'desc' },
+          })
+
+          const rows = [
+            ['Payment Number', 'Invoice Number', 'Customer', 'Project', 'Amount (INR)', 'Payment Date', 'Method', 'Transaction Ref', 'Status', 'Environment'],
+            ...payments.map((p) => [
+              `"${p.paymentNumber}"`,
+              `"${p.invoice?.invoiceNumber || '-'}"`,
+              `"${p.customer?.name || p.customer?.company || '-'}"`,
+              `"${p.project?.name || '-'}"`,
+              p.amount.toFixed(2),
+              `"${new Date(p.paymentDate).toISOString().split('T')[0]}"`,
+              `"${p.paymentMethod}"`,
+              `"${p.transactionReference || '-'}"`,
+              `"${p.status}"`,
+              `"${p.isDemo ? 'DEMO DATA' : 'PRODUCTION'}"`,
+            ]),
+          ]
+
+          const csvContent = rows.map((r) => r.join(',')).join('\n')
+          res.setHeader('Content-Type', 'text/csv; charset=utf-8')
+          res.setHeader('Content-Disposition', 'attachment; filename="Success_Tunnel_Payments_Report.csv"')
           return res.status(200).send(csvContent)
         }
       }
@@ -75,6 +133,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         leaves,
         expenses,
         attendanceRecords,
+        invoicesAgg,
+        paymentsAgg,
       ] = await Promise.all([
         prisma.department.findMany({
           select: { id: true, name: true, code: true, _count: { select: { members: true } } },
@@ -99,7 +159,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           by: ['status'],
           _count: { id: true },
         }),
+        prisma.invoice.aggregate({
+          _sum: { totalAmount: true },
+          _count: { id: true },
+        }),
+        prisma.payment.aggregate({
+          where: { status: 'COMPLETED' },
+          _sum: { amount: true },
+          _count: { id: true },
+        }),
       ])
+
+      const totalReceivedRevenue = paymentsAgg._sum.amount || 0
+      const totalInvoiced = invoicesAgg._sum.totalAmount || 0
+      const approvedExpenses = expenses
+        .filter((e) => e.status === 'APPROVED' || e.status === 'REIMBURSED')
+        .reduce((acc, curr) => acc + (curr._sum.amount || 0), 0)
 
       return res.status(200).json({
         generatedAt: new Date().toISOString(),
@@ -126,6 +201,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           status: a.status,
           count: a._count.id,
         })),
+        financialMetrics: {
+          totalInvoiced,
+          totalReceivedRevenue,
+          approvedExpenses,
+          netOperatingFlow: totalReceivedRevenue - approvedExpenses,
+          invoicesCount: invoicesAgg._count.id,
+          paymentsCount: paymentsAgg._count.id,
+          currency: 'INR',
+        },
       })
     } catch (error) {
       console.error('Failed to generate reports:', error)

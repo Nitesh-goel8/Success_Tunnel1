@@ -45,6 +45,7 @@ model User {
   auditLogs        AuditLog[]
   assignedLeads    Lead[]            @relation("LeadAssignee")
   leadActivities   LeadActivity[]    @relation("UserLeadActivities")
+  recordedPayments Payment[]         @relation("RecordedPayments")
 }
 
 // ----------------------------------------------------------------------
@@ -112,6 +113,8 @@ model Project {
   expenses          Expense[]
   customerId        Int?
   customer          Customer?       @relation(fields: [customerId], references: [id])
+  invoices          Invoice[]
+  payments          Payment[]
 }
 
 model ProjectMember {
@@ -248,6 +251,59 @@ model DocumentRecord {
 }
 
 // ----------------------------------------------------------------------
+// Invoices & Payments (Decimal-safe financial transactions)
+// ----------------------------------------------------------------------
+
+model Invoice {
+  id            Int       @id @default(autoincrement())
+  invoiceNumber String    @unique // e.g. ST-INV-2026-001
+  customerId    Int?
+  customer      Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  projectId     Int?
+  project       Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  issueDate     DateTime  @default(now())
+  dueDate       DateTime
+  subtotal      Float
+  taxRate       Float     @default(18.0) // GST %
+  taxAmount     Float     @default(0.0)
+  totalAmount   Float
+  currency      String    @default("INR")
+  status        String    @default("DRAFT") // DRAFT, ISSUED, PARTIALLY_PAID, PAID, OVERDUE, VOID
+  items         String?   // JSON-encoded array of line items [{ description, quantity, unitPrice, amount }]
+  notes         String?
+  terms         String?
+  isDemo        Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+
+  payments      Payment[]
+}
+
+model Payment {
+  id                   Int       @id @default(autoincrement())
+  paymentNumber        String    @unique // e.g. ST-PAY-2026-001
+  invoiceId            Int?
+  invoice              Invoice?  @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  customerId           Int?
+  customer             Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  projectId            Int?
+  project              Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  amount               Float     // Verified received amount
+  currency             String    @default("INR")
+  paymentDate          DateTime  @default(now())
+  paymentMethod        String    @default("BANK_TRANSFER") // BANK_TRANSFER, UPI, NEFT_RTGS, CHEQUE, CARD, CASH
+  transactionReference String?   // UTR or bank transaction reference
+  status               String    @default("COMPLETED") // COMPLETED, PENDING, FAILED, REFUNDED
+  receiptUrl           String?
+  notes                String?
+  recordedById         Int?
+  recordedBy           User?     @relation("RecordedPayments", fields: [recordedById], references: [id])
+  isDemo               Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @default(now()) @updatedAt
+}
+
+// ----------------------------------------------------------------------
 // Finance & Expense Management
 // ----------------------------------------------------------------------
 
@@ -323,6 +379,8 @@ model Customer {
 
   leads        Lead[]
   projects     Project[]
+  invoices     Invoice[]
+  payments     Payment[]
 }
 
 model Lead {

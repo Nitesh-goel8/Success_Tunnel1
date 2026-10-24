@@ -1729,6 +1729,171 @@ async function main() {
     }
   }
 
+  
+  // ------------------------------------------------------------------
+  // 11. Seed Invoices & Verified Received Payments (Spanning Aug-Oct 2026)
+  // ------------------------------------------------------------------
+  console.log('Step 11: Seeding accounts receivable invoices & verified payments ledger...')
+
+  const techNovaCust = seededCustomers['ST-CUST-1001'];
+  const apexCust = seededCustomers['ST-CUST-1002'];
+  const zenithCust = seededCustomers['ST-CUST-1003'];
+
+  const prj01 = await prisma.project.findUnique({ where: { projectCode: 'ST-PRJ-2026-01' } });
+  const prj02 = await prisma.project.findUnique({ where: { projectCode: 'ST-PRJ-2026-02' } });
+
+  // 1. TechNova August Milestone Invoice (PAID)
+  const inv1 = await prisma.invoice.upsert({
+    where: { invoiceNumber: 'ST-INV-2026-0001' },
+    update: {},
+    create: {
+      invoiceNumber: 'ST-INV-2026-0001',
+      customerId: techNovaCust?.id,
+      projectId: prj01?.id,
+      issueDate: new Date('2026-08-15'),
+      dueDate: new Date('2026-09-15'),
+      subtotal: 150000.0,
+      taxRate: 18.0,
+      taxAmount: 27000.0,
+      totalAmount: 177000.0,
+      currency: 'INR',
+      status: 'PAID',
+      items: JSON.stringify([
+        { description: 'ERP Phase 1 Architecture & Database Blueprint', quantity: 1, unitPrice: 150000.0, amount: 150000.0 },
+      ]),
+      notes: 'Initial milestone delivery approved by client steering committee.',
+      isDemo: true,
+    },
+  });
+
+  await prisma.payment.upsert({
+    where: { paymentNumber: 'ST-PAY-2026-0001' },
+    update: {},
+    create: {
+      paymentNumber: 'ST-PAY-2026-0001',
+      invoiceId: inv1.id,
+      customerId: techNovaCust?.id,
+      projectId: prj01?.id,
+      amount: 177000.0,
+      currency: 'INR',
+      paymentDate: new Date('2026-08-28'),
+      paymentMethod: 'BANK_TRANSFER',
+      transactionReference: 'SBIN8260192837',
+      status: 'COMPLETED',
+      notes: 'NEFT wire transfer cleared in commercial account.',
+      isDemo: true,
+    },
+  });
+
+  // 2. Apex Global September GST Suite License (PAID)
+  const inv2 = await prisma.invoice.upsert({
+    where: { invoiceNumber: 'ST-INV-2026-0002' },
+    update: {},
+    create: {
+      invoiceNumber: 'ST-INV-2026-0002',
+      customerId: apexCust?.id,
+      projectId: prj02?.id,
+      issueDate: new Date('2026-09-05'),
+      dueDate: new Date('2026-10-05'),
+      subtotal: 100000.0,
+      taxRate: 18.0,
+      taxAmount: 18000.0,
+      totalAmount: 118000.0,
+      currency: 'INR',
+      status: 'PAID',
+      items: JSON.stringify([
+        { description: 'GST Automation & ITC Reconciliation Module Deployment', quantity: 1, unitPrice: 100000.0, amount: 100000.0 },
+      ]),
+      notes: 'Quarterly compliance engine setup fee.',
+      isDemo: true,
+    },
+  });
+
+  await prisma.payment.upsert({
+    where: { paymentNumber: 'ST-PAY-2026-0002' },
+    update: {},
+    create: {
+      paymentNumber: 'ST-PAY-2026-0002',
+      invoiceId: inv2.id,
+      customerId: apexCust?.id,
+      projectId: prj02?.id,
+      amount: 118000.0,
+      currency: 'INR',
+      paymentDate: new Date('2026-09-22'),
+      paymentMethod: 'BANK_TRANSFER',
+      transactionReference: 'HDFC9220019283',
+      status: 'COMPLETED',
+      notes: 'RTGS payment received.',
+      isDemo: true,
+    },
+  });
+
+  // 3. TechNova October Phase 2 Milestone (PARTIALLY_PAID)
+  const inv3 = await prisma.invoice.upsert({
+    where: { invoiceNumber: 'ST-INV-2026-0003' },
+    update: {},
+    create: {
+      invoiceNumber: 'ST-INV-2026-0003',
+      customerId: techNovaCust?.id,
+      projectId: prj01?.id,
+      issueDate: new Date('2026-10-10'),
+      dueDate: new Date('2026-11-10'),
+      subtotal: 200000.0,
+      taxRate: 18.0,
+      taxAmount: 36000.0,
+      totalAmount: 236000.0,
+      currency: 'INR',
+      status: 'PARTIALLY_PAID',
+      items: JSON.stringify([
+        { description: 'ERP Phase 2 HR & Workforce Core Implementation', quantity: 1, unitPrice: 200000.0, amount: 200000.0 },
+      ]),
+      notes: '50% advance received, balance payable upon UAT signoff.',
+      isDemo: true,
+    },
+  });
+
+  await prisma.payment.upsert({
+    where: { paymentNumber: 'ST-PAY-2026-0003' },
+    update: {},
+    create: {
+      paymentNumber: 'ST-PAY-2026-0003',
+      invoiceId: inv3.id,
+      customerId: techNovaCust?.id,
+      projectId: prj01?.id,
+      amount: 100000.0,
+      currency: 'INR',
+      paymentDate: new Date('2026-10-18'),
+      paymentMethod: 'BANK_TRANSFER',
+      transactionReference: 'SBIN1018273645',
+      status: 'COMPLETED',
+      notes: 'First milestone tranche credited.',
+      isDemo: true,
+    },
+  });
+
+  // 4. Zenith Retail October Facility Lease (ISSUED - UNPAID)
+  await prisma.invoice.upsert({
+    where: { invoiceNumber: 'ST-INV-2026-0004' },
+    update: {},
+    create: {
+      invoiceNumber: 'ST-INV-2026-0004',
+      customerId: zenithCust?.id,
+      issueDate: new Date('2026-10-15'),
+      dueDate: new Date('2026-11-15'),
+      subtotal: 60000.0,
+      taxRate: 18.0,
+      taxAmount: 10800.0,
+      totalAmount: 70800.0,
+      currency: 'INR',
+      status: 'ISSUED',
+      items: JSON.stringify([
+        { description: 'Dedicated Managed Coworking Hub Workstations (Month of Oct 2026)', quantity: 1, unitPrice: 60000.0, amount: 60000.0 },
+      ]),
+      notes: 'Billed on monthly recurring cycle.',
+      isDemo: true,
+    },
+  });
+
   console.log('\n======================================================================')
   console.log('✅ SUCCESS: 3 MONTHS OF REALISTIC FAKE DEMO DATA SEEDED INTO DATABASE!')
   console.log('======================================================================\n')
