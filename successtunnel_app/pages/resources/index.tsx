@@ -5,59 +5,14 @@ import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import { prisma } from '../../lib/prisma'
 import { samplePosts } from '../../lib/sampleData'
-import {
-  HiOutlineAcademicCap,
-  HiOutlineDocumentText,
-  HiOutlineDownload,
-  HiOutlineQuestionMarkCircle,
-  HiOutlineCalculator,
-  HiOutlinePhone,
-  HiArrowRight,
-} from 'react-icons/hi'
 
 const resourceChannels = [
-  {
-    title: 'Education Hub',
-    href: '/education',
-    icon: <HiOutlineAcademicCap size={28} />,
-    color: '#a855f7',
-    desc: 'Courses, notes, video walkthroughs, and practical curriculum for accounting and tax professionals.',
-  },
-  {
-    title: 'Financial Calculators',
-    href: '/resources/calculators',
-    icon: <HiOutlineCalculator size={28} />,
-    color: '#38bdf8',
-    desc: 'Interactive calculators for EMI loan amortizations, SIP returns, and commercial rental yield estimates.',
-  },
-  {
-    title: 'Downloads & Checklists',
-    href: '/resources/downloads',
-    icon: <HiOutlineDownload size={28} />,
-    color: '#60a5fa',
-    desc: 'Downloadable PDF checklists, statutory filing schedules, and compliance templates.',
-  },
-  {
-    title: 'Frequently Asked Questions',
-    href: '/resources/faqs',
-    icon: <HiOutlineQuestionMarkCircle size={28} />,
-    color: '#10b981',
-    desc: 'Clear, direct answers regarding corporate setup, tax filing rules, and Panipat workspace leases.',
-  },
-  {
-    title: 'Blogs & Insights',
-    href: '/blog',
-    icon: <HiOutlineDocumentText size={28} />,
-    color: '#f59e0b',
-    desc: 'Expert commentary, practical compliance guides, and MSME regulatory updates.',
-  },
-  {
-    title: 'Consultation Desk',
-    href: '/contact',
-    icon: <HiOutlinePhone size={28} />,
-    color: '#ec4899',
-    desc: 'Connect directly with our Panipat advisory office for tailored guidance and appointments.',
-  },
+  { title: 'Education Hub', href: '/education', icon: '🎬', desc: 'Courses, notes, tools, downloads, videos, and featured learning content.' },
+  { title: 'Blogs & Insights', href: '/blog', icon: '📝', desc: 'Expert commentary, practical guides, and business updates.' },
+  { title: 'Downloads', href: '/resources/downloads', icon: '📥', desc: 'PDFs, checklists, and supporting documents for common workflows.' },
+  { title: 'FAQs', href: '/resources/faqs', icon: '❓', desc: 'Straight answers to the questions clients ask most often.' },
+  { title: 'Calculators', href: '/resources/calculators', icon: '🧮', desc: 'Useful calculators for planning, comparison, and quick estimates.' },
+  { title: 'Contact Support', href: '/contact', icon: '☎️', desc: 'Talk to us when you want a more tailored recommendation.' },
 ]
 
 export default function Resources({ posts }: { posts: any[] }) {
@@ -66,165 +21,104 @@ export default function Resources({ posts }: { posts: any[] }) {
   return (
     <>
       <Head>
-        <title>Resource Hub &amp; Tools — Success Tunnel | Panipat HQ</title>
+        <title>Resource Hub & Tools — Success Tunnel</title>
         <meta
           name="description"
           content="Explore Success Tunnel resources: financial calculators, tax planning downloads, FAQs, educational courses, and business advisory guides."
         />
         <link rel="canonical" href="https://successtunnel.in/resources" />
-        <meta property="og:title" content="Resource Hub &amp; Tools — Success Tunnel" />
-        <meta
-          property="og:description"
-          content="Insights, downloads, calculators, and quick answers to help you make better decisions."
-        />
+        <meta property="og:title" content="Resource Hub & Tools — Success Tunnel" />
+        <meta property="og:description" content="Insights, downloads, calculators, and quick answers to help you make better decisions." />
         <meta property="og:url" content="https://successtunnel.in/resources" />
         <meta property="og:type" content="website" />
       </Head>
 
-      <div className="cinematic-theme-root">
+      <div>
         <Nav />
-
         <main>
-          {/* Hero Section */}
-          <section
-            style={{
-              paddingTop: 'clamp(50px, 8vw, 90px)',
-              paddingBottom: 'clamp(40px, 6vw, 60px)',
-              textAlign: 'center',
-            }}
-          >
-            <div className="container" style={{ maxWidth: '840px' }}>
-              <span
-                className="eyebrow"
-                style={{
-                  background: 'rgba(56, 189, 248, 0.1)',
-                  color: '#38bdf8',
-                  border: '1px solid rgba(56, 189, 248, 0.25)',
-                  padding: '8px 16px',
-                  borderRadius: '999px',
-                  fontSize: '0.78rem',
-                  fontWeight: 800,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  marginBottom: '20px',
-                }}
-              >
-                PRACTICE RESOURCES &bull; PANIPAT HQ
+          <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '60px' }}>
+            <div className="container" style={{ textAlign: 'center', maxWidth: '800px' }}>
+              <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)', marginBottom: '24px' }}>
+                RESOURCE HUB
               </span>
-
-              <h1
-                style={{
-                  fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
-                  lineHeight: '1.1',
-                  letterSpacing: '-0.04em',
-                  fontWeight: 900,
-                  color: '#f8fafc',
-                  margin: '0 auto 24px',
-                  fontFamily: "'Sora', sans-serif",
-                }}
-              >
-                Insights, Calculators, and Practical Tools.
+              <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', lineHeight: '1.1', letterSpacing: '-0.04em', fontWeight: 800, color: 'var(--primary)', margin: '20px auto 30px' }}>
+                Insights, downloads, and quick answers.
               </h1>
-
-              <p style={{ fontSize: '1.15rem', color: '#94a3b8', lineHeight: '1.75', margin: '0 auto' }}>
-                A centralized portal of validated templates, calculators, and advisory guides designed to assist business promoters and commerce professionals.
+              <p style={{ fontSize: '1.2rem', color: 'var(--muted)', lineHeight: '1.65' }}>
+                A central place for useful material that helps clients move faster and make better decisions.
               </p>
             </div>
           </section>
 
-          {/* Resources Grid */}
-          <section style={{ padding: '60px 0 96px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+          <section className="section-surface" id="resources-menu">
             <div className="container">
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                  gap: '28px',
-                }}
-              >
-                {resourceChannels.map((channel) => (
-                  <div
-                    key={channel.title}
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(9, 13, 22, 0.95) 100%)',
-                      borderRadius: '20px',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      padding: '32px 28px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      boxShadow: '0 12px 30px rgba(0, 0, 0, 0.3)',
-                    }}
-                  >
-                    <div>
-                      <div
-                        style={{
-                          width: '54px',
-                          height: '54px',
-                          borderRadius: '14px',
-                          background: `${channel.color}22`,
-                          border: `1px solid ${channel.color}44`,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: channel.color,
-                          marginBottom: '22px',
-                        }}
-                      >
-                        {channel.icon}
-                      </div>
-
-                      <h2
-                        style={{
-                          fontSize: '1.35rem',
-                          fontWeight: 800,
-                          color: '#f8fafc',
-                          margin: '0 0 12px 0',
-                          fontFamily: "'Sora', sans-serif",
-                        }}
-                      >
-                        {channel.title}
-                      </h2>
-
-                      <p
-                        style={{
-                          fontSize: '0.94rem',
-                          color: '#94a3b8',
-                          lineHeight: '1.65',
-                          margin: '0 0 24px 0',
-                        }}
-                      >
-                        {channel.desc}
-                      </p>
-                    </div>
-
-                    <div style={{ paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                      <Link
-                        href={channel.href}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          color: channel.color,
-                          fontWeight: 700,
-                          fontSize: '0.92rem',
-                          textDecoration: 'none',
-                        }}
-                      >
-                        <span>Access Tool</span>
-                        <HiArrowRight size={16} />
-                      </Link>
-                    </div>
+              <div className="expertise-grid">
+                {resourceChannels.map(channel => (
+                  <div key={channel.title} className="expertise-card">
+                    <div className="expertise-icon-wrapper">{channel.icon}</div>
+                    <h3>{channel.title}</h3>
+                    <p>{channel.desc}</p>
+                    <Link href={channel.href} className="expertise-card-link">
+                      Open channel →
+                    </Link>
                   </div>
                 ))}
               </div>
             </div>
           </section>
-        </main>
 
+          <section className="section-surface" style={{ background: '#f8fafc' }}>
+            <div className="container">
+              <div className="section-header-row">
+                <div className="section-header-left">
+                  <span className="eyebrow">EDITORIAL</span>
+                  <h2>Recent insights</h2>
+                </div>
+                <Link href="/blog" className="view-all-link">
+                  Read all articles →
+                </Link>
+              </div>
+
+              <div className="insights-grid">
+                {recentPosts.slice(0, 3).map((post, index) => {
+                  const blogImages: Record<string, string> = {
+                    'navigating-tax': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop',
+                    'financial-foundation': 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop',
+                    'education-workflow': 'https://images.unsplash.com/photo-1464938050744-13748f5ad1a2?q=80&w=600&auto=format&fit=crop',
+                  }
+                  const imageUrl = blogImages[post.slug] || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop'
+
+                  return (
+                    <div key={index} className="insight-card-item" style={{ background: 'var(--surface)' }}>
+                      <div className="insight-img-container">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={imageUrl} alt={post.title} className="insight-img" />
+                      </div>
+                      <div className="insight-content" style={{ padding: '24px' }}>
+                        <span className="insight-category">{post.category || 'INSIGHT'}</span>
+                        <h3 className="insight-title" style={{ fontSize: '1.2rem' }}>{post.title}</h3>
+                        <p className="insight-excerpt" style={{ fontSize: '0.92rem' }}>{post.excerpt}</p>
+                        <Link href={`/blog/${post.slug}`} style={{ marginTop: 'auto', fontWeight: 700, color: 'var(--accent)', fontSize: '0.92rem' }}>
+                          Read article →
+                        </Link>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </section>
+
+          <section className="container">
+            <div className="cta-banner-container">
+              <h2>Need a custom checklist or resource set?</h2>
+              <div className="cta-actions">
+                <Link href="/contact" className="cta-btn-primary">Request resources</Link>
+                <Link href="/" className="cta-btn-secondary">Back to homepage</Link>
+              </div>
+            </div>
+          </section>
+        </main>
         <Footer />
       </div>
     </>
@@ -233,16 +127,12 @@ export default function Resources({ posts }: { posts: any[] }) {
 
 export async function getStaticProps() {
   try {
-    const posts = await prisma.blogPost.findMany({
-      where: { publishedAt: { not: null } },
-      take: 3,
-      orderBy: { id: 'desc' },
-    })
+    const posts = await prisma.blogPost.findMany({ orderBy: { publishedAt: 'desc' } })
     return {
       props: { posts: JSON.parse(JSON.stringify(posts)) },
       revalidate: 60,
     }
-  } catch (error) {
+  } catch {
     return {
       props: { posts: samplePosts },
       revalidate: 60,

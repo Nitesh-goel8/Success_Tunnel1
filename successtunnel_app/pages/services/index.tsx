@@ -3,298 +3,207 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
-import PerspectiveServiceCard from '../../components/home/PerspectiveServiceCard'
-import InteractiveServiceExplorer from '../../components/home/InteractiveServiceExplorer'
-import ProcessTimeline from '../../components/home/ProcessTimeline'
 import { prisma } from '../../lib/prisma'
 import { sampleServices } from '../../lib/sampleData'
 import {
-  HiBriefcase,
-  HiChartBar,
-  HiAcademicCap,
-  HiTrendingUp,
-  HiOfficeBuilding,
-  HiKey,
-  HiArrowRight,
-  HiShieldCheck,
-  HiOutlineLightningBolt,
-  HiOutlineCheckCircle,
+  HiBriefcase, HiChartBar, HiAcademicCap, HiTrendingUp, HiOfficeBuilding, HiKey
 } from 'react-icons/hi'
+import { FaBullseye, FaBolt, FaGem } from 'react-icons/fa'
 
-const coreServicesData = [
+const coreServices = [
+  { title: 'Consultancy', slug: 'consultancy', excerpt: 'Strategic planning, corporate compliance, and tax advisory for scaling enterprises.' },
+  { title: 'Finance', slug: 'finance', excerpt: 'Financial planning, restructuring, and capital procurement solutions.' },
+  { title: 'Education', slug: 'education', excerpt: 'Practical finance, accounting, and taxation courses for learners and professionals.' },
+  { title: 'Investment', slug: 'investment', excerpt: 'Structured investment guidance and disciplined capital allocation support.' },
+  { title: 'Real Estate', slug: 'real-estate', excerpt: 'Commercial and residential property advisory and portfolio acquisition.' },
+  { title: 'Rental Space', slug: 'rental-space', excerpt: 'Flexible corporate workspace, meeting rooms, and office suites.' },
+]
+
+const benefits = [
+  { icon: <FaBullseye size={22} />, title: 'Coordinated Strategy', text: 'All your service needs (taxes, finance, property) managed by a single unified team to avoid disjointed planning.' },
+  { icon: <FaBolt size={22} />, title: 'Rapid Execution', text: 'Direct regulatory channels, automated workflows, and centralized communication lines for faster completions.' },
+  { icon: <FaGem size={22} />, title: 'Transparent Delivery', text: 'Enjoy a structured, transparent, and dedicated advisory experience with complete clarity at every stage.' }
+]
+
+const processFlow = [
+  { step: '01', title: 'Book Consultation', desc: 'Schedule a call or submit an inquiry detailing your organizational goals.' },
+  { step: '02', title: 'Requirement Analysis', desc: 'We review your compliance scope, financials, or property specifications.' },
+  { step: '03', title: 'Strategy Planning', desc: 'We build a clear, structured roadmap with timelines, documents, and next steps.' },
+  { step: '04', title: 'Execution', desc: 'Our team carries out filings, advisory reviews, or lease coordination.' },
+  { step: '05', title: 'Ongoing Support', desc: 'We stay on hand to provide structured follow-up advice and maintenance.' }
+]
+
+const faqs = [
   {
-    title: 'Corporate Consultancy',
-    slug: 'consultancy',
-    icon: <HiBriefcase size={26} />,
-    accentColor: '#38bdf8',
-    pillarNumber: 'P-01',
-    excerpt: 'Statutory compliance, direct and indirect taxation, corporate restructuring, and MCA secretarial governance.',
-    keyTags: ['Income Tax', 'GST Filings', 'LLP / Pvt Ltd', 'ROC Secretarial'],
+    question: "What service lines do you cover?",
+    answer: "We cover comprehensive professional services across five main pillars: Strategic business consultancy (income tax, GST, registration), finance planning, educational courses/notes, investment portfolios, and real estate & rental services."
   },
   {
-    title: 'Financial Direction',
-    slug: 'finance',
-    icon: <HiChartBar size={26} />,
-    accentColor: '#60a5fa',
-    pillarNumber: 'P-02',
-    excerpt: 'Bank credit syndication, CMA data preparation, debt restructuring, and institutional working capital procurement.',
-    keyTags: ['CMA Data', 'Bank Finance', 'Working Capital', 'Project Reports'],
+    question: "Can I bundle multiple services together?",
+    answer: "Absolutely. Most clients benefit from combining services—such as company registration (consultancy) with corporate office space search (rental space) and capital planning (finance)."
   },
   {
-    title: 'Professional Education',
-    slug: 'education',
-    icon: <HiAcademicCap size={26} />,
-    accentColor: '#a855f7',
-    pillarNumber: 'P-03',
-    excerpt: 'Industry-calibrated courses in practical accounting, Tally Prime mastery, and live statutory portal filing workflows.',
-    keyTags: ['Tally Prime', 'Live Portals', 'GST Training', 'Study Notes'],
-  },
-  {
-    title: 'Investment Advisory',
-    slug: 'investment',
-    icon: <HiTrendingUp size={26} />,
-    accentColor: '#f59e0b',
-    pillarNumber: 'P-04',
-    excerpt: 'Disciplined capital allocation, portfolio risk modeling, fixed-income yields, and long-term wealth preservation.',
-    keyTags: ['Asset Allocation', 'Capital Preservation', 'Risk Analysis', 'Tax Yields'],
-  },
-  {
-    title: 'Commercial Real Estate',
-    slug: 'real-estate',
-    icon: <HiOfficeBuilding size={26} />,
-    accentColor: '#10b981',
-    pillarNumber: 'P-05',
-    excerpt: 'Commercial property sourcing, legal title due diligence, yield valuation, and institutional portfolio acquisitions.',
-    keyTags: ['Commercial Land', 'Due Diligence', 'Rental Yields', 'Title Clearance'],
-  },
-  {
-    title: 'Managed Rental Space',
-    slug: 'rental-space',
-    icon: <HiKey size={26} />,
-    accentColor: '#ec4899',
-    pillarNumber: 'P-06',
-    excerpt: 'Executive office suites, dedicated team cabins, and fully serviced workspaces in prime commercial hubs of Panipat.',
-    keyTags: ['Executive Suites', 'Plug & Play', 'Boardrooms', 'Panipat Hub'],
-  },
+    question: "Do you support virtual meetings?",
+    answer: "Yes, we support virtual advisory sessions globally via Zoom, Google Meet, and Microsoft Teams to make coordination seamless."
+  }
 ]
 
 export default function Services({ services }: { services: any[] }) {
+  const serviceItems = Array.from(
+    new Map([...(services || []), ...sampleServices, ...coreServices].map(item => [item.slug, item])).values()
+  ).slice(0, 6)
+
   return (
     <>
       <Head>
-        <title>Professional Services Ecosystem — Success Tunnel | Panipat HQ</title>
+        <title>Professional Services Ecosystem — Success Tunnel</title>
         <meta
           name="description"
-          content="Explore Success Tunnel practice areas: corporate consultancy, business finance, practical education, investment direction, and commercial real estate in Panipat, Haryana."
+          content="Explore Success Tunnel services: corporate consultancy, business finance, practical education, investment direction, and commercial real estate."
         />
         <link rel="canonical" href="https://successtunnel.in/services" />
         <meta property="og:title" content="Professional Services Ecosystem — Success Tunnel" />
-        <meta
-          property="og:description"
-          content="We unify corporate consulting, finance, education, investment, and commercial property into one coordinated advisory practice in Panipat, Haryana."
-        />
+        <meta property="og:description" content="We unify consultancy, finance, education, investment, and property support into one coherent client experience." />
         <meta property="og:url" content="https://successtunnel.in/services" />
         <meta property="og:type" content="website" />
       </Head>
 
-      <div className="cinematic-theme-root">
+      <div>
         <Nav />
-
         <main>
-          {/* Hero Section */}
-          <section
-            style={{
-              paddingTop: 'clamp(50px, 8vw, 90px)',
-              paddingBottom: 'clamp(40px, 6vw, 70px)',
-              textAlign: 'center',
-            }}
-          >
-            <div className="container" style={{ maxWidth: '840px' }}>
-              <span
-                className="eyebrow"
-                style={{
-                  background: 'rgba(56, 189, 248, 0.1)',
-                  color: '#38bdf8',
-                  border: '1px solid rgba(56, 189, 248, 0.25)',
-                  padding: '8px 16px',
-                  borderRadius: '999px',
-                  fontSize: '0.78rem',
-                  fontWeight: 800,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  marginBottom: '20px',
-                }}
-              >
-                PRACTICE ECOSYSTEM &bull; PANIPAT HEADQUARTERS
-              </span>
-
-              <h1
-                style={{
-                  fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
-                  lineHeight: '1.1',
-                  letterSpacing: '-0.04em',
-                  fontWeight: 900,
-                  color: '#f8fafc',
-                  margin: '0 auto 24px',
-                  fontFamily: "'Sora', sans-serif",
-                }}
-              >
-                Disciplined Advisory Across Every Stage of Growth.
+          {/* Services Hero */}
+          <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '60px' }}>
+            <div className="container" style={{ textAlign: 'center', maxWidth: '800px' }}>
+              <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)', marginBottom: '24px' }}>SERVICES</span>
+              <h1 style={{ 
+                fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', 
+                lineHeight: '1.1', 
+                letterSpacing: '-0.04em',
+                fontWeight: 800,
+                color: 'var(--primary)',
+                margin: '20px auto 30px'
+              }}>
+                Our Service Ecosystem
               </h1>
-
-              <p style={{ fontSize: '1.15rem', color: '#94a3b8', lineHeight: '1.75', margin: '0 auto 36px' }}>
-                We coordinate statutory tax compliance, debt syndication, professional workforce training, investment modeling, and commercial real estate under one unified leadership team in Panipat, Haryana.
+              <p style={{ fontSize: '1.2rem', color: 'var(--muted)', lineHeight: '1.65' }}>
+                We unify consultancy, finance, education, investment, and property support into one coherent, premium client experience.
               </p>
-
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', justifyContent: 'center' }}>
-                <a
-                  href="#practice-grid"
-                  className="btn btn-primary"
-                  style={{
-                    padding: '14px 28px',
-                    borderRadius: '12px',
-                    fontSize: '0.98rem',
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #2563eb, #38bdf8)',
-                    color: '#ffffff',
-                    border: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                  }}
-                >
-                  Explore Practice Grid <HiArrowRight />
-                </a>
-
-                <Link
-                  href="/contact"
-                  className="btn btn-secondary"
-                  style={{
-                    padding: '14px 24px',
-                    borderRadius: '12px',
-                    fontSize: '0.98rem',
-                    fontWeight: 600,
-                    color: '#f8fafc',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                  }}
-                >
-                  Book Consultation
-                </Link>
-              </div>
             </div>
           </section>
 
-          {/* 3D Perspective Practice Cards */}
-          <section id="practice-grid" style={{ padding: '80px 0', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+          {/* All Services Grid */}
+          <section className="section-surface" id="services-grid">
             <div className="container">
-              <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 56px' }}>
-                <span className="eyebrow" style={{ color: '#38bdf8', background: 'rgba(56, 189, 248, 0.08)' }}>
-                  SIX INTEGRATED PRACTICES
-                </span>
-                <h2
-                  style={{
-                    fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
-                    color: '#f8fafc',
-                    fontWeight: 800,
-                    margin: '14px 0 14px',
-                    fontFamily: "'Sora', sans-serif",
-                  }}
-                >
-                  Practice Areas &amp; Core Competencies
+              <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+                <span className="eyebrow">PORTFOLIO</span>
+                <h2 style={{ fontSize: '2rem', color: 'var(--primary)', fontWeight: 700, margin: '12px 0 0' }}>
+                  Expertise Across Key Channels
                 </h2>
-                <p style={{ color: '#94a3b8', fontSize: '1rem', lineHeight: '1.6', margin: 0 }}>
-                  Select any card to review statutory scope, required documentation, and direct advisory steps.
-                </p>
               </div>
 
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                  gap: '28px',
-                }}
-              >
-                {coreServicesData.map(service => (
-                  <PerspectiveServiceCard
-                    key={service.slug}
-                    title={service.title}
-                    slug={service.slug}
-                    icon={service.icon}
-                    excerpt={service.excerpt}
-                    pillarNumber={service.pillarNumber}
-                    keyTags={service.keyTags}
-                  />
+              <div className="expertise-grid">
+                {serviceItems.map(service => (
+                  <div key={service.slug} className={`expertise-card theme-${service.slug}`}>
+                    <div className="expertise-icon-wrapper">
+                      {service.slug === 'consultancy' ? <HiBriefcase size={28} /> :
+                       service.slug === 'finance' ? <HiChartBar size={28} /> :
+                       service.slug === 'education' ? <HiAcademicCap size={28} /> :
+                       service.slug === 'investment' ? <HiTrendingUp size={28} /> :
+                       service.slug === 'real-estate' ? <HiOfficeBuilding size={28} /> : <HiKey size={28} />}
+                    </div>
+                    <h3>{service.title}</h3>
+                    <p>{service.excerpt}</p>
+                    <Link href={`/services/${service.slug}`} className="expertise-card-link">
+                      Learn More &rarr;
+                    </Link>
+                  </div>
                 ))}
               </div>
             </div>
           </section>
 
-          {/* Interactive Service Explorer */}
-          <InteractiveServiceExplorer />
+          {/* Benefits Section */}
+          <section className="section-surface" style={{ background: '#f8fafc' }}>
+            <div className="container">
+              <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+                <span className="eyebrow">BENEFITS</span>
+                <h2 style={{ fontSize: '2rem', color: 'var(--primary)', fontWeight: 700, margin: '12px 0 0' }}>
+                  The SuccessTunnel Advantage
+                </h2>
+              </div>
 
-          {/* Process Timeline */}
-          <ProcessTimeline />
+              <div className="expertise-grid">
+                {benefits.map((b, i) => (
+                  <div key={i} className="expertise-card" style={{ padding: '32px' }}>
+                    <div className="expertise-icon-wrapper">{b.icon}</div>
+                    <h3>{b.title}</h3>
+                    <p style={{ margin: '0' }}>{b.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
 
-          {/* Closing Consultation CTA */}
-          <section className="container" style={{ padding: '80px 0 96px' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(15, 23, 42, 0.9) 100%)',
-                border: '1px solid rgba(56, 189, 248, 0.25)',
-                borderRadius: '24px',
-                padding: 'clamp(28px, 4vw, 48px)',
-                textAlign: 'center',
-              }}
-            >
-              <h3 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.4rem)', color: '#f8fafc', fontWeight: 800, margin: '0 0 16px', fontFamily: "'Sora', sans-serif" }}>
-                Need Tailored Advisory for Your Business?
-              </h3>
-              <p style={{ color: '#94a3b8', fontSize: '1.05rem', maxWidth: '640px', margin: '0 auto 28px' }}>
-                Schedule a confidential consultation with our principal advisors at our Panipat headquarters or online via video conference.
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', justifyContent: 'center' }}>
-                <Link
-                  href="/contact"
-                  className="btn btn-primary"
-                  style={{
-                    padding: '14px 28px',
-                    borderRadius: '12px',
-                    fontSize: '0.95rem',
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #2563eb, #38bdf8)',
-                    color: '#ffffff',
-                    border: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                  }}
-                >
-                  Schedule In-Person Consultation <HiArrowRight />
-                </Link>
-                <Link
-                  href="/projects"
-                  className="btn btn-secondary"
-                  style={{
-                    padding: '14px 24px',
-                    borderRadius: '12px',
-                    fontSize: '0.95rem',
-                    fontWeight: 600,
-                    color: '#f8fafc',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                  }}
-                >
-                  View Public Projects
-                </Link>
+          {/* Process Section */}
+          <section className="section-surface">
+            <div className="container">
+              <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+                <span className="eyebrow">PROCESS</span>
+                <h2 style={{ fontSize: '2rem', color: 'var(--primary)', fontWeight: 700, margin: '12px 0 0' }}>
+                  Our Delivery Roadmap
+                </h2>
+              </div>
+
+              <div className="timeline-flow">
+                {processFlow.map((flow, idx) => (
+                  <div key={idx} className="timeline-flow-item">
+                    <div className="timeline-flow-badge">{flow.step}</div>
+                    <div className="timeline-flow-content">
+                      <h3>{flow.title}</h3>
+                      <p>{flow.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* FAQs */}
+          <section className="section-surface" style={{ background: '#f8fafc' }}>
+            <div className="container" style={{ maxWidth: '800px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+                <span className="eyebrow">FAQ</span>
+                <h2 style={{ fontSize: '2rem', color: 'var(--primary)', fontWeight: 700, margin: '12px 0 0' }}>
+                  Frequently Asked Questions
+                </h2>
+              </div>
+
+              <div className="faq-list">
+                {faqs.map((faq, index) => (
+                  <details key={index} className="faq-item" style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px', padding: '16px 20px', marginBottom: '16px' }}>
+                    <summary style={{ fontWeight: 700, color: 'var(--primary)', cursor: 'pointer', outline: 'none' }}>
+                      {faq.question}
+                    </summary>
+                    <p style={{ marginTop: '12px', color: 'var(--muted)', fontSize: '0.96rem', lineHeight: '1.6' }}>
+                      {faq.answer}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* CTA */}
+          <section className="container">
+            <div className="cta-banner-container">
+              <h2>Ready to Build Your Next Success Story?</h2>
+              <div className="cta-actions">
+                <Link href="/contact" className="cta-btn-primary">Book Consultation &rarr;</Link>
+                <a href="#services-grid" className="cta-btn-secondary">Explore Services</a>
               </div>
             </div>
           </section>
         </main>
-
         <Footer />
       </div>
     </>
@@ -303,15 +212,15 @@ export default function Services({ services }: { services: any[] }) {
 
 export async function getStaticProps() {
   try {
-    const services = await prisma.service.findMany({ take: 6 })
+    const services = await prisma.service.findMany()
     return {
       props: { services: JSON.parse(JSON.stringify(services)) },
-      revalidate: 60,
+      revalidate: 60
     }
   } catch (error) {
     return {
       props: { services: sampleServices },
-      revalidate: 60,
+      revalidate: 60
     }
   }
 }

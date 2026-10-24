@@ -1,142 +1,92 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
+import Image from 'next/image'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import GuidedEnquiry from '../components/GuidedEnquiry'
 import EducationVideoPromo from '../components/EducationVideoPromo'
-import PerspectiveServiceCard from '../components/home/PerspectiveServiceCard'
-import InteractiveServiceExplorer from '../components/home/InteractiveServiceExplorer'
-import ProcessTimeline from '../components/home/ProcessTimeline'
-import BusinessValueStandards from '../components/home/BusinessValueStandards'
 import { prisma } from '../lib/prisma'
 import { sampleServices } from '../lib/sampleData'
 import { useSiteSettings } from '../components/SiteSettingsProvider'
 import { toTelHref, toWhatsAppHref } from '../lib/siteSettings'
 import {
-  HiShieldCheck,
-  HiGlobeAlt,
-  HiBriefcase,
-  HiChartBar,
-  HiAcademicCap,
-  HiTrendingUp,
-  HiOfficeBuilding,
-  HiKey,
-  HiLocationMarker,
-  HiPhone,
-  HiMail,
-  HiClock,
-  HiArrowRight,
+  HiShieldCheck, HiGlobeAlt, HiUsers, HiStar,
+  HiBriefcase, HiChartBar, HiAcademicCap, HiTrendingUp, HiOfficeBuilding, HiKey,
+  HiLocationMarker, HiPhone, HiMail, HiClock, HiChatAlt2, HiCheckCircle, HiArrowRight,
 } from 'react-icons/hi'
-import { FaWhatsapp } from 'react-icons/fa'
+import { FaWhatsapp, FaRocket, FaIndustry, FaStore, FaUniversity, FaTools } from 'react-icons/fa'
+import { MdHealthAndSafety } from 'react-icons/md'
 
-// High-Precision Monolithic 3D Scene (Client-only, SSR disabled, polished fallback)
-const HeroScene3D = dynamic(() => import('../components/3d/HeroScene3D'), {
-  ssr: false,
-  loading: () => (
-    <div
-      style={{
-        width: '100%',
-        minHeight: '440px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <div
-        style={{
-          width: '240px',
-          height: '240px',
-          borderRadius: '24px',
-          background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(15, 23, 42, 0.6) 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <span style={{ color: '#38bdf8', fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.1em' }}>
-          LOADING SPATIAL MODEL...
-        </span>
-      </div>
-    </div>
-  ),
-})
-
-const coreServicesData = [
-  {
-    title: 'Corporate Consultancy',
-    slug: 'consultancy',
-    icon: <HiBriefcase size={22} />,
-    pillarNumber: 'P-01',
-    excerpt: 'Statutory compliance, direct and indirect taxation, corporate restructuring, and MCA secretarial governance.',
-    keyTags: ['Income Tax', 'GST Filings', 'LLP / Pvt Ltd', 'ROC Secretarial'],
-  },
-  {
-    title: 'Financial Direction',
-    slug: 'finance',
-    icon: <HiChartBar size={22} />,
-    pillarNumber: 'P-02',
-    excerpt: 'Bank credit syndication, CMA data preparation, debt restructuring, and institutional working capital procurement.',
-    keyTags: ['CMA Data', 'Bank Finance', 'Working Capital', 'Project Reports'],
-  },
-  {
-    title: 'Professional Education',
-    slug: 'education',
-    icon: <HiAcademicCap size={22} />,
-    pillarNumber: 'P-03',
-    excerpt: 'Industry-calibrated courses in practical accounting, Tally Prime mastery, and live statutory portal filing workflows.',
-    keyTags: ['Tally Prime', 'Live Portals', 'GST Training', 'Study Notes'],
-  },
-  {
-    title: 'Investment Advisory',
-    slug: 'investment',
-    icon: <HiTrendingUp size={22} />,
-    pillarNumber: 'P-04',
-    excerpt: 'Disciplined capital allocation, portfolio risk modeling, fixed-income yields, and long-term wealth preservation.',
-    keyTags: ['Asset Allocation', 'Capital Preservation', 'Risk Analysis', 'Tax Yields'],
-  },
-  {
-    title: 'Commercial Real Estate',
-    slug: 'real-estate',
-    icon: <HiOfficeBuilding size={22} />,
-    pillarNumber: 'P-05',
-    excerpt: 'Commercial property sourcing, legal title due diligence, yield valuation, and institutional portfolio acquisitions.',
-    keyTags: ['Commercial Land', 'Due Diligence', 'Rental Yields', 'Title Clearance'],
-  },
-  {
-    title: 'Managed Rental Space',
-    slug: 'rental-space',
-    icon: <HiKey size={22} />,
-    pillarNumber: 'P-06',
-    excerpt: 'Executive office suites, dedicated team cabins, and fully serviced workspaces in prime commercial hubs of Panipat.',
-    keyTags: ['Executive Suites', 'Plug & Play', 'Boardrooms', 'Panipat Hub'],
-  },
+const coreServices = [
+  { title: 'Consultancy', slug: 'consultancy', icon: '💼', excerpt: 'Strategic planning, corporate compliance, and tax advisory for scaling enterprises.' },
+  { title: 'Finance', slug: 'finance', icon: '📊', excerpt: 'Financial restructuring, investment planning, and capital procurement.' },
+  { title: 'Education', slug: 'education', icon: '🎓', excerpt: 'Corporate training programs, notes, and professional skill development.' },
+  { title: 'Investment', slug: 'investment', icon: '📈', excerpt: 'Disciplined portfolio allocation and capital preservation advisory.' },
+  { title: 'Real Estate', slug: 'real-estate', icon: '🏢', excerpt: 'Property acquisition, commercial portfolio planning, and advisory.' },
+  { title: 'Rental Space', slug: 'rental-space', icon: '🔑', excerpt: 'Flexible corporate workspace and managed office solutions.' },
 ]
 
-export default function Home({
-  services,
-  featuredEducationContent,
-}: {
-  services: any[]
-  featuredEducationContent: any | null
-}) {
+const trustedBrands = [
+  'Corporate Advisory',
+  'Tax & Compliance',
+  'Commercial Property',
+  'Financial Planning',
+  'Corporate Workspace',
+  'Learning Portals',
+]
+
+const industries = [
+  { id: 'startups', name: 'Startups', icon: <FaRocket size={22} /> },
+  { id: 'msme', name: 'MSME', icon: <FaIndustry size={22} /> },
+  { id: 'healthcare', name: 'Healthcare', icon: <MdHealthAndSafety size={22} /> },
+  { id: 'banking', name: 'Banking', icon: <FaUniversity size={22} /> },
+  { id: 'construction', name: 'Construction', icon: <FaTools size={22} /> },
+  { id: 'retail', name: 'Retail', icon: <FaStore size={22} /> }
+]
+
+const blogs = [
+  {
+    category: 'FINANCE',
+    title: 'The Future of MSME Financing in 2024',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop',
+    excerpt: 'Exploring new avenues for debt-free capital in a rising interest rate environment.'
+  },
+  {
+    category: 'MANAGEMENT',
+    title: 'Bridging the Corporate Leadership Gap',
+    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop',
+    excerpt: 'How to cultivate the next generation of executives through strategic training.'
+  },
+  {
+    category: 'PROPERTIES',
+    title: 'Investing in Sustainable Commercial Spaces',
+    image: 'https://images.unsplash.com/photo-1464938050744-13748f5ad1a2?q=80&w=600&auto=format&fit=crop',
+    excerpt: 'Why ESG compliance is now the biggest driver for real estate ROI.'
+  }
+]
+
+export default function Home({ services, featuredEducationContent }: { services: any[]; featuredEducationContent: any | null }) {
   const settings = useSiteSettings()
+  const serviceItems = Array.from(
+    new Map([...(services || []), ...sampleServices, ...coreServices].map(item => [item.slug, item])).values()
+  ).slice(0, 6)
+
+  const [activeInd, setActiveInd] = useState('startups')
 
   return (
     <>
       <Head>
-        <title>Success Tunnel — Corporate Consultancy, Finance, Education &amp; Real Estate | Panipat, Haryana</title>
+        <title>Success Tunnel — Corporate Consultancy, Finance, Education & Real Estate</title>
         <meta
           name="description"
-          content="Success Tunnel is your strategic advisory partner in Panipat, Haryana, unifying corporate compliance, business finance, professional education, investment guidance, and commercial real estate solutions."
+          content="Success Tunnel is your strategic advisory partner in India, unifying corporate compliance, business finance, professional education, investment guidance, and real estate solutions."
         />
         <link rel="canonical" href="https://successtunnel.in" />
-        <meta property="og:title" content="Success Tunnel — Strategic Advisory &amp; Execution" />
+        <meta property="og:title" content="Success Tunnel — Strategic Advisory & Execution" />
         <meta
           property="og:description"
-          content="One coordinated multidisciplinary partner across consulting, tax, finance, education, and commercial real estate in Panipat, Haryana."
+          content="One coordinated multidisciplinary partner across consulting, tax, finance, and commercial real estate."
         />
         <meta property="og:url" content="https://successtunnel.in" />
         <meta property="og:type" content="website" />
@@ -145,579 +95,369 @@ export default function Home({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'ProfessionalService',
+              '@type': 'Organization',
               name: settings.businessName || 'Success Tunnel',
               url: 'https://successtunnel.in',
               logo: 'https://successtunnel.in/logo.jpeg',
-              telephone: settings.contactPhone1 || '+91 89507 71205',
-              email: settings.contactEmail || 'successtunnel.in@gmail.com',
+              contactPoint: {
+                '@type': 'ContactPoint',
+                telephone: settings.contactPhone1 || '+91 98765 43210',
+                contactType: 'customer service',
+                email: settings.contactEmail || 'contact@successtunnel.in',
+              },
               address: {
                 '@type': 'PostalAddress',
-                streetAddress: settings.officeAddress || 'First Floor, Sudarshan Tower, Panipat, Haryana',
-                addressLocality: 'Panipat',
-                addressRegion: 'Haryana',
-                postalCode: '132103',
-                addressCountry: 'IN',
+                streetAddress: settings.officeAddress || 'New Delhi, India',
               },
             }),
           }}
         />
       </Head>
 
-      <div className="cinematic-theme-root">
+      <div>
         <Nav />
 
         <main>
-          {/* ============================================================ */}
-          {/* 1. EDITORIAL ASYMMETRIC HERO SECTION */}
-          {/* ============================================================ */}
-          <section
-            className="hero-section"
-            style={{
-              paddingTop: 'clamp(48px, 6vw, 84px)',
-              paddingBottom: 'clamp(56px, 8vw, 96px)',
-              position: 'relative',
-              overflow: 'hidden',
-            }}
-          >
+          {/* 1. Hero Section */}
+          <section className="hero-section" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
             <div className="container hero-grid" style={{ alignItems: 'center' }}>
-              {/* Left Column: Focused Editorial Copy */}
               <div className="hero-copy">
-                {/* Understated Category Label */}
-                <div style={{ marginBottom: '20px' }}>
-                  <span
-                    className="eyebrow"
-                    style={{
-                      background: 'rgba(56, 189, 248, 0.08)',
-                      color: '#38bdf8',
-                      border: '1px solid rgba(56, 189, 248, 0.2)',
-                      padding: '6px 14px',
-                      borderRadius: '8px',
-                      fontSize: '0.76rem',
-                      fontWeight: 700,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                    }}
-                  >
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#38bdf8' }} />
-                    STRATEGIC ADVISORY &bull; PANIPAT HEADQUARTERS
-                  </span>
-                </div>
-
-                {/* Primary Headline */}
-                <h1
-                  style={{
-                    fontSize: 'clamp(2.3rem, 5vw, 4.1rem)',
-                    lineHeight: '1.1',
-                    letterSpacing: '-0.035em',
-                    fontWeight: 900,
-                    color: '#f8fafc',
-                    margin: '0 0 20px 0',
-                    fontFamily: "'Sora', sans-serif",
-                  }}
-                >
-                  Unified Advisory for Corporate Strategy, Capital &amp; Execution.
+                <h1 style={{ 
+                  fontSize: 'clamp(2.4rem, 5.5vw, 4.6rem)', 
+                  lineHeight: '1.05', 
+                  letterSpacing: '-0.04em',
+                  fontWeight: 900,
+                  color: 'var(--primary)',
+                  margin: '0 0 24px 0',
+                  fontFamily: "'Sora', sans-serif"
+                }}>
+                  A Fastest Way<br />
+                  <span style={{ background: 'linear-gradient(135deg, var(--accent), #0b3a86)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>to Big Success.</span>
                 </h1>
-
-                {/* Concise Factual Explanation */}
-                <p
-                  style={{
-                    fontSize: '1.1rem',
-                    lineHeight: '1.75',
-                    color: '#94a3b8',
-                    marginBottom: '32px',
-                    maxWidth: '540px',
-                  }}
-                >
-                  Success Tunnel integrates statutory compliance, debt syndication, workforce training, investment modeling, and commercial real estate into a single, coordinated practice in Panipat, Haryana.
+                <p style={{ 
+                  fontSize: '1.15rem', 
+                  lineHeight: '1.65', 
+                  color: 'var(--muted)', 
+                  marginBottom: '32px', 
+                  maxWidth: '520px' 
+                }}>
+                  Strategic consultancy, finance, education, investment, and real estate solutions designed to accelerate your growth and secure your future.
                 </p>
-
-                {/* Focused CTA Pair (Strictly 1 Primary + 1 Secondary) */}
-                <div className="hero-actions" style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', marginBottom: '36px' }}>
-                  <a
-                    href="#contact"
-                    className="btn btn-primary"
-                    style={{
-                      padding: '14px 28px',
-                      borderRadius: '10px',
-                      fontSize: '0.96rem',
-                      fontWeight: 700,
-                      background: 'linear-gradient(135deg, #2563eb, #38bdf8)',
-                      color: '#ffffff',
-                      border: 'none',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      boxShadow: '0 8px 24px rgba(37, 99, 235, 0.3)',
-                    }}
-                  >
-                    Book In-Person Consultation <HiArrowRight size={16} />
+                <div className="hero-actions">
+                  <a href="#contact" className="btn btn-primary" style={{ padding: '16px 28px' }}>
+                    Book Consultation &rarr;
                   </a>
-
-                  <a
-                    href="#practice-grid"
-                    className="btn btn-secondary"
-                    style={{
-                      padding: '14px 24px',
-                      borderRadius: '10px',
-                      fontSize: '0.96rem',
-                      fontWeight: 600,
-                      color: '#f8fafc',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                    }}
-                  >
-                    Explore Practice Disciplines
-                  </a>
+                  <Link href="/services" className="btn btn-secondary" style={{ padding: '16px 28px' }}>
+                    Explore Services
+                  </Link>
                 </div>
 
-                {/* Factual Credibility Strip */}
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-                    gap: '16px',
-                    paddingTop: '24px',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.07)',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ color: '#38bdf8', flexShrink: 0 }}><HiShieldCheck size={20} /></div>
-                    <div style={{ fontSize: '0.82rem', color: '#cbd5e1', lineHeight: '1.4' }}>
-                      <strong style={{ color: '#f8fafc', display: 'block' }}>Direct Advisory</strong>
-                      Chartered Accountants
-                    </div>
+                {/* Bottom Metrics inside Hero (Factual capabilities) */}
+                <div className="hero-metrics-bar">
+                  <div className="hero-metric-item">
+                    <div className="hero-metric-icon"><HiShieldCheck size={22} /></div>
+                    <div className="hero-metric-text">Direct Advisory<br/>&amp; Governance</div>
                   </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ color: '#38bdf8', flexShrink: 0 }}><HiGlobeAlt size={20} /></div>
-                    <div style={{ fontSize: '0.82rem', color: '#cbd5e1', lineHeight: '1.4' }}>
-                      <strong style={{ color: '#f8fafc', display: 'block' }}>6 Integrated Pillars</strong>
-                      Strategy to Real Estate
-                    </div>
+                  <div className="hero-metric-item">
+                    <div className="hero-metric-icon"><HiGlobeAlt size={22} /></div>
+                    <div className="hero-metric-text">Multidisciplinary<br/>Practice</div>
                   </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ color: '#38bdf8', flexShrink: 0 }}><HiLocationMarker size={20} /></div>
-                    <div style={{ fontSize: '0.82rem', color: '#cbd5e1', lineHeight: '1.4' }}>
-                      <strong style={{ color: '#f8fafc', display: 'block' }}>Panipat Headquarters</strong>
-                      Sudarshan Tower, Panipat
-                    </div>
+                  <div className="hero-metric-item">
+                    <div className="hero-metric-icon"><HiBriefcase size={22} /></div>
+                    <div className="hero-metric-text">Coordinated<br/>Execution</div>
                   </div>
                 </div>
               </div>
 
-              {/* Right Column: High-Precision Monolithic 3D Scene */}
-              <div
-                className="hero-visual-container"
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '100%',
-                  minHeight: '480px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <HeroScene3D />
-              </div>
-            </div>
-          </section>
+              {/* Right Side: Interactive Branch Diagram */}
+              <div className="hero-diagram-container">
+                <svg className="hero-svg-overlay" viewBox="0 0 500 500">
+                  <circle cx="250" cy="250" r="160" fill="none" stroke="rgba(22, 93, 245, 0.12)" strokeWidth="1.5" strokeDasharray="6,6" />
+                  <circle cx="250" cy="250" r="90" fill="none" stroke="rgba(22, 93, 245, 0.08)" strokeWidth="1.5" />
+                  
+                  <line x1="250" y1="250" x2="135" y2="120" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
+                  <line x1="250" y1="250" x2="365" y2="120" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
+                  <line x1="250" y1="250" x2="410" y2="250" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
+                  <line x1="250" y1="250" x2="365" y2="380" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
+                  <line x1="250" y1="250" x2="135" y2="380" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
+                  <line x1="250" y1="250" x2="90" y2="250" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
 
-          {/* ============================================================ */}
-          {/* 2. PRACTICE DISCIPLINES MARQUEE RIBBON */}
-          {/* ============================================================ */}
-          <section
-            style={{
-              padding: '20px 0',
-              background: 'rgba(13, 21, 39, 0.6)',
-              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-            }}
-          >
-            <div className="container">
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '16px',
-                }}
-              >
-                <div style={{ color: '#64748b', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  Coordinated Professional Practices &bull; Panipat
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '20px',
-                    alignItems: 'center',
-                    color: '#cbd5e1',
-                    fontSize: '0.88rem',
-                    fontWeight: 600,
-                  }}
-                >
-                  <span>&bull; Corporate Advisory</span>
-                  <span>&bull; Statutory Tax &amp; GST</span>
-                  <span>&bull; CMA Data &amp; Debt</span>
-                  <span>&bull; Tally &amp; Portals</span>
-                  <span>&bull; Commercial Property</span>
-                  <span>&bull; Managed Suites</span>
-                </div>
-              </div>
-            </div>
-          </section>
+                  <circle cx="190" cy="185" r="4.5" fill="var(--accent)" />
+                  <circle cx="310" cy="185" r="4.5" fill="var(--accent)" />
+                  <circle cx="350" cy="250" r="4.5" fill="var(--accent)" />
+                  <circle cx="310" cy="315" r="4.5" fill="var(--accent)" />
+                  <circle cx="190" cy="315" r="4.5" fill="var(--accent)" />
+                  <circle cx="150" cy="250" r="4.5" fill="var(--accent)" />
+                </svg>
 
-          {/* ============================================================ */}
-          {/* 3. PRACTICE DISCIPLINES GRID (REFINED ARCHITECTURAL CARDS) */}
-          {/* ============================================================ */}
-          <section id="practice-grid" style={{ padding: '88px 0', position: 'relative' }}>
-            <div className="container">
-              <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 56px' }}>
-                <span className="eyebrow" style={{ color: '#38bdf8', background: 'rgba(56, 189, 248, 0.08)' }}>
-                  COMPREHENSIVE ADVISORY PRACTICE
-                </span>
-                <h2
-                  style={{
-                    fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
-                    color: '#f8fafc',
-                    fontWeight: 800,
-                    letterSpacing: '-0.03em',
-                    margin: '14px 0 14px',
-                    fontFamily: "'Sora', sans-serif",
-                  }}
-                >
-                  Expertise Across All Growth Dimensions
-                </h2>
-                <p style={{ color: '#94a3b8', fontSize: '1.05rem', lineHeight: '1.7', margin: 0 }}>
-                  Structured advisory practices led by qualified practitioners. Explore statutory scope, compliance filings, and execution steps.
-                </p>
-              </div>
-
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                  gap: '24px',
-                }}
-              >
-                {coreServicesData.map(service => (
-                  <PerspectiveServiceCard
-                    key={service.slug}
-                    title={service.title}
-                    slug={service.slug}
-                    icon={service.icon}
-                    excerpt={service.excerpt}
-                    pillarNumber={service.pillarNumber}
-                    keyTags={service.keyTags}
+                <div className="hero-center-node">
+                  <Image
+                    src="/logo.jpeg"
+                    alt="SuccessTunnel"
+                    width={70}
+                    height={70}
+                    style={{ borderRadius: '50%', objectFit: 'cover' }}
+                    priority
                   />
+                </div>
+
+                <Link href="/services/consultancy" className="hero-outer-node theme-consultancy" style={{ top: '65px', left: '40px' }}>
+                  <span><HiBriefcase size={15} /></span> Consultancy
+                </Link>
+                <Link href="/services/finance" className="hero-outer-node theme-finance" style={{ top: '65px', right: '40px' }}>
+                  <span><HiChartBar size={15} /></span> Finance
+                </Link>
+                <Link href="/education" className="hero-outer-node theme-education" style={{ top: '228px', right: '10px' }}>
+                  <span><HiAcademicCap size={15} /></span> Education
+                </Link>
+                <Link href="/services/investment" className="hero-outer-node theme-investment" style={{ bottom: '65px', right: '40px' }}>
+                  <span><HiTrendingUp size={15} /></span> Investment
+                </Link>
+                <Link href="/services/real-estate" className="hero-outer-node theme-real-estate" style={{ bottom: '65px', left: '40px' }}>
+                  <span><HiOfficeBuilding size={15} /></span> Real Estate
+                </Link>
+                <Link href="/services/rental-space" className="hero-outer-node theme-rental-space" style={{ top: '228px', left: '10px' }}>
+                  <span><HiKey size={15} /></span> Rental Space
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/* 2. Capability Channels */}
+          <section className="trusted-logos-section">
+            <div className="container">
+              <div className="trusted-title">Coordinated Professional Practice Areas</div>
+              <div className="logo-slider">
+                <div className="logo-slide-track">
+                  {trustedBrands.map((brand, idx) => (
+                    <div key={idx} className="logo-item">
+                      <span>✓</span> {brand}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* 3. Services Grid */}
+          <section className="section-surface" id="services">
+            <div className="container">
+              <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+                <span className="eyebrow">PRACTICE ECOSYSTEM</span>
+                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--primary)', fontWeight: 700, margin: '12px 0 0' }}>
+                  Expertise Across Growth Channels
+                </h2>
+              </div>
+
+              <div className="expertise-grid">
+                {serviceItems.map(service => (
+                  <div key={service.slug} className={`expertise-card theme-${service.slug}`}>
+                    <div className="expertise-icon-wrapper">
+                      {service.slug === 'consultancy' ? <HiBriefcase size={28} /> :
+                       service.slug === 'finance' ? <HiChartBar size={28} /> :
+                       service.slug === 'education' ? <HiAcademicCap size={28} /> :
+                       service.slug === 'investment' ? <HiTrendingUp size={28} /> :
+                       service.slug === 'real-estate' ? <HiOfficeBuilding size={28} /> : <HiKey size={28} />}
+                    </div>
+                    <h3>{service.title}</h3>
+                    <p>{service.excerpt}</p>
+                    <Link href={`/services/${service.slug}`} className="expertise-card-link">
+                      Learn More &rarr;
+                    </Link>
+                  </div>
                 ))}
               </div>
             </div>
           </section>
 
-          {/* ============================================================ */}
-          {/* 4. INTERACTIVE SERVICE EXPLORER */}
-          {/* ============================================================ */}
-          <InteractiveServiceExplorer />
+          {/* 4. Industries We Serve */}
+          <section className="section-surface" style={{ background: '#f8fafc' }}>
+            <div className="container">
+              <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--primary)', fontWeight: 700, margin: '0' }}>
+                  Industries We Support
+                </h2>
+              </div>
 
-          {/* ============================================================ */}
-          {/* 5. SYSTEMATIC ADVISORY LIFECYCLE */}
-          {/* ============================================================ */}
-          <ProcessTimeline />
-
-          {/* ============================================================ */}
-          {/* 6. GOVERNANCE, STANDARDS & PANIPAT HEADQUARTERS */}
-          {/* ============================================================ */}
-          <BusinessValueStandards />
-
-          {/* ============================================================ */}
-          {/* 7. DIRECT ADVISORY & GUIDED CONSULTATION */}
-          {/* ============================================================ */}
-          <section id="contact" style={{ padding: '88px 0', scrollMarginTop: '80px', position: 'relative' }}>
-            <div className="container contact-section-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
-              {/* Left Column: Direct Office Contact Info */}
-              <div
-                className="contact-info-panel"
-                style={{
-                  background: 'linear-gradient(180deg, rgba(13, 21, 39, 0.8) 0%, rgba(9, 14, 26, 0.95) 100%)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '20px',
-                  padding: 'clamp(28px, 4vw, 40px)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '24px',
-                }}
-              >
-                <div>
-                  <span style={{ fontSize: '0.78rem', color: '#38bdf8', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                    DIRECT ADVISORY ACCESS
-                  </span>
-                  <h3
-                    style={{
-                      fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
-                      color: '#f8fafc',
-                      fontWeight: 800,
-                      margin: '8px 0 0',
-                      fontFamily: "'Sora', sans-serif",
-                    }}
+              <div className="industries-pill-grid">
+                {industries.map(ind => (
+                  <div
+                    key={ind.id}
+                    className={`industry-pill-item ${activeInd === ind.id ? 'active' : ''}`}
+                    onClick={() => setActiveInd(ind.id)}
                   >
-                    Let&apos;s Discuss Your Vision
-                  </h3>
-                </div>
+                    <div className="industry-icon-container">{ind.icon}</div>
+                    <span>{ind.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
 
-                <p style={{ color: '#94a3b8', fontSize: '0.94rem', lineHeight: '1.7', margin: 0 }}>
-                  Schedule an in-person meeting at our Panipat headquarters or arrange a virtual video conference with our principal advisors.
+          {/* 5. Execution Standards (Factual principles replacing fake testimonials) */}
+          <section className="section-surface">
+            <div className="container">
+              <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+                <span className="eyebrow">STANDARDS &amp; GOVERNANCE</span>
+                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--primary)', fontWeight: 700, margin: '10px 0 16px' }}>
+                  Execution Standards &amp; Quality Commitments
+                </h2>
+                <p style={{ maxWidth: '640px', margin: '0 auto', color: 'var(--muted)', fontSize: '1.05rem', lineHeight: '1.6' }}>
+                  Our team adheres to strict advisory standards to deliver transparent outcomes with zero ambiguity.
                 </p>
+              </div>
 
-                {/* Office Address */}
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <div
-                    style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '10px',
-                      background: 'rgba(30, 58, 138, 0.2)',
-                      border: '1px solid rgba(56, 189, 248, 0.2)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#38bdf8',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <HiLocationMarker size={18} />
-                  </div>
-                  <div>
-                    <h4 style={{ color: '#f8fafc', fontSize: '0.94rem', fontWeight: 700, margin: '0 0 2px' }}>
-                      Corporate Headquarters
-                    </h4>
-                    <p style={{ color: '#cbd5e1', fontSize: '0.86rem', lineHeight: '1.5', margin: 0 }}>
-                      {settings.officeAddress}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Phones */}
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <div
-                    style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '10px',
-                      background: 'rgba(30, 58, 138, 0.2)',
-                      border: '1px solid rgba(56, 189, 248, 0.2)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#38bdf8',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <HiPhone size={18} />
-                  </div>
-                  <div>
-                    <h4 style={{ color: '#f8fafc', fontSize: '0.94rem', fontWeight: 700, margin: '0 0 2px' }}>
-                      Advisory Desk
-                    </h4>
-                    <p style={{ margin: 0 }}>
-                      <a href={`tel:${toTelHref(settings.contactPhone1)}`} style={{ color: '#38bdf8', fontWeight: 700, textDecoration: 'none', display: 'block', fontSize: '0.94rem' }}>
-                        {settings.contactPhone1}
-                      </a>
-                      <a href={`tel:${toTelHref(settings.contactPhone2)}`} style={{ color: '#94a3b8', fontSize: '0.84rem', textDecoration: 'none', display: 'block', marginTop: '2px' }}>
-                        {settings.contactPhone2}
-                      </a>
-                    </p>
-                  </div>
-                </div>
-
-                {/* WhatsApp */}
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <div
-                    style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '10px',
-                      background: 'rgba(16, 185, 129, 0.15)',
-                      border: '1px solid rgba(16, 185, 129, 0.25)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#10b981',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <FaWhatsapp size={18} />
-                  </div>
-                  <div>
-                    <h4 style={{ color: '#f8fafc', fontSize: '0.94rem', fontWeight: 700, margin: '0 0 2px' }}>
-                      Instant Messaging
-                    </h4>
-                    <p style={{ margin: 0 }}>
-                      <a
-                        href={`https://wa.me/${toWhatsAppHref(settings.whatsappNumber)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ color: '#10b981', fontWeight: 700, textDecoration: 'none', fontSize: '0.88rem' }}
-                      >
-                        Start WhatsApp Consultation &rarr;
-                      </a>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Email & Hours */}
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <div
-                    style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '10px',
-                      background: 'rgba(30, 58, 138, 0.2)',
-                      border: '1px solid rgba(56, 189, 248, 0.2)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#38bdf8',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <HiMail size={18} />
-                  </div>
-                  <div>
-                    <h4 style={{ color: '#f8fafc', fontSize: '0.94rem', fontWeight: 700, margin: '0 0 2px' }}>
-                      Correspondence
-                    </h4>
-                    <p style={{ margin: 0 }}>
-                      <a href={`mailto:${settings.contactEmail}`} style={{ color: '#f8fafc', fontWeight: 600, textDecoration: 'none', fontSize: '0.88rem' }}>
-                        {settings.contactEmail}
-                      </a>
-                    </p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '0.8rem', marginTop: '4px' }}>
-                      <HiClock size={14} />
-                      <span>{settings.workingHours || 'Mon - Sat: 10:00 AM - 6:00 PM'}</span>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '40px' }}>
+                {[
+                  {
+                    title: 'Regulatory Accuracy',
+                    desc: 'Timely tax filings, statutory compliance, and rigorous legal adherence without guesswork.',
+                  },
+                  {
+                    title: 'Multidisciplinary Team',
+                    desc: 'Coordinated experts across consultancy, accounting, lending, and property under one roof.',
+                  },
+                  {
+                    title: 'Confidentiality & Security',
+                    desc: 'Strict non-disclosure protocols, secure storage, and role-enforced access controls.',
+                  },
+                  {
+                    title: 'Milestone Transparency',
+                    desc: 'Progress mathematically verified from completed deliverables and tasks.',
+                  },
+                ].map((item, idx) => (
+                  <div key={idx} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '28px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
+                    <div style={{ color: '#2563eb', fontSize: '1.5rem', marginBottom: '12px' }}>
+                      <HiCheckCircle />
                     </div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '8px' }}>
+                      {item.title}
+                    </h3>
+                    <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.6', margin: 0 }}>
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ textAlign: 'center' }}>
+                <Link href="/projects" className="btn btn-secondary" style={{ padding: '12px 24px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  Explore Verified Projects &amp; Case Studies <HiArrowRight />
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/* 6. About Us Section (Cleaned of fake stats) */}
+          <section className="section-surface" id="about" style={{ background: '#f8fafc', scrollMarginTop: '100px' }}>
+            <div className="container">
+              <div className="about-grid">
+                <div>
+                  <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)' }}>ABOUT US</span>
+                  <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', color: 'var(--primary)', fontWeight: 800, lineHeight: '1.15', margin: '16px 0 20px', letterSpacing: '-0.03em' }}>
+                    One Partner.<br />Every Growth Need.
+                  </h2>
+                  <p style={{ fontSize: '1.05rem', color: 'var(--muted)', lineHeight: '1.75', marginBottom: '20px' }}>
+                    Success Tunnel eliminates the friction that holds growing businesses back. Instead of juggling disconnected advisors, you get one strategic partner for consultancy, finance, education, investment, and real estate.
+                  </p>
+                  <p style={{ fontSize: '1.05rem', color: 'var(--muted)', lineHeight: '1.75', marginBottom: '32px' }}>
+                    Our multidisciplinary team delivers practical solutions with complete clarity at every stage.
+                  </p>
+                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                    <Link href="/contact" className="cta-btn-primary" style={{ fontSize: '0.95rem' }}>Book Consultation &rarr;</Link>
+                  </div>
+                </div>
+
+                <div className="about-stats-grid">
+                  {[
+                    { number: 'Consultancy', label: 'Income Tax, GST, MCA & Registrations' },
+                    { number: 'Finance', label: 'Financial Direction & Capital Planning' },
+                    { number: 'Property', label: 'Commercial Real Estate & Workspace' },
+                    { number: 'Education', label: 'Professional Learning & Resources' },
+                  ].map((stat, i) => (
+                    <div key={i} style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '16px', padding: '24px 20px', textAlign: 'center', boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)' }}>
+                      <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--accent)', fontFamily: 'Sora, sans-serif', lineHeight: 1.2 }}>{stat.number}</div>
+                      <div style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: 500, marginTop: '8px' }}>{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* 7. CTA Section */}
+          <section className="container">
+            <div className="cta-banner-container">
+              <h2>Ready to Accelerate Your Business Growth?</h2>
+              <div className="cta-actions">
+                <a href="#contact" className="cta-btn-primary">Book Consultation</a>
+                <Link href="/contact" className="cta-btn-secondary">Contact Us</Link>
+              </div>
+            </div>
+          </section>
+
+          {/* 8. Contact Section */}
+          <section className="section-surface" id="contact" style={{ scrollMarginTop: '100px' }}>
+            <div className="container contact-section-grid">
+              <div className="contact-info-panel">
+                <span className="eyebrow" style={{ marginBottom: '24px' }}>TALK TO US</span>
+                <h3>Let&apos;s Discuss Your Vision</h3>
+
+                <div className="contact-detail-item">
+                  <div className="contact-icon-wrapper"><HiLocationMarker size={22} /></div>
+                  <div className="contact-detail-text">
+                    <h4>Office Address</h4>
+                    <p>{settings.officeAddress}</p>
+                  </div>
+                </div>
+
+                <div className="contact-detail-item">
+                  <div className="contact-icon-wrapper"><HiPhone size={22} /></div>
+                  <div className="contact-detail-text">
+                    <h4>Call Us</h4>
+                    <p>
+                        <a href={`tel:${toTelHref(settings.contactPhone1)}`} style={{ color: 'var(--primary)', fontWeight: 700, display: 'block' }}>{settings.contactPhone1}</a>
+                        <a href={`tel:${toTelHref(settings.contactPhone2)}`} style={{ color: 'var(--muted)', fontSize: '0.9rem', display: 'block' }}>{settings.contactPhone2}</a>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="contact-detail-item">
+                  <div className="contact-icon-wrapper"><HiMail size={22} /></div>
+                  <div className="contact-detail-text">
+                    <h4>Email Us</h4>
+                    <p><a href={`mailto:${settings.contactEmail}`} style={{ color: 'var(--primary)', fontWeight: 700 }}>{settings.contactEmail}</a></p>
+                  </div>
+                </div>
+
+                <div className="contact-detail-item">
+                  <div className="contact-icon-wrapper"><FaWhatsapp size={22} /></div>
+                  <div className="contact-detail-text">
+                    <h4>WhatsApp</h4>
+                    <p><a href={`https://wa.me/${toWhatsAppHref(settings.whatsappNumber)}`} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', fontWeight: 700 }}>Chat on WhatsApp &rarr;</a></p>
+                  </div>
+                </div>
+
+                <div className="contact-detail-item">
+                  <div className="contact-icon-wrapper"><HiClock size={22} /></div>
+                  <div className="contact-detail-text">
+                    <h4>Working Hours</h4>
+                    <p>{settings.workingHours || 'Mon - Sat: 10:00 AM - 6:00 PM'}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Right Column: Interactive Guided Enquiry Card */}
-              <div
-                className="contact-form-card"
-                style={{
-                  background: 'linear-gradient(180deg, rgba(13, 21, 39, 0.8) 0%, rgba(9, 14, 26, 0.95) 100%)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '20px',
-                  padding: 'clamp(28px, 4vw, 40px)',
-                }}
-              >
+              <div className="contact-form-card">
                 <GuidedEnquiry
                   page="Homepage"
-                  title="Connect with Our Advisory Team"
-                  subtitle="Select your focus area and provide basic details. We respond within one working day."
+                  title="Get a quick callback"
+                  subtitle="Tell us what you need and we'll help with the next step."
                 />
               </div>
             </div>
           </section>
-
-          {/* ============================================================ */}
-          {/* 8. CONCLUDING HIGH-IMPACT CALL TO ACTION */}
-          {/* ============================================================ */}
-          <section className="container" style={{ paddingBottom: '88px' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(13, 21, 39, 0.8) 100%)',
-                border: '1px solid rgba(56, 189, 248, 0.25)',
-                borderRadius: '24px',
-                padding: 'clamp(36px, 5vw, 56px)',
-                textAlign: 'center',
-                position: 'relative',
-                overflow: 'hidden',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
-              }}
-            >
-              <div style={{ maxWidth: '680px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-                <span
-                  className="eyebrow"
-                  style={{
-                    background: 'rgba(56, 189, 248, 0.1)',
-                    color: '#38bdf8',
-                    border: '1px solid rgba(56, 189, 248, 0.25)',
-                    padding: '6px 14px',
-                    borderRadius: '8px',
-                    fontSize: '0.74rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.08em',
-                    display: 'inline-block',
-                    marginBottom: '16px',
-                  }}
-                >
-                  TAKE THE NEXT STRATEGIC STEP
-                </span>
-
-                <h2
-                  style={{
-                    fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
-                    color: '#ffffff',
-                    fontWeight: 900,
-                    lineHeight: '1.2',
-                    letterSpacing: '-0.03em',
-                    margin: '0 0 16px',
-                    fontFamily: "'Sora', sans-serif",
-                  }}
-                >
-                  Ready to Accelerate Your Enterprise Growth?
-                </h2>
-
-                <p style={{ color: '#cbd5e1', fontSize: '1.05rem', lineHeight: '1.7', marginBottom: '28px' }}>
-                  Partner with an established advisory practice that coordinates statutory compliance, finance, and real estate execution under one roof.
-                </p>
-
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
-                  <a
-                    href="#contact"
-                    className="btn btn-primary"
-                    style={{
-                      padding: '14px 28px',
-                      borderRadius: '10px',
-                      fontSize: '0.96rem',
-                      fontWeight: 700,
-                      background: 'linear-gradient(135deg, #2563eb, #38bdf8)',
-                      color: '#ffffff',
-                      border: 'none',
-                    }}
-                  >
-                    Book In-Person Consultation
-                  </a>
-
-                  <Link
-                    href="/contact"
-                    className="btn btn-secondary"
-                    style={{
-                      padding: '14px 24px',
-                      borderRadius: '10px',
-                      fontSize: '0.96rem',
-                      fontWeight: 600,
-                      color: '#f8fafc',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
-                    }}
-                  >
-                    Contact Panipat Office
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </section>
         </main>
-
-        {featuredEducationContent && <EducationVideoPromo video={featuredEducationContent} />}
+        <EducationVideoPromo video={featuredEducationContent} />
         <Footer />
       </div>
     </>
@@ -732,22 +472,20 @@ export async function getStaticProps() {
       orderBy: [
         { isFeatured: 'desc' },
         { publishedAt: 'desc' },
-        { createdAt: 'desc' },
-      ],
+        { createdAt: 'desc' }
+      ]
     })
     return {
       props: {
         services: JSON.parse(JSON.stringify(services)),
-        featuredEducationContent: featuredEducationContent
-          ? JSON.parse(JSON.stringify(featuredEducationContent))
-          : null,
+        featuredEducationContent: featuredEducationContent ? JSON.parse(JSON.stringify(featuredEducationContent)) : null
       },
-      revalidate: 60,
+      revalidate: 60
     }
   } catch (error) {
     return {
       props: { services: sampleServices, featuredEducationContent: null },
-      revalidate: 60,
+      revalidate: 60
     }
   }
 }

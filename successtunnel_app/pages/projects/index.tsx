@@ -27,13 +27,13 @@ export default function PublicProjectsPage({ projects }: ProjectsProps) {
   return (
     <>
       <Head>
-        <title>Projects &amp; Case Studies — Success Tunnel | Panipat HQ</title>
+        <title>Projects & Case Studies — Success Tunnel</title>
         <meta
           name="description"
           content="Explore verified projects, technology deliverables, and strategic initiatives delivered by Success Tunnel across corporate compliance, financial technology, and management platforms."
         />
         <link rel="canonical" href="https://successtunnel.in/projects" />
-        <meta property="og:title" content="Projects &amp; Case Studies — Success Tunnel" />
+        <meta property="og:title" content="Projects & Case Studies — Success Tunnel" />
         <meta
           property="og:description"
           content="Explore verified projects, technology deliverables, and strategic initiatives delivered by Success Tunnel."
@@ -42,187 +42,99 @@ export default function PublicProjectsPage({ projects }: ProjectsProps) {
         <meta property="og:type" content="website" />
       </Head>
 
-      <div className="cinematic-theme-root">
+      <div>
         <Nav />
 
         <main>
           {/* Hero Section */}
-          <section
-            style={{
-              paddingTop: 'clamp(50px, 8vw, 90px)',
-              paddingBottom: 'clamp(40px, 6vw, 60px)',
-              textAlign: 'center',
-            }}
-          >
+          <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '48px', textAlign: 'center' }}>
             <div className="container" style={{ maxWidth: '840px' }}>
-              <span
-                className="eyebrow"
-                style={{
-                  background: 'rgba(56, 189, 248, 0.1)',
-                  color: '#38bdf8',
-                  border: '1px solid rgba(56, 189, 248, 0.25)',
-                  padding: '8px 16px',
-                  borderRadius: '999px',
-                  fontSize: '0.78rem',
-                  fontWeight: 800,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  marginBottom: '20px',
-                }}
-              >
-                PUBLIC DELIVERABLES &bull; VERIFIED METRICS
+              <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)', marginBottom: '20px' }}>
+                DELIVERABLES &amp; INITIATIVES
               </span>
-
               <h1
                 style={{
-                  fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
+                  fontSize: 'clamp(2.4rem, 5.5vw, 3.8rem)',
                   lineHeight: '1.1',
-                  letterSpacing: '-0.04em',
-                  fontWeight: 900,
-                  color: '#f8fafc',
-                  margin: '0 auto 24px',
-                  fontFamily: "'Sora', sans-serif",
+                  letterSpacing: '-0.035em',
+                  fontWeight: 800,
+                  color: 'var(--primary)',
+                  margin: '18px auto 22px',
                 }}
               >
-                Verified Projects &amp; Case Studies.
+                Verified Projects &amp; Solutions
               </h1>
-
-              <p style={{ fontSize: '1.15rem', color: '#94a3b8', lineHeight: '1.75', margin: '0 auto' }}>
-                A transparent view into strategic initiatives, compliance implementations, and enterprise solutions governed by the Success Tunnel advisory practice.
+              <p style={{ fontSize: '1.15rem', color: 'var(--muted)', lineHeight: '1.65' }}>
+                A transparent view into corporate initiatives, engineering deliverables, and compliance platforms executed by the Success Tunnel team.
               </p>
             </div>
           </section>
 
           {/* Projects Listing */}
-          <section style={{ padding: '60px 0 96px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
-            <div className="container" style={{ maxWidth: '1100px' }}>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                  gap: '28px',
-                }}
-              >
+          <section className="section-surface" style={{ background: '#f8fafc', padding: '60px 0' }}>
+            <div className="container" style={{ maxWidth: '1080px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
                 {projects.map((project) => (
                   <div
                     key={project.id}
                     style={{
-                      background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(9, 13, 22, 0.95) 100%)',
-                      borderRadius: '20px',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      padding: '32px 28px',
+                      background: '#ffffff',
+                      borderRadius: '12px',
+                      border: '1px solid var(--line, #e2e8f0)',
+                      padding: '28px',
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
-                      boxShadow: '0 12px 30px rgba(0, 0, 0, 0.3)',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
                     }}
                   >
                     <div>
-                      {/* Status & Progress Bar */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          marginBottom: '16px',
-                        }}
-                      >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                         <span
                           style={{
                             fontSize: '0.75rem',
                             fontWeight: 700,
                             padding: '4px 10px',
                             borderRadius: '20px',
-                            background:
-                              project.status === 'COMPLETED'
-                                ? 'rgba(16, 185, 129, 0.15)'
-                                : 'rgba(56, 189, 248, 0.15)',
-                            color: project.status === 'COMPLETED' ? '#10b981' : '#38bdf8',
-                            border: `1px solid ${project.status === 'COMPLETED' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(56, 189, 248, 0.3)'}`,
+                            background: project.status === 'COMPLETED' ? '#f0fdf4' : '#eff6ff',
+                            color: project.status === 'COMPLETED' ? '#16a34a' : '#2563eb',
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '4px',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.04em',
                           }}
                         >
                           {project.status === 'COMPLETED' ? <HiOutlineCheckCircle /> : <HiOutlineClock />}
                           {project.status.replace('_', ' ')}
                         </span>
 
-                        <span style={{ fontSize: '0.82rem', color: '#94a3b8', fontWeight: 600 }}>
+                        <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>
                           {project.progress}% Complete
                         </span>
                       </div>
 
-                      {/* Title */}
-                      <h2
-                        style={{
-                          fontSize: '1.35rem',
-                          fontWeight: 800,
-                          color: '#f8fafc',
-                          margin: '0 0 12px 0',
-                          fontFamily: "'Sora', sans-serif",
-                          lineHeight: '1.3',
-                        }}
-                      >
+                      <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary, #0f172a)', margin: '0 0 10px 0' }}>
                         {project.name}
                       </h2>
 
-                      {/* Description */}
-                      <p
-                        style={{
-                          fontSize: '0.92rem',
-                          color: '#94a3b8',
-                          lineHeight: '1.65',
-                          margin: '0 0 16px 0',
-                        }}
-                      >
+                      <p style={{ fontSize: '0.9rem', color: 'var(--muted, #64748b)', lineHeight: '1.6', margin: '0 0 16px 0' }}>
                         {project.description || 'Public engineering deliverable managed under Success Tunnel guidelines.'}
                       </p>
 
-                      {/* Business Objective */}
                       {project.businessObjective && (
-                        <div
-                          style={{
-                            padding: '12px 14px',
-                            borderRadius: '10px',
-                            background: 'rgba(255, 255, 255, 0.03)',
-                            border: '1px solid rgba(255, 255, 255, 0.05)',
-                            fontSize: '0.84rem',
-                            color: '#cbd5e1',
-                            marginBottom: '20px',
-                            lineHeight: '1.5',
-                          }}
-                        >
-                          <strong style={{ color: '#38bdf8', display: 'block', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '2px' }}>
-                            Objective
-                          </strong>
-                          {project.businessObjective}
+                        <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px', fontSize: '0.825rem', color: '#334155', marginBottom: '18px' }}>
+                          <strong>Objective:</strong> {project.businessObjective}
                         </div>
                       )}
                     </div>
 
-                    {/* Progress Bar & CTA */}
                     <div>
-                      <div
-                        style={{
-                          height: '6px',
-                          background: 'rgba(255, 255, 255, 0.08)',
-                          borderRadius: '999px',
-                          overflow: 'hidden',
-                          marginBottom: '20px',
-                        }}
-                      >
+                      <div style={{ width: '100%', height: '6px', background: '#f1f5f9', borderRadius: '3px', overflow: 'hidden', marginBottom: '18px' }}>
                         <div
                           style={{
-                            height: '100%',
                             width: `${project.progress}%`,
-                            background: 'linear-gradient(90deg, #38bdf8, #2563eb)',
-                            borderRadius: '999px',
+                            height: '100%',
+                            background: project.status === 'COMPLETED' ? '#16a34a' : '#2563eb',
+                            borderRadius: '3px',
                           }}
                         />
                       </div>
@@ -233,19 +145,33 @@ export default function PublicProjectsPage({ projects }: ProjectsProps) {
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '6px',
-                          color: '#38bdf8',
-                          fontSize: '0.92rem',
-                          fontWeight: 700,
+                          color: '#2563eb',
+                          fontWeight: 600,
+                          fontSize: '0.875rem',
                           textDecoration: 'none',
                         }}
                       >
-                        <span>View Verified Details</span>
-                        <HiOutlineArrowRight size={16} />
+                        View Public Case Study <HiOutlineArrowRight />
                       </Link>
                     </div>
                   </div>
                 ))}
               </div>
+            </div>
+          </section>
+
+          {/* CTA Banner */}
+          <section className="section-surface" style={{ padding: '60px 0' }}>
+            <div className="container" style={{ maxWidth: '820px', textAlign: 'center' }}>
+              <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>
+                Need Guidance on an Enterprise Initiative?
+              </h2>
+              <p style={{ color: 'var(--muted)', fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '24px' }}>
+                Our team provides advisory and delivery support across compliance, finance, and engineering management.
+              </p>
+              <Link href="/contact" className="btn btn-primary" style={{ borderRadius: '10px', padding: '12px 28px' }}>
+                Schedule a Consultation
+              </Link>
             </div>
           </section>
         </main>
@@ -257,36 +183,41 @@ export default function PublicProjectsPage({ projects }: ProjectsProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  try {
-    const publicProjects = await prisma.project.findMany({
-      where: {
-        isPublic: true,
-        publicSlug: { not: null },
-      },
-      select: {
-        id: true,
-        name: true,
-        publicSlug: true,
-        description: true,
-        businessObjective: true,
-        status: true,
-        progress: true,
-        startDate: true,
-        endDate: true,
-      },
-      orderBy: { id: 'asc' },
-    })
+  // Query strictly approved public projects and non-sensitive fields
+  const rawProjects = await prisma.project.findMany({
+    where: {
+      isPublic: true,
+      publicSlug: { not: null },
+    },
+    select: {
+      id: true,
+      name: true,
+      publicSlug: true,
+      description: true,
+      businessObjective: true,
+      status: true,
+      progress: true,
+      startDate: true,
+      endDate: true,
+    },
+    orderBy: { updatedAt: 'desc' },
+  })
 
-    return {
-      props: {
-        projects: JSON.parse(JSON.stringify(publicProjects)),
-      },
-    }
-  } catch (error) {
-    return {
-      props: {
-        projects: [],
-      },
-    }
+  const projects = rawProjects.map((p) => ({
+    id: p.id,
+    name: p.name,
+    publicSlug: p.publicSlug || '',
+    description: p.description,
+    businessObjective: p.businessObjective,
+    status: p.status,
+    progress: p.progress,
+    startDate: p.startDate ? p.startDate.toISOString() : null,
+    endDate: p.endDate ? p.endDate.toISOString() : null,
+  }))
+
+  return {
+    props: {
+      projects,
+    },
   }
 }

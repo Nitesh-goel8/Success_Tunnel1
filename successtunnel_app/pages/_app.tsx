@@ -58,9 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <SiteSettingsProvider>
       <DefaultHead />
-      <div className={isBackoffice ? 'backoffice-root' : 'cinematic-theme-root'}>
-        <Component {...pageProps} />
-      </div>
+      <Component {...pageProps} />
       {!isBackoffice && <QuickContact />}
       {!isBackoffice && <Chatbot />}
       <Analytics debug={analyticsDebug} />

@@ -1,21 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@300;400;500;600;700;800;900&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --bg: #090e17;
-  --bg-secondary: #0d1527;
-  --surface: #0f1c3f;
-  --surface-card: rgba(13, 21, 39, 0.75);
-  --surface-soft: rgba(30, 58, 138, 0.2);
-  --primary: #f8fafc;
-  --primary-strong: #ffffff;
-  --accent: #38bdf8;
-  --accent-sapphire: #2563eb;
-  --text: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-subtle: #64748b;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-highlight: rgba(56, 189, 248, 0.25);
-  --shadow-card: 0 16px 36px rgba(0, 0, 0, 0.35);
+  --bg: #f7f8fc;
+  --surface: #ffffff;
+  --surface-soft: #eef2ff;
+  --surface-tint: #f1f5ff;
+  --primary: #0b3a86;
+  --primary-strong: #0a2f6d;
+  --primary-soft: #e3edff;
+  --accent: #165df5;
+  --accent-2: #ff9f1c;
+  --accent-3: #7c3aed;
+  --accent-4: #10b981;
+  --accent-5: #ef4444;
+  --accent-6: #ec4899;
+  --text: #102247;
+  --muted: #5f6b84;
+  --line: #e3e8f2;
+  --shadow: 0 30px 70px rgba(15, 23, 42, 0.10);
 }
 
 /* Animations */
@@ -41,8 +43,13 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   min-height: 100vh;
-  background: #090e17;
-  color: #f8fafc;
+  background:
+    radial-gradient(circle at top left, rgba(22, 93, 245, 0.10), transparent 28rem),
+    radial-gradient(circle at 88% 12%, rgba(255, 159, 28, 0.10), transparent 24rem),
+    radial-gradient(circle at 12% 88%, rgba(124, 58, 237, 0.08), transparent 22rem),
+    radial-gradient(circle at 84% 78%, rgba(16, 185, 129, 0.08), transparent 24rem),
+    linear-gradient(180deg, #fbfcff 0%, var(--bg) 42%, #eef3ff 100%);
+  color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.65;
   overflow-x: hidden;
@@ -3018,146 +3025,3 @@ html, body {
   display: none !important;
 }
 
-
-
-/* ==========================================================================
-   SUCCESS TUNNEL — CINEMATIC 3D THEME & REFINED OBSIDIAN DESIGN SYSTEM
-   ========================================================================== */
-
-.cinematic-theme-root {
-  background: 
-    radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.12), transparent 36rem),
-    radial-gradient(circle at 85% 10%, rgba(56, 189, 248, 0.08), transparent 30rem),
-    radial-gradient(circle at 50% 65%, rgba(139, 92, 246, 0.06), transparent 40rem),
-    #070b14;
-  color: #f8fafc;
-  min-height: 100vh;
-}
-
-.cinematic-theme-root h1,
-.cinematic-theme-root h2,
-.cinematic-theme-root h3,
-.cinematic-theme-root h4,
-.cinematic-theme-root h5,
-.cinematic-theme-root h6 {
-  color: #f8fafc;
-}
-
-.cinematic-theme-root p {
-  color: #94a3b8;
-}
-
-.cinematic-theme-root .guided-enquiry {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 32px 28px;
-}
-
-.cinematic-theme-root .guided-enquiry h3 {
-  color: #f8fafc;
-}
-
-.cinematic-theme-root .guided-enquiry p {
-  color: #94a3b8;
-}
-
-.cinematic-theme-root .guided-service-btn {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #cbd5e1;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.cinematic-theme-root .guided-service-btn:hover {
-  border-color: #38bdf8;
-  color: #f8fafc;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.2);
-}
-
-.cinematic-theme-root .guided-fields label {
-  color: #cbd5e1;
-}
-
-.cinematic-theme-root .guided-fields input,
-.cinematic-theme-root .guided-fields textarea {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #f8fafc;
-  border-radius: 12px;
-  padding: 14px 16px;
-}
-
-.cinematic-theme-root .guided-fields input:focus,
-.cinematic-theme-root .guided-fields textarea:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
-  background: rgba(15, 23, 42, 0.95);
-}
-
-.cinematic-theme-root .guided-submit .btn-primary {
-  background: linear-gradient(135deg, #2563eb, #38bdf8);
-  color: #ffffff;
-  border: none;
-  border-radius: 12px;
-  padding: 14px 28px;
-  font-weight: 700;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
-}
-
-.cinematic-theme-root .footer-link {
-  color: #94a3b8;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: color 0.2s ease, transform 0.2s ease;
-  display: inline-block;
-}
-
-.cinematic-theme-root .footer-link:hover {
-  color: #38bdf8;
-  transform: translateX(3px);
-}
-
-/* Responsive Grid Adjustments for Cinematic Hero & Sections */
-@media (max-width: 992px) {
-  .hero-grid {
-    grid-template-columns: 1fr !important;
-    gap: 40px !important;
-  }
-  .hero-visual-container {
-    min-height: 400px !important;
-  }
-  .contact-section-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-floating-pill {
-    display: none !important;
-  }
-  .hero-visual-container {
-    min-height: 340px !important;
-  }
-  .site-header .nav-main {
-    background: rgba(9, 13, 22, 0.98) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  }
-  .site-header .nav-link {
-    color: #e2e8f0 !important;
-    font-size: 1rem !important;
-    padding: 10px 0 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    width: 100%;
-  }
-  .site-header .nav-toggle {
-    display: inline-flex !important;
-  }
-  .site-header .nav-actions {
-    display: none !important;
-  }
-}
