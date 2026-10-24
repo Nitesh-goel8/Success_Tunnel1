@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import GuidedEnquiry from '../../components/GuidedEnquiry'
@@ -143,9 +144,9 @@ export default function FinanceHub() {
                   <li>Designed by senior financial advisors</li>
                 </ul>
                 <div style={{ marginTop: '32px' }}>
-                  <a href="/education" className="btn btn-primary">
+                  <Link href="/education" className="btn btn-primary">
                     View all courses
-                  </a>
+                  </Link>
                 </div>
               </div>
 

@@ -33,9 +33,9 @@ export default function PropertyDetail({ property }: { property: any }) {
                 <a href="#enquiry" className="btn btn-primary">
                   Enquire now
                 </a>
-                <a href="/properties" className="btn btn-secondary">
+                <Link href="/properties" className="btn btn-secondary">
                   Back to listings
-                </a>
+                </Link>
               </div>
             </div>
 

@@ -43,9 +43,9 @@ export default function Blog({ posts }: { posts: any[] }) {
                 <a href="#latest" className="btn btn-primary">
                   Read latest
                 </a>
-                <a href="/contact" className="btn btn-secondary">
+                <Link href="/contact" className="btn btn-secondary">
                   Talk to advisory
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -166,12 +166,12 @@ export default function Blog({ posts }: { posts: any[] }) {
             <h2>Want help applying what you read?</h2>
             <p>We can turn an article topic into a practical advisory conversation for your specific situation.</p>
             <div className="callout-actions">
-              <a href="/contact" className="btn btn-ghost">
+              <Link href="/contact" className="btn btn-ghost">
                 Talk to advisory
-              </a>
-              <a href="/services" className="btn btn-secondary">
+              </Link>
+              <Link href="/services" className="btn btn-secondary">
                 Explore services
-              </a>
+              </Link>
             </div>
           </div>
         </section>

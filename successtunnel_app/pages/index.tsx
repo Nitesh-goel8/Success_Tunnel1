@@ -292,6 +292,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                   <div>
                     <div className="reflection-header">
                       <div className="reflection-author-info">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={t.avatar} alt={t.name} className="reflection-avatar" />
                         <div>
                           <h4 className="reflection-author-name">{t.name}</h4>
@@ -300,7 +301,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                       </div>
                       <div className="quote-icon">“</div>
                     </div>
-                    <p className="reflection-text">"{t.quote}"</p>
+                    <p className="reflection-text">&ldquo;{t.quote}&rdquo;</p>
                   </div>
                   <div className="reflection-stars">
                     <span>★★★★★</span>

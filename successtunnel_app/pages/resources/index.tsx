@@ -75,6 +75,7 @@ export default function Resources({ posts }: { posts: any[] }) {
                 return (
                   <div key={index} className="insight-card-item" style={{ background: 'var(--surface)' }}>
                     <div className="insight-img-container">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={imageUrl} alt={post.title} className="insight-img" />
                     </div>
                     <div className="insight-content" style={{ padding: '24px' }}>

@@ -4,6 +4,7 @@ out/
 dist/
 .env
 .env.*
+!.env.example
 *.log
 homepage-current.png
 successtunnel_app/tsconfig.tsbuildinfo

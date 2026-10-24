@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import GuidedEnquiry from '../../components/GuidedEnquiry'
@@ -98,9 +99,9 @@ export default function ServiceDetail({ service, subservices }: { service: any; 
                 <a href="#contact" className="btn btn-primary">
                   Book Consultation
                 </a>
-                <a href="/services" className="btn btn-secondary">
+                <Link href="/services" className="btn btn-secondary">
                   Back to Services
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -194,12 +195,12 @@ export default function ServiceDetail({ service, subservices }: { service: any; 
               everything separately.
             </p>
             <div className="callout-actions">
-              <a href="/#contact" className="btn btn-ghost">
+              <Link href="/#contact" className="btn btn-ghost">
                 Talk to Advisory
-              </a>
-              <a href="/blog" className="btn btn-secondary">
+              </Link>
+              <Link href="/blog" className="btn btn-secondary">
                 Read Insights
-              </a>
+              </Link>
             </div>
           </div>
         </section>

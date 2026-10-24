@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import axios from 'axios'
 import PortalShell from '../../../components/portal/PortalShell'
@@ -31,7 +31,7 @@ export default function DocumentRepository() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
-  const loadDocuments = async () => {
+  const loadDocuments = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
@@ -45,11 +45,11 @@ export default function DocumentRepository() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedCategory, search])
 
   useEffect(() => {
     loadDocuments()
-  }, [selectedCategory, search])
+  }, [loadDocuments])
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault()

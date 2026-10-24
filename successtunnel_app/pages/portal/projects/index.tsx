@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import axios from 'axios'
@@ -38,7 +38,7 @@ export default function ProjectsModule() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
-  const loadProjects = async () => {
+  const loadProjects = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
@@ -52,11 +52,11 @@ export default function ProjectsModule() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [statusFilter, selectedDept])
 
   useEffect(() => {
     loadProjects()
-  }, [statusFilter, selectedDept])
+  }, [loadProjects])
 
   useEffect(() => {
     async function loadMeta() {

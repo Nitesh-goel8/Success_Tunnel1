@@ -205,6 +205,7 @@ export default function AdminEducation() {
                     </td>
                     <td>
                       {item.thumbnailUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={item.thumbnailUrl}
                           alt={item.title}

@@ -22,12 +22,12 @@ export default function BlogDetail({ post, related }: { post: any; related: any[
                 {post.excerpt}
               </p>
               <div className="hero-actions">
-                <a href="/blog" className="btn btn-primary">
+                <Link href="/blog" className="btn btn-primary">
                   Back to blog
-                </a>
-                <a href="/contact" className="btn btn-secondary">
+                </Link>
+                <Link href="/contact" className="btn btn-secondary">
                   Talk to advisory
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -81,12 +81,12 @@ export default function BlogDetail({ post, related }: { post: any; related: any[
                 We can translate any article topic into a specific next-step conversation for your business or personal situation.
               </p>
               <div className="split-actions">
-                <a href="/contact" className="btn btn-primary">
+                <Link href="/contact" className="btn btn-primary">
                   Book consultation
-                </a>
-                <a href="/services" className="btn btn-secondary">
+                </Link>
+                <Link href="/services" className="btn btn-secondary">
                   Explore services
-                </a>
+                </Link>
               </div>
             </div>
           </div>
