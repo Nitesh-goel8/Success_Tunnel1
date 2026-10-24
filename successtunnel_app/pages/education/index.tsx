@@ -1,10 +1,12 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import { GetStaticProps } from 'next'
 import { useMemo, useState } from 'react'
 import Footer from '../../components/Footer'
 import Nav from '../../components/Nav'
 import { EDUCATION_CONTENT_DESCRIPTIONS, EDUCATION_CONTENT_LABELS, EDUCATION_CONTENT_TYPES, EDUCATION_FALLBACK_CONTENT } from '../../lib/educationContent'
 import { prisma } from '../../lib/prisma'
+import { HiArrowRight } from 'react-icons/hi'
 
 type EducationItem = {
   id: number
@@ -35,25 +37,29 @@ function groupByType(items: EducationItem[]) {
 function ItemThumb({ item }: { item: EducationItem }) {
   return (
     <div
-      className="service-card-icon"
       style={{
         width: '100%',
         height: '160px',
-        borderRadius: '18px',
-        marginBottom: '14px',
-        backgroundImage: item.thumbnailUrl ? `url(${item.thumbnailUrl})` : 'linear-gradient(135deg, #0b3a86, #165df5)',
+        borderRadius: '12px',
+        marginBottom: '16px',
+        backgroundImage: item.thumbnailUrl ? `url(${item.thumbnailUrl})` : 'none',
+        backgroundColor: item.thumbnailUrl ? 'transparent' : 'var(--primary)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'flex-start',
         padding: '14px',
-        color: '#fff',
-        fontWeight: 800,
-        fontSize: '0.95rem',
+        color: '#ffffff',
+        fontWeight: 700,
+        fontSize: '0.85rem',
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase',
       }}
     >
-      {item.contentType}
+      <span style={{ background: 'rgba(10, 37, 64, 0.85)', padding: '4px 10px', borderRadius: '6px', backdropFilter: 'blur(4px)' }}>
+        {item.contentType}
+      </span>
     </div>
   )
 }
@@ -66,148 +72,146 @@ export default function EducationIndex({ items }: { items: EducationItem[] }) {
 
   return (
     <div>
+      <Head>
+        <title>Executive Education &amp; Capacity Building — Success Tunnel | Panipat</title>
+        <meta
+          name="description"
+          content="Corporate training, taxation modules, practical accounting revision notes, and executive skill development from Success Tunnel."
+        />
+        <link rel="canonical" href="https://successtunnel.in/education" />
+      </Head>
+
       <Nav />
       <main>
-        <section
-          className="section-surface"
-          style={{
-            paddingTop: '76px',
-            paddingBottom: '26px',
-            background: 'linear-gradient(180deg, rgba(22, 93, 245, 0.05), transparent)',
-          }}
-        >
-          <div className="container">
-            <div style={{ maxWidth: 760 }}>
-              <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)' }}>
-                SUCCESS TUNNEL EDUCATION HUB
-              </span>
-              <h1
-                style={{
-                  fontSize: 'clamp(2rem, 4vw, 3rem)',
-                  lineHeight: 1.08,
-                  letterSpacing: '-0.04em',
-                  margin: '14px 0 10px',
-                  color: 'var(--primary)',
-                }}
-              >
-                Complete Education Flow for Modern Professionals.
-              </h1>
-              <p style={{ fontSize: '1.1rem', color: 'var(--muted)', maxWidth: 700, lineHeight: 1.65, margin: 0 }}>
-                Explore comprehensive courses, study materials, and practical tools designed to accelerate your corporate and enterprise growth.
-              </p>
+        <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '48px' }}>
+          <div className="container" style={{ maxWidth: '820px', textAlign: 'center' }}>
+            <div className="editorial-tag" style={{ marginBottom: '20px' }}>
+              <span className="editorial-tag-dot" />
+              Executive Learning &amp; Upskilling
             </div>
+            <h1
+              style={{
+                fontSize: 'clamp(2.4rem, 5.5vw, 4rem)',
+                lineHeight: '1.1',
+                letterSpacing: '-0.035em',
+                fontWeight: 800,
+                color: 'var(--primary)',
+                margin: '16px auto 24px',
+              }}
+            >
+              Practical Education for Modern Professionals.
+            </h1>
+            <p style={{ fontSize: '1.14rem', color: 'var(--muted)', lineHeight: '1.68' }}>
+              Statutory taxation coursework, Tally and GST practicals, corporate finance revision notes, and video modules curated by seasoned practitioners in Panipat.
+            </p>
           </div>
         </section>
 
-        <section className="section-surface">
-          <div className="container">
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 18 }}>
-              {['All', ...EDUCATION_CONTENT_TYPES].map(type => (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => setActiveType(type)}
-                  className={`btn ${activeType === type ? 'btn-primary' : 'btn-secondary'}`}
-                  style={{ padding: '9px 14px', borderRadius: 999 }}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
+        {/* Content Type Filter */}
+        <section className="container" style={{ paddingBottom: '24px' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            {['All', ...EDUCATION_CONTENT_TYPES].map(type => (
+              <button
+                key={type}
+                type="button"
+                onClick={() => setActiveType(type)}
+                style={{
+                  border: '1px solid',
+                  borderColor: activeType === type ? 'var(--primary)' : 'var(--line)',
+                  background: activeType === type ? 'var(--primary)' : '#ffffff',
+                  color: activeType === type ? '#ffffff' : 'var(--muted)',
+                  padding: '8px 18px',
+                  borderRadius: '8px',
+                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+        </section>
 
-            <div className="services-grid">
+        {/* Course Cards Grid */}
+        <section className="section-surface" id="courses-list">
+          <div className="container">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
               {filteredItems.length === 0 ? (
-                <div className="article-card" style={{ gridColumn: '1 / -1', textAlign: 'center' }}>
-                  <h3>No items yet</h3>
-                  <p>Add education content from the admin dashboard and it will appear here.</p>
+                <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', color: 'var(--muted)' }}>
+                  <h3 style={{ fontWeight: 800, color: 'var(--primary)' }}>No learning modules published yet</h3>
+                  <p>Curated educational content will be uploaded shortly.</p>
                 </div>
               ) : (
                 filteredItems.map(item => (
-                  <Link key={item.id} href={`/education/${item.slug}`} className="service-card">
+                  <div key={item.id} className="expertise-card" style={{ padding: '24px' }}>
                     <ItemThumb item={item} />
-                    <div className="service-card-kicker">{item.contentType}</div>
-                    <h3>{item.title}</h3>
-                    <p>{item.excerpt || item.body || EDUCATION_CONTENT_DESCRIPTIONS[item.contentType] || 'Open this learning item.'}</p>
-                    <span className="service-card-cta">{item.ctaLabel || 'Open content'} -&gt;</span>
-                  </Link>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
+                      {item.category || item.contentType}
+                    </span>
+                    <h3 style={{ fontSize: '1.18rem', margin: '0 0 10px' }}>{item.title}</h3>
+                    <p style={{ fontSize: '0.92rem', color: 'var(--muted)', margin: '0 0 18px' }}>
+                      {item.excerpt || item.body || EDUCATION_CONTENT_DESCRIPTIONS[item.contentType] || 'Open this learning item.'}
+                    </p>
+                    <div style={{ marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid var(--line)' }}>
+                      <Link href={`/education/${item.slug}`} className="expertise-card-link">
+                        {item.ctaLabel || 'Access Content'} <HiArrowRight size={14} />
+                      </Link>
+                    </div>
+                  </div>
                 ))
               )}
             </div>
           </div>
         </section>
 
-        <section className="section-surface">
+        {/* Subject Category Breakdown */}
+        <section className="section-surface" style={{ background: '#f8fafc' }}>
           <div className="container">
-            <div className="section-heading" style={{ textAlign: 'left', marginBottom: 20 }}>
-              <span className="eyebrow">Library</span>
-              <h2>Learning categories</h2>
+            <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+              <div className="editorial-tag" style={{ marginBottom: '14px' }}>
+                <span className="editorial-tag-dot" />
+                Curriculum Structure
+              </div>
+              <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)', margin: 0 }}>
+                Specialized Learning Tracks
+              </h2>
             </div>
-            <div className="hero-board-grid">
-              {Object.keys(grouped).length === 0 ? (
-                <div className="mini-card" style={{ gridColumn: '1 / -1' }}>
-                  <strong>Ready</strong>
-                  <span>Seeded items are available to show the structure.</span>
-                </div>
-              ) : (
-                Object.entries(grouped).map(([type, list]) => (
-                  <div key={type} className="mini-card">
-                    <strong>{list.length}</strong>
-                    <span>{EDUCATION_CONTENT_LABELS[type] || type}</span>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+              {Object.entries(grouped).map(([type, list]) => (
+                <div key={type} style={{ background: '#ffffff', border: '1px solid var(--line)', borderRadius: '12px', padding: '20px', textAlign: 'center', boxShadow: 'var(--shadow-sm)' }}>
+                  <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Sora, sans-serif' }}>
+                    {list.length}
                   </div>
-                ))
-              )}
+                  <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--muted)', marginTop: '4px' }}>
+                    {EDUCATION_CONTENT_LABELS[type] || type}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {featured && (
-          <section className="section-surface" style={{ background: '#f8fafc' }}>
-            <div className="container">
-              <div className="section-heading" style={{ textAlign: 'left', marginBottom: 20 }}>
-                <span className="eyebrow">Featured content</span>
-                <h2>One highlighted item below the main library.</h2>
-                <p>Use this as a subtle promo for a course, video, note, or tool without crowding the page.</p>
-              </div>
-              <div
-                className="callout-banner"
-                style={{
-                  marginBottom: 0,
-                  display: 'grid',
-                  gridTemplateColumns: '120px 1fr',
-                  gap: 18,
-                  alignItems: 'center',
-                }}
-              >
-                <div
-                  style={{
-                    minHeight: '120px',
-                    borderRadius: '18px',
-                    backgroundImage: featured.thumbnailUrl ? `url(${featured.thumbnailUrl})` : 'linear-gradient(135deg, #0b3a86, #165df5)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                />
-                <div>
-                  <span className="eyebrow" style={{ marginBottom: 8, display: 'inline-block' }}>
-                    {featured.contentType || 'Education'}
-                  </span>
-                  <h3 style={{ margin: '0 0 8px', fontSize: '1.4rem' }}>{featured.title}</h3>
-                  <p style={{ maxWidth: 700, margin: '0 0 14px' }}>
-                    {featured.excerpt || featured.body || 'Featured learning content from the dashboard.'}
-                  </p>
-                  <div className="cta-actions">
-                    <Link href={`/education/${featured.slug}`} className="cta-btn-primary">
-                      {featured.ctaLabel || 'Open item'}
-                    </Link>
-                    <Link href="/contact" className="cta-btn-secondary">
-                      Request update
-                    </Link>
-                  </div>
-                </div>
-              </div>
+        {/* Corporate Upskilling Advisory CTA */}
+        <section className="container" style={{ margin: '48px auto' }}>
+          <div style={{ background: 'var(--primary)', color: '#ffffff', borderRadius: '20px', padding: '48px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+            <div>
+              <h2 style={{ color: '#ffffff', fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px' }}>
+                Require Custom In-House Corporate Training?
+              </h2>
+              <p style={{ color: '#cbd5e1', fontSize: '0.98rem', margin: 0, maxWidth: '600px' }}>
+                We design tailored workshops for accounting departments, finance controllers, and compliance teams in Haryana and NCR.
+              </p>
             </div>
-          </section>
-        )}
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <Link href="/contact" className="btn" style={{ background: '#ffffff', color: 'var(--primary)', fontWeight: 700, padding: '12px 24px' }}>
+                Inquire for Corporate Training &rarr;
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
@@ -216,34 +220,32 @@ export default function EducationIndex({ items }: { items: EducationItem[] }) {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const items = await prisma.educationContent.findMany({
+    const rawItems = await prisma.educationContent.findMany({
       where: { isPublished: true },
-      orderBy: [{ isFeatured: 'desc' }, { sortOrder: 'asc' }, { publishedAt: 'desc' }, { createdAt: 'desc' }],
+      orderBy: [
+        { isFeatured: 'desc' },
+        { publishedAt: 'desc' },
+        { createdAt: 'desc' },
+      ],
     })
 
-    const nextItems =
-      items.length > 0
-        ? items
-        : EDUCATION_FALLBACK_CONTENT.map((item, index) => ({
-            ...item,
-            id: index + 1,
-            showOnHomePopup: !!(item as any).showOnHomePopup,
-            publishedAt: new Date().toISOString(),
-          }))
+    const items = rawItems.map(item => ({
+      ...item,
+      createdAt: item.createdAt ? item.createdAt.toISOString() : null,
+      updatedAt: item.updatedAt ? item.updatedAt.toISOString() : null,
+      publishedAt: item.publishedAt ? item.publishedAt.toISOString() : null,
+    }))
 
     return {
-      props: { items: JSON.parse(JSON.stringify(nextItems)) },
+      props: {
+        items: items.length > 0 ? items : EDUCATION_FALLBACK_CONTENT,
+      },
       revalidate: 60,
     }
-  } catch {
+  } catch (error) {
     return {
       props: {
-        items: EDUCATION_FALLBACK_CONTENT.map((item, index) => ({
-          ...item,
-          id: index + 1,
-          showOnHomePopup: !!(item as any).showOnHomePopup,
-          publishedAt: new Date().toISOString(),
-        })),
+        items: EDUCATION_FALLBACK_CONTENT,
       },
       revalidate: 60,
     }

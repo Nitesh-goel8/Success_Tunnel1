@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import GuidedEnquiry from '../../components/GuidedEnquiry'
@@ -8,24 +10,24 @@ import RentalPaymentButton from '../../components/RentalPaymentButton'
 
 const rentalTabs = [
   {
-    id: 'residential',
-    title: 'Houses, Flats & PGs',
-    content: 'Find the perfect residential rental. We curate premium houses, flats, and PG accommodations tailored to your budget and location preferences, ensuring a seamless move-in experience.'
-  },
-  {
     id: 'offices',
     title: 'Offices & Co-working',
-    content: 'Elevate your business operations. Discover premium office spaces, corporate hubs, and flexible co-working environments designed to scale with your team.'
+    content: 'Elevate your enterprise operations. Discover fully furnished office suites, corporate floors, and flexible co-working environments in central Panipat designed to scale with your team.'
   },
   {
     id: 'retail',
     title: 'Shops & Retail Spaces',
-    content: 'Secure high-visibility retail locations. We help brands find street-facing stores and mall spaces that maximize footfall and revenue.'
+    content: 'Secure high-visibility retail locations. We help brands find street-facing stores and commercial center units that maximize footfall, branding, and revenue.'
   },
   {
     id: 'warehouses',
     title: 'Warehouses & Logistics',
-    content: 'Optimize your supply chain. We provide access to large-scale, well-connected warehouse spaces and logistics hubs for efficient inventory management.'
+    content: 'Optimize your industrial operations. We provide access to large-scale, well-connected warehouse spaces and logistics hubs for efficient inventory management across Haryana.'
+  },
+  {
+    id: 'residential',
+    title: 'Executive Residential',
+    content: 'Curated corporate living spaces and executive apartments tailored to leadership teams and visiting specialists, ensuring a smooth transition.'
   }
 ]
 
@@ -33,10 +35,9 @@ export default function RentalSpaceHub() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState(rentalTabs[0].id)
 
-  // Pre-fill support: if user came from /properties with ?property=... &amount=...
   const prefilledTitle = router.query.property
     ? decodeURIComponent(router.query.property as string)
-    : 'Premium Corporate/Residential Rental Space'
+    : 'Corporate Workspace / Commercial Suite'
   
   const prefilledAmount = router.query.amount
     ? Number(router.query.amount)
@@ -46,62 +47,84 @@ export default function RentalSpaceHub() {
 
   return (
     <div>
+      <Head>
+        <title>Managed Workspaces &amp; Office Leasing — Success Tunnel | Panipat</title>
+        <meta
+          name="description"
+          content="Flexible corporate office suites, meeting boardrooms, and managed commercial workspace solutions in central Panipat, Haryana."
+        />
+        <link rel="canonical" href="https://successtunnel.in/services/rental-space" />
+      </Head>
+
       <Nav />
       <main>
         {/* HERO SECTION */}
-        <section className="page-hero">
-          <div className="container article-hero">
+        <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '48px' }}>
+          <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '48px', alignItems: 'center' }}>
             <div>
-              <span className="eyebrow">Space Discovery</span>
-              <h1 style={{ margin: '18px 0 0', fontSize: 'clamp(3rem, 7vw, 5rem)', lineHeight: 0.98, letterSpacing: '-.05em' }}>
-                Rental Hub
+              <div className="editorial-tag" style={{ marginBottom: '20px' }}>
+                <span className="editorial-tag-dot" />
+                Managed Commercial Workspaces
+              </div>
+              <h1 style={{ margin: '14px 0 20px', fontSize: 'clamp(2.4rem, 5.5vw, 4rem)', lineHeight: 1.1, letterSpacing: '-0.035em', fontWeight: 800, color: 'var(--primary)' }}>
+                Managed Workspaces &amp; Leases
               </h1>
-              <p style={{ margin: '18px 0 0', maxWidth: 680, color: 'var(--muted)', fontSize: '1.06rem' }}>
-                A premium space-finding experience. Whether you are leasing a high-rise office or finding your next home, we make discovery, viewings, and closing simple.
+              <p style={{ margin: '0 0 28px', maxWidth: 640, color: 'var(--muted)', fontSize: '1.12rem', lineHeight: 1.68 }}>
+                Furnished executive suites, boardrooms, and flexible commercial leasing solutions situated in Panipat&apos;s prime commercial core.
               </p>
-              
-              {/* Payment Section for Pre-filled Properties */}
-              {isPreFilled && (
-                <div style={{ marginTop: '24px', background: 'rgba(22, 93, 245, 0.08)', border: '1px solid rgba(22, 93, 245, 0.2)', borderRadius: '12px', padding: '16px 20px', maxWidth: '500px' }}>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '8px' }}>📍 Ready to secure your property?</div>
-                  <strong style={{ color: 'var(--primary)', fontSize: '1.1rem', display: 'block', marginBottom: '4px' }}>{prefilledTitle}</strong>
-                  <span style={{ color: 'var(--muted)', fontSize: '0.95rem', display: 'block', marginBottom: '16px' }}>Booking Token: ₹{prefilledAmount.toLocaleString('en-IN')}</span>
-                  <RentalPaymentButton
-                    rentalTitle={prefilledTitle}
-                    defaultAmount={prefilledAmount}
-                  />
-                </div>
-              )}
-
-              {!isPreFilled && (
-                <div className="hero-actions">
-                  <a href="#enquiry" className="btn btn-primary">
-                    Start Rental Search
-                  </a>
-                </div>
-              )}
+              <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+                <a href="#enquiry" className="btn btn-primary" style={{ padding: '12px 24px' }}>
+                  Book Workspace &rarr;
+                </a>
+                <Link href="/properties" className="btn btn-secondary" style={{ padding: '12px 24px' }}>
+                  Browse Available Units
+                </Link>
+              </div>
             </div>
 
-            <div className="article-feature">
-              <span className="service-card-kicker">Interactive Tools</span>
-              <h2 style={{ margin: '14px 0 0', fontSize: '2rem', lineHeight: 1.04, letterSpacing: '-.04em' }}>
-                Calculate your leasing capacity.
-              </h2>
-              <p style={{ marginTop: 14, marginBottom: 24 }}>
-                Use our built-in Lease Affordability Estimator to figure out exactly how much rent you can safely commit to based on your income or business revenue.
+            <div style={{ background: '#ffffff', border: '1px solid var(--line)', borderRadius: '18px', padding: '32px', boxShadow: 'var(--shadow-sm)' }}>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Lease Planning
+              </div>
+              <h3 style={{ margin: '0 0 10px', fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)' }}>
+                Affordability Calculator
+              </h3>
+              <p style={{ marginTop: 0, marginBottom: 20, color: 'var(--muted)', fontSize: '0.92rem', lineHeight: '1.6' }}>
+                Determine sustainable monthly lease allocations based on team revenue and operational headcount.
               </p>
               <LeaseAffordabilityCalculator />
             </div>
           </div>
         </section>
 
+        {/* PRE-FILLED PROPERTY ACTION BANNER */}
+        {isPreFilled && (
+          <section className="container" style={{ paddingBottom: '24px' }}>
+            <div style={{ background: 'var(--primary)', color: '#ffffff', borderRadius: '16px', padding: '24px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+              <div>
+                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38bdf8', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '4px' }}>
+                  Selected Property Mandate
+                </div>
+                <div style={{ fontSize: '1.3rem', fontWeight: 800 }}>{prefilledTitle}</div>
+                <div style={{ fontSize: '0.9rem', color: '#cbd5e1', marginTop: '2px' }}>Monthly Lease Value: ₹{prefilledAmount.toLocaleString('en-IN')}</div>
+              </div>
+              <div>
+                <RentalPaymentButton rentalTitle={prefilledTitle} defaultAmount={prefilledAmount} />
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* INTERACTIVE TABS SECTION */}
         <section className="section-surface">
           <div className="container">
-            <div className="section-heading" style={{ textAlign: 'center', marginBottom: '40px' }}>
-              <span className="eyebrow">Our Focus Areas</span>
-              <h2>Curated Rental Spaces</h2>
-              <p>Explore our core leasing segments tailored for households, startups, and enterprises.</p>
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <div className="editorial-tag" style={{ marginBottom: '14px' }}>
+                <span className="editorial-tag-dot" />
+                Workspace Options
+              </div>
+              <h2 style={{ fontSize: '2.2rem', color: 'var(--primary)', fontWeight: 800, margin: '8px 0 0' }}>Tailored Commercial Formats</h2>
+              <p style={{ maxWidth: 600, margin: '8px auto 0', color: 'var(--muted)', fontSize: '1rem' }}>Modern infrastructure designed to accelerate enterprise productivity.</p>
             </div>
 
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
@@ -114,12 +137,13 @@ export default function RentalSpaceHub() {
                       padding: '10px 20px',
                       background: activeTab === tab.id ? 'var(--primary)' : 'transparent',
                       color: activeTab === tab.id ? 'white' : 'var(--muted)',
-                      border: 'none',
+                      border: '1px solid',
+                      borderColor: activeTab === tab.id ? 'var(--primary)' : 'var(--line)',
                       borderRadius: '8px',
-                      fontWeight: 600,
+                      fontWeight: 700,
                       cursor: 'pointer',
                       whiteSpace: 'nowrap',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.15s ease'
                     }}
                   >
                     {tab.title}
@@ -127,13 +151,13 @@ export default function RentalSpaceHub() {
                 ))}
               </div>
 
-              <div style={{ background: 'white', padding: '40px', borderRadius: '16px', border: '1px solid var(--line)', boxShadow: '0 10px 40px rgba(0,0,0,0.03)' }}>
+              <div style={{ background: 'white', padding: '36px', borderRadius: '16px', border: '1px solid var(--line)', boxShadow: 'var(--shadow-sm)' }}>
                 {rentalTabs.map(tab => (
                   <div key={tab.id} style={{ display: activeTab === tab.id ? 'block' : 'none' }}>
-                    <h3 style={{ fontSize: '1.8rem', marginBottom: '16px', color: 'var(--primary)' }}>{tab.title}</h3>
-                    <p style={{ fontSize: '1.1rem', lineHeight: 1.6, color: 'var(--muted)' }}>{tab.content}</p>
+                    <h3 style={{ fontSize: '1.6rem', marginBottom: '14px', color: 'var(--primary)', fontWeight: 800 }}>{tab.title}</h3>
+                    <p style={{ fontSize: '1.05rem', lineHeight: 1.65, color: 'var(--muted)', margin: 0 }}>{tab.content}</p>
                     <a href="#enquiry" style={{ display: 'inline-flex', marginTop: '24px', fontWeight: 700, color: 'var(--accent)' }}>
-                      Schedule a viewing &rarr;
+                      Inquire regarding availability &rarr;
                     </a>
                   </div>
                 ))}
@@ -144,13 +168,13 @@ export default function RentalSpaceHub() {
 
         {/* GUIDED ENQUIRY */}
         <section className="section-surface" id="enquiry">
-          <div className="container" style={{ maxWidth: '700px' }}>
+          <div className="container" style={{ maxWidth: '720px' }}>
             <GuidedEnquiry
               page="service:rental-space"
-              title="Speak with a Leasing Agent"
-              subtitle="Share your target location, budget, and space requirements, and we'll help you secure the perfect rental."
+              title="Book or Inquire for Workspace in Panipat"
+              subtitle="Specify your seat requirement, preferred move-in timeline, and location preferences."
               selectedService="Rental Space"
-              serviceOptions={['Houses, Flats & PGs', 'Offices & Co-working', 'Shops & Retail Spaces', 'Warehouses & Logistics']}
+              serviceOptions={['Offices & Co-working', 'Shops & Retail Spaces', 'Warehouses & Logistics', 'Residential Space']}
             />
           </div>
         </section>

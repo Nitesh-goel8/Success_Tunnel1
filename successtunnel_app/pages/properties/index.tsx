@@ -1,13 +1,15 @@
 import { useMemo, useState } from 'react'
+import Head from 'next/head'
 import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import PropertyCard from '../../components/PropertyCard'
 import { prisma } from '../../lib/prisma'
 import { sampleProperties } from '../../lib/sampleData'
+import { HiOutlineSearch, HiArrowRight } from 'react-icons/hi'
 
-const TYPES = ['All Types', 'Residential', 'Commercial']
-const CITIES = ['All Cities', 'Mumbai', 'Delhi', 'Bengaluru', 'Hyderabad', 'Pune', 'Chennai']
+const TYPES = ['All Types', 'Commercial', 'Residential']
+const CITIES = ['All Cities', 'Panipat', 'Gurugram', 'Delhi NCR', 'Chandigarh', 'Mumbai', 'Bengaluru']
 const SORTS = ['Newest', 'Price: Low to High', 'Price: High to Low']
 
 export default function Properties({ properties }: { properties: any[] }) {
@@ -65,42 +67,55 @@ export default function Properties({ properties }: { properties: any[] }) {
 
   return (
     <div>
+      <Head>
+        <title>Commercial Real Estate &amp; Managed Workspaces — Success Tunnel | Panipat</title>
+        <meta
+          name="description"
+          content="Explore prime commercial properties, corporate office suites, and flexible workspaces in Panipat, Haryana and major North Indian commercial corridors."
+        />
+        <link rel="canonical" href="https://successtunnel.in/properties" />
+      </Head>
+
       <Nav />
       <main>
-        <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '44px' }}>
+        <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '48px' }}>
           <div className="container" style={{ maxWidth: '820px', textAlign: 'center' }}>
-            <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)' }}>
-              REAL ESTATE & SPACES
-            </span>
-            <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', lineHeight: '1.08', letterSpacing: '-0.04em', fontWeight: 800, color: 'var(--primary)', margin: '20px auto 24px' }}>
-              Curated properties and workspaces.
+            <div className="editorial-tag" style={{ marginBottom: '20px' }}>
+              <span className="editorial-tag-dot" />
+              Commercial Assets &amp; Workspaces
+            </div>
+            <h1 style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4rem)', lineHeight: '1.1', letterSpacing: '-0.035em', fontWeight: 800, color: 'var(--primary)', margin: '16px auto 24px' }}>
+              Commercial Properties &amp; Workspaces.
             </h1>
-            <p style={{ fontSize: '1.14rem', color: 'var(--muted)', lineHeight: '1.7' }}>
-              Explore commercial offices, rental units, and residential opportunities with simple filtering and direct enquiry support.
+            <p style={{ fontSize: '1.14rem', color: 'var(--muted)', lineHeight: '1.68' }}>
+              Strategic retail spaces, corporate executive offices, and managed workspaces in Panipat and prime growth corridors across Haryana and North India.
             </p>
           </div>
         </section>
 
+        {/* Filter Bar */}
         <section className="container" style={{ paddingBottom: '24px' }}>
-          <div style={{ background: 'var(--surface)', borderRadius: '20px', padding: '24px', border: '1px solid var(--line)', boxShadow: '0 4px 20px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ background: '#ffffff', borderRadius: '16px', padding: '24px', border: '1px solid var(--line)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '16px', alignItems: 'center' }}>
-              <div style={{ position: 'relative', maxWidth: '520px', width: '100%' }}>
-                <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)', fontSize: '1.1rem' }}>🔍</span>
+              <div style={{ position: 'relative', width: '100%' }}>
+                <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)' }}>
+                  <HiOutlineSearch size={18} />
+                </span>
                 <input
                   type="text"
-                  placeholder="Search by name, city, or type..."
+                  placeholder="Search by asset title, location, or property type..."
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  style={{ width: '100%', padding: '12px 16px 12px 42px', borderRadius: '12px', border: '1px solid var(--line)', fontSize: '0.95rem', fontFamily: 'inherit', outline: 'none' }}
+                  style={{ width: '100%', padding: '12px 16px 12px 42px', borderRadius: '10px', border: '1px solid var(--line)', fontSize: '0.92rem', fontFamily: 'inherit', outline: 'none' }}
                 />
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <label style={{ fontWeight: 600, color: 'var(--muted)', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>Sort by:</label>
+                <label style={{ fontWeight: 600, color: 'var(--muted)', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>Sort:</label>
                 <select
                   value={sortBy}
                   onChange={e => setSortBy(e.target.value)}
-                  style={{ padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--line)', fontFamily: 'inherit', fontWeight: 600, cursor: 'pointer' }}
+                  style={{ padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--line)', fontFamily: 'inherit', fontWeight: 600, cursor: 'pointer', fontSize: '0.88rem' }}
                 >
                   {SORTS.map(sort => <option key={sort} value={sort}>{sort}</option>)}
                 </select>
@@ -114,14 +129,16 @@ export default function Properties({ properties }: { properties: any[] }) {
                     key={type}
                     onClick={() => setTypeFilter(type)}
                     style={{
-                      border: '1px solid var(--line)',
-                      background: typeFilter === type ? 'var(--primary)' : 'transparent',
-                      color: typeFilter === type ? '#fff' : 'var(--primary)',
-                      padding: '7px 16px',
-                      borderRadius: '999px',
-                      fontWeight: 600,
-                      fontSize: '0.88rem',
+                      border: '1px solid',
+                      borderColor: typeFilter === type ? 'var(--primary)' : 'var(--line)',
+                      background: typeFilter === type ? 'var(--primary)' : '#ffffff',
+                      color: typeFilter === type ? '#ffffff' : 'var(--muted)',
+                      padding: '8px 18px',
+                      borderRadius: '8px',
+                      fontWeight: 700,
+                      fontSize: '0.85rem',
                       cursor: 'pointer',
+                      transition: 'all 0.15s ease',
                     }}
                   >
                     {type}
@@ -132,14 +149,14 @@ export default function Properties({ properties }: { properties: any[] }) {
               <select
                 value={cityFilter}
                 onChange={e => setCityFilter(e.target.value)}
-                style={{ padding: '8px 14px', borderRadius: '10px', border: '1px solid var(--line)', fontFamily: 'inherit', fontWeight: 600, cursor: 'pointer', fontSize: '0.88rem' }}
+                style={{ padding: '8px 14px', borderRadius: '8px', border: '1px solid var(--line)', fontFamily: 'inherit', fontWeight: 600, cursor: 'pointer', fontSize: '0.88rem' }}
               >
                 {CITIES.map(city => <option key={city} value={city}>{city}</option>)}
               </select>
 
               <button
                 onClick={resetFilters}
-                style={{ background: 'transparent', border: '1px solid var(--line)', color: 'var(--muted)', padding: '7px 16px', borderRadius: '999px', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', marginLeft: 'auto' }}
+                style={{ background: 'transparent', border: '1px solid var(--line)', color: 'var(--muted)', padding: '7px 16px', borderRadius: '8px', fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', marginLeft: 'auto' }}
               >
                 Reset filters
               </button>
@@ -147,39 +164,38 @@ export default function Properties({ properties }: { properties: any[] }) {
           </div>
         </section>
 
+        {/* Property Grid */}
         <section className="section-surface" id="properties-list">
           <div className="container">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px', flexWrap: 'wrap', gap: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '12px' }}>
               <h2 style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.4rem', margin: 0 }}>
-                {filteredProperties.length} {filteredProperties.length === 1 ? 'Property' : 'Properties'} found
+                {filteredProperties.length} {filteredProperties.length === 1 ? 'Asset Available' : 'Assets Available'}
               </h2>
               {(search || typeFilter !== 'All Types' || cityFilter !== 'All Cities') && (
-                <span style={{ fontSize: '0.85rem', color: 'var(--muted)', padding: '6px 14px', background: 'rgba(22,93,245,0.06)', border: '1px solid rgba(22,93,245,0.12)', borderRadius: '999px', fontWeight: 600 }}>
-                  Filtered results
+                <span className="editorial-tag">
+                  <span className="editorial-tag-dot" /> Filtered View
                 </span>
               )}
             </div>
 
             {filteredProperties.length > 0 ? (
-              <div className="property-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '30px' }}>
+              <div className="property-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '28px' }}>
                 {filteredProperties.map(property => (
                   <div key={property.slug} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     <PropertyCard p={property} />
                     <Link
                       href={`/services/rental-space?property=${encodeURIComponent(property.title)}&amount=${property.price || 1000}`}
+                      className="btn btn-primary"
                       style={{
-                        display: 'block',
+                        padding: '10px',
+                        fontSize: '0.88rem',
+                        borderRadius: '10px',
+                        boxShadow: 'none',
                         textAlign: 'center',
-                        background: 'linear-gradient(135deg, #0b3a86, #165df5)',
-                        color: '#fff',
-                        padding: '12px',
-                        borderRadius: '12px',
-                        fontWeight: 700,
-                        fontSize: '0.9rem',
-                        textDecoration: 'none',
+                        justifyContent: 'center',
                       }}
                     >
-                      Book this space →
+                      Inquire About This Space &rarr;
                     </Link>
                   </div>
                 ))}
@@ -187,22 +203,31 @@ export default function Properties({ properties }: { properties: any[] }) {
             ) : (
               <div style={{ textAlign: 'center', padding: '80px 20px', color: 'var(--muted)' }}>
                 <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🏢</div>
-                <h3 style={{ fontWeight: 700, marginBottom: '8px' }}>No properties found</h3>
-                <p>Try adjusting your search or filters to find matching results.</p>
-                <button onClick={resetFilters} style={{ marginTop: '16px', background: 'var(--accent)', color: '#fff', border: 'none', padding: '12px 28px', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}>
-                  Clear filters
+                <h3 style={{ fontWeight: 800, color: 'var(--primary)', marginBottom: '8px' }}>No properties found</h3>
+                <p>Adjust your search query or city filter to view available opportunities.</p>
+                <button onClick={resetFilters} className="btn btn-primary" style={{ marginTop: '16px', padding: '10px 22px' }}>
+                  Clear Filters
                 </button>
               </div>
             )}
           </div>
         </section>
 
-        <section className="container">
-          <div className="cta-banner-container">
-            <h2>Looking for a specific office space or property?</h2>
-            <div className="cta-actions">
-              <Link href="/contact" className="cta-btn-primary">Share requirements</Link>
-              <Link href="/services" className="cta-btn-secondary">Explore services</Link>
+        {/* In-Person Advisory CTA */}
+        <section className="container" style={{ margin: '48px auto' }}>
+          <div style={{ background: 'var(--primary)', color: '#ffffff', borderRadius: '20px', padding: '48px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+            <div>
+              <h2 style={{ color: '#ffffff', fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px' }}>
+                Seeking Commercial Office Space in Panipat?
+              </h2>
+              <p style={{ color: '#cbd5e1', fontSize: '0.98rem', margin: 0, maxWidth: '600px' }}>
+                Visit our chambers at Sudarshan Tower or submit your specific carpet area, power, and lease duration requirements.
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <Link href="/contact" className="btn" style={{ background: '#ffffff', color: 'var(--primary)', fontWeight: 700, padding: '12px 24px' }}>
+                Submit Requirement &rarr;
+              </Link>
             </div>
           </div>
         </section>

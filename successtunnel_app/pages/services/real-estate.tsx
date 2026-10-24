@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Head from 'next/head'
 import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
@@ -8,24 +9,24 @@ import CourseCard from '../../components/education/CourseCard'
 
 const propertyTabs = [
   {
-    id: 'residential',
-    title: 'Residential Property',
-    content: 'Discover premium homes, apartments, and residential plots. Whether you are looking for your dream home or a high-growth investment property, we help you find and secure the best deals.'
-  },
-  {
     id: 'commercial',
     title: 'Commercial Land & Offices',
-    content: 'Strategic commercial investments that yield high returns. We specialize in acquiring office spaces, corporate parks, and commercial plots with strong visibility and demand.'
+    content: 'Strategic commercial investments that yield high returns. We specialize in acquiring office spaces, corporate parks, and commercial plots with strong visibility and demand in Panipat and NCR.'
   },
   {
     id: 'retail',
-    title: 'Shops & Retail',
-    content: 'Prime retail units in high-footfall areas. We analyze market trends to ensure your retail investments provide consistent rental yields and strong capital appreciation.'
+    title: 'Shops & High-Street Retail',
+    content: 'Prime retail units in high-footfall areas. We analyze market footfall trends to ensure your retail acquisitions provide strong capital appreciation and consistent rental yields.'
   },
   {
     id: 'warehouses',
     title: 'Warehouses / Logistics',
-    content: 'Large-scale storage and operational spaces. As e-commerce grows, we help businesses and investors acquire functional warehouses with excellent connectivity.'
+    content: 'Large-scale storage and industrial operational spaces. We help textile, manufacturing, and e-commerce companies acquire functional warehouses with excellent transit connectivity.'
+  },
+  {
+    id: 'residential',
+    title: 'Residential Property',
+    content: 'Discover premium homes, luxury apartments, and residential plots. Whether you are looking for an executive residence or a long-term capital growth property, we ensure verified title documentation.'
   }
 ]
 
@@ -53,33 +54,50 @@ export default function RealEstateHub() {
 
   return (
     <div>
+      <Head>
+        <title>Commercial Real Estate Advisory — Success Tunnel | Panipat</title>
+        <meta
+          name="description"
+          content="Commercial property acquisition, retail lease negotiation, title due diligence, and warehouse space advisory in Panipat, Haryana."
+        />
+        <link rel="canonical" href="https://successtunnel.in/services/real-estate" />
+      </Head>
+
       <Nav />
       <main>
         {/* HERO SECTION */}
-        <section className="page-hero">
-          <div className="container article-hero">
+        <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '48px' }}>
+          <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '48px', alignItems: 'center' }}>
             <div>
-              <span className="eyebrow">Property Strategy</span>
-              <h1 style={{ margin: '18px 0 0', fontSize: 'clamp(3rem, 7vw, 5rem)', lineHeight: 0.98, letterSpacing: '-.05em' }}>
-                Real Estate Hub
+              <div className="editorial-tag" style={{ marginBottom: '20px' }}>
+                <span className="editorial-tag-dot" />
+                Commercial Property &amp; Land Advisory
+              </div>
+              <h1 style={{ margin: '14px 0 20px', fontSize: 'clamp(2.4rem, 5.5vw, 4rem)', lineHeight: 1.1, letterSpacing: '-0.035em', fontWeight: 800, color: 'var(--primary)' }}>
+                Commercial Real Estate
               </h1>
-              <p style={{ margin: '18px 0 0', maxWidth: 680, color: 'var(--muted)', fontSize: '1.06rem' }}>
-                A premium end-to-end property experience. Whether you are acquiring commercial land or your next home, we make shortlisting, analyzing, and closing simple.
+              <p style={{ margin: '0 0 28px', maxWidth: 640, color: 'var(--muted)', fontSize: '1.12rem', lineHeight: 1.68 }}>
+                Strategic acquisition, rigorous title due diligence, and corporate lease negotiations for commercial assets, industrial land, and high-street retail in Panipat and Haryana.
               </p>
-              <div className="hero-actions">
-                <a href="#enquiry" className="btn btn-primary">
-                  Start Property Search
+              <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+                <a href="#enquiry" className="btn btn-primary" style={{ padding: '12px 24px' }}>
+                  Book Consultation &rarr;
                 </a>
+                <Link href="/properties" className="btn btn-secondary" style={{ padding: '12px 24px' }}>
+                  Browse Available Assets
+                </Link>
               </div>
             </div>
 
-            <div className="article-feature">
-              <span className="service-card-kicker">Interactive Tools</span>
-              <h2 style={{ margin: '14px 0 0', fontSize: '2rem', lineHeight: 1.04, letterSpacing: '-.04em' }}>
-                Calculate your rental returns.
-              </h2>
-              <p style={{ marginTop: 14, marginBottom: 24 }}>
-                Use our built-in Property Yield Estimator to instantly calculate the gross annual yield of your prospective residential or commercial investments.
+            <div style={{ background: '#ffffff', border: '1px solid var(--line)', borderRadius: '18px', padding: '32px', boxShadow: 'var(--shadow-sm)' }}>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Yield &amp; ROI Analytics
+              </div>
+              <h3 style={{ margin: '0 0 10px', fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)' }}>
+                Calculate Property Yield
+              </h3>
+              <p style={{ marginTop: 0, marginBottom: 20, color: 'var(--muted)', fontSize: '0.92rem', lineHeight: '1.6' }}>
+                Project your annual rental yields and gross capital returns before entering into a transaction.
               </p>
               <PropertyYieldCalculator />
             </div>
@@ -89,10 +107,13 @@ export default function RealEstateHub() {
         {/* INTERACTIVE TABS SECTION */}
         <section className="section-surface">
           <div className="container">
-            <div className="section-heading" style={{ textAlign: 'center', marginBottom: '40px' }}>
-              <span className="eyebrow">Our Focus Areas</span>
-              <h2>Curated Property Opportunities</h2>
-              <p>Explore our core property segments tailored for both living and aggressive investment growth.</p>
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <div className="editorial-tag" style={{ marginBottom: '14px' }}>
+                <span className="editorial-tag-dot" />
+                Property Channels
+              </div>
+              <h2 style={{ fontSize: '2.2rem', color: 'var(--primary)', fontWeight: 800, margin: '8px 0 0' }}>Strategic Real Estate Assets</h2>
+              <p style={{ maxWidth: 600, margin: '8px auto 0', color: 'var(--muted)', fontSize: '1rem' }}>Focused acquisition and portfolio growth in Panipat and North India.</p>
             </div>
 
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
@@ -105,12 +126,13 @@ export default function RealEstateHub() {
                       padding: '10px 20px',
                       background: activeTab === tab.id ? 'var(--primary)' : 'transparent',
                       color: activeTab === tab.id ? 'white' : 'var(--muted)',
-                      border: 'none',
+                      border: '1px solid',
+                      borderColor: activeTab === tab.id ? 'var(--primary)' : 'var(--line)',
                       borderRadius: '8px',
-                      fontWeight: 600,
+                      fontWeight: 700,
                       cursor: 'pointer',
                       whiteSpace: 'nowrap',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.15s ease'
                     }}
                   >
                     {tab.title}
@@ -118,13 +140,13 @@ export default function RealEstateHub() {
                 ))}
               </div>
 
-              <div style={{ background: 'white', padding: '40px', borderRadius: '16px', border: '1px solid var(--line)', boxShadow: '0 10px 40px rgba(0,0,0,0.03)' }}>
+              <div style={{ background: 'white', padding: '36px', borderRadius: '16px', border: '1px solid var(--line)', boxShadow: 'var(--shadow-sm)' }}>
                 {propertyTabs.map(tab => (
                   <div key={tab.id} style={{ display: activeTab === tab.id ? 'block' : 'none' }}>
-                    <h3 style={{ fontSize: '1.8rem', marginBottom: '16px', color: 'var(--primary)' }}>{tab.title}</h3>
-                    <p style={{ fontSize: '1.1rem', lineHeight: 1.6, color: 'var(--muted)' }}>{tab.content}</p>
+                    <h3 style={{ fontSize: '1.6rem', marginBottom: '14px', color: 'var(--primary)', fontWeight: 800 }}>{tab.title}</h3>
+                    <p style={{ fontSize: '1.05rem', lineHeight: 1.65, color: 'var(--muted)', margin: 0 }}>{tab.content}</p>
                     <a href="#enquiry" style={{ display: 'inline-flex', marginTop: '24px', fontWeight: 700, color: 'var(--accent)' }}>
-                      Discuss this property type &rarr;
+                      Inquire regarding this category &rarr;
                     </a>
                   </div>
                 ))}
@@ -133,29 +155,29 @@ export default function RealEstateHub() {
           </div>
         </section>
 
-        {/* FINANCIAL EDUCATION SECTION */}
+        {/* LEARNING TRACK SECTION */}
         <section className="section-surface" style={{ background: '#f8fafc' }}>
           <div className="container">
-            <div className="split-grid">
-              <div className="split-content">
-                <span className="eyebrow">Property Mastery</span>
-                <h2>Success Tunnel Education Hub</h2>
-                <p>
-                  A great property investment is built on great data. Learn how to analyze markets, negotiate leases, and build a generational real estate portfolio.
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center' }}>
+              <div>
+                <div className="editorial-tag" style={{ marginBottom: '14px' }}>
+                  <span className="editorial-tag-dot" />
+                  Market Intelligence
+                </div>
+                <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)', margin: '0 0 16px' }}>
+                  Commercial Real Estate Analysis
+                </h2>
+                <p style={{ color: 'var(--muted)', fontSize: '1.02rem', lineHeight: '1.68', marginBottom: '20px' }}>
+                  Learn how institutional investors evaluate lease covenants, analyze land zoning, and assess true commercial yield potential.
                 </p>
-                <ul className="bullet-list" style={{ marginTop: '20px' }}>
-                  <li>Learn directly from real estate developers</li>
-                  <li>In-depth commercial leasing strategies</li>
-                  <li>Comprehensive market analysis frameworks</li>
-                </ul>
-                <div style={{ marginTop: '32px' }}>
-                  <Link href="/education" className="btn btn-primary">
-                    View all courses
+                <div style={{ marginTop: '24px' }}>
+                  <Link href="/education" className="btn btn-primary" style={{ padding: '10px 22px' }}>
+                    Explore All Modules &rarr;
                   </Link>
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
                 {realEstateCourses.map(course => (
                   <CourseCard key={course.slug} {...course} />
                 ))}
@@ -166,13 +188,13 @@ export default function RealEstateHub() {
 
         {/* GUIDED ENQUIRY */}
         <section className="section-surface" id="enquiry">
-          <div className="container" style={{ maxWidth: '700px' }}>
+          <div className="container" style={{ maxWidth: '720px' }}>
             <GuidedEnquiry
               page="service:real-estate"
-              title="Speak with a Property Advisor"
-              subtitle="Share your target location, budget, and requirements, and we'll help you curate the perfect shortlist."
+              title="Speak with a Commercial Property Specialist"
+              subtitle="Submit your acquisition or leasing criteria to connect with our Panipat property desk."
               selectedService="Real Estate"
-              serviceOptions={['Residential Property', 'Commercial Land & Offices', 'Shops & Retail', 'Warehouses', 'Real Estate Education']}
+              serviceOptions={['Commercial Land & Offices', 'Shops & Retail', 'Warehouses / Logistics', 'Residential Property']}
             />
           </div>
         </section>

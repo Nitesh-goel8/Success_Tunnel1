@@ -1,75 +1,77 @@
+import Head from 'next/head'
 import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import GuidedEnquiry from '../../components/GuidedEnquiry'
 import { prisma } from '../../lib/prisma'
+import { HiArrowRight, HiCheckCircle } from 'react-icons/hi'
 
 const fallbackSubservices: Record<string, { title: string; text: string }[]> = {
   consultancy: [
-    { title: 'Income Tax', text: 'Tax planning and filing support for individuals and businesses.' },
-    { title: 'GST Compliance', text: 'Registration, return filing and audit assistance.' },
-    { title: 'MSME Registration', text: 'Structured support for small and medium enterprises.' },
-    { title: 'Trademark', text: 'Brand protection, filing and monitoring guidance.' },
-    { title: 'Company Services', text: 'Incorporation, filings and governance support.' },
-    { title: 'NPO / Trust', text: 'Registration and compliance for mission-driven organizations.' },
+    { title: 'Income Tax Planning & Filings', text: 'Corporate tax compliance, return filings, statutory advance tax, and tax audit support.' },
+    { title: 'GST Compliance & Representation', text: 'Monthly/annual filings, input tax credit reconciliation, and GST department audits.' },
+    { title: 'MCA & Secretarial Compliances', text: 'Private Limited / LLP annual filings, board resolutions, DIN/DIR-3 KYC, and statutory governance.' },
+    { title: 'Startup & MSME Registration', text: 'DPIIT startup recognition, Udyam MSME certificate, and state industrial subsidy support.' },
+    { title: 'Trademark & IP Protection', text: 'Brand registration, trademark search reports, objection hearings, and renewal monitoring.' },
+    { title: 'Trust, Society & NGO Compliance', text: 'Section 8 company incorporation, 12A/80G approvals, and CSR project advisory.' },
   ],
   finance: [
-    { title: 'Planning', text: 'Personal and business financial planning support.' },
-    { title: 'Funding', text: 'Guidance on loans, credit and capital access.' },
-    { title: 'Risk', text: 'Decision support for capital and cash flow management.' },
-    { title: 'Reporting', text: 'Clear financial reporting and review cycles.' },
+    { title: 'Working Capital Facilities', text: 'Cash Credit (CC), Overdraft (OD), and LC/BG limits from scheduled commercial banks.' },
+    { title: 'Term Loans & Project Financing', text: 'Appraisal reports, CMA preparation, and financial structuring for industrial expansion.' },
+    { title: 'Debt Syndication & Restructuring', text: 'Multilateral lender coordination, balance sheet restructuring, and interest rate optimization.' },
+    { title: 'Statutory Financial Due Diligence', text: 'In-depth balance sheet reviews, cash flow projections, and lender compliance audits.' },
   ],
   education: [
-    { title: 'Study Material', text: 'Notes, PDFs and guided learning resources.' },
-    { title: 'Tally Course', text: 'Practical accounting and software-based learning.' },
-    { title: 'Career Support', text: 'Skill-building and exam preparation support.' },
-    { title: 'Student Guidance', text: 'A clear path for learners who need direction.' },
+    { title: 'Executive Tax Masterclasses', text: 'Structured corporate taxation notes, TDS computation, and practical GST workflows.' },
+    { title: 'Practical Accounting & Tally', text: 'Real-world business case studies, ledger closure, and ERP ledger maintenance.' },
+    { title: 'Corporate Staff Upskilling', text: 'On-site and virtual workforce capacity-building for enterprise finance departments.' },
+    { title: 'Exam & Certification Mentorship', text: 'Rigorous modules covering corporate law, taxation guidelines, and compliance standards.' },
   ],
   investment: [
-    { title: 'Portfolio Review', text: 'Current allocation review and next-step advice.' },
-    { title: 'Asset Strategy', text: 'Guidance for long-term value and stability.' },
-    { title: 'Wealth Planning', text: 'Structured decision support for capital growth.' },
-    { title: 'Risk Management', text: 'Keep investments aligned to your comfort level.' },
+    { title: 'Corporate Treasury Advisory', text: 'Surplus liquidity allocation into disciplined low-risk capital preservation assets.' },
+    { title: 'Promoter Asset Allocation', text: 'Strategic portfolio diversification designed for intergenerational wealth security.' },
+    { title: 'Capital Preservation Mandates', text: 'Risk-adjusted return profiling protecting business capital from inflation and volatility.' },
+    { title: 'Regulatory Compliance Reviews', text: 'Ensuring personal and enterprise investments meet FEMA, RBI, and SEBI regulations.' },
   ],
   'real-estate': [
-    { title: 'Acquisition', text: 'Support for buying the right residential or commercial asset.' },
-    { title: 'Portfolio Growth', text: 'Long-term property strategy and expansion planning.' },
-    { title: 'Rental Yield', text: 'Advice for improving occupancy and return.' },
-    { title: 'Due Diligence', text: 'Better decisions through document review and checks.' },
+    { title: 'Commercial Asset Acquisition', text: 'Sourcing, due diligence, and negotiation for prime commercial towers and retail plots in Panipat.' },
+    { title: 'High-Street Retail Leases', text: 'Anchor tenant negotiation, lease structuring, and ROI modeling for retail centers.' },
+    { title: 'Title Search & Due Diligence', text: 'Comprehensive registry checks, encumbrance verification, and revenue authority clearances.' },
+    { title: 'Portfolio Asset Valuation', text: 'Fair market valuation reports for collateral, balance sheet disclosure, and lease renewals.' },
   ],
   'rental-space': [
-    { title: 'Commercial Space', text: 'Office and storefront options for growing teams.' },
-    { title: 'Residential Space', text: 'Comfortable living spaces with the right fit.' },
-    { title: 'Budget Match', text: 'Filter by budget, area and usage requirements.' },
-    { title: 'Lease Support', text: 'Guidance through agreements and move-in planning.' },
+    { title: 'Turnkey Corporate Suites', text: 'Plug-and-play furnished offices with high-speed internet, power backup, and ergonomics.' },
+    { title: 'Executive Boardrooms', text: 'On-demand meeting facilities for client presentations, interviews, and director meetings in Panipat.' },
+    { title: 'Flexible Commercial Leases', text: 'Adaptable square-footage arrangements without burdensome multi-year lock-in restrictions.' },
+    { title: 'Managed Facilities Maintenance', text: 'Full housekeeping, reception handling, security, and administrative infrastructure.' },
   ],
 }
 
 const benefits = [
-  { title: 'Experienced guidance', text: 'Senior-level advice aligned to your exact service need.' },
-  { title: 'Fast response', text: 'Clear next steps with prompt communication and follow-up.' },
-  { title: 'Trusted process', text: 'A premium engagement model that keeps work organized.' },
+  { title: 'Partner-Led Accountability', text: 'Engage directly with experienced practice heads rather than rotating junior coordinators.' },
+  { title: 'Documented SLA Response', text: 'Transparent 24-hour turnaround commitments with structured statutory checklists.' },
+  { title: 'Multidisciplinary Standard', text: 'Tax, legal, and financial dimensions reviewed concurrently under one governance roof.' },
 ]
 
 const processSteps = [
-  { number: '01', title: 'Discovery', text: 'We review your need and capture the exact scope.' },
-  { number: '02', title: 'Plan', text: 'We outline deliverables, dependencies and timelines.' },
-  { number: '03', title: 'Execute', text: 'We handle the work with careful communication.' },
-  { number: '04', title: 'Support', text: 'We stay available for next-step assistance.' },
+  { number: '01', title: 'Diagnostic Review', text: 'We examine your entity requirements, statutory deadlines, or property specifications.' },
+  { number: '02', title: 'Advisory Architecture', text: 'We formulate a documented engagement scope with timelines and required filings.' },
+  { number: '03', title: 'Execution & Lodgement', text: 'Our practice desk executes the mandate, liaising directly with regulatory authorities.' },
+  { number: '04', title: 'Ongoing Governance', text: 'We provide closure documentation, verified logs, and ongoing statutory maintenance.' },
 ]
 
 const faqItems = [
   {
-    question: 'How quickly can we get started?',
-    answer: 'Most enquiries receive a response within one business day, and urgent requests can be prioritized.',
+    question: 'How quickly can we initiate this advisory mandate?',
+    answer: 'Following our initial diagnostic discussion, we issue the engagement scope within 24 hours and begin execution upon receipt of documents.',
   },
   {
-    question: 'Do you support both individuals and businesses?',
-    answer: 'Yes. The workflow is adapted to the service type and whether the request is personal or corporate.',
+    question: 'Do you offer in-person consultation in Panipat?',
+    answer: 'Yes. You can meet our practice directors at our corporate chambers in Sudarshan Tower, Panipat or collaborate virtually over encrypted video channels.',
   },
   {
-    question: 'Can you tailor the engagement?',
-    answer: 'Absolutely. We can refine scope, turnaround, and support level based on your goals and timeline.',
+    question: 'Can this service be combined with other practice areas?',
+    answer: 'Yes. Most enterprise clients engage us for bundled multidisciplinary mandates—such as company registration alongside corporate finance and office leasing.',
   },
 ]
 
@@ -83,41 +85,58 @@ export default function ServiceDetail({ service, subservices }: { service: any; 
 
   return (
     <div>
+      <Head>
+        <title>{service.title} — Success Tunnel Advisory Group | Panipat</title>
+        <meta
+          name="description"
+          content={`${service.title} advisory and execution by Success Tunnel in Panipat, Haryana. Comprehensive governance, dedicated practice heads, and predictable outcomes.`}
+        />
+        <link rel="canonical" href={`https://successtunnel.in/services/${service.slug}`} />
+      </Head>
+
       <Nav />
       <main>
-        <section className="page-hero">
-          <div className="container article-hero">
+        {/* Practice Hero */}
+        <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '48px' }}>
+          <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '48px', alignItems: 'center' }}>
             <div>
-              <span className="eyebrow">Service detail</span>
-              <h1 style={{ margin: '18px 0 0', fontSize: 'clamp(3rem, 7vw, 5rem)', lineHeight: 0.98, letterSpacing: '-.05em' }}>
+              <div className="editorial-tag" style={{ marginBottom: '20px' }}>
+                <span className="editorial-tag-dot" />
+                Practice Area Overview
+              </div>
+              <h1 style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4rem)', lineHeight: '1.1', letterSpacing: '-0.035em', fontWeight: 800, color: 'var(--primary)', margin: '14px 0 20px' }}>
                 {service.title}
               </h1>
-              <p style={{ margin: '18px 0 0', maxWidth: 680, color: 'var(--muted)', fontSize: '1.06rem' }}>
-                {service.excerpt || 'Executive advisory services designed to deliver clarity, control and measurable value.'}
+              <p style={{ maxWidth: 640, color: 'var(--muted)', fontSize: '1.12rem', lineHeight: '1.68', marginBottom: '28px' }}>
+                {service.excerpt || 'Executive advisory services designed to deliver regulatory clarity, financial control, and measurable business outcomes.'}
               </p>
-              <div className="hero-actions">
-                <a href="#contact" className="btn btn-primary">
-                  Book Consultation
+              <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+                <a href="#contact-form" className="btn btn-primary" style={{ padding: '12px 24px' }}>
+                  Schedule Consultation &rarr;
                 </a>
-                <Link href="/services" className="btn btn-secondary">
-                  Back to Services
+                <Link href="/services" className="btn btn-secondary" style={{ padding: '12px 24px' }}>
+                  All Practice Areas
                 </Link>
               </div>
             </div>
 
-            <div className="article-feature">
-              <span className="service-card-kicker">What to expect</span>
-              <h2 style={{ margin: '14px 0 0', fontSize: '2rem', lineHeight: 1.04, letterSpacing: '-.04em' }}>
-                A premium engagement built to keep your decision-making simple.
-              </h2>
-              <p style={{ marginTop: 14 }}>
-                We combine practical service execution with clear communication and dependable support.
-              </p>
-              <div className="hero-board-grid" style={{ marginTop: 18 }}>
+            <div style={{ background: '#ffffff', border: '1px solid var(--line)', borderRadius: '18px', padding: '32px', boxShadow: 'var(--shadow-sm)' }}>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Governance Covenants
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary)', margin: '0 0 16px' }}>
+                What Clients Can Depend On
+              </h3>
+              <div style={{ display: 'grid', gap: '14px' }}>
                 {benefits.map(item => (
-                  <div key={item.title} className="mini-card">
-                    <strong>{item.title}</strong>
-                    <span>{item.text}</span>
+                  <div key={item.title} style={{ padding: '12px 0', borderTop: '1px solid var(--line)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)', fontWeight: 700, fontSize: '0.95rem', marginBottom: '4px' }}>
+                      <HiCheckCircle style={{ color: 'var(--accent)' }} />
+                      {item.title}
+                    </div>
+                    <div style={{ color: 'var(--muted)', fontSize: '0.86rem', lineHeight: '1.5' }}>
+                      {item.text}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -125,82 +144,99 @@ export default function ServiceDetail({ service, subservices }: { service: any; 
           </div>
         </section>
 
-        <section className="section-surface">
-          <div className="section-heading">
-            <span className="eyebrow">Core services</span>
-            <h2>Specialized support areas under this service.</h2>
-            <p>Each subservice is designed to be easy to understand, easy to compare and easy to act on.</p>
-          </div>
-
-          <div className="pillars-grid">
-            {subserviceItems.map(item => (
-              <div key={item.title} className="panel-card">
-                <div className="icon-chip">•</div>
-                <h3 style={{ marginTop: 14 }}>{item.title}</h3>
-                <p style={{ marginTop: 10 }}>{item.text}</p>
+        {/* Specialized Subservices Grid */}
+        <section className="section-surface" id="subservices">
+          <div className="container">
+            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+              <div className="editorial-tag" style={{ marginBottom: '14px' }}>
+                <span className="editorial-tag-dot" />
+                Service Scope
               </div>
-            ))}
+              <h2 style={{ fontSize: '2.2rem', color: 'var(--primary)', fontWeight: 800, margin: '8px 0 0' }}>
+                Core Advisory Deliverables
+              </h2>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+              {subserviceItems.map((item, index) => (
+                <div key={item.title} className="expertise-card" style={{ padding: '28px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--accent)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                      Scope 0{index + 1}
+                    </span>
+                  </div>
+                  <h3 style={{ fontSize: '1.2rem', marginBottom: '10px' }}>{item.title}</h3>
+                  <p style={{ margin: 0, color: 'var(--muted)', fontSize: '0.92rem', lineHeight: '1.6' }}>{item.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section className="section-surface">
-          <div className="section-heading">
-            <span className="eyebrow">How we work</span>
-            <h2>Four steps to a clear outcome.</h2>
-            <p>A lightweight process that keeps the service easy to follow from start to finish.</p>
-          </div>
-
-          <div className="timeline-grid">
-            {processSteps.map(step => (
-              <div key={step.number} className="step-card">
-                <div className="step-pill">{step.number}</div>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
+        {/* Process Steps */}
+        <section className="section-surface" style={{ background: '#f8fafc' }}>
+          <div className="container">
+            <div style={{ textAlign: 'center', marginBottom: '44px' }}>
+              <div className="editorial-tag" style={{ marginBottom: '14px' }}>
+                <span className="editorial-tag-dot" />
+                Engagement Flow
               </div>
-            ))}
+              <h2 style={{ fontSize: '2.2rem', color: 'var(--primary)', fontWeight: 800, margin: '8px 0 0' }}>
+                The 4-Stage Advisory Workflow
+              </h2>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+              {processSteps.map(step => (
+                <div key={step.number} style={{ background: '#ffffff', border: '1px solid var(--line)', borderRadius: '14px', padding: '24px 20px', boxShadow: 'var(--shadow-sm)' }}>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)', fontFamily: 'Sora, sans-serif', marginBottom: '8px' }}>
+                    STAGE {step.number}
+                  </div>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--primary)', margin: '0 0 8px' }}>
+                    {step.title}
+                  </h4>
+                  <p style={{ fontSize: '0.88rem', color: 'var(--muted)', lineHeight: '1.55', margin: 0 }}>
+                    {step.text}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section className="section-surface">
-          <div className="split-grid">
-            <div className="split-content">
-              <span className="eyebrow">FAQ</span>
-              <h2>Questions we hear often.</h2>
-              <p>Short answers that help you move forward quickly and with confidence.</p>
+        {/* FAQ & Quick Consultation Form */}
+        <section className="section-surface" id="contact-form">
+          <div className="container contact-section-grid">
+            <div className="contact-info-panel">
+              <div className="editorial-tag" style={{ marginBottom: '16px' }}>
+                <span className="editorial-tag-dot" />
+                Client Guidance
+              </div>
+              <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', margin: '0 0 20px' }}>
+                Frequently Asked Questions
+              </h2>
 
-              <div className="faq-list" style={{ marginTop: 20 }}>
+              <div className="faq-list">
                 {faqItems.map(item => (
-                  <details key={item.question} className="faq-item">
-                    <summary>{item.question}</summary>
-                    <p>{item.answer}</p>
+                  <details key={item.question} style={{ background: '#ffffff', border: '1px solid var(--line)', borderRadius: '12px', padding: '16px 20px', marginBottom: '12px' }}>
+                    <summary style={{ fontWeight: 700, color: 'var(--primary)', cursor: 'pointer', outline: 'none' }}>
+                      {item.question}
+                    </summary>
+                    <p style={{ marginTop: '10px', color: 'var(--muted)', fontSize: '0.92rem', lineHeight: '1.6', margin: '10px 0 0' }}>
+                      {item.answer}
+                    </p>
                   </details>
                 ))}
               </div>
             </div>
 
-            <GuidedEnquiry
-              page={`service:${service.slug}`}
-              title={`Need help with ${service.title}?`}
-              subtitle="Share a few details and we'll call you back with the next step."
-              selectedService={service.title}
-            />
-          </div>
-        </section>
-
-        <section className="container">
-          <div className="callout-banner">
-            <h2>Need help with a related service too?</h2>
-            <p>
-              We can connect multiple services into one coordinated plan so your team does not need to manage
-              everything separately.
-            </p>
-            <div className="callout-actions">
-              <Link href="/#contact" className="btn btn-ghost">
-                Talk to Advisory
-              </Link>
-              <Link href="/blog" className="btn btn-secondary">
-                Read Insights
-              </Link>
+            <div className="contact-form-card">
+              <GuidedEnquiry
+                page={`service:${service.slug}`}
+                title={`Schedule Consultation for ${service.title}`}
+                subtitle="Submit your requirements to connect with the designated practice director."
+                selectedService={service.title}
+              />
             </div>
           </div>
         </section>
@@ -210,36 +246,45 @@ export default function ServiceDetail({ service, subservices }: { service: any; 
   )
 }
 
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
+const staticSlugs = new Set(['consultancy', 'finance', 'education', 'investment', 'real-estate', 'rental-space'])
+
+export async function getStaticPaths() {
+  try {
+    const services = await prisma.service.findMany({ select: { slug: true } })
+    const paths = services
+      .filter(s => !staticSlugs.has(s.slug))
+      .map(s => ({ params: { slug: s.slug } }))
+    return {
+      paths,
+      fallback: 'blocking',
+    }
+  } catch {
+    return {
+      paths: [],
+      fallback: 'blocking',
+    }
   }
 }
 
-export const getStaticProps = async ({ params }: { params: { slug: string } }) => {
-  const { slug } = params
-  // Attempt to load from DB first.
+export async function getStaticProps({ params }: { params: { slug: string } }) {
   try {
-    const service = await prisma.service.findUnique({ where: { slug } })
-    const subservices = await prisma.subservice.findMany({ where: { serviceId: service?.id } })
-    if (service) {
-      return {
-        props: {
-          service: JSON.parse(JSON.stringify(service)),
-          subservices: JSON.parse(JSON.stringify(subservices)),
-        },
-        revalidate: 86400, // re‑validate daily
-      }
+    const service = await prisma.service.findUnique({
+      where: { slug: params.slug },
+      include: { subservices: true },
+    })
+
+    if (!service) {
+      return { notFound: true }
     }
-  } catch (e) {
-    // DB error – fall back to static data.
+
+    return {
+      props: {
+        service: JSON.parse(JSON.stringify(service)),
+        subservices: JSON.parse(JSON.stringify(service.subservices || [])),
+      },
+      revalidate: 60,
+    }
+  } catch {
+    return { notFound: true }
   }
-  // Fallback data when DB missing or slug not in DB.
-  const service = { title: slug.charAt(0).toUpperCase() + slug.slice(1), slug, excerpt: 'Sample service description.' }
-  const subservices = fallbackSubservices[slug] || []
-  return {
-    props: { service, subservices },
-    revalidate: 86400,
-  }
-};
+}
