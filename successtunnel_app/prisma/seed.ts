@@ -14,9 +14,16 @@ const consultancySubservices = [
 
 async function main() {
   console.log('======================================================================')
-  console.log('🚀 SEEDING SUCCESS TUNNEL ERP - 3 MONTHS REALISTIC DEMO DATA')
-  console.log('   Timeframe: August 2026, September 2026, October 2026')
+  console.log('🚀 SEEDING SUCCESS TUNNEL ERP — REALISTIC DEMO DATA')
+  console.log('   Dynamic 90-Day Timeframe, 85+ Tasks, Full Reporting Hierarchy')
   console.log('======================================================================\n')
+
+  // Production environment safeguard
+  if (process.env.NODE_ENV === 'production' && process.env.ALLOW_PROD_DEMO_SEED !== 'true') {
+    console.error('❌ ERROR: Refusing to seed demo data into production environment (NODE_ENV=production).')
+    console.error('To override for staging/verification, set ALLOW_PROD_DEMO_SEED=true.\n')
+    process.exit(1)
+  }
 
   const defaultPassword = await bcrypt.hash('Demo@2026!', 10)
   const adminPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'Demo@2026!', 10)
@@ -24,12 +31,14 @@ async function main() {
   // ------------------------------------------------------------------
   // 1. Seed Core Departments
   // ------------------------------------------------------------------
-  console.log('Step 1/8: Seeding functional departments...')
+  console.log('Step 1/11: Seeding functional departments...')
   const departmentsData = [
     { code: 'ENG', name: 'Engineering & Technology', description: 'Software architecture, cloud infrastructure, and product engineering.' },
+    { code: 'PRD', name: 'Product and Design', description: 'Product strategy, user research, wireframing, and interactive UI design.' },
     { code: 'HR', name: 'Human Resources & People', description: 'Talent acquisition, employee welfare, performance, and organizational culture.' },
-    { code: 'FIN', name: 'Finance & Accounts', description: 'Financial reporting, tax planning, payroll compliance, and treasury operations.' },
-    { code: 'OPS', name: 'Operations & Facilities', description: 'Operational workflows, logistics, client workspace administration, and facility management.' },
+    { code: 'FIN', name: 'Finance and Administration', description: 'Financial reporting, tax planning, payroll compliance, and treasury operations.' },
+    { code: 'OPS', name: 'Business Operations', description: 'Operational workflows, logistics, client workspace administration, and facility management.' },
+    { code: 'SLS', name: 'Sales and Customer Success', description: 'Lead generation, client onboarding, account management, and enterprise success.' },
     { code: 'CNS', name: 'Client Advisory & Consulting', description: 'Strategic business advisory, taxation consulting, and enterprise client relations.' },
   ]
 
@@ -44,9 +53,9 @@ async function main() {
   }
 
   // ------------------------------------------------------------------
-  // 2. Seed 14 Realistic Demo Users & Employee Profiles
+  // 2. Seed 16 Fictional Demo Employees with Reserved Domains
   // ------------------------------------------------------------------
-  console.log('Step 2/8: Seeding comprehensive staff personnel across 5 roles...')
+  console.log('Step 2/11: Seeding 16 staff personnel with strict example domains...')
   const demoUsers = [
     // Executive Leadership
     {
@@ -101,7 +110,7 @@ async function main() {
       departmentCode: 'ENG',
       phone: '+91 98222 33445',
       employeeCode: 'ST-PM-201',
-      designation: 'Principal Project Manager',
+      designation: 'Engineering Lead & Principal Project Manager',
       workLocation: 'Headquarters - New Delhi',
       employmentType: 'Full-time',
       status: 'ACTIVE',
@@ -163,7 +172,22 @@ async function main() {
       status: 'ACTIVE',
       joiningDate: new Date('2025-04-05'),
     },
-    // Finance & Accounts
+    // Product & Design
+    {
+      name: 'Rajesh Menon',
+      email: 'rajesh.menon@example.com',
+      password: defaultPassword,
+      role: 'employee',
+      departmentCode: 'PRD',
+      phone: '+91 98777 11223',
+      employeeCode: 'ST-PRD-701',
+      designation: 'Senior Product Designer & UI/UX Lead',
+      workLocation: 'Headquarters - New Delhi',
+      employmentType: 'Full-time',
+      status: 'ACTIVE',
+      joiningDate: new Date('2024-07-01'),
+    },
+    // Finance & Administration
     {
       name: 'Sneha Patel',
       email: 'sneha.patel@example.com',
@@ -206,7 +230,7 @@ async function main() {
       status: 'ACTIVE',
       joiningDate: new Date('2025-07-15'),
     },
-    // Operations & Facilities
+    // Business Operations
     {
       name: 'Vikram Singh',
       email: 'vikram.singh@example.com',
@@ -215,7 +239,7 @@ async function main() {
       departmentCode: 'OPS',
       phone: '+91 98555 66778',
       employeeCode: 'ST-OPS-501',
-      designation: 'Operations Specialist',
+      designation: 'Business Operations Specialist',
       workLocation: 'Headquarters - New Delhi',
       employmentType: 'Full-time',
       status: 'ACTIVE',
@@ -235,16 +259,16 @@ async function main() {
       status: 'ACTIVE',
       joiningDate: new Date('2025-05-18'),
     },
-    // Client Advisory & Consulting
+    // Sales and Customer Success
     {
       name: 'Ananya Deshmukh',
       email: 'ananya.deshmukh@example.com',
       password: defaultPassword,
       role: 'employee',
-      departmentCode: 'CNS',
+      departmentCode: 'SLS',
       phone: '+91 98666 77889',
-      employeeCode: 'ST-CNS-601',
-      designation: 'Corporate Tax & GST Associate',
+      employeeCode: 'ST-SLS-601',
+      designation: 'Corporate Account Executive',
       workLocation: 'Branch Office - Mumbai',
       employmentType: 'Full-time',
       status: 'ACTIVE',
@@ -255,10 +279,10 @@ async function main() {
       email: 'arjun.kapoor@example.com',
       password: defaultPassword,
       role: 'project_manager',
-      departmentCode: 'CNS',
+      departmentCode: 'SLS',
       phone: '+91 98666 11223',
-      employeeCode: 'ST-CNS-602',
-      designation: 'Senior Business Strategy Consultant',
+      employeeCode: 'ST-SLS-602',
+      designation: 'Head of Sales & Customer Success',
       workLocation: 'Branch Office - Mumbai',
       employmentType: 'Full-time',
       status: 'ACTIVE',
@@ -267,6 +291,7 @@ async function main() {
   ]
 
   const seededUsers: { [email: string]: any } = {}
+  const seededProfiles: { [email: string]: any } = {}
 
   for (const u of demoUsers) {
     const dept = departments[u.departmentCode]
@@ -292,7 +317,7 @@ async function main() {
     })
     seededUsers[u.email] = userRecord
 
-    await prisma.employeeProfile.upsert({
+    const profileRecord = await prisma.employeeProfile.upsert({
       where: { userId: userRecord.id },
       update: {
         employeeCode: u.employeeCode,
@@ -314,9 +339,84 @@ async function main() {
         isDemo: true,
       },
     })
+    seededProfiles[u.email] = profileRecord
   }
 
-  // Assign department heads
+  // Setup Organizational Reporting Hierarchy (managerId links between EmployeeProfiles)
+  const adminProfile = seededProfiles['admin@successtunnel.in']
+  const priyaProfile = seededProfiles['priya.sharma@example.com']
+  const rohitProfile = seededProfiles['rohit.verma@example.com']
+  const snehaProfile = seededProfiles['sneha.patel@example.com']
+  const vikramProfile = seededProfiles['vikram.singh@example.com']
+  const arjunProfile = seededProfiles['arjun.kapoor@example.com']
+
+  // Department Heads report to Managing Director
+  const deptHeads = [priyaProfile, rohitProfile, snehaProfile, vikramProfile, arjunProfile]
+  for (const head of deptHeads) {
+    if (head && adminProfile) {
+      await prisma.employeeProfile.update({
+        where: { id: head.id },
+        data: { managerId: adminProfile.id },
+      })
+    }
+  }
+
+  // Engineering & Product Team report to Rohit Verma
+  const engTeam = [
+    seededProfiles['amit.kumar@example.com'],
+    seededProfiles['pooja.mehta@example.com'],
+    seededProfiles['siddharth.rao@example.com'],
+    seededProfiles['neha.gupta@example.com'],
+    seededProfiles['rajesh.menon@example.com'],
+  ]
+  for (const emp of engTeam) {
+    if (emp && rohitProfile) {
+      await prisma.employeeProfile.update({
+        where: { id: emp.id },
+        data: { managerId: rohitProfile.id },
+      })
+    }
+  }
+
+  // Finance Team report to Sneha Patel
+  const finTeam = [
+    seededProfiles['manish.joshi@example.com'],
+    seededProfiles['deepak.chawla@example.com'],
+  ]
+  for (const emp of finTeam) {
+    if (emp && snehaProfile) {
+      await prisma.employeeProfile.update({
+        where: { id: emp.id },
+        data: { managerId: snehaProfile.id },
+      })
+    }
+  }
+
+  // HR Team report to Priya Sharma
+  if (seededProfiles['kavita.nair@example.com'] && priyaProfile) {
+    await prisma.employeeProfile.update({
+      where: { id: seededProfiles['kavita.nair@example.com'].id },
+      data: { managerId: priyaProfile.id },
+    })
+  }
+
+  // Operations Team report to Vikram Singh
+  if (seededProfiles['rahul.iyer@example.com'] && vikramProfile) {
+    await prisma.employeeProfile.update({
+      where: { id: seededProfiles['rahul.iyer@example.com'].id },
+      data: { managerId: vikramProfile.id },
+    })
+  }
+
+  // Sales Team report to Arjun Kapoor
+  if (seededProfiles['ananya.deshmukh@example.com'] && arjunProfile) {
+    await prisma.employeeProfile.update({
+      where: { id: seededProfiles['ananya.deshmukh@example.com'].id },
+      data: { managerId: arjunProfile.id },
+    })
+  }
+
+  // Assign department head references
   if (departments['HR'] && seededUsers['priya.sharma@example.com']) {
     await prisma.department.update({ where: { id: departments['HR'].id }, data: { headId: seededUsers['priya.sharma@example.com'].id } })
   }
@@ -326,19 +426,25 @@ async function main() {
   if (departments['ENG'] && seededUsers['rohit.verma@example.com']) {
     await prisma.department.update({ where: { id: departments['ENG'].id }, data: { headId: seededUsers['rohit.verma@example.com'].id } })
   }
-  if (departments['CNS'] && seededUsers['arjun.kapoor@example.com']) {
-    await prisma.department.update({ where: { id: departments['CNS'].id }, data: { headId: seededUsers['arjun.kapoor@example.com'].id } })
+  if (departments['PRD'] && seededUsers['rajesh.menon@example.com']) {
+    await prisma.department.update({ where: { id: departments['PRD'].id }, data: { headId: seededUsers['rajesh.menon@example.com'].id } })
   }
   if (departments['OPS'] && seededUsers['vikram.singh@example.com']) {
     await prisma.department.update({ where: { id: departments['OPS'].id }, data: { headId: seededUsers['vikram.singh@example.com'].id } })
   }
+  if (departments['SLS'] && seededUsers['arjun.kapoor@example.com']) {
+    await prisma.department.update({ where: { id: departments['SLS'].id }, data: { headId: seededUsers['arjun.kapoor@example.com'].id } })
+  }
+  if (departments['CNS'] && seededUsers['arjun.kapoor@example.com']) {
+    await prisma.department.update({ where: { id: departments['CNS'].id }, data: { headId: seededUsers['arjun.kapoor@example.com'].id } })
+  }
 
   // ------------------------------------------------------------------
-  // 3. Seed Leave Policies
+  // 3. Seed Corporate Leave Policies
   // ------------------------------------------------------------------
-  console.log('Step 3/8: Seeding corporate leave entitlement policies...')
+  console.log('Step 3/11: Seeding corporate leave entitlement policies...')
   const leavePolicies = [
-    { leaveType: 'ANNUAL', title: 'Annual Paid Leave', totalDaysPerYear: 18, carryForwardMax: 5, description: 'Standard paid annual leave for rest, vacation, and family time.' },
+    { leaveType: 'ANNUAL', title: 'Annual Paid Leave', totalDaysPerYear: 18, carryForwardMax: 5, description: 'Standard paid annual leave for rest, vacation, and personal time.' },
     { leaveType: 'SICK', title: 'Medical / Sick Leave', totalDaysPerYear: 10, carryForwardMax: 0, description: 'Leaves granted for health appointments and medical recuperation.' },
     { leaveType: 'CASUAL', title: 'Casual Leave', totalDaysPerYear: 8, carryForwardMax: 0, description: 'Short-notice leaves for urgent personal and domestic matters.' },
     { leaveType: 'UNPAID', title: 'Leave Without Pay (LWP)', totalDaysPerYear: 30, carryForwardMax: 0, description: 'Unpaid leaves requiring department head authorization.' },
@@ -353,16 +459,160 @@ async function main() {
   }
 
   // ------------------------------------------------------------------
-  // 4. Seed 3-Month Historical Attendance Records (Aug 1 - Oct 23, 2026)
+  // 4. Seed Dynamic Leave Requests (Spanning Dynamic 90-Day Range)
   // ------------------------------------------------------------------
-  console.log('Step 4/8: Generating 3 months of daily weekday attendance records (August, September, October 2026)...')
+  console.log('Step 4/11: Seeding leave requests across the active dynamic period...')
+  const now = new Date()
 
-  // Generate date list between Aug 1, 2026 and Oct 23, 2026
+  // Generate dynamic dates: 60 days ago, 45 days ago, 25 days ago, 10 days ago, 5 days ahead
+  const dAgo = (days: number) => new Date(now.getTime() - days * 24 * 60 * 60 * 1000)
+  const dAhead = (days: number) => new Date(now.getTime() + days * 24 * 60 * 60 * 1000)
+
+  const leaveData = [
+    {
+      userEmail: 'amit.kumar@example.com',
+      leaveType: 'ANNUAL',
+      startDate: dAgo(65),
+      endDate: dAgo(63),
+      totalDays: 3,
+      reason: 'Annual family festival & travel back to hometown',
+      status: 'APPROVED',
+      reviewedByEmail: 'priya.sharma@example.com',
+      reviewReason: 'Approved. Deliverables delegated to Siddharth.',
+      reviewedAt: dAgo(67),
+    },
+    {
+      userEmail: 'sneha.patel@example.com',
+      leaveType: 'CASUAL',
+      startDate: dAgo(50),
+      endDate: dAgo(49),
+      totalDays: 2,
+      reason: 'Personal legal registration & family commitment',
+      status: 'APPROVED',
+      reviewedByEmail: 'admin@successtunnel.in',
+      reviewReason: 'Approved. Tax schedule on track.',
+      reviewedAt: dAgo(52),
+    },
+    {
+      userEmail: 'vikram.singh@example.com',
+      leaveType: 'SICK',
+      startDate: dAgo(35),
+      endDate: dAgo(35),
+      totalDays: 1,
+      reason: 'Medical recovery following outpatient surgery',
+      status: 'APPROVED',
+      reviewedByEmail: 'priya.sharma@example.com',
+      reviewReason: 'Approved. Rest well.',
+      reviewedAt: dAgo(35),
+    },
+    {
+      userEmail: 'rohit.verma@example.com',
+      leaveType: 'ANNUAL',
+      startDate: dAgo(20),
+      endDate: dAgo(17),
+      totalDays: 4,
+      reason: 'Annual paid leave for personal rest and trekking',
+      status: 'APPROVED',
+      reviewedByEmail: 'admin@successtunnel.in',
+      reviewReason: 'Approved. Handover confirmed.',
+      reviewedAt: dAgo(23),
+    },
+    {
+      userEmail: 'pooja.mehta@example.com',
+      leaveType: 'SICK',
+      startDate: dAgo(12),
+      endDate: dAgo(11),
+      totalDays: 2,
+      reason: 'Prescribed medical rest and recuperation',
+      status: 'APPROVED',
+      reviewedByEmail: 'priya.sharma@example.com',
+      reviewReason: 'Approved. Medical certificate noted on file.',
+      reviewedAt: dAgo(12),
+    },
+    {
+      userEmail: 'amit.kumar@example.com',
+      leaveType: 'ANNUAL',
+      startDate: dAgo(5),
+      endDate: dAgo(2),
+      totalDays: 4,
+      reason: 'Personal alumni reunion trip',
+      status: 'REJECTED',
+      reviewedByEmail: 'rohit.verma@example.com',
+      reviewReason: 'Critical end-of-sprint milestone release scheduled that week.',
+      reviewedAt: dAgo(7),
+    },
+    {
+      userEmail: 'deepak.chawla@example.com',
+      leaveType: 'SICK',
+      startDate: dAgo(1),
+      endDate: now,
+      totalDays: 2,
+      reason: 'Severe migraine doctor appointment & rest',
+      status: 'PENDING',
+      reviewedByEmail: null,
+      reviewReason: null,
+      reviewedAt: null,
+    },
+    {
+      userEmail: 'siddharth.rao@example.com',
+      leaveType: 'CASUAL',
+      startDate: dAhead(4),
+      endDate: dAhead(6),
+      totalDays: 3,
+      reason: 'Family wedding celebrations in Hyderabad',
+      status: 'PENDING',
+      reviewedByEmail: null,
+      reviewReason: null,
+      reviewedAt: null,
+    },
+  ]
+
+  const approvedLeaveMap = new Map<string, Set<string>>() // email -> set of date strings (YYYY-MM-DD)
+
+  for (const l of leaveData) {
+    const user = seededUsers[l.userEmail]
+    const reviewer = l.reviewedByEmail ? seededUsers[l.reviewedByEmail] : null
+    if (!user) continue
+
+    await prisma.leaveRequest.create({
+      data: {
+        userId: user.id,
+        leaveType: l.leaveType,
+        startDate: l.startDate,
+        endDate: l.endDate,
+        totalDays: l.totalDays,
+        reason: l.reason,
+        status: l.status,
+        reviewedById: reviewer ? reviewer.id : null,
+        reviewReason: l.reviewReason,
+        reviewedAt: l.reviewedAt,
+        isDemo: true,
+      },
+    })
+
+    if (l.status === 'APPROVED') {
+      if (!approvedLeaveMap.has(l.userEmail)) {
+        approvedLeaveMap.set(l.userEmail, new Set())
+      }
+      const cur = new Date(l.startDate)
+      while (cur <= l.endDate) {
+        approvedLeaveMap.get(l.userEmail)!.add(cur.toISOString().split('T')[0])
+        cur.setDate(cur.getDate() + 1)
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // 5. Seed Dynamic 90-Calendar-Day Attendance Dataset
+  // ------------------------------------------------------------------
+  console.log('Step 5/11: Generating dynamic 90-day attendance punch records...')
+
   const attendanceEmployees = [
     seededUsers['amit.kumar@example.com'],
     seededUsers['pooja.mehta@example.com'],
     seededUsers['siddharth.rao@example.com'],
     seededUsers['neha.gupta@example.com'],
+    seededUsers['rajesh.menon@example.com'],
     seededUsers['rohit.verma@example.com'],
     seededUsers['sneha.patel@example.com'],
     seededUsers['manish.joshi@example.com'],
@@ -370,49 +620,183 @@ async function main() {
     seededUsers['priya.sharma@example.com'],
     seededUsers['kavita.nair@example.com'],
     seededUsers['vikram.singh@example.com'],
+    seededUsers['rahul.iyer@example.com'],
     seededUsers['ananya.deshmukh@example.com'],
     seededUsers['arjun.kapoor@example.com'],
   ].filter(Boolean)
 
-  const startDate = new Date('2026-08-01')
-  const endDate = new Date('2026-10-23')
-  const workDates: string[] = []
-
-  const cur = new Date(startDate)
-  while (cur <= endDate) {
-    const dayOfWeek = cur.getDay() // 0 = Sun, 6 = Sat
-    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-      workDates.push(cur.toISOString().split('T')[0])
-    }
-    cur.setDate(cur.getDate() + 1)
-  }
-
-  console.log(`  Identified ${workDates.length} business workdays across 3 months. Populating logs for ${attendanceEmployees.length} staff members...`)
-
   let attendanceCount = 0
-  for (const dateStr of workDates) {
+  let missingPunchCount = 0
+  let leaveDaysExcluded = 0
+
+  // Iterate over exactly 90 calendar days backwards up to today
+  for (let d = 89; d >= 0; d--) {
+    const targetDate = new Date(now.getTime() - d * 24 * 60 * 60 * 1000)
+    const dateStr = targetDate.toISOString().split('T')[0]
+    const dayOfWeek = targetDate.getDay() // 0 = Sun, 6 = Sat
+
+    // Skip weekends: business closed, no attendance punch
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      continue
+    }
+
     for (let i = 0; i < attendanceEmployees.length; i++) {
       const emp = attendanceEmployees[i]
-      // Use deterministic pseudo-random variation based on emp.id and date
-      const hash = (emp.id * 31 + parseInt(dateStr.replace(/-/g, ''))) % 100
+      const userLeaves = approvedLeaveMap.get(emp.email)
 
-      let status = 'PRESENT'
-      let inHour = 9
-      let inMin = 10 + (hash % 20) // 9:10 to 9:30
-      let durationMinutes = 480 + (hash % 50) // 8h to 8h 50m
-
-      if (hash > 90) {
-        // Late arrival
-        status = 'LATE'
-        inHour = 9
-        inMin = 45 + (hash % 15)
-        durationMinutes = 450
-      } else if (hash > 85 && hash <= 90) {
-        // Half day
-        status = 'HALF_DAY'
-        durationMinutes = 240
+      // Rule: When an employee is on approved leave, do not record normal attendance for that day
+      if (userLeaves && userLeaves.has(dateStr)) {
+        leaveDaysExcluded++
+        continue
       }
 
+      // Deterministic pseudo-random variation based on employee id and date string
+      const dateNum = parseInt(dateStr.replace(/-/g, ''), 10)
+      const hash = (emp.id * 37 + dateNum) % 100
+
+      // Scenario A: Missing Punch (2% of workdays) - e.g. punch in but forgot to punch out
+      if (hash === 42 && d > 1) {
+        const inHour = 9
+        const inMin = 15 + (hash % 15)
+        const checkIn = new Date(`${dateStr}T${String(inHour).padStart(2, '0')}:${String(inMin).padStart(2, '0')}:00.000Z`)
+
+        await prisma.attendanceRecord.upsert({
+          where: { userId_date: { userId: emp.id, date: dateStr } },
+          update: {
+            checkIn,
+            checkOut: null,
+            durationMinutes: 0,
+            status: 'PENDING_REGULARIZATION',
+            notes: 'Missing punch: Employee checked in but exit punch not recorded.',
+            correctionRequested: true,
+            correctionReason: 'Biometric exit sensor timeout; requested 6:30 PM punch regularization.',
+            isDemo: true,
+          },
+          create: {
+            userId: emp.id,
+            date: dateStr,
+            checkIn,
+            checkOut: null,
+            durationMinutes: 0,
+            status: 'PENDING_REGULARIZATION',
+            notes: 'Missing punch: Employee checked in but exit punch not recorded.',
+            correctionRequested: true,
+            correctionReason: 'Biometric exit sensor timeout; requested 6:30 PM punch regularization.',
+            isDemo: true,
+          },
+        })
+        missingPunchCount++
+        attendanceCount++
+        continue
+      }
+
+      // Scenario B: Regularized Punch (3% of workdays) - previously regularized by manager
+      if (hash === 88 && d > 5) {
+        const checkIn = new Date(`${dateStr}T09:15:00.000Z`)
+        const checkOut = new Date(`${dateStr}T18:15:00.000Z`)
+        const durationMinutes = 540 // 9 hours = 540 min
+
+        await prisma.attendanceRecord.upsert({
+          where: { userId_date: { userId: emp.id, date: dateStr } },
+          update: {
+            checkIn,
+            checkOut,
+            durationMinutes,
+            status: 'REGULARIZED',
+            notes: 'Regularized punch approved by HR.',
+            correctionRequested: false,
+            correctionReason: 'Biometric card re-scanned and approved.',
+            correctionApprovedBy: seededUsers['priya.sharma@example.com']?.id,
+            isDemo: true,
+          },
+          create: {
+            userId: emp.id,
+            date: dateStr,
+            checkIn,
+            checkOut,
+            durationMinutes,
+            status: 'REGULARIZED',
+            notes: 'Regularized punch approved by HR.',
+            correctionRequested: false,
+            correctionReason: 'Biometric card re-scanned and approved.',
+            correctionApprovedBy: seededUsers['priya.sharma@example.com']?.id,
+            isDemo: true,
+          },
+        })
+        attendanceCount++
+        continue
+      }
+
+      // Scenario C: Half Day (4% of workdays)
+      if (hash > 92 && hash <= 96) {
+        const inHour = 9
+        const inMin = 30
+        const durationMinutes = 240 // 4 hours
+        const checkIn = new Date(`${dateStr}T${String(inHour).padStart(2, '0')}:${String(inMin).padStart(2, '0')}:00.000Z`)
+        const checkOut = new Date(checkIn.getTime() + durationMinutes * 60 * 1000)
+
+        await prisma.attendanceRecord.upsert({
+          where: { userId_date: { userId: emp.id, date: dateStr } },
+          update: {
+            checkIn,
+            checkOut,
+            durationMinutes,
+            status: 'HALF_DAY',
+            notes: 'First-half operational shift completed.',
+            isDemo: true,
+          },
+          create: {
+            userId: emp.id,
+            date: dateStr,
+            checkIn,
+            checkOut,
+            durationMinutes,
+            status: 'HALF_DAY',
+            notes: 'First-half operational shift completed.',
+            isDemo: true,
+          },
+        })
+        attendanceCount++
+        continue
+      }
+
+      // Scenario D: Late Arrival (6% of workdays)
+      if (hash > 86 && hash <= 92) {
+        const inHour = 10
+        const inMin = (hash % 20) + 5 // 10:05 to 10:25
+        const durationMinutes = 480 // 8 hours
+        const checkIn = new Date(`${dateStr}T${String(inHour).padStart(2, '0')}:${String(inMin).padStart(2, '0')}:00.000Z`)
+        const checkOut = new Date(checkIn.getTime() + durationMinutes * 60 * 1000)
+
+        await prisma.attendanceRecord.upsert({
+          where: { userId_date: { userId: emp.id, date: dateStr } },
+          update: {
+            checkIn,
+            checkOut,
+            durationMinutes,
+            status: 'LATE',
+            notes: 'Transit delay logged.',
+            isDemo: true,
+          },
+          create: {
+            userId: emp.id,
+            date: dateStr,
+            checkIn,
+            checkOut,
+            durationMinutes,
+            status: 'LATE',
+            notes: 'Transit delay logged.',
+            isDemo: true,
+          },
+        })
+        attendanceCount++
+        continue
+      }
+
+      // Scenario E: Standard Full-Day Present (~85% of workdays)
+      const inHour = 9
+      const inMin = (hash % 25) + 5 // 9:05 to 9:30
+      const durationMinutes = 480 + (hash % 60) // 8h to 8h 59m
       const checkIn = new Date(`${dateStr}T${String(inHour).padStart(2, '0')}:${String(inMin).padStart(2, '0')}:00.000Z`)
       const checkOut = new Date(checkIn.getTime() + durationMinutes * 60 * 1000)
 
@@ -422,7 +806,7 @@ async function main() {
           checkIn,
           checkOut,
           durationMinutes,
-          status,
+          status: 'PRESENT',
           isDemo: true,
         },
         create: {
@@ -431,272 +815,108 @@ async function main() {
           checkIn,
           checkOut,
           durationMinutes,
-          status,
+          status: 'PRESENT',
           isDemo: true,
         },
       })
       attendanceCount++
     }
   }
-  console.log(`  ✅ Successfully seeded ${attendanceCount} attendance records across 3 months.`)
+
+  console.log(`  ✅ Populated ${attendanceCount} dynamic attendance records across 90 calendar days.`)
+  console.log(`  ✅ Included ${missingPunchCount} missing punch regularizations and excluded ${leaveDaysExcluded} approved leave days.`)
 
   // ------------------------------------------------------------------
-  // 5. Seed 3-Month Leave Requests (Approved, Rejected & Pending)
+  // 6. Seed 5 Fictional Projects
   // ------------------------------------------------------------------
-  console.log('Step 5/8: Seeding historical & active leave applications across 3 months...')
-  const leaveData = [
-    // August 2026
-    {
-      userEmail: 'amit.kumar@example.com',
-      leaveType: 'ANNUAL',
-      startDate: new Date('2026-08-10'),
-      endDate: new Date('2026-08-12'),
-      totalDays: 3,
-      reason: 'Annual family festival & travel back to hometown',
-      status: 'APPROVED',
-      reviewedByEmail: 'priya.sharma@example.com',
-      reviewReason: 'Approved. Sprint deliverables delegated to Siddharth.',
-      reviewedAt: new Date('2026-08-08'),
-    },
-    {
-      userEmail: 'sneha.patel@example.com',
-      leaveType: 'CASUAL',
-      startDate: new Date('2026-08-18'),
-      endDate: new Date('2026-08-19'),
-      totalDays: 2,
-      reason: 'Personal legal registration & family commitment',
-      status: 'APPROVED',
-      reviewedByEmail: 'admin@successtunnel.in',
-      reviewReason: 'Approved. Tax filing schedule remains on track.',
-      reviewedAt: new Date('2026-08-17'),
-    },
-    {
-      userEmail: 'vikram.singh@example.com',
-      leaveType: 'SICK',
-      startDate: new Date('2026-08-25'),
-      endDate: new Date('2026-08-25'),
-      totalDays: 1,
-      reason: 'Medical recovery following dental surgery',
-      status: 'APPROVED',
-      reviewedByEmail: 'priya.sharma@example.com',
-      reviewReason: 'Approved. Rest well.',
-      reviewedAt: new Date('2026-08-25'),
-    },
-    // September 2026
-    {
-      userEmail: 'rohit.verma@example.com',
-      leaveType: 'ANNUAL',
-      startDate: new Date('2026-09-07'),
-      endDate: new Date('2026-09-10'),
-      totalDays: 4,
-      reason: 'Annual paid leave for personal rest and trekking vacation',
-      status: 'APPROVED',
-      reviewedByEmail: 'admin@successtunnel.in',
-      reviewReason: 'Approved. Milestone commitments handed over.',
-      reviewedAt: new Date('2026-09-03'),
-    },
-    {
-      userEmail: 'ananya.deshmukh@example.com',
-      leaveType: 'CASUAL',
-      startDate: new Date('2026-09-15'),
-      endDate: new Date('2026-09-16'),
-      totalDays: 2,
-      reason: 'Urgent family relocation and tenancy paperwork',
-      status: 'APPROVED',
-      reviewedByEmail: 'priya.sharma@example.com',
-      reviewReason: 'Approved.',
-      reviewedAt: new Date('2026-09-14'),
-    },
-    {
-      userEmail: 'amit.kumar@example.com',
-      leaveType: 'ANNUAL',
-      startDate: new Date('2026-09-21'),
-      endDate: new Date('2026-09-25'),
-      totalDays: 5,
-      reason: 'Weeklong trip with college alumni group',
-      status: 'REJECTED',
-      reviewedByEmail: 'rohit.verma@example.com',
-      reviewReason: 'Critical Q3 end-of-quarter release scheduled that week. Please reschedule to October.',
-      reviewedAt: new Date('2026-09-15'),
-    },
-    {
-      userEmail: 'pooja.mehta@example.com',
-      leaveType: 'SICK',
-      startDate: new Date('2026-09-28'),
-      endDate: new Date('2026-09-29'),
-      totalDays: 2,
-      reason: 'Viral fever and prescribed medical rest',
-      status: 'APPROVED',
-      reviewedByEmail: 'priya.sharma@example.com',
-      reviewReason: 'Approved. Medical certificate noted on file.',
-      reviewedAt: new Date('2026-09-28'),
-    },
-    // October 2026
-    {
-      userEmail: 'siddharth.rao@example.com',
-      leaveType: 'CASUAL',
-      startDate: new Date('2026-10-05'),
-      endDate: new Date('2026-10-06'),
-      totalDays: 2,
-      reason: 'Family wedding celebrations in Hyderabad',
-      status: 'APPROVED',
-      reviewedByEmail: 'priya.sharma@example.com',
-      reviewReason: 'Approved. Cloud monitoring alerts routed to secondary on-call.',
-      reviewedAt: new Date('2026-10-02'),
-    },
-    {
-      userEmail: 'kavita.nair@example.com',
-      leaveType: 'ANNUAL',
-      startDate: new Date('2026-10-12'),
-      endDate: new Date('2026-10-14'),
-      totalDays: 3,
-      reason: 'Personal leisure & travel',
-      status: 'APPROVED',
-      reviewedByEmail: 'priya.sharma@example.com',
-      reviewReason: 'Approved.',
-      reviewedAt: new Date('2026-10-09'),
-    },
-    {
-      userEmail: 'deepak.chawla@example.com',
-      leaveType: 'SICK',
-      startDate: new Date('2026-10-22'),
-      endDate: new Date('2026-10-23'),
-      totalDays: 2,
-      reason: 'Severe migraine & eye strain doctor appointment',
-      status: 'PENDING',
-      reviewedByEmail: null,
-      reviewReason: null,
-      reviewedAt: null,
-    },
-    {
-      userEmail: 'amit.kumar@example.com',
-      leaveType: 'ANNUAL',
-      startDate: new Date('2026-10-26'),
-      endDate: new Date('2026-10-28'),
-      totalDays: 3,
-      reason: 'Diwali preparation and traveling home to family',
-      status: 'PENDING',
-      reviewedByEmail: null,
-      reviewReason: null,
-      reviewedAt: null,
-    },
-  ]
-
-  for (const l of leaveData) {
-    const user = seededUsers[l.userEmail]
-    const reviewer = l.reviewedByEmail ? seededUsers[l.reviewedByEmail] : null
-    if (!user) continue
-
-    const existing = await prisma.leaveRequest.findFirst({
-      where: { userId: user.id, startDate: l.startDate },
-    })
-
-    if (!existing) {
-      await prisma.leaveRequest.create({
-        data: {
-          userId: user.id,
-          leaveType: l.leaveType,
-          startDate: l.startDate,
-          endDate: l.endDate,
-          totalDays: l.totalDays,
-          reason: l.reason,
-          status: l.status,
-          reviewedById: reviewer ? reviewer.id : null,
-          reviewReason: l.reviewReason,
-          reviewedAt: l.reviewedAt,
-          isDemo: true,
-        },
-      })
-    }
-  }
-
-  // ------------------------------------------------------------------
-  // 6. Seed Projects & 25+ Tasks across Kanban Stages
-  // ------------------------------------------------------------------
-  console.log('Step 6/8: Seeding 5 enterprise projects & 25+ Kanban work tasks across stages...')
+  console.log('Step 6/11: Seeding 5 enterprise projects representing key business functions...')
   const pmUser = seededUsers['rohit.verma@example.com']
   const cnsLead = seededUsers['arjun.kapoor@example.com']
   const opsUser = seededUsers['vikram.singh@example.com']
-  const devAmit = seededUsers['amit.kumar@example.com']
-  const devPooja = seededUsers['pooja.mehta@example.com']
-  const devSid = seededUsers['siddharth.rao@example.com']
-  const qaNeha = seededUsers['neha.gupta@example.com']
-  const finDeepak = seededUsers['deepak.chawla@example.com']
+  const finLead = seededUsers['sneha.patel@example.com']
 
   const demoProjects = [
     {
       projectCode: 'ST-PRJ-2026-01',
-      name: 'Enterprise ERP Management Portal',
-      description: 'Unified business platform combining HR, Attendance, Leave, Projects, and Financial operations.',
+      name: 'Success Tunnel Web Platform & Modernization',
+      description: 'Unified business platform combining HR, Attendance, Leave, Projects, and Financial operations with verified Next.js engineering.',
       businessObjective: 'Eliminate disjointed spreadsheets and manual approvals across Success Tunnel business verticals.',
       departmentId: departments['ENG']?.id,
       managerId: pmUser?.id,
       status: 'IN_PROGRESS',
       priority: 'CRITICAL',
-      startDate: new Date('2026-08-01'),
-      endDate: new Date('2026-11-30'),
+      startDate: dAgo(75),
+      endDate: dAhead(45),
       budget: 480000.0,
-      progress: 68,
+      progress: 0, // Will be computed dynamically from tasks!
+      isPublic: true,
+      publicSlug: 'erp-modernization',
       isDemo: true,
     },
     {
       projectCode: 'ST-PRJ-2026-02',
-      name: 'GST & Compliance Automation Suite',
-      description: 'Automated tax report generator and filing checklist for MSME and corporate consultancy clients.',
-      businessObjective: 'Accelerate client turnaround time by 40% for quarterly tax filings.',
-      departmentId: departments['CNS']?.id,
+      name: 'Customer Relationship Management Suite',
+      description: 'Lead tracking, enquiry management, customer profiles, follow-up workflows, and conversion analytics.',
+      businessObjective: 'Accelerate lead-to-opportunity conversion and centralize corporate client contact histories.',
+      departmentId: departments['SLS']?.id,
       managerId: cnsLead?.id,
       status: 'IN_PROGRESS',
       priority: 'HIGH',
-      startDate: new Date('2026-08-15'),
-      endDate: new Date('2026-12-15'),
+      startDate: dAgo(60),
+      endDate: dAhead(30),
       budget: 340000.0,
-      progress: 42,
+      progress: 0,
+      isPublic: true,
+      publicSlug: 'enterprise-crm',
       isDemo: true,
     },
     {
       projectCode: 'ST-PRJ-2026-03',
-      name: 'Workplace Facility & Space Expansion',
-      description: 'Expansion of managed rental coworking hubs with IoT-based access and power management.',
-      businessObjective: 'Open 50 additional workstations for startup clients in Delhi NCR.',
+      name: 'Internal Operations & Facility Hub',
+      description: 'Employee directory, task management, attendance workflows, and workspace hub administration.',
+      businessObjective: 'Streamline onboarding, access provisioning, and infrastructure resource allocation for staff.',
       departmentId: departments['OPS']?.id,
       managerId: opsUser?.id,
       status: 'PLANNED',
       priority: 'MEDIUM',
-      startDate: new Date('2026-09-01'),
-      endDate: new Date('2026-12-31'),
-      budget: 750000.0,
-      progress: 15,
+      startDate: dAgo(20),
+      endDate: dAhead(60),
+      budget: 250000.0,
+      progress: 0,
+      isPublic: false,
       isDemo: true,
     },
     {
       projectCode: 'ST-PRJ-2026-04',
-      name: 'Q3 Financial Audit & Corporate Balance Sheet',
-      description: 'Comprehensive quarterly statutory audit, balance sheet finalization, and tax provision reconciliation.',
-      businessObjective: 'Deliver audited financial statements on time for regulatory compliance.',
+      name: 'GST & Corporate Compliance Automation Suite',
+      description: 'Automated tax report generator and filing checklist for MSME and corporate consultancy clients.',
+      businessObjective: 'Deliver automated tax reconciliation and reduce compliance processing time by 40%.',
       departmentId: departments['FIN']?.id,
-      managerId: seededUsers['sneha.patel@example.com']?.id,
+      managerId: finLead?.id,
       status: 'COMPLETED',
       priority: 'HIGH',
-      startDate: new Date('2026-08-01'),
-      endDate: new Date('2026-09-30'),
-      budget: 220000.0,
+      startDate: dAgo(85),
+      endDate: dAgo(10),
+      budget: 310000.0,
       progress: 100,
+      isPublic: true,
+      publicSlug: 'tax-compliance-suite',
       isDemo: true,
     },
     {
       projectCode: 'ST-PRJ-2026-05',
-      name: 'ISO 27001 Security & Data Compliance Audit',
+      name: 'ISO 27001 Security & Data Governance',
       description: 'Institutional cybersecurity risk assessment, access controls review, and data encryption verification.',
-      businessObjective: 'Achieve enterprise information security standards for corporate client onboarding.',
+      businessObjective: 'Achieve enterprise information security compliance for tier-1 corporate customer audits.',
       departmentId: departments['ENG']?.id,
       managerId: pmUser?.id,
       status: 'IN_PROGRESS',
       priority: 'HIGH',
-      startDate: new Date('2026-08-20'),
-      endDate: new Date('2026-10-31'),
-      budget: 310000.0,
-      progress: 80,
+      startDate: dAgo(45),
+      endDate: dAhead(15),
+      budget: 220000.0,
+      progress: 0,
+      isPublic: false,
       isDemo: true,
     },
   ]
@@ -710,7 +930,7 @@ async function main() {
     })
     seededProjects[prj.projectCode] = record
 
-    // Add members
+    // Add manager as Lead member
     if (prj.managerId) {
       await prisma.projectMember.upsert({
         where: { projectId_userId: { projectId: record.id, userId: prj.managerId } },
@@ -720,285 +940,1012 @@ async function main() {
     }
   }
 
-  // Seed Rich Task Pool across 3 Months
-  const tasksPool = [
-    // ERP Portal Tasks
+  // ------------------------------------------------------------------
+  // 7. Seed 85 Tasks Distributed Across the 5 Projects
+  // ------------------------------------------------------------------
+  console.log('Step 7/11: Seeding 85 realistic tasks with full Kanban state distribution...')
+
+  const devAmit = seededUsers['amit.kumar@example.com']
+  const devPooja = seededUsers['pooja.mehta@example.com']
+  const devSid = seededUsers['siddharth.rao@example.com']
+  const qaNeha = seededUsers['neha.gupta@example.com']
+  const desRajesh = seededUsers['rajesh.menon@example.com']
+  const finManish = seededUsers['manish.joshi@example.com']
+  const finDeepak = seededUsers['deepak.chawla@example.com']
+  const opsRahul = seededUsers['rahul.iyer@example.com']
+  const slsAnanya = seededUsers['ananya.deshmukh@example.com']
+
+  // Associate team members with projects
+  const projectTeams = [
+    { code: 'ST-PRJ-2026-01', members: [devAmit, devPooja, devSid, qaNeha, desRajesh] },
+    { code: 'ST-PRJ-2026-02', members: [slsAnanya, devAmit, devPooja, qaNeha] },
+    { code: 'ST-PRJ-2026-03', members: [opsRahul, opsUser, devSid] },
+    { code: 'ST-PRJ-2026-04', members: [finManish, finDeepak, devAmit] },
+    { code: 'ST-PRJ-2026-05', members: [devSid, devAmit, qaNeha] },
+  ]
+
+  for (const pt of projectTeams) {
+    const prj = seededProjects[pt.code]
+    if (!prj) continue
+    for (const member of pt.members) {
+      if (!member) continue
+      await prisma.projectMember.upsert({
+        where: { projectId_userId: { projectId: prj.id, userId: member.id } },
+        update: { role: 'Contributor' },
+        create: { projectId: prj.id, userId: member.id, role: 'Contributor' },
+      })
+    }
+  }
+
+  // Define 85 Tasks
+  const taskBlueprints = [
+    // -------------------------------------------------------------
+    // Project 1: ST-PRJ-2026-01 (Web Platform Modernization) - 22 tasks
+    // -------------------------------------------------------------
     {
       taskCode: 'ST-TSK-101',
       title: 'Design Normalized Database Schema & Migrations',
-      description: 'Complete schema for Users, EmployeeProfiles, Projects, Tasks, Attendance, and Leaves.',
+      description: '[Milestone: M1 - Architecture]\nAcceptance Criteria:\n- [x] Schema models for Users, Profiles, Projects, Tasks\n- [x] Prisma migrations tested\nEst: 16h. Risk: Low.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'amit.kumar@example.com',
-      creatorEmail: 'rohit.verma@example.com',
+      assignee: devAmit,
+      creator: pmUser,
       priority: 'CRITICAL',
       status: 'DONE',
-      dueDate: new Date('2026-08-15'),
-      isDemo: true,
+      dueDate: dAgo(60),
     },
     {
       taskCode: 'ST-TSK-102',
       title: 'Implement Dark Navy Sidebar & Corporate Shell',
-      description: 'Responsive collapsible left sidebar with breadcrumbs, role-based navigation, and profile menu.',
+      description: '[Milestone: M1 - Architecture]\nCollapsible responsive sidebar with breadcrumbs and user profile menu.\nEst: 12h.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'pooja.mehta@example.com',
-      creatorEmail: 'rohit.verma@example.com',
+      assignee: devPooja,
+      creator: pmUser,
       priority: 'HIGH',
       status: 'DONE',
-      dueDate: new Date('2026-08-25'),
-      isDemo: true,
+      dueDate: dAgo(55),
     },
     {
       taskCode: 'ST-TSK-103',
-      title: 'Build Interactive Kanban Board for Project Tasks',
-      description: 'Drag-and-drop or status-click task board with priority badges and assignee filtering.',
+      title: 'Configure JWT Authentication with Rate Limiting',
+      description: '[Milestone: M1 - Architecture]\nHttpOnly session cookies, bcrypt password hashing, and in-memory rate limiting.\nEst: 14h.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'amit.kumar@example.com',
-      creatorEmail: 'rohit.verma@example.com',
-      priority: 'HIGH',
+      assignee: devAmit,
+      creator: pmUser,
+      priority: 'CRITICAL',
       status: 'DONE',
-      dueDate: new Date('2026-09-10'),
-      isDemo: true,
+      dueDate: dAgo(50),
     },
     {
       taskCode: 'ST-TSK-104',
-      title: 'Employee Attendance Check-in Engine',
-      description: 'Daily check-in and checkout button with working duration calculator and duplicate protection.',
+      title: 'Build Reusable Table & Pagination Components',
+      description: '[Milestone: M2 - UI Components]\nStandardized data table with server-side pagination, search debouncing, and sort.\nEst: 10h.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'amit.kumar@example.com',
-      creatorEmail: 'rohit.verma@example.com',
+      assignee: devPooja,
+      creator: pmUser,
       priority: 'MEDIUM',
       status: 'DONE',
-      dueDate: new Date('2026-09-20'),
-      isDemo: true,
+      dueDate: dAgo(45),
     },
     {
       taskCode: 'ST-TSK-105',
-      title: 'Automated Leave Approval and Entitlement Tracking',
-      description: 'Validation against employee leave balance and team calendar conflict check.',
+      title: 'Implement Executive Dashboard Metrics API',
+      description: '[Milestone: M2 - Dashboard]\nDatabase aggregate calculations for headcounts, active projects, and cash balances.\nEst: 8h.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'amit.kumar@example.com',
-      creatorEmail: 'rohit.verma@example.com',
+      assignee: devAmit,
+      creator: pmUser,
       priority: 'HIGH',
-      status: 'IN_REVIEW',
-      dueDate: new Date('2026-10-18'),
-      isDemo: true,
+      status: 'DONE',
+      dueDate: dAgo(40),
     },
     {
       taskCode: 'ST-TSK-106',
-      title: 'HR Document Upload Validation & Access Controls',
-      description: 'Confidentiality guards and secure storage path resolution for policies and agreements.',
+      title: 'Establish Employee Directory & Profile Drawer',
+      description: '[Milestone: M3 - Workforce Module]\nEmployee listing with department filters, reporting managers, and profile drawer.\nEst: 14h.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'pooja.mehta@example.com',
-      creatorEmail: 'rohit.verma@example.com',
-      priority: 'MEDIUM',
-      status: 'IN_PROGRESS',
-      dueDate: new Date('2026-10-28'),
-      isDemo: true,
+      assignee: devPooja,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(30),
     },
     {
       taskCode: 'ST-TSK-107',
-      title: 'Executive Reports CSV Export Engine',
-      description: 'Streaming CSV export for workforce directory and project task pipelines.',
+      title: 'Build Attendance Daily Punch & Calculation Engine',
+      description: '[Milestone: M3 - Workforce Module]\nCheck-in/out endpoints with duration calculation and regularization workflows.\nEst: 16h.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'amit.kumar@example.com',
-      creatorEmail: 'rohit.verma@example.com',
-      priority: 'MEDIUM',
+      assignee: devAmit,
+      creator: pmUser,
+      priority: 'CRITICAL',
       status: 'IN_PROGRESS',
-      dueDate: new Date('2026-10-30'),
-      isDemo: true,
+      dueDate: dAhead(5),
     },
     {
       taskCode: 'ST-TSK-108',
-      title: 'Automated Verification Test Suite Execution',
-      description: '20+ automated assertions verifying authentication, RBAC, and model state transitions.',
+      title: 'Leave Request Multi-Tier Approval Workflow',
+      description: '[Milestone: M3 - Workforce Module]\nLeave application form, balance checking, manager review, and email notifications.\nEst: 12h.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'neha.gupta@example.com',
-      creatorEmail: 'rohit.verma@example.com',
+      assignee: devPooja,
+      creator: pmUser,
       priority: 'HIGH',
-      status: 'DONE',
-      dueDate: new Date('2026-10-22'),
-      isDemo: true,
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(8),
     },
     {
       taskCode: 'ST-TSK-109',
-      title: 'Cloud Production Deploy on Vercel with Managed Postgres',
-      description: 'Configure production environment variables and verify deployment smoke tests.',
+      title: 'Automated CI/CD Pipeline on GitHub Actions',
+      description: '[Milestone: M4 - DevOps]\nAutomated TypeScript compilation, linting, and Prisma migration checks on pull requests.\nEst: 10h.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'siddharth.rao@example.com',
-      creatorEmail: 'rohit.verma@example.com',
-      priority: 'CRITICAL',
-      status: 'TODO',
-      dueDate: new Date('2026-11-05'),
-      isDemo: true,
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(25),
     },
     {
       taskCode: 'ST-TSK-110',
-      title: 'Multi-Factor Authentication (MFA) Strategy Review',
-      description: 'Evaluate TOTP integration for administrative roles in next security sprint.',
+      title: 'Comprehensive E2E Smoke & Integration Test Suite',
+      description: '[Milestone: M4 - Quality Assurance]\nAutomated verification across authentication, workforce, finance, and CRM.\nEst: 18h.',
       projectCode: 'ST-PRJ-2026-01',
-      assigneeEmail: 'siddharth.rao@example.com',
-      creatorEmail: 'rohit.verma@example.com',
-      priority: 'LOW',
-      status: 'BACKLOG',
-      dueDate: new Date('2026-11-20'),
-      isDemo: true,
+      assignee: qaNeha,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(10),
     },
-
-    // GST & Compliance Automation Suite Tasks
     {
-      taskCode: 'ST-TSK-201',
-      title: 'GSTR-1 & GSTR-3B Excel Mapping Parser',
-      description: 'Ingest B2B invoice spreadsheets and validate HSN codes against master dataset.',
-      projectCode: 'ST-PRJ-2026-02',
-      assigneeEmail: 'ananya.deshmukh@example.com',
-      creatorEmail: 'arjun.kapoor@example.com',
+      taskCode: 'ST-TSK-111',
+      title: 'Public Website Refinement & SEO Hardening',
+      description: '[Milestone: M5 - Public Portal]\nCanonical URLs, OpenGraph metadata, robots.txt, and public project case study confidentiality.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: devPooja,
+      creator: pmUser,
+      priority: 'MEDIUM',
+      status: 'DONE',
+      dueDate: dAgo(15),
+    },
+    {
+      taskCode: 'ST-TSK-112',
+      title: 'Public Enquiry Honeypot & CRM Forwarding Pipeline',
+      description: '[Milestone: M5 - CRM Pipeline]\nAnti-spam validation, rate-limiting, and lead generation from public contact forms.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: devAmit,
+      creator: pmUser,
       priority: 'HIGH',
       status: 'DONE',
-      dueDate: new Date('2026-09-15'),
-      isDemo: true,
+      dueDate: dAgo(12),
+    },
+    {
+      taskCode: 'ST-TSK-113',
+      title: 'Role-Based Access Control Audit & Boundary Verification',
+      description: '[Milestone: M6 - Security]\nVerify that employees cannot edit other profiles or approve their own leaves.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: qaNeha,
+      creator: pmUser,
+      priority: 'CRITICAL',
+      status: 'IN_REVIEW',
+      dueDate: dAhead(3),
+    },
+    {
+      taskCode: 'ST-TSK-114',
+      title: 'Design System Typography & Elevation Guidelines',
+      description: '[Milestone: M2 - UI Components]\nUnified spacing tokens, color scales, button states, and accessible contrast ratios.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: desRajesh,
+      creator: pmUser,
+      priority: 'MEDIUM',
+      status: 'IN_REVIEW',
+      dueDate: dAhead(2),
+    },
+    {
+      taskCode: 'ST-TSK-115',
+      title: 'Database Query Indexing & Performance Optimization',
+      description: '[Milestone: M4 - Performance]\nCompound indexes on Attendance (userId, date) and Tasks (projectId, status).\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'MEDIUM',
+      status: 'TODO',
+      dueDate: dAhead(15),
+    },
+    {
+      taskCode: 'ST-TSK-116',
+      title: 'Automated Database Daily Backup Script',
+      description: '[Milestone: M4 - DevOps]\nEncrypted S3 bucket daily snapshot cron job with slack notification on failure.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'TODO',
+      dueDate: dAhead(18),
+    },
+    {
+      taskCode: 'ST-TSK-117',
+      title: 'User Profile Password Reset via Secure Magic Link',
+      description: '[Milestone: M6 - Security]\nTime-limited cryptographic tokens sent via SMTP for verified email self-recovery.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: devAmit,
+      creator: pmUser,
+      priority: 'MEDIUM',
+      status: 'TODO',
+      dueDate: dAhead(22),
+    },
+    {
+      taskCode: 'ST-TSK-118',
+      title: 'Interactive User Onboarding & Guided Tour',
+      description: '[Milestone: M2 - UI Components]\nWalkthrough tooltips explaining key ERP modules for newly onboarded staff.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: desRajesh,
+      creator: pmUser,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(30),
+    },
+    {
+      taskCode: 'ST-TSK-119',
+      title: 'Mobile App API Authentication Endpoints',
+      description: '[Milestone: M7 - Future Mobile]\nOAuth2 / Bearer token exchange endpoints for upcoming Android / iOS apps.\nEst: 16h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: devAmit,
+      creator: pmUser,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(35),
+    },
+    {
+      taskCode: 'ST-TSK-120',
+      title: 'External Webhook Delivery for Status Changes',
+      description: '[Milestone: M7 - Integrations]\nConfigurable HMAC-signed webhook dispatches on Task, Lead, and Invoice events.\nEst: 14h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(40),
+    },
+    {
+      taskCode: 'ST-TSK-121',
+      title: 'Single Sign-On (SSO) with Google Workspace',
+      description: '[Milestone: M6 - Security]\nSAML 2.0 / OpenID Connect enterprise identity federation for staff login.\nEst: 16h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'MEDIUM',
+      status: 'BLOCKED',
+      dueDate: dAhead(20),
+    },
+    {
+      taskCode: 'ST-TSK-122',
+      title: 'Multi-Factor Authentication (MFA) with TOTP Authenticator',
+      description: '[Milestone: M6 - Security]\nRFC 6238 TOTP QR code enrollment and backup recovery codes.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-01',
+      assignee: devAmit,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(14),
+    },
+
+    // -------------------------------------------------------------
+    // Project 2: ST-PRJ-2026-02 (CRM Suite) - 18 tasks
+    // -------------------------------------------------------------
+    {
+      taskCode: 'ST-TSK-201',
+      title: 'CRM Customer Directory & Detail Views',
+      description: '[Milestone: C1 - Customer Master]\nSearchable customer company cards, primary contacts, and billing addresses.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: slsAnanya,
+      creator: cnsLead,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(45),
     },
     {
       taskCode: 'ST-TSK-202',
-      title: 'Automated ITC Reconciliation Rule Engine',
-      description: 'Cross-reference GSTR-2B eligible input tax credit with client purchase registers.',
+      title: 'Lead Pipeline Kanban Board with Drag & Drop',
+      description: '[Milestone: C2 - Sales Pipeline]\nVisual pipeline stages: New, Contacted, Qualified, Proposal Sent, Won, Lost.\nEst: 16h.',
       projectCode: 'ST-PRJ-2026-02',
-      assigneeEmail: 'ananya.deshmukh@example.com',
-      creatorEmail: 'arjun.kapoor@example.com',
+      assignee: devPooja,
+      creator: cnsLead,
       priority: 'CRITICAL',
-      status: 'IN_PROGRESS',
-      dueDate: new Date('2026-10-27'),
-      isDemo: true,
+      status: 'DONE',
+      dueDate: dAgo(35),
     },
     {
       taskCode: 'ST-TSK-203',
-      title: 'Client Tax Filing Notification SMS/Email Bot',
-      description: 'Automated due date alerts for quarterly tax filing clients.',
+      title: 'Touchpoint Activity Timeline (Calls, Emails, Meetings)',
+      description: '[Milestone: C2 - Sales Pipeline]\nChronological activity log for customer touchpoints with follow-up reminders.\nEst: 10h.',
       projectCode: 'ST-PRJ-2026-02',
-      assigneeEmail: 'pooja.mehta@example.com',
-      creatorEmail: 'arjun.kapoor@example.com',
-      priority: 'MEDIUM',
-      status: 'TODO',
-      dueDate: new Date('2026-11-10'),
-      isDemo: true,
+      assignee: slsAnanya,
+      creator: cnsLead,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(25),
     },
     {
       taskCode: 'ST-TSK-204',
-      title: 'Corporate Advisory Client Onboarding Workflow',
-      description: 'Digital KYC and MSME certificate verification forms.',
+      title: 'Automated Lead Qualification Scoring Model',
+      description: '[Milestone: C3 - Intelligence]\nRule-based scoring based on company budget, project scope, and responsiveness.\nEst: 8h.',
       projectCode: 'ST-PRJ-2026-02',
-      assigneeEmail: 'ananya.deshmukh@example.com',
-      creatorEmail: 'arjun.kapoor@example.com',
+      assignee: slsAnanya,
+      creator: cnsLead,
+      priority: 'MEDIUM',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(6),
+    },
+    {
+      taskCode: 'ST-TSK-205',
+      title: 'Commercial Proposal PDF Document Generator',
+      description: '[Milestone: C3 - Proposals]\nGenerate branded executive PDF proposals with dynamic milestone line items.\nEst: 14h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: devAmit,
+      creator: cnsLead,
+      priority: 'HIGH',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(10),
+    },
+    {
+      taskCode: 'ST-TSK-206',
+      title: 'Contract e-Sign Integration Workflow',
+      description: '[Milestone: C3 - Proposals]\nDigital signing integration for service agreements before project kickoff.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: devPooja,
+      creator: cnsLead,
+      priority: 'MEDIUM',
+      status: 'BLOCKED',
+      dueDate: dAhead(18),
+    },
+    {
+      taskCode: 'ST-TSK-207',
+      title: 'CRM Sales Conversion Analytics & Funnel Charts',
+      description: '[Milestone: C4 - Analytics]\nFunnel visualization tracking lead conversion rates and sales velocity.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: devPooja,
+      creator: cnsLead,
+      priority: 'MEDIUM',
+      status: 'IN_REVIEW',
+      dueDate: dAhead(4),
+    },
+    {
+      taskCode: 'ST-TSK-208',
+      title: 'Email Sync & Outbound Campaign Dispatcher',
+      description: '[Milestone: C4 - Communications]\nTransactional outbound email tracking for prospect follow-ups.\nEst: 14h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: devAmit,
+      creator: cnsLead,
+      priority: 'MEDIUM',
+      status: 'TODO',
+      dueDate: dAhead(12),
+    },
+    {
+      taskCode: 'ST-TSK-209',
+      title: 'Enquiry SLA Escalation & Staff Notification Triggers',
+      description: '[Milestone: C1 - Customer Master]\nAlert managers if a new website enquiry remains uncontacted for over 4 hours.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: slsAnanya,
+      creator: cnsLead,
+      priority: 'HIGH',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(7),
+    },
+    {
+      taskCode: 'ST-TSK-210',
+      title: 'Customer Satisfaction (CSAT) Post-Delivery Survey',
+      description: '[Milestone: C5 - Retention]\nAutomated feedback survey dispatched 7 days after project completion.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: slsAnanya,
+      creator: cnsLead,
       priority: 'LOW',
       status: 'BACKLOG',
-      dueDate: new Date('2026-11-25'),
-      isDemo: true,
+      dueDate: dAhead(25),
+    },
+    {
+      taskCode: 'ST-TSK-211',
+      title: 'Corporate Account Tiering & Health Scoring',
+      description: '[Milestone: C5 - Retention]\nClassify enterprise accounts into Platinum, Gold, Silver based on annual billing.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: slsAnanya,
+      creator: cnsLead,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(28),
+    },
+    {
+      taskCode: 'ST-TSK-212',
+      title: 'Duplicate Lead Detection & Resolution Merging',
+      description: '[Milestone: C1 - Customer Master]\nIdentify matching phone or email records and prompt user to merge histories.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: qaNeha,
+      creator: cnsLead,
+      priority: 'MEDIUM',
+      status: 'TODO',
+      dueDate: dAhead(15),
+    },
+    {
+      taskCode: 'ST-TSK-213',
+      title: 'WhatsApp Business API Notification Webhook',
+      description: '[Milestone: C4 - Communications]\nSend verified enquiry acknowledgement and appointment reminders via WhatsApp.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: devAmit,
+      creator: cnsLead,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(32),
+    },
+    {
+      taskCode: 'ST-TSK-214',
+      title: 'Customer Meeting Calendar Scheduling Link',
+      description: '[Milestone: C2 - Sales Pipeline]\nIntegrate personalized booking links for prospective client consultations.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: devPooja,
+      creator: cnsLead,
+      priority: 'MEDIUM',
+      status: 'TODO',
+      dueDate: dAhead(14),
+    },
+    {
+      taskCode: 'ST-TSK-215',
+      title: 'Competitor Win/Loss Analysis Reporting',
+      description: '[Milestone: C4 - Analytics]\nTrack lost deal reasons and produce quarterly market competitive summaries.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: slsAnanya,
+      creator: cnsLead,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(35),
+    },
+    {
+      taskCode: 'ST-TSK-216',
+      title: 'CRM Role Permissions & Account Masking',
+      description: '[Milestone: C1 - Customer Master]\nPrevent unauthorized staff from viewing confidential client pricing.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: qaNeha,
+      creator: cnsLead,
+      priority: 'HIGH',
+      status: 'IN_REVIEW',
+      dueDate: dAhead(5),
+    },
+    {
+      taskCode: 'ST-TSK-217',
+      title: 'Lead Source Attribution & UTM Tracking',
+      description: '[Milestone: C2 - Sales Pipeline]\nCapture Google Ads, Organic, LinkedIn, and Referral attribution on incoming leads.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: slsAnanya,
+      creator: cnsLead,
+      priority: 'MEDIUM',
+      status: 'DONE',
+      dueDate: dAgo(18),
+    },
+    {
+      taskCode: 'ST-TSK-218',
+      title: 'CRM Automated Touchpoint Digest for Management',
+      description: '[Milestone: C4 - Analytics]\nWeekly email digest summarizing pipeline movements and won opportunities.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-02',
+      assignee: slsAnanya,
+      creator: cnsLead,
+      priority: 'LOW',
+      status: 'TODO',
+      dueDate: dAhead(20),
     },
 
-    // Q3 Financial Audit (Completed)
+    // -------------------------------------------------------------
+    // Project 3: ST-PRJ-2026-03 (Internal Operations & Facility Hub) - 15 tasks
+    // -------------------------------------------------------------
     {
-      taskCode: 'ST-TSK-401',
-      title: 'Accounts Payable & Vendor Ledger Verification',
-      description: 'Audit supplier invoices, TDS deductions, and outstanding payable ledgers.',
-      projectCode: 'ST-PRJ-2026-04',
-      assigneeEmail: 'manish.joshi@example.com',
-      creatorEmail: 'sneha.patel@example.com',
+      taskCode: 'ST-TSK-301',
+      title: 'Workstation Asset Tagging & Hardware Inventory',
+      description: '[Milestone: O1 - Facilities]\nLog laptop serial numbers, monitors, and ergonomic furniture assigned to staff.\nEst: 14h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'MEDIUM',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(15),
+    },
+    {
+      taskCode: 'ST-TSK-302',
+      title: 'IoT Biometric Reader Integration for Turnstile Gates',
+      description: '[Milestone: O1 - Facilities]\nDirect network socket listener syncing turnstile punches to AttendanceRecord.\nEst: 18h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: devSid,
+      creator: opsUser,
+      priority: 'HIGH',
+      status: 'TODO',
+      dueDate: dAhead(25),
+    },
+    {
+      taskCode: 'ST-TSK-303',
+      title: 'Conference Room Booking & Calendar Sync',
+      description: '[Milestone: O2 - Workspace]\nShared calendar interface for reserving executive meeting rooms and AV equipment.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'MEDIUM',
+      status: 'TODO',
+      dueDate: dAhead(22),
+    },
+    {
+      taskCode: 'ST-TSK-304',
+      title: 'Office Consumables & Vendor Reordering Workflow',
+      description: '[Milestone: O1 - Facilities]\nTrack inventory thresholds for office supplies and generate vendor POs.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'LOW',
+      status: 'TODO',
+      dueDate: dAhead(28),
+    },
+    {
+      taskCode: 'ST-TSK-305',
+      title: 'Facility Maintenance Ticket System',
+      description: '[Milestone: O2 - Workspace]\nStaff issue submission for HVAC, electrical, and plumbing repairs.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'MEDIUM',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(18),
+    },
+    {
+      taskCode: 'ST-TSK-306',
+      title: 'Visitor Management Kiosk & Visitor Badge Printing',
+      description: '[Milestone: O2 - Workspace]\nSelf-service iPad kiosk for office guests with thermal badge printing.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(45),
+    },
+    {
+      taskCode: 'ST-TSK-307',
+      title: 'Company Vehicle & Local Logistics Booking',
+      description: '[Milestone: O3 - Logistics]\nFleet reservation schedule and fuel reimbursement tracking for field teams.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(50),
+    },
+    {
+      taskCode: 'ST-TSK-308',
+      title: 'Emergency Evacuation & Safety Warden Protocol Documentation',
+      description: '[Milestone: O3 - Safety]\nDocument floor-wise evacuation maps and emergency contact drills.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
       priority: 'HIGH',
       status: 'DONE',
-      dueDate: new Date('2026-08-25'),
-      isDemo: true,
+      dueDate: dAgo(10),
+    },
+    {
+      taskCode: 'ST-TSK-309',
+      title: 'Server Room Climate & UPS Power Sensor Dashboard',
+      description: '[Milestone: O1 - Facilities]\nSNMP telemetry alerts for temperature thresholds and battery backups.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: devSid,
+      creator: opsUser,
+      priority: 'HIGH',
+      status: 'IN_REVIEW',
+      dueDate: dAhead(5),
+    },
+    {
+      taskCode: 'ST-TSK-310',
+      title: 'Keycard Access Level Audit for Server & Archive Rooms',
+      description: '[Milestone: O3 - Safety]\nQuarterly review of physical badge clearances for restricted zones.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'MEDIUM',
+      status: 'DONE',
+      dueDate: dAgo(5),
+    },
+    {
+      taskCode: 'ST-TSK-311',
+      title: 'Ergonomic Health & Safety Workplace Audit',
+      description: '[Milestone: O3 - Safety]\nReview desk setups and lighting to ensure occupational health standards.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'LOW',
+      status: 'TODO',
+      dueDate: dAhead(30),
+    },
+    {
+      taskCode: 'ST-TSK-312',
+      title: 'Broadband ISP Failover & Redundancy Verification',
+      description: '[Milestone: O1 - Facilities]\nAutomated dual-WAN router failover testing between primary fiber and backup.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: devSid,
+      creator: opsUser,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(8),
+    },
+    {
+      taskCode: 'ST-TSK-313',
+      title: 'Facility Lease Renewal Negotiation File',
+      description: '[Milestone: O1 - Facilities]\nCompile square-foot commercial rates for Gurugram tower lease renewal.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'MEDIUM',
+      status: 'BLOCKED',
+      dueDate: dAhead(15),
+    },
+    {
+      taskCode: 'ST-TSK-314',
+      title: 'Staff Parking Allotment & Electric Vehicle Charging Stations',
+      description: '[Milestone: O2 - Workspace]\nAssign designated parking bays and access cards for EV charging ports.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(55),
+    },
+    {
+      taskCode: 'ST-TSK-315',
+      title: 'Annual Pest Control & Deep Sanitation Scheduling',
+      description: '[Milestone: O1 - Facilities]\nCoordinate quarterly office sanitation during non-business weekend hours.\nEst: 4h.',
+      projectCode: 'ST-PRJ-2026-03',
+      assignee: opsRahul,
+      creator: opsUser,
+      priority: 'LOW',
+      status: 'DONE',
+      dueDate: dAgo(15),
+    },
+
+    // -------------------------------------------------------------
+    // Project 4: ST-PRJ-2026-04 (GST & Tax Compliance Suite) - 15 tasks (COMPLETED)
+    // -------------------------------------------------------------
+    {
+      taskCode: 'ST-TSK-401',
+      title: 'GST Rate Schedule & HSN/SAC Code Master Table',
+      description: '[Milestone: T1 - Core Tax Engine]\nComprehensive database of goods and service tax slabs (5%, 12%, 18%, 28%).\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finManish,
+      creator: finLead,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(75),
     },
     {
       taskCode: 'ST-TSK-402',
-      title: 'Bank Reconciliation Statements (BRS)',
-      description: 'Reconcile 6 commercial banking accounts against ERP cash book entries.',
+      title: 'GSTR-1 Outward Supplies JSON Export Generator',
+      description: '[Milestone: T1 - Core Tax Engine]\nGenerate official GST portal compliant JSON format for sales invoices.\nEst: 16h.',
       projectCode: 'ST-PRJ-2026-04',
-      assigneeEmail: 'deepak.chawla@example.com',
-      creatorEmail: 'sneha.patel@example.com',
+      assignee: devAmit,
+      creator: finLead,
       priority: 'CRITICAL',
       status: 'DONE',
-      dueDate: new Date('2026-09-10'),
-      isDemo: true,
+      dueDate: dAgo(65),
     },
     {
       taskCode: 'ST-TSK-403',
-      title: 'Statutory Tax Provisioning & Advance Tax Calculations',
-      description: 'Calculate Q2/Q3 corporate income tax obligations and deposit advance tax challan.',
+      title: 'GSTR-2B Input Tax Credit (ITC) Auto-Reconciliation',
+      description: '[Milestone: T2 - Reconciliation]\nAutomated matching between vendor purchase registers and government 2B ledger.\nEst: 20h.',
       projectCode: 'ST-PRJ-2026-04',
-      assigneeEmail: 'sneha.patel@example.com',
-      creatorEmail: 'sneha.patel@example.com',
-      priority: 'HIGH',
+      assignee: finManish,
+      creator: finLead,
+      priority: 'CRITICAL',
       status: 'DONE',
-      dueDate: new Date('2026-09-14'),
-      isDemo: true,
+      dueDate: dAgo(50),
     },
     {
       taskCode: 'ST-TSK-404',
-      title: 'Final Audit Report Presentation to Board',
-      description: 'Present signed balance sheet and income statement to executive management.',
+      title: 'E-Way Bill Direct API Generation Module',
+      description: '[Milestone: T2 - Logistics Tax]\nGenerate e-way transport bills directly for consignments exceeding 50,000 INR.\nEst: 14h.',
       projectCode: 'ST-PRJ-2026-04',
-      assigneeEmail: 'sneha.patel@example.com',
-      creatorEmail: 'sneha.patel@example.com',
+      assignee: devAmit,
+      creator: finLead,
       priority: 'HIGH',
       status: 'DONE',
-      dueDate: new Date('2026-09-28'),
-      isDemo: true,
+      dueDate: dAgo(40),
+    },
+    {
+      taskCode: 'ST-TSK-405',
+      title: 'TDS (Tax Deducted at Source) Section 194C/194J Computations',
+      description: '[Milestone: T3 - Statutory Direct Tax]\nWithholding tax deduction ledger and Form 16A generation engine.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finDeepak,
+      creator: finLead,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(35),
+    },
+    {
+      taskCode: 'ST-TSK-406',
+      title: 'Vendor GSTIN Active Status & Return Filing Verification Tool',
+      description: '[Milestone: T1 - Core Tax Engine]\nReal-time public GST API verification to flag suspended or non-compliant vendors.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finDeepak,
+      creator: finLead,
+      priority: 'MEDIUM',
+      status: 'DONE',
+      dueDate: dAgo(30),
+    },
+    {
+      taskCode: 'ST-TSK-407',
+      title: 'Quarterly Advance Tax Payment Computation Model',
+      description: '[Milestone: T3 - Statutory Direct Tax]\nProjected taxable profits calculation and installment voucher preparation.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finManish,
+      creator: finLead,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(25),
+    },
+    {
+      taskCode: 'ST-TSK-408',
+      title: 'Statutory Financial Audit Working Papers & Trail',
+      description: '[Milestone: T4 - Audit & Finalization]\nDigital evidence binders for chartered accountant audit review.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finDeepak,
+      creator: finLead,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(20),
+    },
+    {
+      taskCode: 'ST-TSK-409',
+      title: 'Client GST Return Filing Checklist & Automated Reminders',
+      description: '[Milestone: T4 - Client Advisory]\nAutomated email & SMS alerts to consultancy clients before 20th of every month.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finDeepak,
+      creator: finLead,
+      priority: 'MEDIUM',
+      status: 'DONE',
+      dueDate: dAgo(18),
+    },
+    {
+      taskCode: 'ST-TSK-410',
+      title: 'Reverse Charge Mechanism (RCM) Accounting Entries',
+      description: '[Milestone: T1 - Core Tax Engine]\nJournal entries for legal expenses and goods transport agency under RCM.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finManish,
+      creator: finLead,
+      priority: 'MEDIUM',
+      status: 'DONE',
+      dueDate: dAgo(15),
+    },
+    {
+      taskCode: 'ST-TSK-411',
+      title: 'Multi-Branch State GST Credit Distribution Engine',
+      description: '[Milestone: T2 - Reconciliation]\nInput service distributor calculations across Delhi, Haryana, and Maharashtra branches.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finManish,
+      creator: finLead,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(14),
+    },
+    {
+      taskCode: 'ST-TSK-412',
+      title: 'E-Invoicing IRP QR Code Generation & IRN Validation',
+      description: '[Milestone: T1 - Core Tax Engine]\nGovernment Invoice Registration Portal payload creation with cryptographic QR codes.\nEst: 14h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: devAmit,
+      creator: finLead,
+      priority: 'CRITICAL',
+      status: 'DONE',
+      dueDate: dAgo(12),
+    },
+    {
+      taskCode: 'ST-TSK-413',
+      title: 'Annual GST Audit Form 9 & 9C Reconciliation Sheet',
+      description: '[Milestone: T4 - Audit & Finalization]\nFinancial statement turnover reconciliation with filed GSTR-9 returns.\nEst: 16h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finManish,
+      creator: finLead,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(10),
+    },
+    {
+      taskCode: 'ST-TSK-414',
+      title: 'Tax Compliance Suite UAT & Client Pilot Signoff',
+      description: '[Milestone: T4 - Final Signoff]\nFormal testing signoff with 5 representative corporate advisory clients.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finDeepak,
+      creator: finLead,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(10),
+    },
+    {
+      taskCode: 'ST-TSK-415',
+      title: 'Final Deployment & Production Rollout Documentation',
+      description: '[Milestone: T4 - Final Signoff]\nStandard Operating Procedure (SOP) documentation for consulting accountants.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-04',
+      assignee: finManish,
+      creator: finLead,
+      priority: 'MEDIUM',
+      status: 'DONE',
+      dueDate: dAgo(10),
     },
 
-    // ISO 27001 Security Audit
+    // -------------------------------------------------------------
+    // Project 5: ST-PRJ-2026-05 (ISO 27001 Security Audit) - 15 tasks
+    // -------------------------------------------------------------
     {
       taskCode: 'ST-TSK-501',
-      title: 'Infrastructure IAM & SSH Key Rotation',
-      description: 'Audit cloud service account privileges, enforce least privilege, and rotate SSH credentials.',
+      title: 'Information Asset Register & Classification Matrix',
+      description: '[Milestone: S1 - Assessment]\nCatalog all databases, customer records, and credentials with security tiers.\nEst: 12h.',
       projectCode: 'ST-PRJ-2026-05',
-      assigneeEmail: 'siddharth.rao@example.com',
-      creatorEmail: 'rohit.verma@example.com',
-      priority: 'HIGH',
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'CRITICAL',
       status: 'DONE',
-      dueDate: new Date('2026-09-05'),
-      isDemo: true,
+      dueDate: dAgo(35),
     },
     {
       taskCode: 'ST-TSK-502',
-      title: 'Internal Penetration Testing & Vulnerability Assessment',
-      description: 'Execute automated dependency scan and penetration test on API endpoints.',
+      title: 'Static Application Security Testing (SAST) Integration',
+      description: '[Milestone: S1 - Assessment]\nAutomated dependency vulnerability scanning in pull request CI pipeline.\nEst: 8h.',
       projectCode: 'ST-PRJ-2026-05',
-      assigneeEmail: 'neha.gupta@example.com',
-      creatorEmail: 'rohit.verma@example.com',
-      priority: 'CRITICAL',
+      assignee: qaNeha,
+      creator: pmUser,
+      priority: 'HIGH',
       status: 'DONE',
-      dueDate: new Date('2026-09-25'),
-      isDemo: true,
+      dueDate: dAgo(30),
     },
     {
       taskCode: 'ST-TSK-503',
-      title: 'Employee Security Awareness & Phishing Simulation',
-      description: 'Conduct mandatory cybersecurity training for all staff members.',
+      title: 'Database Encryption At Rest & TLS 1.3 in Transit',
+      description: '[Milestone: S2 - Controls]\nAES-256 storage volume encryption and verified modern cipher suites.\nEst: 10h.',
       projectCode: 'ST-PRJ-2026-05',
-      assigneeEmail: 'kavita.nair@example.com',
-      creatorEmail: 'priya.sharma@example.com',
-      priority: 'MEDIUM',
-      status: 'IN_REVIEW',
-      dueDate: new Date('2026-10-15'),
-      isDemo: true,
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'CRITICAL',
+      status: 'DONE',
+      dueDate: dAgo(20),
     },
     {
       taskCode: 'ST-TSK-504',
-      title: 'External Third-Party Certification Audit',
-      description: 'Final walkthrough with ISO accredited external compliance auditors.',
+      title: 'Administrative Access Least-Privilege & Bastion Host Review',
+      description: '[Milestone: S2 - Controls]\nEnforce SSH public key access through hardened bastion jump boxes.\nEst: 8h.',
       projectCode: 'ST-PRJ-2026-05',
-      assigneeEmail: 'siddharth.rao@example.com',
-      creatorEmail: 'rohit.verma@example.com',
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'DONE',
+      dueDate: dAgo(15),
+    },
+    {
+      taskCode: 'ST-TSK-505',
+      title: 'Penetration Testing & OWASP Top 10 Remediation',
+      description: '[Milestone: S2 - Controls]\nRemediate findings from external penetration testing firm on portal endpoints.\nEst: 16h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: devAmit,
+      creator: pmUser,
+      priority: 'CRITICAL',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(6),
+    },
+    {
+      taskCode: 'ST-TSK-506',
+      title: 'Information Security Incident Response Playbook',
+      description: '[Milestone: S3 - Governance]\nDocument step-by-step containment protocol for suspected data breach.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: qaNeha,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'IN_REVIEW',
+      dueDate: dAhead(3),
+    },
+    {
+      taskCode: 'ST-TSK-507',
+      title: 'Staff Security Awareness Training & Phishing Simulation',
+      description: '[Milestone: S3 - Governance]\nMandatory cyber hygiene training module for all 16 staff members.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: qaNeha,
+      creator: pmUser,
+      priority: 'MEDIUM',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(8),
+    },
+    {
+      taskCode: 'ST-TSK-508',
+      title: 'Disaster Recovery RTO/RPO Drill Simulation',
+      description: '[Milestone: S3 - Governance]\nSimulate database failover to secondary cloud region with under 15m RTO.\nEst: 12h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: devSid,
+      creator: pmUser,
       priority: 'HIGH',
       status: 'TODO',
-      dueDate: new Date('2026-10-31'),
-      isDemo: true,
+      dueDate: dAhead(14),
+    },
+    {
+      taskCode: 'ST-TSK-509',
+      title: 'Third-Party Vendor Risk Assessment Questionnaires',
+      description: '[Milestone: S1 - Assessment]\nReview security certifications for cloud hosting, email, and analytics vendors.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: qaNeha,
+      creator: pmUser,
+      priority: 'MEDIUM',
+      status: 'TODO',
+      dueDate: dAhead(16),
+    },
+    {
+      taskCode: 'ST-TSK-510',
+      title: 'Centralized SIEM Log Aggregation & Alerting Rules',
+      description: '[Milestone: S2 - Controls]\nStream audit logs to central Elasticsearch cluster with brute force detection.\nEst: 14h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'IN_PROGRESS',
+      dueDate: dAhead(10),
+    },
+    {
+      taskCode: 'ST-TSK-511',
+      title: 'Statement of Applicability (SoA) Document Finalization',
+      description: '[Milestone: S3 - Governance]\nFormal documentation of Annex A controls justification for auditor submission.\nEst: 10h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: pmUser,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'IN_REVIEW',
+      dueDate: dAhead(5),
+    },
+    {
+      taskCode: 'ST-TSK-512',
+      title: 'Internal Audit Non-Conformity Corrective Actions',
+      description: '[Milestone: S3 - Governance]\nAddress minor observations raised during preliminary internal auditor assessment.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: qaNeha,
+      creator: pmUser,
+      priority: 'MEDIUM',
+      status: 'TODO',
+      dueDate: dAhead(12),
+    },
+    {
+      taskCode: 'ST-TSK-513',
+      title: 'Cryptographic Key Management & Secret Rotation Policy',
+      description: '[Milestone: S2 - Controls]\n90-day automated rotation of JWT secrets and database connection strings.\nEst: 8h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: devSid,
+      creator: pmUser,
+      priority: 'MEDIUM',
+      status: 'BLOCKED',
+      dueDate: dAhead(20),
+    },
+    {
+      taskCode: 'ST-TSK-514',
+      title: 'Data Retention & Secure Shredding Guidelines',
+      description: '[Milestone: S3 - Governance]\nDefine archiving schedules and cryptographic data destruction standards.\nEst: 6h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: qaNeha,
+      creator: pmUser,
+      priority: 'LOW',
+      status: 'BACKLOG',
+      dueDate: dAhead(25),
+    },
+    {
+      taskCode: 'ST-TSK-515',
+      title: 'Stage 2 Certification Audit External Scheduling',
+      description: '[Milestone: S3 - Governance]\nConfirm dates with accredited registrar for Stage 2 on-site compliance audit.\nEst: 4h.',
+      projectCode: 'ST-PRJ-2026-05',
+      assignee: pmUser,
+      creator: pmUser,
+      priority: 'HIGH',
+      status: 'TODO',
+      dueDate: dAhead(15),
     },
   ]
 
-  for (const t of tasksPool) {
+  let seededTasksCount = 0
+  const tasksByProject: { [pCode: string]: { total: number; done: number } } = {
+    'ST-PRJ-2026-01': { total: 0, done: 0 },
+    'ST-PRJ-2026-02': { total: 0, done: 0 },
+    'ST-PRJ-2026-03': { total: 0, done: 0 },
+    'ST-PRJ-2026-04': { total: 0, done: 0 },
+    'ST-PRJ-2026-05': { total: 0, done: 0 },
+  }
+
+  for (const t of taskBlueprints) {
     const prj = seededProjects[t.projectCode]
-    const assignee = seededUsers[t.assigneeEmail]
-    const creator = seededUsers[t.creatorEmail]
     if (!prj) continue
 
     const taskRecord = await prisma.task.upsert({
@@ -1007,8 +1954,8 @@ async function main() {
         title: t.title,
         description: t.description,
         projectId: prj.id,
-        assigneeId: assignee ? assignee.id : null,
-        creatorId: creator ? creator.id : null,
+        assigneeId: t.assignee?.id || null,
+        creatorId: t.creator?.id || null,
         priority: t.priority,
         status: t.status,
         dueDate: t.dueDate,
@@ -1019,730 +1966,529 @@ async function main() {
         title: t.title,
         description: t.description,
         projectId: prj.id,
-        assigneeId: assignee ? assignee.id : null,
-        creatorId: creator ? creator.id : null,
+        assigneeId: t.assignee?.id || null,
+        creatorId: t.creator?.id || null,
         priority: t.priority,
         status: t.status,
         dueDate: t.dueDate,
         isDemo: true,
       },
     })
+    seededTasksCount++
 
-    // Seed sample comments on tasks
-    if (t.taskCode === 'ST-TSK-105') {
-      const existingC = await prisma.taskComment.findFirst({ where: { taskId: taskRecord.id } })
-      if (!existingC && assignee && creator) {
-        await prisma.taskComment.create({
-          data: {
-            taskId: taskRecord.id,
-            authorId: assignee.id,
-            content: 'Implemented leave balance deduction and business day calculation logic. Ready for review.',
-            createdAt: new Date('2026-10-17T11:30:00Z'),
-          },
-        })
-        await prisma.taskComment.create({
-          data: {
-            taskId: taskRecord.id,
-            authorId: creator.id,
-            content: 'Looks thorough! Testing edge cases with national holiday calendars before marking Done.',
-            createdAt: new Date('2026-10-18T09:15:00Z'),
-          },
-        })
+    // Track for project progress calculation
+    if (tasksByProject[t.projectCode]) {
+      tasksByProject[t.projectCode].total++
+      if (t.status === 'DONE') {
+        tasksByProject[t.projectCode].done++
       }
+    }
+
+    // Add simulated comments & activity logs based on status
+    if (t.status === 'DONE') {
+      await prisma.taskComment.create({
+        data: {
+          taskId: taskRecord.id,
+          authorId: t.assignee ? t.assignee.id : seededUsers['admin@successtunnel.in'].id,
+          content: 'Completed implementation, unit tests passing, code review approved.',
+        },
+      })
+      await prisma.taskActivity.create({
+        data: {
+          taskId: taskRecord.id,
+          userId: t.assignee ? t.assignee.id : seededUsers['admin@successtunnel.in'].id,
+          action: 'STATUS_CHANGE',
+          details: 'Status transitioned from IN_REVIEW to DONE',
+        },
+      })
+    } else if (t.status === 'BLOCKED') {
+      await prisma.taskComment.create({
+        data: {
+          taskId: taskRecord.id,
+          authorId: t.assignee ? t.assignee.id : seededUsers['admin@successtunnel.in'].id,
+          content: 'Work temporarily blocked: awaiting third-party credentials and staging API keys.',
+        },
+      })
+      await prisma.taskActivity.create({
+        data: {
+          taskId: taskRecord.id,
+          userId: t.assignee ? t.assignee.id : seededUsers['admin@successtunnel.in'].id,
+          action: 'STATUS_CHANGE',
+          details: 'Flagged task as BLOCKED due to external dependency',
+        },
+      })
+    } else if (t.status === 'IN_REVIEW') {
+      await prisma.taskComment.create({
+        data: {
+          taskId: taskRecord.id,
+          authorId: t.assignee ? t.assignee.id : seededUsers['admin@successtunnel.in'].id,
+          content: 'PR submitted for peer code review. Ready for QA validation checklist.',
+        },
+      })
+      await prisma.taskActivity.create({
+        data: {
+          taskId: taskRecord.id,
+          userId: t.assignee ? t.assignee.id : seededUsers['admin@successtunnel.in'].id,
+          action: 'STATUS_CHANGE',
+          details: 'Status moved to IN_REVIEW',
+        },
+      })
+    } else if (t.status === 'IN_PROGRESS') {
+      await prisma.taskActivity.create({
+        data: {
+          taskId: taskRecord.id,
+          userId: t.assignee ? t.assignee.id : seededUsers['admin@successtunnel.in'].id,
+          action: 'STATUS_CHANGE',
+          details: 'Commenced sprint implementation',
+        },
+      })
     }
   }
 
+  // Calculate project progress dynamically from actual task states
+  for (const [pCode, counts] of Object.entries(tasksByProject)) {
+    const prj = seededProjects[pCode]
+    if (prj && counts.total > 0) {
+      const computedProgress = Math.round((counts.done / counts.total) * 100)
+      await prisma.project.update({
+        where: { id: prj.id },
+        data: { progress: computedProgress },
+      })
+      console.log(`  Project ${pCode}: Progress calculated from verified task states: ${computedProgress}% (${counts.done}/${counts.total} Done)`)
+    }
+  }
+
+  console.log(`  ✅ Successfully seeded ${seededTasksCount} tasks distributed across 5 projects.`)
+
   // ------------------------------------------------------------------
-  // 7. Seed 3-Month Financial Expense Claims (Aug, Sept, Oct 2026)
+  // 8. Seed Corporate Expenses (Spanning 90 Days)
   // ------------------------------------------------------------------
-  console.log('Step 7/8: Seeding corporate expense ledger spanning 3 months...')
+  console.log('Step 8/11: Seeding corporate expense ledger...')
   const expenseData = [
-    // August 2026 Claims (Reimbursed)
+    {
+      userEmail: 'siddharth.rao@example.com',
+      projectCode: 'ST-PRJ-2026-01',
+      category: 'SOFTWARE',
+      amount: 14500.0,
+      description: 'Monthly cloud hosting servers & PostgreSQL database infrastructure',
+      status: 'APPROVED',
+      reviewedByEmail: 'sneha.patel@example.com',
+      reviewNotes: 'Verified against AWS infrastructure invoice.',
+      date: dAgo(60),
+    },
+    {
+      userEmail: 'pooja.mehta@example.com',
+      projectCode: 'ST-PRJ-2026-01',
+      category: 'SOFTWARE',
+      amount: 4200.0,
+      description: 'Figma Enterprise UI design seat subscription',
+      status: 'APPROVED',
+      reviewedByEmail: 'sneha.patel@example.com',
+      reviewNotes: 'Approved as per approved department design budget.',
+      date: dAgo(45),
+    },
+    {
+      userEmail: 'arjun.kapoor@example.com',
+      projectCode: 'ST-PRJ-2026-02',
+      category: 'CLIENT_ENTERTAINMENT',
+      amount: 8650.0,
+      description: 'Executive luncheon with prospective enterprise client steering committee in Mumbai',
+      status: 'APPROVED',
+      reviewedByEmail: 'sneha.patel@example.com',
+      reviewNotes: 'Client dinner receipt submitted and verified.',
+      date: dAgo(30),
+    },
     {
       userEmail: 'amit.kumar@example.com',
       projectCode: 'ST-PRJ-2026-01',
-      category: 'TRAVEL',
-      amount: 8450.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-08-12'),
-      description: 'Flight ticket and taxi fare for client technical architecture onsite workshop',
-      receiptUrl: '/receipts/demo/aug_travel_blr_01.pdf',
-      status: 'REIMBURSED',
+      category: 'HARDWARE',
+      amount: 18900.0,
+      description: 'Dual 27-inch 4K developer monitors for remote engineering workstation',
+      status: 'APPROVED',
       reviewedByEmail: 'sneha.patel@example.com',
-      reviewNotes: 'Reimbursed via corporate bank transfer batch #AUG-01',
+      reviewNotes: 'Approved under remote engineering workstation policy.',
+      date: dAgo(22),
     },
     {
-      userEmail: 'rohit.verma@example.com',
-      projectCode: 'ST-PRJ-2026-01',
-      category: 'SOFTWARE',
-      amount: 24000.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-08-15'),
-      description: 'Annual JetBrains & IDE team productivity licenses for 5 developers',
-      receiptUrl: '/receipts/demo/jetbrains_annual_invoice.pdf',
-      status: 'REIMBURSED',
+      userEmail: 'neha.gupta@example.com',
+      projectCode: 'ST-PRJ-2026-05',
+      category: 'TRAINING',
+      amount: 25000.0,
+      description: 'ISO 27001 Lead Auditor examination fee and certification materials',
+      status: 'APPROVED',
       reviewedByEmail: 'sneha.patel@example.com',
-      reviewNotes: 'Verified against engineering IT software allocation',
+      reviewNotes: 'Authorized under company professional development fund.',
+      date: dAgo(15),
     },
     {
       userEmail: 'vikram.singh@example.com',
       projectCode: 'ST-PRJ-2026-03',
       category: 'OFFICE_SUPPLIES',
-      amount: 12300.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-08-22'),
-      description: 'Ergonomic mouse pads, HDMI splitters, and network patch cables for hub',
-      receiptUrl: '/receipts/demo/office_cables_aug.pdf',
-      status: 'REIMBURSED',
-      reviewedByEmail: 'sneha.patel@example.com',
-      reviewNotes: 'Approved & cleared',
-    },
-    {
-      userEmail: 'priya.sharma@example.com',
-      projectCode: null,
-      category: 'CLIENT_ENTERTAINMENT',
-      amount: 4800.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-08-28'),
-      description: 'Executive hiring luncheon with senior consulting candidates',
-      receiptUrl: '/receipts/demo/dining_aug_28.pdf',
-      status: 'REIMBURSED',
-      reviewedByEmail: 'sneha.patel@example.com',
-      reviewNotes: 'HR talent acquisition entertainment allocation',
-    },
-
-    // September 2026 Claims (Approved & Reimbursed)
-    {
-      userEmail: 'siddharth.rao@example.com',
-      projectCode: 'ST-PRJ-2026-01',
-      category: 'SOFTWARE',
-      amount: 45600.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-09-05'),
-      description: 'AWS Staging and cloud development environment infrastructure bill for Q3',
-      receiptUrl: '/receipts/demo/aws_invoice_sept_2026.pdf',
-      status: 'REIMBURSED',
-      reviewedByEmail: 'sneha.patel@example.com',
-      reviewNotes: 'Monthly cloud hosting line item cleared',
+      amount: 12400.0,
+      description: 'Ergonomic keyboard wrist rests and conference room whiteboards',
+      status: 'UNDER_REVIEW',
+      reviewedByEmail: null,
+      reviewNotes: null,
+      date: dAgo(6),
     },
     {
       userEmail: 'ananya.deshmukh@example.com',
       projectCode: 'ST-PRJ-2026-02',
       category: 'TRAVEL',
-      amount: 14200.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-09-12'),
-      description: 'Roundtrip Mumbai-Delhi travel for GST tribunal consultation with client',
-      receiptUrl: '/receipts/demo/air_travel_mumbai_sept.pdf',
-      status: 'APPROVED',
-      reviewedByEmail: 'sneha.patel@example.com',
-      reviewNotes: 'Approved for disbursement in upcoming payroll cycle',
-    },
-    {
-      userEmail: 'amit.kumar@example.com',
-      projectCode: 'ST-PRJ-2026-01',
-      category: 'TRAINING',
-      amount: 18500.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-09-18'),
-      description: 'Certified Kubernetes Administrator (CKA) exam voucher & training course',
-      receiptUrl: '/receipts/demo/cka_exam_receipt.pdf',
-      status: 'APPROVED',
-      reviewedByEmail: 'sneha.patel@example.com',
-      reviewNotes: 'Skill development sponsorship approved by MD',
-    },
-    {
-      userEmail: 'vikram.singh@example.com',
-      projectCode: 'ST-PRJ-2026-03',
-      category: 'OFFICE_SUPPLIES',
-      amount: 8900.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-09-24'),
-      description: 'HEPA air filter replacements and workstation disinfectant supplies',
-      receiptUrl: '/receipts/demo/facility_sanitization.pdf',
-      status: 'APPROVED',
-      reviewedByEmail: 'sneha.patel@example.com',
-      reviewNotes: 'Approved for facility maintenance budget',
-    },
-
-    // October 2026 Claims (Recent / Submitted / Under Review)
-    {
-      userEmail: 'rohit.verma@example.com',
-      projectCode: 'ST-PRJ-2026-01',
-      category: 'TRAVEL',
-      amount: 11200.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-10-08'),
-      description: 'Cab fares and executive client dinner following Q4 enterprise project kickoff',
-      receiptUrl: '/receipts/demo/oct_client_dinner.pdf',
-      status: 'APPROVED',
-      reviewedByEmail: 'sneha.patel@example.com',
-      reviewNotes: 'Approved. To be reimbursed in end of month payout.',
-    },
-    {
-      userEmail: 'siddharth.rao@example.com',
-      projectCode: 'ST-PRJ-2026-05',
-      category: 'SOFTWARE',
-      amount: 32000.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-10-14'),
-      description: 'Datadog APM & Cloud Security Posture Management annual subscription',
-      receiptUrl: '/receipts/demo/datadog_renewal.pdf',
-      status: 'UNDER_REVIEW',
-      reviewedByEmail: null,
-      reviewNotes: 'Finance verifying tax invoice and GST input credit eligibility',
-    },
-    {
-      userEmail: 'pooja.mehta@example.com',
-      projectCode: 'ST-PRJ-2026-01',
-      category: 'HARDWARE',
-      amount: 28500.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-10-19'),
-      description: '27-inch 4K Color-Accurate Designer Monitor for ERP high-fidelity UI design',
-      receiptUrl: '/receipts/demo/designer_monitor_invoice.pdf',
+      amount: 7800.0,
+      description: 'Cab fares and inter-city transit for on-site corporate client presentation',
       status: 'SUBMITTED',
       reviewedByEmail: null,
       reviewNotes: null,
-    },
-    {
-      userEmail: 'deepak.chawla@example.com',
-      projectCode: 'ST-PRJ-2026-02',
-      category: 'TRAINING',
-      amount: 7500.0,
-      currency: 'INR',
-      expenseDate: new Date('2026-10-21'),
-      description: 'Institute of Chartered Accountants (ICAI) Advanced GST 2026 National Seminar',
-      receiptUrl: '/receipts/demo/gst_seminar_pass.pdf',
-      status: 'SUBMITTED',
-      reviewedByEmail: null,
-      reviewNotes: null,
+      date: dAgo(2),
     },
   ]
 
+  let expenseCount = 0
   for (const exp of expenseData) {
     const user = seededUsers[exp.userEmail]
-    const prj = exp.projectCode ? seededProjects[exp.projectCode] : null
     const reviewer = exp.reviewedByEmail ? seededUsers[exp.reviewedByEmail] : null
+    const prj = exp.projectCode ? seededProjects[exp.projectCode] : null
     if (!user) continue
 
-    const existing = await prisma.expense.findFirst({
-      where: { userId: user.id, description: exp.description },
-    })
-
-    if (!existing) {
-      await prisma.expense.create({
-        data: {
-          userId: user.id,
-          projectId: prj ? prj.id : null,
-          category: exp.category,
-          amount: exp.amount,
-          currency: exp.currency,
-          expenseDate: exp.expenseDate,
-          description: exp.description,
-          receiptUrl: exp.receiptUrl,
-          status: exp.status,
-          reviewedById: reviewer ? reviewer.id : null,
-          reviewNotes: exp.reviewNotes,
-          isDemo: true,
-        },
-      })
-    }
-  }
-
-  // ------------------------------------------------------------------
-  // 8. Seed 3-Month Chronological Audit Logs & Activity Trail
-  // ------------------------------------------------------------------
-  console.log('Step 8/8: Seeding immutable administrative audit trail spanning 3 months...')
-  const auditEntries = [
-    // August
-    {
-      email: 'admin@successtunnel.in',
-      action: 'SYSTEM_INITIALIZED',
-      entityType: 'System',
-      entityId: 'SYS-INIT',
-      details: 'Enterprise ERP management platform launched for Success Tunnel multi-departmental operations.',
-      ipAddress: '192.168.1.10',
-      createdAt: new Date('2026-08-01T08:30:00Z'),
-    },
-    {
-      email: 'priya.sharma@example.com',
-      action: 'POLICY_PUBLISHED',
-      entityType: 'Document',
-      entityId: 'DOC-POL-01',
-      details: 'Published Success Tunnel Corporate Code of Conduct 2026 and Leave Policy.',
-      ipAddress: '192.168.1.15',
-      createdAt: new Date('2026-08-02T10:15:00Z'),
-    },
-    {
-      email: 'rohit.verma@example.com',
-      action: 'PROJECT_INITIATED',
-      entityType: 'Project',
-      entityId: 'ST-PRJ-2026-01',
-      details: 'Initiated Enterprise ERP Management Portal project with budget INR 4,80,000.',
-      ipAddress: '192.168.1.22',
-      createdAt: new Date('2026-08-05T14:20:00Z'),
-    },
-    {
-      email: 'priya.sharma@example.com',
-      action: 'LEAVE_APPROVED',
-      entityType: 'Leave',
-      entityId: 'LV-101',
-      details: 'Approved 3 days Annual Leave for Amit Kumar.',
-      ipAddress: '192.168.1.15',
-      createdAt: new Date('2026-08-08T16:45:00Z'),
-    },
-    {
-      email: 'sneha.patel@example.com',
-      action: 'EXPENSE_REIMBURSED',
-      entityType: 'Expense',
-      entityId: 'EXP-AUG-01',
-      details: 'Authorized reimbursement for Amit Kumar client travel (INR 8,450).',
-      ipAddress: '192.168.1.30',
-      createdAt: new Date('2026-08-16T11:00:00Z'),
-    },
-
-    // September
-    {
-      email: 'admin@successtunnel.in',
-      action: 'ROLE_MODIFIED',
-      entityType: 'Employee',
-      entityId: 'ST-PM-201',
-      details: 'Confirmed Rohit Verma as Principal Project Manager across technology roadmaps.',
-      ipAddress: '192.168.1.10',
-      createdAt: new Date('2026-09-01T09:00:00Z'),
-    },
-    {
-      email: 'admin@successtunnel.in',
-      action: 'LEAVE_APPROVED',
-      entityType: 'Leave',
-      entityId: 'LV-104',
-      details: 'Approved 4 days Annual Leave for Rohit Verma.',
-      ipAddress: '192.168.1.10',
-      createdAt: new Date('2026-09-03T17:10:00Z'),
-    },
-    {
-      email: 'rohit.verma@example.com',
-      action: 'LEAVE_REJECTED',
-      entityType: 'Leave',
-      entityId: 'LV-106',
-      details: 'Rejected Amit Kumar leave due to critical Q3 release cycle conflict.',
-      ipAddress: '192.168.1.22',
-      createdAt: new Date('2026-09-15T15:30:00Z'),
-    },
-    {
-      email: 'sneha.patel@example.com',
-      action: 'PROJECT_COMPLETED',
-      entityType: 'Project',
-      entityId: 'ST-PRJ-2026-04',
-      details: 'Q3 Financial Audit & Corporate Balance Sheet marked 100% completed and delivered.',
-      ipAddress: '192.168.1.30',
-      createdAt: new Date('2026-09-30T18:00:00Z'),
-    },
-
-    // October
-    {
-      email: 'priya.sharma@example.com',
-      action: 'LEAVE_APPROVED',
-      entityType: 'Leave',
-      entityId: 'LV-108',
-      details: 'Approved 2 days Casual Leave for Siddharth Rao.',
-      ipAddress: '192.168.1.15',
-      createdAt: new Date('2026-10-02T12:00:00Z'),
-    },
-    {
-      email: 'sneha.patel@example.com',
-      action: 'EXPENSE_APPROVED',
-      entityType: 'Expense',
-      entityId: 'EXP-OCT-01',
-      details: 'Approved Rohit Verma enterprise client dinner and travel claim (INR 11,200).',
-      ipAddress: '192.168.1.30',
-      createdAt: new Date('2026-10-10T14:30:00Z'),
-    },
-    {
-      email: 'admin@successtunnel.in',
-      action: 'LOGIN_SUCCESS',
-      entityType: 'Auth',
-      entityId: 'ADM-LOGIN-OCT',
-      details: 'Super Administrator session authenticated from management console.',
-      ipAddress: '127.0.0.1',
-      createdAt: new Date('2026-10-23T01:30:00Z'),
-    },
-  ]
-
-  for (const aud of auditEntries) {
-    const user = seededUsers[aud.email]
-    const existing = await prisma.auditLog.findFirst({
-      where: { action: aud.action, details: aud.details },
-    })
-
-    if (!existing) {
-      await prisma.auditLog.create({
-        data: {
-          userId: user ? user.id : null,
-          action: aud.action,
-          entityType: aud.entityType,
-          entityId: aud.entityId,
-          details: aud.details,
-          ipAddress: aud.ipAddress,
-          createdAt: aud.createdAt,
-        },
-      })
-    }
-  }
-
-  // ------------------------------------------------------------------
-  // 9. Existing Website CMS Content (Services, Subservices, Properties, Blogs)
-  // ------------------------------------------------------------------
-  console.log('Finalizing: Ensuring public website CMS records are intact...')
-  for (const service of sampleServices) {
-    await prisma.service.upsert({
-      where: { slug: service.slug },
-      update: { title: service.title, excerpt: service.excerpt, icon: service.icon },
-      create: { title: service.title, slug: service.slug, excerpt: service.excerpt, icon: service.icon },
-    })
-  }
-
-  const consultancy = await prisma.service.findUniqueOrThrow({ where: { slug: 'consultancy' } })
-  for (const subservice of consultancySubservices) {
-    await prisma.subservice.upsert({
-      where: { slug: subservice.slug },
-      update: { title: subservice.title, content: subservice.content, serviceId: consultancy.id },
-      create: { ...subservice, serviceId: consultancy.id },
-    })
-  }
-
-  for (const property of sampleProperties) {
-    await prisma.property.upsert({
-      where: { slug: property.slug },
-      update: {
-        title: property.title,
-        type: property.type,
-        city: property.city,
-        price: property.price,
-        area: property.area,
-        bedrooms: property.bedrooms,
-        bathrooms: property.bathrooms,
-        description: property.description,
-        images: '[]',
-      },
-      create: {
-        title: property.title,
-        slug: property.slug,
-        type: property.type,
-        city: property.city,
-        price: property.price,
-        area: property.area,
-        bedrooms: property.bedrooms,
-        bathrooms: property.bathrooms,
-        description: property.description,
-        images: '[]',
+    await prisma.expense.create({
+      data: {
+        userId: user.id,
+        projectId: prj ? prj.id : null,
+        category: exp.category,
+        amount: exp.amount,
+        currency: 'INR',
+        expenseDate: exp.date,
+        description: exp.description,
+        status: exp.status,
+        reviewedById: reviewer ? reviewer.id : null,
+        reviewNotes: exp.reviewNotes,
+        isDemo: true,
       },
     })
+    expenseCount++
   }
+  console.log(`  ✅ Seeded ${expenseCount} corporate expenses with approval trail.`)
 
-  for (const post of samplePosts) {
-    await prisma.blogPost.upsert({
-      where: { slug: post.slug },
-      update: { title: post.title, excerpt: post.excerpt, content: post.content, publishedAt: new Date() },
-      create: { title: post.title, slug: post.slug, excerpt: post.excerpt, content: post.content, publishedAt: new Date() },
-    })
-  }
-
-  for (const item of EDUCATION_FALLBACK_CONTENT) {
-    const seedItem = item as any
-    await prisma.educationContent.upsert({
-      where: { slug: seedItem.slug },
-      update: {
-        title: seedItem.title,
-        contentType: seedItem.contentType,
-        category: seedItem.category,
-        excerpt: seedItem.excerpt,
-        body: seedItem.body,
-        thumbnailUrl: seedItem.thumbnailUrl || null,
-        assetUrl: seedItem.assetUrl || null,
-        externalUrl: seedItem.externalUrl || null,
-        ctaLabel: seedItem.ctaLabel || null,
-        isPublished: true,
-        isFeatured: !!seedItem.isFeatured,
-        showOnHomePopup: !!seedItem.showOnHomePopup,
-        publishedAt: new Date(),
-      },
-      create: {
-        title: seedItem.title,
-        slug: seedItem.slug,
-        contentType: seedItem.contentType,
-        category: seedItem.category || null,
-        excerpt: seedItem.excerpt || null,
-        body: seedItem.body || null,
-        thumbnailUrl: seedItem.thumbnailUrl || null,
-        assetUrl: seedItem.assetUrl || null,
-        externalUrl: seedItem.externalUrl || null,
-        ctaLabel: seedItem.ctaLabel || null,
-        isPublished: true,
-        isFeatured: !!seedItem.isFeatured,
-        showOnHomePopup: !!seedItem.showOnHomePopup,
-        publishedAt: new Date(),
-      },
-    })
-  }
-
-  
   // ------------------------------------------------------------------
-  // 10. Seed Fictional Demo CRM Customers & Pipeline Deals
+  // 9. Seed Customer Directory & CRM Leads Pipeline
   // ------------------------------------------------------------------
-  console.log('Step 10/10: Seeding clearly fictional CRM customer directory & deal pipeline...')
-  const demoCustomers = [
+  console.log('Step 9/11: Seeding realistic fictional customer directory & deal pipeline...')
+  const customersData = [
     {
       customerCode: 'ST-CUST-1001',
-      name: 'TechNova Solutions Pvt Ltd',
-      company: 'TechNova Enterprise Group',
-      email: 'procurement@technova.example.com',
-      phone: '+91 98111 22334',
-      address: 'Plot 44, Sector 62, Electronic City',
-      city: 'Noida, Uttar Pradesh',
-      website: 'https://technova.example.com',
+      name: 'TechNova Enterprise Solutions Pvt Ltd',
+      company: 'TechNova Enterprise Solutions Pvt Ltd',
+      email: 'procurement@example.com',
+      phone: '+91 11 4567 8901',
+      address: 'DLF Cyber City, Tower 10B, 8th Floor',
+      city: 'Gurugram',
+      website: 'https://example.com/technova',
       status: 'ACTIVE',
-      notes: 'Strategic technology client with enterprise cloud and compliance contracts.',
+      notes: 'Tier-1 enterprise customer for ERP portal and custom cloud integrations.',
       isDemo: true,
     },
     {
       customerCode: 'ST-CUST-1002',
       name: 'Apex Global Logistics Ltd',
-      company: 'Apex Supply Chain Network',
-      email: 'operations@apexlogistics.example.com',
-      phone: '+91 98222 33445',
-      address: 'DLF Cyber City, Tower B, 8th Floor',
-      city: 'Gurugram, Haryana',
-      website: 'https://apexlogistics.example.com',
+      company: 'Apex Global Logistics Ltd',
+      email: 'operations@example.com',
+      phone: '+91 22 2890 1234',
+      address: 'Andheri East Commercial Complex, 4th Floor',
+      city: 'Mumbai',
+      website: 'https://example.com/apexlogistics',
       status: 'ACTIVE',
-      notes: 'Quarterly GST reconciliation and tax compliance consulting account.',
+      notes: 'Supply chain client utilizing GST automation and compliance advisory.',
       isDemo: true,
     },
     {
       customerCode: 'ST-CUST-1003',
-      name: 'Zenith Retail Ventures',
-      company: 'Zenith Supermarkets Network',
-      email: 'accounts@zenithretail.example.com',
-      phone: '+91 98333 44556',
+      name: 'Zenith Retail & Supermarkets LLP',
+      company: 'Zenith Retail & Supermarkets LLP',
+      email: 'finance@example.com',
+      phone: '+91 80 3456 7890',
+      address: 'Koramangala 5th Block, 100 Feet Road',
+      city: 'Bengaluru',
+      website: 'https://example.com/zenithretail',
+      status: 'ACTIVE',
+      notes: 'Retail chain client utilizing managed facility coworking and POS consulting.',
+      isDemo: true,
+    },
+    {
+      customerCode: 'ST-CUST-1004',
+      name: 'Starlight Healthcare Diagnostics',
+      company: 'Starlight Healthcare Diagnostics',
+      email: 'partnerships@example.com',
+      phone: '+91 40 4567 8912',
+      address: 'HITEC City, Phase 2, Mindspace',
+      city: 'Hyderabad',
+      website: 'https://example.com/starlight',
+      status: 'ACTIVE',
+      notes: 'Medical network evaluating patient portal and ISO compliance.',
+      isDemo: true,
+    },
+    {
+      customerCode: 'ST-CUST-1005',
+      name: 'BlueWave Financial Services',
+      company: 'BlueWave Financial Services',
+      email: 'compliance@example.com',
+      phone: '+91 11 2345 6789',
       address: 'Barakhamba Road, Connaught Place',
       city: 'New Delhi',
-      website: 'https://zenithretail.example.com',
-      status: 'ACTIVE',
-      notes: 'Commercial lease and coworking workstation hub tenant.',
+      website: 'https://example.com/bluewave',
+      status: 'LEAD',
+      notes: 'Financial advisory firm in proposal stage for statutory audit automation.',
+      isDemo: true,
+    },
+    {
+      customerCode: 'ST-CUST-1006',
+      name: 'Vanguard Manufacturing Corp',
+      company: 'Vanguard Manufacturing Corp',
+      email: 'tax@example.com',
+      phone: '+91 20 6789 0123',
+      address: 'Bhosari Industrial Estate, MIDC',
+      city: 'Pune',
+      website: 'https://example.com/vanguard',
+      status: 'LEAD',
+      notes: 'Automotive components manufacturer evaluating GST e-invoicing.',
       isDemo: true,
     },
   ]
 
   const seededCustomers: { [code: string]: any } = {}
-  for (const cust of demoCustomers) {
-    const record = await prisma.customer.upsert({
-      where: { customerCode: cust.customerCode },
-      update: cust,
-      create: cust,
+  for (const c of customersData) {
+    const cust = await prisma.customer.upsert({
+      where: { customerCode: c.customerCode },
+      update: c,
+      create: c,
     })
-    seededCustomers[cust.customerCode] = record
+    seededCustomers[c.customerCode] = cust
   }
 
-  // Link ST-PRJ-2026-01 to TechNova and ST-PRJ-2026-02 to Apex Global
-  if (seededCustomers['ST-CUST-1001']) {
-    await prisma.project.updateMany({
-      where: { projectCode: 'ST-PRJ-2026-01' },
-      data: { customerId: seededCustomers['ST-CUST-1001'].id },
-    })
-  }
-  if (seededCustomers['ST-CUST-1002']) {
-    await prisma.project.updateMany({
-      where: { projectCode: 'ST-PRJ-2026-02' },
-      data: { customerId: seededCustomers['ST-CUST-1002'].id },
-    })
-  }
-
-  // Seed Demo Website Enquiries
-  const sampleEnquiries = [
+  // Seed Leads Across Pipeline Stages
+  const leadsData = [
     {
-      name: 'Vikrant Khanna',
-      email: 'vikrant.khanna@example.com',
-      phone: '+91 99887 76655',
-      city: 'Gurugram',
-      service: 'Income Tax Planning',
-      message: 'Looking for corporate income tax advisory and annual compliance filing for our Series-A startup.',
-      page: '/services/consultancy',
-      status: 'UNREAD',
-    },
-    {
-      name: 'Radhika Sen',
-      email: 'radhika.sen@example.com',
-      phone: '+91 98765 12340',
-      city: 'Delhi NCR',
-      service: 'Managed Rental Hub',
-      message: 'Need 25 dedicated workstations with 24/7 power backup and high-speed internet in Noida hub.',
-      page: '/services/rentals',
-      status: 'UNREAD',
-    },
-  ]
-
-  for (const enq of sampleEnquiries) {
-    const existing = await prisma.enquiry.findFirst({
-      where: { email: enq.email, message: enq.message },
-    })
-    if (!existing) {
-      await prisma.enquiry.create({ data: enq })
-    }
-  }
-
-  // Seed Demo Pipeline Leads
-  const demoLeads = [
-    {
-      leadCode: 'ST-LEAD-2026-0001',
-      title: 'Corporate GST Reconciliation & Advisory',
-      contactName: 'Sanjay Aggarwal',
-      contactEmail: 'sanjay.aggarwal@example.com',
-      contactPhone: '+91 98101 11222',
-      company: 'Aggarwal Pharma Distributors',
-      source: 'WEBSITE_ENQUIRY',
-      status: 'NEW',
-      priority: 'HIGH',
-      estimatedValue: 125000.0,
-      currency: 'INR',
-      notes: 'Submitted enquiry through corporate consultancy portal requesting input tax credit reconciliation.',
-      isDemo: true,
-    },
-    {
-      leadCode: 'ST-LEAD-2026-0002',
-      title: 'Enterprise ERP Implementation & Data Migration',
-      contactName: 'Pooja Iyer',
-      contactEmail: 'pooja.iyer@example.com',
-      contactPhone: '+91 98202 22333',
-      company: 'Iyer Logistics & Freight',
-      source: 'DIRECT',
-      status: 'CONTACTED',
-      priority: 'HIGH',
-      estimatedValue: 480000.0,
-      currency: 'INR',
-      notes: 'Initial discovery call completed on Oct 14. Architecture requirements document requested.',
-      nextFollowUp: new Date('2026-10-28'),
-      isDemo: true,
-    },
-    {
-      leadCode: 'ST-LEAD-2026-0003',
-      title: 'Managed Workstation Hub Lease (30 Desks)',
-      contactName: 'Naveen Jindal',
-      contactEmail: 'naveen.jindal@example.com',
-      contactPhone: '+91 98303 33444',
-      company: 'Jindal Analytics Pvt Ltd',
-      source: 'REFERRAL',
-      status: 'QUALIFIED',
-      priority: 'MEDIUM',
-      estimatedValue: 270000.0,
-      currency: 'INR',
-      notes: 'Client conducted site visit of Noida hub on Oct 18. Budget confirmed by their finance department.',
-      nextFollowUp: new Date('2026-10-26'),
-      isDemo: true,
-    },
-    {
-      leadCode: 'ST-LEAD-2026-0004',
-      title: 'ISO 27001 InfoSec Readiness Assessment',
-      contactName: 'Meera Nambiar',
-      contactEmail: 'meera.nambiar@example.com',
-      contactPhone: '+91 98404 44555',
-      company: 'Nambiar FinTech Labs',
-      source: 'PARTNER',
-      status: 'PROPOSAL_SENT',
-      priority: 'HIGH',
-      estimatedValue: 350000.0,
-      currency: 'INR',
-      notes: 'Formal statement of work and audit proposal shared on Oct 20. Under executive board review.',
-      nextFollowUp: new Date('2026-10-29'),
-      isDemo: true,
-    },
-    {
-      leadCode: 'ST-LEAD-2026-0005',
-      title: 'TechNova Cloud ERP Enterprise License',
-      customerId: seededCustomers['ST-CUST-1001']?.id,
-      contactName: 'Devendra Joshi',
-      contactEmail: 'procurement@technova.example.com',
-      contactPhone: '+91 98111 22334',
-      company: 'TechNova Solutions Pvt Ltd',
+      leadCode: 'ST-LEAD-2026-001',
+      title: 'Enterprise ERP Modernization & HR Integration',
+      customerCode: 'ST-CUST-1001',
+      contactName: 'Vikramaditya Sen',
+      contactEmail: 'vikram.sen@example.com',
+      contactPhone: '+91 98111 55667',
+      company: 'TechNova Enterprise Solutions Pvt Ltd',
       source: 'DIRECT',
       status: 'WON',
       priority: 'HIGH',
-      estimatedValue: 580000.0,
-      currency: 'INR',
-      notes: 'Contract executed and project initiated under ST-PRJ-2026-01.',
-      isDemo: true,
+      estimatedValue: 480000.0,
+      assignedEmail: 'arjun.kapoor@example.com',
     },
     {
-      leadCode: 'ST-LEAD-2026-0006',
-      title: 'Legacy On-Premise Unix Server Maintenance',
-      contactName: 'Kishore Bhasin',
-      contactEmail: 'kishore.bhasin@example.com',
-      contactPhone: '+91 98505 55666',
-      company: 'Bhasin Heavy Engineering',
+      leadCode: 'ST-LEAD-2026-002',
+      title: 'GST Return Automation & ITC Reconciliation',
+      customerCode: 'ST-CUST-1002',
+      contactName: 'Meenakshi Sundaram',
+      contactEmail: 'meenakshi.s@example.com',
+      contactPhone: '+91 98222 66778',
+      company: 'Apex Global Logistics Ltd',
+      source: 'REFERRAL',
+      status: 'WON',
+      priority: 'HIGH',
+      estimatedValue: 340000.0,
+      assignedEmail: 'arjun.kapoor@example.com',
+    },
+    {
+      leadCode: 'ST-LEAD-2026-003',
+      title: 'Multi-Location Managed Coworking Workstations',
+      customerCode: 'ST-CUST-1003',
+      contactName: 'Harish Varma',
+      contactEmail: 'harish.varma@example.com',
+      contactPhone: '+91 98333 77889',
+      company: 'Zenith Retail & Supermarkets LLP',
+      source: 'WEBSITE_ENQUIRY',
+      status: 'WON',
+      priority: 'MEDIUM',
+      estimatedValue: 240000.0,
+      assignedEmail: 'ananya.deshmukh@example.com',
+    },
+    {
+      leadCode: 'ST-LEAD-2026-004',
+      title: 'Healthcare Diagnostic Data Compliance & ISO 27001 Prep',
+      customerCode: 'ST-CUST-1004',
+      contactName: 'Dr. Sunita Reddy',
+      contactEmail: 'sunita.reddy@example.com',
+      contactPhone: '+91 98444 88990',
+      company: 'Starlight Healthcare Diagnostics',
+      source: 'WEBSITE_ENQUIRY',
+      status: 'PROPOSAL_SENT',
+      priority: 'HIGH',
+      estimatedValue: 310000.0,
+      assignedEmail: 'arjun.kapoor@example.com',
+    },
+    {
+      leadCode: 'ST-LEAD-2026-005',
+      title: 'Statutory Financial Audit Automation Suite',
+      customerCode: 'ST-CUST-1005',
+      contactName: 'Aditya Birla',
+      contactEmail: 'aditya.birla@example.com',
+      contactPhone: '+91 98555 11223',
+      company: 'BlueWave Financial Services',
+      source: 'REFERRAL',
+      status: 'QUALIFIED',
+      priority: 'HIGH',
+      estimatedValue: 280000.0,
+      assignedEmail: 'ananya.deshmukh@example.com',
+    },
+    {
+      leadCode: 'ST-LEAD-2026-006',
+      title: 'Automotive Factory E-Invoicing & Supply Chain Tax',
+      customerCode: 'ST-CUST-1006',
+      contactName: 'Naveen Deshpande',
+      contactEmail: 'naveen.d@example.com',
+      contactPhone: '+91 98666 22334',
+      company: 'Vanguard Manufacturing Corp',
       source: 'COLD_OUTREACH',
+      status: 'CONTACTED',
+      priority: 'MEDIUM',
+      estimatedValue: 195000.0,
+      assignedEmail: 'ananya.deshmukh@example.com',
+    },
+    {
+      leadCode: 'ST-LEAD-2026-007',
+      title: 'Cloud Infrastructure Security Hardening Assessment',
+      customerCode: null,
+      contactName: 'Rohan Mehra',
+      contactEmail: 'rohan.mehra@example.com',
+      contactPhone: '+91 98777 33445',
+      company: 'Krypton Cyberworks',
+      source: 'WEBSITE_ENQUIRY',
+      status: 'NEW',
+      priority: 'HIGH',
+      estimatedValue: 150000.0,
+      assignedEmail: 'arjun.kapoor@example.com',
+    },
+    {
+      leadCode: 'ST-LEAD-2026-008',
+      title: 'Trademark Registration & Brand Identity Protection',
+      customerCode: null,
+      contactName: 'Shalini Nambiar',
+      contactEmail: 'shalini.n@example.com',
+      contactPhone: '+91 98888 44556',
+      company: 'Urban Bloom Organics',
+      source: 'WEBSITE_ENQUIRY',
+      status: 'NEW',
+      priority: 'LOW',
+      estimatedValue: 45000.0,
+      assignedEmail: 'ananya.deshmukh@example.com',
+    },
+    {
+      leadCode: 'ST-LEAD-2026-009',
+      title: 'MSME Business Incorporation & Compliance Pack',
+      customerCode: null,
+      contactName: 'Gaurav Singhal',
+      contactEmail: 'gaurav.s@example.com',
+      contactPhone: '+91 98999 55667',
+      company: 'Singhal Robotics & Automation',
+      source: 'WEBSITE_ENQUIRY',
       status: 'LOST',
       priority: 'LOW',
-      estimatedValue: 75000.0,
-      currency: 'INR',
-      notes: 'Client decided to defer hardware upgrade to next fiscal year.',
-      isDemo: true,
+      estimatedValue: 35000.0,
+      assignedEmail: 'ananya.deshmukh@example.com',
     },
   ]
 
-  for (const ld of demoLeads) {
-    const existing = await prisma.lead.findUnique({
+  for (const ld of leadsData) {
+    const cust = ld.customerCode ? seededCustomers[ld.customerCode] : null
+    const assignedUser = ld.assignedEmail ? seededUsers[ld.assignedEmail] : null
+
+    const leadRecord = await prisma.lead.upsert({
       where: { leadCode: ld.leadCode },
+      update: {
+        title: ld.title,
+        customerId: cust ? cust.id : null,
+        contactName: ld.contactName,
+        contactEmail: ld.contactEmail,
+        contactPhone: ld.contactPhone,
+        company: ld.company,
+        source: ld.source,
+        status: ld.status,
+        priority: ld.priority,
+        estimatedValue: ld.estimatedValue,
+        currency: 'INR',
+        assignedToId: assignedUser ? assignedUser.id : null,
+        isDemo: true,
+      },
+      create: {
+        leadCode: ld.leadCode,
+        title: ld.title,
+        customerId: cust ? cust.id : null,
+        contactName: ld.contactName,
+        contactEmail: ld.contactEmail,
+        contactPhone: ld.contactPhone,
+        company: ld.company,
+        source: ld.source,
+        status: ld.status,
+        priority: ld.priority,
+        estimatedValue: ld.estimatedValue,
+        currency: 'INR',
+        assignedToId: assignedUser ? assignedUser.id : null,
+        isDemo: true,
+      },
     })
 
-    if (!existing) {
-      const createdLead = await prisma.lead.create({
-        data: ld,
+    // Seed realistic touchpoint activity
+    if (ld.status === 'WON') {
+      await prisma.leadActivity.create({
+        data: {
+          leadId: leadRecord.id,
+          userId: assignedUser?.id,
+          type: 'STATUS_CHANGE',
+          summary: 'Enterprise contract signed and deal won',
+          details: 'Master Services Agreement executed and handed over to engineering team.',
+        },
       })
-
-      if (ld.status === 'WON') {
-        await prisma.leadActivity.create({
-          data: {
-            leadId: createdLead.id,
-            type: 'STATUS_CHANGE',
-            summary: 'Enterprise contract finalized and deal won',
-            details: 'Signed master services agreement and allocated engineering resources.',
-          },
-        })
-      } else if (ld.status === 'PROPOSAL_SENT') {
-        await prisma.leadActivity.create({
-          data: {
-            leadId: createdLead.id,
-            type: 'PROPOSAL',
-            summary: 'Commercial proposal v1.2 dispatched via email',
-            details: 'Includes SLA terms, security milestone breakdown, and licensing quotes.',
-          },
-        })
-      } else {
-        await prisma.leadActivity.create({
-          data: {
-            leadId: createdLead.id,
-            type: 'NOTE',
-            summary: `Lead registered in pipeline at stage: ${ld.status}`,
-          },
-        })
-      }
+    } else if (ld.status === 'PROPOSAL_SENT') {
+      await prisma.leadActivity.create({
+        data: {
+          leadId: leadRecord.id,
+          userId: assignedUser?.id,
+          type: 'PROPOSAL',
+          summary: 'Detailed technical proposal v1.4 dispatched',
+          details: 'Includes SLA terms, milestone timelines, and security compliance matrix.',
+        },
+      })
+    } else if (ld.status === 'LOST') {
+      await prisma.leadActivity.create({
+        data: {
+          leadId: leadRecord.id,
+          userId: assignedUser?.id,
+          type: 'STATUS_CHANGE',
+          summary: 'Lead marked as Lost - budget deferral',
+          details: 'Prospect decided to postpone MSME incorporation to next fiscal quarter.',
+        },
+      })
+    } else {
+      await prisma.leadActivity.create({
+        data: {
+          leadId: leadRecord.id,
+          userId: assignedUser?.id,
+          type: 'NOTE',
+          summary: `Lead progress updated: stage is currently ${ld.status}`,
+        },
+      })
     }
   }
 
-  
   // ------------------------------------------------------------------
-  // 11. Seed Invoices & Verified Received Payments (Spanning Aug-Oct 2026)
+  // 10. Seed Invoices & Verified Payments (Strict Cash Flow Invariant)
   // ------------------------------------------------------------------
-  console.log('Step 11: Seeding accounts receivable invoices & verified payments ledger...')
+  console.log('Step 10/11: Seeding accounts receivable invoices & verified payments ledger...')
+  const techNovaCust = seededCustomers['ST-CUST-1001']
+  const apexCust = seededCustomers['ST-CUST-1002']
+  const zenithCust = seededCustomers['ST-CUST-1003']
 
-  const techNovaCust = seededCustomers['ST-CUST-1001'];
-  const apexCust = seededCustomers['ST-CUST-1002'];
-  const zenithCust = seededCustomers['ST-CUST-1003'];
+  const prj01 = seededProjects['ST-PRJ-2026-01']
+  const prj02 = seededProjects['ST-PRJ-2026-02']
 
-  const prj01 = await prisma.project.findUnique({ where: { projectCode: 'ST-PRJ-2026-01' } });
-  const prj02 = await prisma.project.findUnique({ where: { projectCode: 'ST-PRJ-2026-02' } });
-
-  // 1. TechNova August Milestone Invoice (PAID)
+  // 1. TechNova Milestone 1 Invoice (PAID IN FULL)
   const inv1 = await prisma.invoice.upsert({
     where: { invoiceNumber: 'ST-INV-2026-0001' },
     update: {},
@@ -1750,8 +2496,8 @@ async function main() {
       invoiceNumber: 'ST-INV-2026-0001',
       customerId: techNovaCust?.id,
       projectId: prj01?.id,
-      issueDate: new Date('2026-08-15'),
-      dueDate: new Date('2026-09-15'),
+      issueDate: dAgo(65),
+      dueDate: dAgo(35),
       subtotal: 150000.0,
       taxRate: 18.0,
       taxAmount: 27000.0,
@@ -1764,7 +2510,7 @@ async function main() {
       notes: 'Initial milestone delivery approved by client steering committee.',
       isDemo: true,
     },
-  });
+  })
 
   await prisma.payment.upsert({
     where: { paymentNumber: 'ST-PAY-2026-0001' },
@@ -1776,16 +2522,16 @@ async function main() {
       projectId: prj01?.id,
       amount: 177000.0,
       currency: 'INR',
-      paymentDate: new Date('2026-08-28'),
+      paymentDate: dAgo(52),
       paymentMethod: 'BANK_TRANSFER',
       transactionReference: 'SBIN8260192837',
       status: 'COMPLETED',
       notes: 'NEFT wire transfer cleared in commercial account.',
       isDemo: true,
     },
-  });
+  })
 
-  // 2. Apex Global September GST Suite License (PAID)
+  // 2. Apex Global GST Suite License (PAID IN FULL)
   const inv2 = await prisma.invoice.upsert({
     where: { invoiceNumber: 'ST-INV-2026-0002' },
     update: {},
@@ -1793,8 +2539,8 @@ async function main() {
       invoiceNumber: 'ST-INV-2026-0002',
       customerId: apexCust?.id,
       projectId: prj02?.id,
-      issueDate: new Date('2026-09-05'),
-      dueDate: new Date('2026-10-05'),
+      issueDate: dAgo(45),
+      dueDate: dAgo(15),
       subtotal: 100000.0,
       taxRate: 18.0,
       taxAmount: 18000.0,
@@ -1807,7 +2553,7 @@ async function main() {
       notes: 'Quarterly compliance engine setup fee.',
       isDemo: true,
     },
-  });
+  })
 
   await prisma.payment.upsert({
     where: { paymentNumber: 'ST-PAY-2026-0002' },
@@ -1819,16 +2565,16 @@ async function main() {
       projectId: prj02?.id,
       amount: 118000.0,
       currency: 'INR',
-      paymentDate: new Date('2026-09-22'),
+      paymentDate: dAgo(28),
       paymentMethod: 'BANK_TRANSFER',
       transactionReference: 'HDFC9220019283',
       status: 'COMPLETED',
       notes: 'RTGS payment received.',
       isDemo: true,
     },
-  });
+  })
 
-  // 3. TechNova October Phase 2 Milestone (PARTIALLY_PAID)
+  // 3. TechNova Phase 2 Milestone (PARTIALLY PAID: ₹1,00,000 received out of ₹2,36,000)
   const inv3 = await prisma.invoice.upsert({
     where: { invoiceNumber: 'ST-INV-2026-0003' },
     update: {},
@@ -1836,8 +2582,8 @@ async function main() {
       invoiceNumber: 'ST-INV-2026-0003',
       customerId: techNovaCust?.id,
       projectId: prj01?.id,
-      issueDate: new Date('2026-10-10'),
-      dueDate: new Date('2026-11-10'),
+      issueDate: dAgo(20),
+      dueDate: dAhead(10),
       subtotal: 200000.0,
       taxRate: 18.0,
       taxAmount: 36000.0,
@@ -1847,10 +2593,10 @@ async function main() {
       items: JSON.stringify([
         { description: 'ERP Phase 2 HR & Workforce Core Implementation', quantity: 1, unitPrice: 200000.0, amount: 200000.0 },
       ]),
-      notes: '50% advance received, balance payable upon UAT signoff.',
+      notes: 'Tranche advance received, remaining balance payable upon UAT signoff.',
       isDemo: true,
     },
-  });
+  })
 
   await prisma.payment.upsert({
     where: { paymentNumber: 'ST-PAY-2026-0003' },
@@ -1862,24 +2608,24 @@ async function main() {
       projectId: prj01?.id,
       amount: 100000.0,
       currency: 'INR',
-      paymentDate: new Date('2026-10-18'),
+      paymentDate: dAgo(12),
       paymentMethod: 'BANK_TRANSFER',
       transactionReference: 'SBIN1018273645',
       status: 'COMPLETED',
       notes: 'First milestone tranche credited.',
       isDemo: true,
     },
-  });
+  })
 
-  // 4. Zenith Retail October Facility Lease (ISSUED - UNPAID)
+  // 4. Zenith Retail Facility Lease (ISSUED - UNPAID: Accounts Receivable ₹70,800, Revenue = 0)
   await prisma.invoice.upsert({
     where: { invoiceNumber: 'ST-INV-2026-0004' },
     update: {},
     create: {
       invoiceNumber: 'ST-INV-2026-0004',
       customerId: zenithCust?.id,
-      issueDate: new Date('2026-10-15'),
-      dueDate: new Date('2026-11-15'),
+      issueDate: dAgo(10),
+      dueDate: dAhead(20),
       subtotal: 60000.0,
       taxRate: 18.0,
       taxAmount: 10800.0,
@@ -1887,17 +2633,103 @@ async function main() {
       currency: 'INR',
       status: 'ISSUED',
       items: JSON.stringify([
-        { description: 'Dedicated Managed Coworking Hub Workstations (Month of Oct 2026)', quantity: 1, unitPrice: 60000.0, amount: 60000.0 },
+        { description: 'Dedicated Managed Coworking Hub Workstations', quantity: 1, unitPrice: 60000.0, amount: 60000.0 },
       ]),
-      notes: 'Billed on monthly recurring cycle.',
+      notes: 'Monthly recurring cycle invoice. Awaiting wire transfer.',
       isDemo: true,
     },
-  });
+  })
+
+  // ------------------------------------------------------------------
+  // 11. Website Public Content Preservation (CMS Models)
+  // ------------------------------------------------------------------
+  console.log('Step 11/11: Preserving public website content (CMS services, blogs, education)...')
+
+  for (const s of sampleServices) {
+    const serviceRecord = await prisma.service.upsert({
+      where: { slug: s.slug },
+      update: { title: s.title, excerpt: s.excerpt, icon: s.icon },
+      create: { title: s.title, slug: s.slug, excerpt: s.excerpt, icon: s.icon },
+    })
+
+    if (s.slug === 'consultancy') {
+      for (const sub of consultancySubservices) {
+        await prisma.subservice.upsert({
+          where: { slug: sub.slug },
+          update: { title: sub.title, content: sub.content, serviceId: serviceRecord.id },
+          create: { title: sub.title, slug: sub.slug, content: sub.content, serviceId: serviceRecord.id },
+        })
+      }
+    }
+  }
+
+  for (const p of samplePosts) {
+    await prisma.blogPost.upsert({
+      where: { slug: p.slug },
+      update: { title: p.title, excerpt: p.excerpt, content: p.content, featuredImage: (p as any).featuredImage || null },
+      create: { title: p.title, slug: p.slug, excerpt: p.excerpt, content: p.content, featuredImage: (p as any).featuredImage || null },
+    })
+  }
+
+  for (const prop of sampleProperties) {
+    const imagesVal = (prop as any).images ? JSON.stringify((prop as any).images) : null
+    await prisma.property.upsert({
+      where: { slug: prop.slug },
+      update: {
+        title: prop.title,
+        type: prop.type,
+        city: prop.city,
+        price: prop.price,
+        bedrooms: prop.bedrooms,
+        bathrooms: prop.bathrooms,
+        images: imagesVal,
+      },
+      create: {
+        title: prop.title,
+        slug: prop.slug,
+        type: prop.type,
+        city: prop.city,
+        price: prop.price,
+        bedrooms: prop.bedrooms,
+        bathrooms: prop.bathrooms,
+        images: imagesVal,
+      },
+    })
+  }
+
+  for (const ed of EDUCATION_FALLBACK_CONTENT) {
+    await prisma.educationContent.upsert({
+      where: { slug: ed.slug },
+      update: {
+        title: ed.title,
+        contentType: ed.contentType,
+        category: ed.category,
+        excerpt: ed.excerpt,
+        body: ed.body,
+        isPublished: true,
+      },
+      create: {
+        title: ed.title,
+        slug: ed.slug,
+        contentType: ed.contentType,
+        category: ed.category,
+        excerpt: ed.excerpt,
+        body: ed.body,
+        isPublished: true,
+      },
+    })
+  }
 
   console.log('\n======================================================================')
-  console.log('✅ SUCCESS: 3 MONTHS OF REALISTIC FAKE DEMO DATA SEEDED INTO DATABASE!')
+  console.log('✅ REALISTIC DEMO DATA COMPLETE: All modules populated and internally consistent.')
   console.log('======================================================================\n')
 }
 
-
-  
+main()
+  .catch((e) => {
+    console.error('Seeding error:', e)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })

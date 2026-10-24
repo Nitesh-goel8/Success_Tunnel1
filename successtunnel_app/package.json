@@ -18,7 +18,7 @@
     "test:phase-e": "ts-node --project tsconfig.seed.json tests/phase-e-finance.test.ts",
     "test:phase-f": "ts-node --project tsconfig.seed.json tests/phase-f-workforce.test.ts",
     "test:phase-g": "ts-node --project tsconfig.seed.json tests/phase-g-security.test.ts",
-    "test:all": "ts-node --project tsconfig.seed.json tests/erp-portal.test.ts && ts-node --project tsconfig.seed.json tests/phase-a-auth.test.ts && ts-node --project tsconfig.seed.json tests/phase-b-org.test.ts && ts-node --project tsconfig.seed.json tests/phase-c-projects.test.ts && ts-node --project tsconfig.seed.json tests/phase-d-crm.test.ts && ts-node --project tsconfig.seed.json tests/phase-e-finance.test.ts && ts-node --project tsconfig.seed.json tests/phase-f-workforce.test.ts && ts-node --project tsconfig.seed.json tests/phase-g-security.test.ts && ts-node --project tsconfig.seed.json tests/public-website-crm.test.ts",
+    "test:all": "ts-node --project tsconfig.seed.json tests/erp-portal.test.ts && ts-node --project tsconfig.seed.json tests/phase-a-auth.test.ts && ts-node --project tsconfig.seed.json tests/phase-b-org.test.ts && ts-node --project tsconfig.seed.json tests/phase-c-projects.test.ts && ts-node --project tsconfig.seed.json tests/phase-d-crm.test.ts && ts-node --project tsconfig.seed.json tests/phase-e-finance.test.ts && ts-node --project tsconfig.seed.json tests/phase-f-workforce.test.ts && ts-node --project tsconfig.seed.json tests/phase-g-security.test.ts && ts-node --project tsconfig.seed.json tests/public-website-crm.test.ts && ts-node --project tsconfig.seed.json tests/demo-data-quality.test.ts",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
@@ -27,8 +27,10 @@
     "db:push:pg": "prisma db push --schema=prisma/schema.prisma",
     "prisma:studio": "prisma studio",
     "seed": "ts-node --project tsconfig.seed.json prisma/seed.ts",
+    "seed:reset": "ts-node --project tsconfig.seed.json prisma/reset-demo.ts",
     "setup": "prisma db push --schema=prisma/schema.sqlite.prisma && ts-node --project tsconfig.seed.json prisma/seed.ts",
     "setup:pg": "prisma db push --schema=prisma/schema.prisma && ts-node --project tsconfig.seed.json prisma/seed.ts",
+    "test:demo": "ts-node --project tsconfig.seed.json tests/demo-data-quality.test.ts",
     "test:public": "ts-node --project tsconfig.seed.json tests/public-website-crm.test.ts"
   },
   "dependencies": {
