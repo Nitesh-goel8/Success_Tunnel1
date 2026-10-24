@@ -3,6 +3,7 @@ import { prisma } from '../../lib/prisma'
 import { checkRateLimit } from '../../lib/rateLimit'
 import { sendEnquiryNotification } from '../../lib/email'
 import { pushLeadToCRM } from '../../lib/crm'
+import { broadcastNotificationToRoles } from '../../lib/notifications'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end()
@@ -64,18 +65,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    // Push the lead to the CRM (e.g., Salesforce, HubSpot)
-    await pushLeadToCRM({
-      id: e.id,
-      name: String(name).trim(),
-      email: cleanEmail,
-      phone: cleanPhone,
-      city: city ? String(city).trim() : null,
-      service: service ? String(service).trim() : null,
-      message: message ? String(message).trim() : null,
-      page: page ? String(page).trim() : null,
-      source: 'Success Tunnel Website'
-    })
+    // Push the lead into the CRM pipeline
+    try {
+      await pushLeadToCRM({
+        id: e.id,
+        name: String(name).trim(),
+        email: cleanEmail,
+        phone: cleanPhone,
+        city: city ? String(city).trim() : null,
+        service: service ? String(service).trim() : null,
+        message: message ? String(message).trim() : null,
+        page: page ? String(page).trim() : null,
+        source: 'Success Tunnel Website'
+      })
+    } catch (crmErr) {
+      console.warn('Failed to push lead into CRM:', crmErr)
+    }
+
+    // Broadcast in-app notification to ERP staff
+    try {
+      await broadcastNotificationToRoles(['super_admin', 'project_manager'], {
+        title: 'New Website Enquiry',
+        message: `${String(name).trim()} submitted an enquiry for ${service || 'General Consulting'}`,
+        type: 'INFO',
+        link: '/portal/crm',
+      })
+    } catch (notifErr) {
+      console.warn('Failed to broadcast in-app notification:', notifErr)
+    }
 
     return res.status(201).json({ ok: true, id: e.id })
   } catch (err) {

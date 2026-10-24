@@ -42,8 +42,11 @@ export default function Footer() {
           <h4>Company</h4>
           <div className="footer-links">
             <Link href="/about">About Us</Link>
+            <Link href="/projects">Projects &amp; Case Studies</Link>
+            <Link href="/resources">Resources &amp; Tools</Link>
             <Link href="/properties">Properties</Link>
             <Link href="/contact">Contact</Link>
+            <Link href="/portal/login">Staff ERP Portal</Link>
             <Link href="/privacy">Privacy Policy</Link>
             <Link href="/terms">Terms of Service</Link>
           </div>

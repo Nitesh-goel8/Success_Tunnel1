@@ -9,22 +9,39 @@ function buildUrlXml(url: string, lastmod?: string) {
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_SETTINGS.siteUrl).replace(/\/$/, '')
-  const staticRoutes = ['/', '/about', '/contact', '/services', '/properties', '/blog', '/resources', '/privacy', '/terms']
+  const staticRoutes = [
+    '/',
+    '/about',
+    '/contact',
+    '/services',
+    '/projects',
+    '/resources',
+    '/properties',
+    '/blog',
+    '/privacy',
+    '/terms',
+  ]
 
   let services = sampleServices
   let properties = sampleProperties
   let posts = samplePosts
+  let publicProjects: Array<{ publicSlug: string | null; updatedAt: Date }> = []
 
   try {
-    const [dbServices, dbProperties, dbPosts] = await Promise.all([
+    const [dbServices, dbProperties, dbPosts, dbProjects] = await Promise.all([
       prisma.service.findMany({ select: { slug: true } }),
       prisma.property.findMany({ select: { slug: true } }),
       prisma.blogPost.findMany({ select: { slug: true, publishedAt: true } }),
+      prisma.project.findMany({
+        where: { isPublic: true, publicSlug: { not: null } },
+        select: { publicSlug: true, updatedAt: true },
+      }),
     ])
 
     if (dbServices.length > 0) services = dbServices as any
     if (dbProperties.length > 0) properties = dbProperties as any
     if (dbPosts.length > 0) posts = dbPosts as any
+    if (dbProjects.length > 0) publicProjects = dbProjects
   } catch {
     // Fall back to sample routes when the database is unavailable.
   }
@@ -36,6 +53,11 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     ...posts.map((item: any) =>
       buildUrlXml(`${siteUrl}/blog/${item.slug}`, item.publishedAt ? new Date(item.publishedAt).toISOString() : undefined)
     ),
+    ...publicProjects
+      .filter((p) => Boolean(p.publicSlug))
+      .map((p) =>
+        buildUrlXml(`${siteUrl}/projects/${p.publicSlug}`, p.updatedAt ? new Date(p.updatedAt).toISOString() : undefined)
+      ),
   ].join('')
 
   const body = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`

@@ -1,3 +1,5 @@
+import React from 'react'
+import Head from 'next/head'
 import Link from 'next/link'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
@@ -76,142 +78,157 @@ export default function About() {
   const settings = useSiteSettings()
 
   return (
-    <div>
-      <Nav />
-      <main>
-        <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '52px' }}>
-          <div className="container" style={{ maxWidth: '820px', textAlign: 'center' }}>
-            <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)', marginBottom: '24px' }}>
-              ABOUT US
-            </span>
-            <h1
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 4.2rem)',
-                lineHeight: '1.08',
-                letterSpacing: '-0.04em',
-                fontWeight: 800,
-                color: 'var(--primary)',
-                margin: '20px auto 24px',
-              }}
-            >
-              A single partner for growth, clarity, and execution.
-            </h1>
-            <p style={{ fontSize: '1.14rem', color: 'var(--muted)', lineHeight: '1.7' }}>
-              Success Tunnel brings consulting, finance, education, investment, and property support together in one
-              place so clients can move forward with less friction and more confidence.
-            </p>
-          </div>
-        </section>
+    <>
+      <Head>
+        <title>About Us — Success Tunnel | Advisory & Execution Partner</title>
+        <meta
+          name="description"
+          content="Learn about Success Tunnel — a single coordinated partner across corporate consultancy, financial planning, practical education, investment guidance, and real estate solutions."
+        />
+        <link rel="canonical" href="https://successtunnel.in/about" />
+        <meta property="og:title" content="About Us — Success Tunnel" />
+        <meta property="og:description" content="A single partner for growth, clarity, and execution across consulting, finance, and real estate." />
+        <meta property="og:url" content="https://successtunnel.in/about" />
+        <meta property="og:type" content="website" />
+      </Head>
 
-        <section className="section-surface">
-          <div className="container" style={{ maxWidth: '980px' }}>
-            <div className="split-grid">
-              <div className="split-content">
-                <span className="eyebrow">OUR PURPOSE</span>
-                <h2>We simplify the work that slows people down.</h2>
-                <p>
-                  Many clients do not need more noise — they need a reliable team that can connect the dots across
-                  compliance, finance, education, property, and everyday advisory work. That is the role we are built
-                  to play.
-                </p>
-                <p>
-                  We focus on clarity, practical next steps, and a professional experience that feels organized from
-                  the first conversation to final delivery.
-                </p>
-              </div>
+      <div>
+        <Nav />
+        <main>
+          <section className="hero-section" style={{ paddingTop: '80px', paddingBottom: '52px' }}>
+            <div className="container" style={{ maxWidth: '820px', textAlign: 'center' }}>
+              <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)', marginBottom: '24px' }}>
+                ABOUT US
+              </span>
+              <h1
+                style={{
+                  fontSize: 'clamp(2.5rem, 6vw, 4.2rem)',
+                  lineHeight: '1.08',
+                  letterSpacing: '-0.04em',
+                  fontWeight: 800,
+                  color: 'var(--primary)',
+                  margin: '20px auto 24px',
+                }}
+              >
+                A single partner for growth, clarity, and execution.
+              </h1>
+              <p style={{ fontSize: '1.14rem', color: 'var(--muted)', lineHeight: '1.7' }}>
+                Success Tunnel brings consulting, finance, education, investment, and property support together in one
+                place so clients can move forward with less friction and more confidence.
+              </p>
+            </div>
+          </section>
 
-              <div className="panel-card" style={{ padding: '28px' }}>
-                <span className="eyebrow">WHAT WE VALUE</span>
-                <h3 style={{ marginTop: 12 }}>How we try to work</h3>
-                <div style={{ display: 'grid', gap: '14px', marginTop: '18px' }}>
-                  {strengths.slice(0, 4).map(item => (
-                    <div key={item.title} style={{ padding: '14px 0', borderTop: '1px solid var(--line)' }}>
-                      <strong style={{ display: 'block', color: 'var(--primary)', marginBottom: '6px' }}>{item.title}</strong>
-                      <span style={{ color: 'var(--muted)', lineHeight: '1.6' }}>{item.text}</span>
-                    </div>
-                  ))}
+          <section className="section-surface">
+            <div className="container" style={{ maxWidth: '980px' }}>
+              <div className="split-grid">
+                <div className="split-content">
+                  <span className="eyebrow">OUR PURPOSE</span>
+                  <h2>We simplify the work that slows people down.</h2>
+                  <p>
+                    Many clients do not need more noise — they need a reliable team that can connect the dots across
+                    compliance, finance, education, property, and everyday advisory work. That is the role we are built
+                    to play.
+                  </p>
+                  <p>
+                    We focus on clarity, practical next steps, and a professional experience that feels organized from
+                    the first conversation to final delivery.
+                  </p>
+                </div>
+
+                <div className="panel-card" style={{ padding: '28px' }}>
+                  <span className="eyebrow">WHAT WE VALUE</span>
+                  <h3 style={{ marginTop: 12 }}>How we try to work</h3>
+                  <div style={{ display: 'grid', gap: '14px', marginTop: '18px' }}>
+                    {strengths.slice(0, 4).map(item => (
+                      <div key={item.title} style={{ padding: '14px 0', borderTop: '1px solid var(--line)' }}>
+                        <strong style={{ display: 'block', color: 'var(--primary)', marginBottom: '6px' }}>{item.title}</strong>
+                        <span style={{ color: 'var(--muted)', lineHeight: '1.6' }}>{item.text}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="section-surface" style={{ background: '#f8fafc' }}>
-          <div className="container">
-            <div className="section-heading">
-              <span className="eyebrow">SERVICE COVERAGE</span>
-              <h2>Built to support the full client journey.</h2>
-              <p>Our platform is designed to cover both recurring advisory work and one-time business needs.</p>
-            </div>
-
-            <div className="services-grid">
-              {serviceAreas.map(item => (
-                <div key={item.title} className="service-card">
-                  <div className="service-card-kicker">{item.title}</div>
-                  <p style={{ marginTop: 12 }}>{item.text}</p>
-                  <Link href={`/services/${item.title.toLowerCase().replace(/\s+/g, '-')}`} className="service-card-cta">
-                    Learn more →
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section-surface">
-          <div className="container">
-            <div className="section-heading">
-              <span className="eyebrow">OUR PROCESS</span>
-              <h2>A simple flow that keeps work moving.</h2>
-              <p>The goal is not to overcomplicate delivery. It is to make progress visible and easy to act on.</p>
-            </div>
-
-            <div className="timeline-grid">
-              {process.map(item => (
-                <div key={item.step} className="step-card">
-                  <div className="step-pill">{item.step}</div>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section-surface" style={{ background: '#f8fafc' }}>
-          <div className="container" style={{ maxWidth: '960px' }}>
-            <div className="split-grid">
-              <div className="split-content">
-                <span className="eyebrow">CONTACT</span>
-                <h2>Let’s talk about what you need next.</h2>
-                <p>
-                  Whether you need compliance support, finance guidance, a property conversation, or educational
-                  resources, we can help define the right path forward.
-                </p>
-                <div style={{ display: 'grid', gap: '12px', marginTop: '20px', color: 'var(--muted)' }}>
-                  <div><strong style={{ color: 'var(--primary)' }}>Contact person:</strong> {settings.contactPerson}</div>
-                  <div><strong style={{ color: 'var(--primary)' }}>Phone:</strong> {settings.contactPhone1}</div>
-                  <div><strong style={{ color: 'var(--primary)' }}>Email:</strong> {settings.contactEmail}</div>
-                </div>
+          <section className="section-surface" style={{ background: '#f8fafc' }}>
+            <div className="container">
+              <div className="section-heading">
+                <span className="eyebrow">SERVICE COVERAGE</span>
+                <h2>Built to support the full client journey.</h2>
+                <p>Our platform is designed to cover both recurring advisory work and one-time business needs.</p>
               </div>
 
-              <div className="callout-banner" style={{ marginTop: 0 }}>
-                <h2>Ready to start?</h2>
-                <p>Book a consultation and we’ll help you identify the most practical next step.</p>
-                <div className="callout-actions">
-                  <Link href="/contact" className="btn btn-primary">
-                    Book Consultation
-                  </Link>
-                  <Link href="/services" className="btn btn-secondary">
-                    Explore Services
-                  </Link>
+              <div className="services-grid">
+                {serviceAreas.map(item => (
+                  <div key={item.title} className="service-card">
+                    <div className="service-card-kicker">{item.title}</div>
+                    <p style={{ marginTop: 12 }}>{item.text}</p>
+                    <Link href={`/services/${item.title.toLowerCase().replace(/\s+/g, '-')}`} className="service-card-cta">
+                      Learn more →
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="section-surface">
+            <div className="container">
+              <div className="section-heading">
+                <span className="eyebrow">OUR PROCESS</span>
+                <h2>A simple flow that keeps work moving.</h2>
+                <p>The goal is not to overcomplicate delivery. It is to make progress visible and easy to act on.</p>
+              </div>
+
+              <div className="timeline-grid">
+                {process.map(item => (
+                  <div key={item.step} className="step-card">
+                    <div className="step-pill">{item.step}</div>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="section-surface" style={{ background: '#f8fafc' }}>
+            <div className="container" style={{ maxWidth: '960px' }}>
+              <div className="split-grid">
+                <div className="split-content">
+                  <span className="eyebrow">CONTACT</span>
+                  <h2>Let’s talk about what you need next.</h2>
+                  <p>
+                    Whether you need compliance support, finance guidance, a property conversation, or educational
+                    resources, we can help define the right path forward.
+                  </p>
+                  <div style={{ display: 'grid', gap: '12px', marginTop: '20px', color: 'var(--muted)' }}>
+                    <div><strong style={{ color: 'var(--primary)' }}>Contact person:</strong> {settings.contactPerson}</div>
+                    <div><strong style={{ color: 'var(--primary)' }}>Phone:</strong> {settings.contactPhone1}</div>
+                    <div><strong style={{ color: 'var(--primary)' }}>Email:</strong> {settings.contactEmail}</div>
+                  </div>
+                </div>
+
+                <div className="callout-banner" style={{ marginTop: 0 }}>
+                  <h2>Ready to start?</h2>
+                  <p>Book a consultation and we’ll help you identify the most practical next step.</p>
+                  <div className="callout-actions">
+                    <Link href="/contact" className="btn btn-primary">
+                      Book Consultation
+                    </Link>
+                    <Link href="/services" className="btn btn-secondary">
+                      Explore Services
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    </>
   )
 }

@@ -11,6 +11,9 @@ const links = [
   { href: '/services/investment', label: 'Investment' },
   { href: '/services/real-estate', label: 'Real Estate' },
   { href: '/services/rental-space', label: 'Rental Space' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/resources', label: 'Resources' },
+  { href: '/about', label: 'About' },
 ]
 
 export default function Nav() {
@@ -68,8 +71,11 @@ export default function Nav() {
           })}
         </nav>
 
-        <div className="nav-actions">
-          <Link href="/contact" className="btn btn-nav" style={{ borderRadius: '12px', padding: '10px 20px', gap: '6px' }}>
+        <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Link href="/portal/login" style={{ color: 'var(--muted)', fontSize: '0.85rem', fontWeight: 600, padding: '8px 12px', textDecoration: 'none' }}>
+            ERP Portal
+          </Link>
+          <Link href="/contact" className="btn btn-nav" style={{ borderRadius: '12px', padding: '10px 18px', gap: '6px' }}>
             Book Consultation &rarr;
           </Link>
         </div>

@@ -103,7 +103,9 @@ model Project {
   startDate         DateTime?
   endDate           DateTime?
   budget            Float           @default(0.0)
-  progress          Int             @default(0) // 0-100 percentage
+  progress          Int             @default(0)
+  isPublic          Boolean         @default(false)
+  publicSlug        String?         @unique // 0-100 percentage
   isDemo            Boolean         @default(false)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now()) @updatedAt
