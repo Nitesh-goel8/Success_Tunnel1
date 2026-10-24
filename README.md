@@ -1,97 +1,112 @@
-# Success Tunnel Web Application
+# Success Tunnel — Public Web Platform & Enterprise ERP
 
-Welcome to the **Success Tunnel** main repository. This Next.js application serves as the central hub for the Success Tunnel business, providing access to our diverse range of services including Consultancy, Finance, Real Estate, Investment, and the Education Hub.
+[![Next.js](https://img.shields.io/badge/Next.js-13.4-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18.2-blue?logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-4.16-teal?logo=prisma)](https://www.prisma.io/)
+[![Tests](https://img.shields.io/badge/Tests-278%20Passed-brightgreen)](file:///C:/Users/nites/Downloads/Success_Tunnel1/docs/TESTING.md)
+[![Build](https://img.shields.io/badge/Production%20Build-159%20Routes%20Passing-success)](file:///C:/Users/nites/Downloads/Success_Tunnel1/docs/DEPLOYMENT.md)
 
-## 🚀 Project Overview
-
-Success Tunnel is a Next.js (React) application designed with a premium, responsive UI. It features a scalable architecture powered by Prisma (SQLite/PostgreSQL) for backend data management.
-
-### Key Features
-- **Modern UI/UX**: Built with custom CSS (`globals.css`) emphasizing a sleek, corporate, and dynamic aesthetic with smooth micro-animations.
-- **Service Hub**: Centralized access to Consultancy, Finance, Real Estate, and more.
-- **Education Hub**: A dedicated section (`/education`) containing professional courses and learning materials.
-- **Secure Admin Panel**: A protected dashboard (`/admin`) for content management, requiring authenticated access.
-- **Advanced SEO**: Pre-configured with Schema.org JSON-LD structured data and Open Graph tags to maximize search engine visibility.
+Welcome to **Success Tunnel**, a unified corporate web application combining a public brand website with an internal **Enterprise Resource Planning (ERP)** and workforce management system.
 
 ---
 
-## 📂 Project Structure
+## 📑 Documentation Index
 
-```text
-successtunnel_mainwebsite/
-├── successtunnel_app/
-│   ├── components/       # Reusable UI components (Cards, Nav, Forms, etc.)
-│   ├── lib/              # Utilities, Prisma client, and seed data
-│   ├── pages/            # Next.js file-based routing
-│   │   ├── admin/        # Secure admin dashboard (protected by middleware)
-│   │   ├── api/          # Next.js API routes (backend endpoints)
-│   │   ├── education/    # Success Tunnel Education Hub flows
-│   │   └── services/     # Individual service pages
-│   ├── prisma/           # Database schema and migrations
-│   ├── public/           # Static assets (images, logos)
-│   ├── styles/           # Global stylesheets and CSS modules
-│   └── middleware.ts     # Edge middleware (handles Admin Auth Security)
-```
+| Guide | Description |
+|---|---|
+| **[Architecture Documentation](docs/ARCHITECTURE.md)** | Technical stack, data flow, invariants, and server-side RBAC matrix. |
+| **[Deployment Guide](docs/DEPLOYMENT.md)** | Vercel deployment, PostgreSQL setup, environment variables, and post-launch smoke tests. |
+| **[Testing & QA Guide](docs/TESTING.md)** | Automated test execution (278 passing assertions across 9 test suites). |
+| **[Security & Compliance](docs/SECURITY.md)** | Authentication security, rate limiting, hashing, and confidentiality controls. |
+| **[Troubleshooting Runbook](docs/TROUBLESHOOTING.md)** | Resolving port conflicts, Prisma locks, and schema push issues. |
+| **[Release Notes & Roadmap](docs/RELEASE_NOTES.md)** | Delivered v2.0 capabilities and planned future enhancements. |
 
 ---
 
-## 🛡️ Security & Authentication
+## 🌟 Core Modules & Capabilities
 
-The `/admin` routes are protected by Next.js `middleware.ts`. 
-- Accessing any route under `/admin/*` without a valid `st_auth` cookie will automatically redirect the user to `/admin/login`.
-- The login endpoint (`/api/admin/login`) uses `bcryptjs` to verify credentials against the database.
-- It is impossible to bypass the login screen to access the admin dashboard.
+### 1. Public Web Platform
+* **Homepage (`/`) & Services (`/services`):** Multi-sector advisory ecosystem across Consultancy, Finance, Practical Education, Investment, Real Estate, and Rental Space.
+* **Public Projects & Case Studies (`/projects`, `/projects/[slug]`):** Public showcase displaying approved initiatives with strict omission of internal budgets, client accounts, or developer identities.
+* **Public Enquiry to ERP Pipeline:** Visitor submissions on `/contact` validate, store in database, trigger staff notifications, and push directly to the ERP CRM.
+* **SEO & Crawling Safeguards:** Page-specific meta tags, OpenGraph tags, JSON-LD Organization schema, canonical URLs, updated `sitemap.xml`, and strict crawler boundaries in `robots.txt` disallowing `/portal/` and `/admin/`.
+
+### 2. Enterprise ERP Portal (`/portal/*`)
+* **Executive Dashboard (`/portal/dashboard`):** 6 data-backed KPI cards, task velocity pipeline, project lifecycle distribution, upcoming deadlines, and live demo environment indicators.
+* **Server-Side RBAC:** 5 defined roles (*Super Administrator*, *HR Administrator*, *Project Manager*, *Finance Administrator*, *Employee*).
+* **Employee Directory (`/portal/employees`):** Multi-tab profile drawer, manager-subordinate reporting hierarchies, and department budget allocations.
+* **Projects & Tasks (`/portal/projects`, `/portal/tasks`):** Mathematical task-linked progress derivation, Kanban board, and task priority states.
+* **Engineering Workspace (`/portal/engineering`):** Real-time Git commit ledger reading live repository history, architectural decision records (ADRs), bug tracking, and testing checklists.
+* **Sales & CRM Pipeline (`/portal/crm`):** 6-stage sales Kanban pipeline, touchpoint interaction logs, and 1-click customer account promotion.
+* **Finance & Cash Flow (`/portal/finance`):** Strict invariant: unpaid invoices are accounts receivable and are **never counted as cash revenue**. Features itemized invoices with 18% GST calculation, received payments ledger, expense claims, and cash flow statements.
+* **Workforce Time & Attendance (`/portal/attendance`, `/portal/leaves`):** Biometric punch time clock, attendance regularization requests reviewed by HR, and live leave entitlement balance deduction.
+* **Document Governance (`/portal/documents`):** Granular access controls ensuring confidential files are accessible only by HR/Admin or the assigned target employee.
+* **Immutable Compliance Audit Trail (`/portal/audit-logs`):** Activity audit log capturing actor, action, module, entity ID, metadata, and IP address with administrative CSV export.
 
 ---
 
-## 🌿 Branching Strategy
+## 🚀 Quick Start (Local Development)
 
-To keep the repository clean and organized, we follow a strict branching model:
+### Prerequisites
+* **Node.js:** v18.x or v20.x+
+* **npm:** v9.x+
 
-- **`main`**: The production-ready base branch. All stable features are merged here.
-- **`feature/service-*`**: Branches dedicated to specific service areas (e.g., `feature/service-properties`, `feature/service-education`).
-- **`feature/admin-security`**: Branches used for core administrative or security updates.
-
-*Note: All legacy or stale branches (like `production-polish`, `codex/professional-ui-redesign`) have been pruned to maintain clarity.*
-
----
-
-## 🛠️ Local Development Setup
-
-To run the project locally, follow these steps:
-
-### 1. Prerequisites
-- Node.js (v18 or higher recommended)
-- npm or yarn
-
-### 2. Installation
-Navigate into the application directory and install dependencies:
+### Setup Instructions
 ```bash
-cd successtunnel_app
+# 1. Clone repository
+git clone https://github.com/Nitesh-goel8/Success_Tunnel1.git
+cd Success_Tunnel1/successtunnel_app
+
+# 2. Install dependencies
 npm install
-```
 
-### 3. Database Setup
-The project uses Prisma. Push the schema to your local database (SQLite by default):
-```bash
-npx prisma db push
-```
-*(Optional)* Seed the database with initial data (like the admin user and sample services):
-```bash
+# 3. Synchronize local SQLite database
+npm run db:push:sqlite
+
+# 4. (Optional) Populate seed data
 npm run seed
-```
 
-### 4. Running the Development Server
-Start the Next.js development server:
-```bash
+# 5. Run automated test suites (278 passing assertions)
+npm run test:all
+
+# 6. Start local development server
 npm run dev
 ```
-The application will be available at [http://localhost:3000](http://localhost:3000).
+
+Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
-## 📈 Future Scaling (Advanced Features)
-As Success Tunnel expands into international markets, consider implementing:
-1. **Internationalization (i18n)**: Adding multi-language support in Next.js to cater to a global audience.
-2. **Automated CRM Routing**: Hooking the `GuidedEnquiry` form directly into Salesforce or HubSpot via API.
-3. **Advanced Analytics**: Integrating Vercel Web Analytics and custom event tracking to monitor user flows through the Education Hub.
+## 🔑 Default Portal Login Credentials
+
+* **URL:** [http://localhost:3000/portal/login](http://localhost:3000/portal/login)
+* **Work Email:** `admin@successtunnel.in`
+* **Password:** `Demo@2026!`
+
+*(Additional role credentials for HR Admin, Project Manager, and Finance Admin are listed in the [Testing Guide](docs/TESTING.md)).*
+
+---
+
+## 🧪 Automated Testing
+
+```bash
+cd successtunnel_app
+npm run test:all
+```
+
+Runs all 9 test suites:
+- `tests/erp-portal.test.ts` (Core ERP Portal)
+- `tests/phase-a-auth.test.ts` (Phase A: Authentication & Shell)
+- `tests/phase-b-org.test.ts` (Phase B: Organization & Employees)
+- `tests/phase-c-projects.test.ts` (Phase C: Projects & Tasks)
+- `tests/phase-d-crm.test.ts` (Phase D: CRM & Enquiry Ingestion)
+- `tests/phase-e-finance.test.ts` (Phase E: Finance & AR/Cash Separation)
+- `tests/phase-f-workforce.test.ts` (Phase F: Workforce & Compliance)
+- `tests/phase-g-security.test.ts` (Phase G: Notifications & Security)
+- `tests/public-website-crm.test.ts` (Public Website, SEO & CRM Pipeline)
+
+---
+
+## 📄 License
+Proprietary & Confidential. All rights reserved by Success Tunnel.
