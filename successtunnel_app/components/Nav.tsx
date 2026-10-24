@@ -40,10 +40,11 @@ export default function Nav() {
     <header
       className="site-header"
       style={{
-        background: scrolled ? 'rgba(8, 13, 24, 0.94)' : 'rgba(8, 13, 24, 0.8)',
+        background: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.88)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid var(--line)',
-        transition: 'background 0.3s ease',
+        boxShadow: scrolled ? '0 4px 20px rgba(15, 23, 42, 0.05)' : 'none',
+        transition: 'background 0.3s ease, box-shadow 0.3s ease',
       }}
     >
       <div className="container nav-inner" style={{ padding: '14px 0' }}>
@@ -53,7 +54,7 @@ export default function Nav() {
             alt="Success Tunnel Logo"
             width={40}
             height={40}
-            style={{ borderRadius: '8px', objectFit: 'contain', background: '#080d18', border: '1px solid var(--line)', padding: '2px' }}
+            style={{ borderRadius: '8px', objectFit: 'contain', background: '#ffffff', border: '1px solid var(--line)', padding: '2px' }}
             priority
           />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -115,7 +116,7 @@ export default function Nav() {
                   background: 'var(--surface)',
                   border: '1px solid var(--line)',
                   borderRadius: '12px',
-                  boxShadow: '0 16px 36px rgba(0, 0, 0, 0.6)',
+                  boxShadow: '0 16px 36px rgba(15, 23, 42, 0.12)',
                   padding: '8px',
                   zIndex: 200,
                   display: 'flex',
