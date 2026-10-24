@@ -18,35 +18,10 @@ import {
 import { FaWhatsapp, FaRocket, FaIndustry, FaStore, FaUniversity, FaTools } from 'react-icons/fa'
 import { MdHealthAndSafety } from 'react-icons/md'
 
-// Dynamic import for the signature 3D Particle Constellation (client-side only)
-const EnterpriseParticleField = dynamic(
-  () => import('../components/3d/EnterpriseParticleField'),
-  {
-    ssr: false,
-    loading: () => (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          minHeight: '440px',
-          background: 'radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%)',
-          borderRadius: '18px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--text)',
-          padding: '24px',
-          textAlign: 'center'
-        }}
-      >
-        <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: '#2563eb', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, marginBottom: '12px' }}>
-          ST
-        </div>
-        <p style={{ fontWeight: 700, margin: 0, fontSize: '0.95rem', color: 'var(--primary)' }}>Initializing Particle Stream...</p>
-      </div>
-    )
-  }
+// Dynamic import for the full-page 3D Particle Constellation (client-side only)
+const FullPageParticleStream = dynamic(
+  () => import('../components/3d/FullPageParticleStream'),
+  { ssr: false }
 )
 
 const practicePillars = [
@@ -200,119 +175,162 @@ export default function Home({ services, featuredEducationContent }: { services:
         />
       </Head>
 
-      <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+      <div style={{ background: 'var(--bg)', minHeight: '100vh', position: 'relative' }}>
+        {/* Full-Page Interactive Three.js Particle Constellation Stream */}
+        <FullPageParticleStream />
+
         <Nav />
 
-        <main>
+        <main style={{ position: 'relative', zIndex: 1 }}>
           {/* =========================================================
-              1. HERO: LEAD GENERATION & INTERACTIVE 3D ENTERPRISE CORE
+              1. HERO: EXPANSIVE LEAD GENERATION & 3D PARTICLE MESH
               ========================================================= */}
           <section
             style={{
               position: 'relative',
-              paddingTop: '48px',
-              paddingBottom: '64px',
+              paddingTop: '56px',
+              paddingBottom: '72px',
               borderBottom: '1px solid var(--line)',
-              background: 'radial-gradient(ellipse at 80% 20%, rgba(29, 78, 216, 0.05) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(10, 37, 64, 0.04) 0%, transparent 60%)'
             }}
           >
             <div className="container">
-              {/* Top Editorial Eyebrow & Headline Block */}
-              <div style={{ maxWidth: '980px', marginBottom: '36px' }}>
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '6px 14px',
-                    borderRadius: '999px',
-                    background: '#eff6ff',
-                    border: '1px solid #bfdbfe',
-                    color: '#1d4ed8',
-                    fontSize: '0.8rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    marginBottom: '18px'
-                  }}
-                >
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2563eb' }} />
-                  Panipat Corporate Headquarters &bull; Multidisciplinary Advisory &amp; Execution
-                </div>
-
-                <h1
-                  style={{
-                    fontSize: 'clamp(2.4rem, 5vw, 4.2rem)',
-                    lineHeight: '1.08',
-                    letterSpacing: '-0.035em',
-                    fontWeight: 800,
-                    color: 'var(--primary)',
-                    margin: '0 0 16px 0',
-                    fontFamily: "'Inter', sans-serif"
-                  }}
-                >
-                  Coordinated Enterprise Advisory.<br />
-                  <span style={{ color: 'var(--accent)' }}>One Accountable Partner.</span>
-                </h1>
-
-                <p
-                  style={{
-                    fontSize: 'clamp(1.05rem, 1.8vw, 1.2rem)',
-                    lineHeight: '1.65',
-                    color: 'var(--muted)',
-                    margin: 0,
-                    maxWidth: '780px'
-                  }}
-                >
-                  Unifying statutory corporate taxation, MCA compliance, debt syndication, and commercial workspaces under one roof in central Panipat—eliminating inter-firm friction for growing businesses.
-                </p>
-              </div>
-
-              {/* 2-Column Hero: Direct Lead Generation on Left + 3D Enterprise Hub on Right */}
+              {/* 2-Column Hero: Headline & Trust on Left + Floating Lead Gen on Right */}
               <div
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-                  gap: '32px',
-                  alignItems: 'stretch'
+                  gap: '48px',
+                  alignItems: 'center'
                 }}
               >
-                {/* Left Column: Direct Lead Gen / Consultation Booking Box */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    background: '#ffffff',
-                    border: '1px solid var(--line)',
-                    borderRadius: '24px',
-                    padding: '32px 28px',
-                    boxShadow: 'var(--shadow)'
-                  }}
-                >
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                      <span className="hub-metric-badge">
-                        <HiSparkles /> Priority Advisory Desk
-                      </span>
-                      <span style={{ fontSize: '0.78rem', color: 'var(--muted)', fontWeight: 600 }}>
-                        Panipat &bull; Response &lt; 4 hrs
-                      </span>
+                {/* Left Column: Authoritative Editorial & Value Proposition */}
+                <div>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '6px 14px',
+                      borderRadius: '999px',
+                      background: 'rgba(239, 246, 255, 0.9)',
+                      border: '1px solid #bfdbfe',
+                      color: '#1d4ed8',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      marginBottom: '20px',
+                      backdropFilter: 'blur(10px)'
+                    }}
+                  >
+                    <span className="pulse-dot" />
+                    Panipat Corporate Headquarters &bull; Multidisciplinary Advisory
+                  </div>
+
+                  <h1
+                    style={{
+                      fontSize: 'clamp(2.5rem, 5.2vw, 4.4rem)',
+                      lineHeight: '1.06',
+                      letterSpacing: '-0.035em',
+                      fontWeight: 800,
+                      color: 'var(--primary)',
+                      margin: '0 0 18px 0',
+                      fontFamily: "'Inter', sans-serif"
+                    }}
+                  >
+                    Coordinated Enterprise Advisory.<br />
+                    <span style={{ color: 'var(--accent)' }}>One Accountable Partner.</span>
+                  </h1>
+
+                  <p
+                    style={{
+                      fontSize: 'clamp(1.05rem, 1.8vw, 1.22rem)',
+                      lineHeight: '1.68',
+                      color: 'var(--muted)',
+                      margin: '0 0 28px 0',
+                      maxWidth: '640px'
+                    }}
+                  >
+                    Unifying statutory corporate taxation, MCA compliance, debt syndication, and commercial workspaces under one roof in central Panipat—eliminating inter-firm friction for growing businesses.
+                  </p>
+
+                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '36px' }}>
+                    <a href="#contact" className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '0.98rem', fontWeight: 700 }}>
+                      Schedule Strategic Advisory &rarr;
+                    </a>
+                    <a href="#services" className="btn btn-secondary" style={{ padding: '14px 28px', fontSize: '0.98rem', fontWeight: 600 }}>
+                      Explore 6 Practice Areas
+                    </a>
+                  </div>
+
+                  {/* Factual Capability Pillars Bar */}
+                  <div className="credential-strip" style={{ marginTop: '24px', paddingTop: '20px' }}>
+                    <div className="credential-item">
+                      <div className="credential-icon">
+                        <HiShieldCheck size={20} />
+                      </div>
+                      <div>
+                        <div className="credential-label">Direct Statutory Governance</div>
+                        <div className="credential-sub">MCA, Income Tax &amp; GST lodgement</div>
+                      </div>
                     </div>
 
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', margin: '0 0 8px 0', lineHeight: 1.25 }}>
-                      Schedule Strategic Advisory
-                    </h2>
-                    <p style={{ color: 'var(--muted)', fontSize: '0.92rem', lineHeight: '1.55', margin: '0 0 20px 0' }}>
-                      Connect directly with our designated practice partners across statutory filings, capital procurement, or prime commercial leases.
-                    </p>
+                    <div className="credential-item">
+                      <div className="credential-icon">
+                        <HiGlobeAlt size={20} />
+                      </div>
+                      <div>
+                        <div className="credential-label">Unified Multidisciplinary Scope</div>
+                        <div className="credential-sub">6 synchronized enterprise practices</div>
+                      </div>
+                    </div>
 
-                    <GuidedEnquiry
-                      page="Hero Consultation"
-                      title="Direct Partner Callback"
-                      subtitle="Select your primary business objective to begin:"
-                    />
+                    <div className="credential-item">
+                      <div className="credential-icon">
+                        <HiLocationMarker size={20} />
+                      </div>
+                      <div>
+                        <div className="credential-label">Panipat Regional Chambers</div>
+                        <div className="credential-sub">Sudarshan Tower, Tau Devi Lal Complex</div>
+                      </div>
+                    </div>
                   </div>
+                </div>
+
+                {/* Right Column: Floating Frosted-Glass Lead Gen / Callback Card */}
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.92)',
+                    backdropFilter: 'blur(24px)',
+                    WebkitBackdropFilter: 'blur(24px)',
+                    border: '1px solid rgba(226, 232, 240, 0.9)',
+                    borderRadius: '24px',
+                    padding: '32px 28px',
+                    boxShadow: '0 20px 45px -10px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.8)',
+                    position: 'relative'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                    <span className="hub-metric-badge">
+                      <HiSparkles /> Priority Advisory Desk
+                    </span>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--muted)', fontWeight: 600 }}>
+                      Panipat &bull; Response &lt; 4 hrs
+                    </span>
+                  </div>
+
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', margin: '0 0 8px 0', lineHeight: 1.25 }}>
+                    Schedule Strategic Consultation
+                  </h2>
+                  <p style={{ color: 'var(--muted)', fontSize: '0.92rem', lineHeight: '1.55', margin: '0 0 20px 0' }}>
+                    Connect directly with our designated practice partners across statutory filings, capital procurement, or prime commercial leases.
+                  </p>
+
+                  <GuidedEnquiry
+                    page="Hero Consultation"
+                    title="Direct Partner Callback"
+                    subtitle="Select your primary business objective to begin:"
+                  />
 
                   {/* Factual Trust Metrics Footer */}
                   <div
@@ -338,90 +356,6 @@ export default function Home({ services, featuredEducationContent }: { services:
                       <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--primary)' }}>Sudarshan</div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>Tower HQ</div>
                     </div>
-                  </div>
-                </div>
-
-                {/* Right Column: Dynamic Enterprise Particle Constellation */}
-                <div className="particle-card-wrapper" style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span className="pulse-dot" />
-                      <span style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--primary)' }}>
-                        Enterprise Synapse Mesh
-                      </span>
-                    </div>
-                    <span style={{ fontSize: '0.74rem', color: 'var(--muted)', fontWeight: 600, background: '#f1f5f9', padding: '4px 10px', borderRadius: '999px', border: '1px solid #e2e8f0' }}>
-                      Particle Constellation &bull; Click Discipline to Morph
-                    </span>
-                  </div>
-
-                  {/* The Particle Canvas Stage */}
-                  <div className="particle-stage" style={{ flex: 1, minHeight: '380px' }}>
-                    <EnterpriseParticleField activeServiceIndex={active3DPractice} onSelectService={setActive3DPractice} />
-                  </div>
-
-                  {/* Dynamic Formations Selector Ribbon */}
-                  <div style={{ marginTop: '16px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                      <span style={{ fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)' }}>
-                        Select Corporate Discipline:
-                      </span>
-                      <span style={{ fontSize: '0.74rem', color: 'var(--accent)', fontWeight: 600 }}>
-                        {practicePillars[active3DPractice]?.name}
-                      </span>
-                    </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                      {practicePillars.map((p, idx) => {
-                        const isSelected = active3DPractice === idx
-                        return (
-                          <button
-                            key={p.slug}
-                            type="button"
-                            onClick={() => setActive3DPractice(idx)}
-                            className={`morph-pill-btn ${isSelected ? 'is-active' : ''}`}
-                            title={p.desc}
-                          >
-                            <span style={{ opacity: isSelected ? 1 : 0.65 }}>{p.icon}</span>
-                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                              {p.name.split(' ')[1] || p.name}
-                            </span>
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Factual Capability Pillars Bar */}
-              <div className="credential-strip" style={{ marginTop: '36px' }}>
-                <div className="credential-item">
-                  <div className="credential-icon">
-                    <HiShieldCheck size={20} />
-                  </div>
-                  <div>
-                    <div className="credential-label">Direct Statutory Governance</div>
-                    <div className="credential-sub">MCA, Income Tax &amp; GST lodgement</div>
-                  </div>
-                </div>
-
-                <div className="credential-item">
-                  <div className="credential-icon">
-                    <HiGlobeAlt size={20} />
-                  </div>
-                  <div>
-                    <div className="credential-label">Unified Multidisciplinary Scope</div>
-                    <div className="credential-sub">6 synchronized enterprise practices</div>
-                  </div>
-                </div>
-
-                <div className="credential-item">
-                  <div className="credential-icon">
-                    <HiLocationMarker size={20} />
-                  </div>
-                  <div>
-                    <div className="credential-label">Panipat Regional Chambers</div>
-                    <div className="credential-sub">Sudarshan Tower, Tau Devi Lal Complex</div>
                   </div>
                 </div>
               </div>
