@@ -214,11 +214,6 @@ export default function ProjectsModule() {
                     }}>
                       {prj.projectCode}
                     </span>
-                    {prj.isDemo && (
-                      <span style={{ fontSize: '0.65rem', background: '#fef3c7', color: '#92400e', padding: '0.1rem 0.35rem', borderRadius: '3px', fontWeight: 700 }}>
-                        DEMO
-                      </span>
-                    )}
                   </div>
                   <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
                     {prj.name}

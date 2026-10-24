@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               `"${e.employeeProfile?.status || 'ACTIVE'}"`,
               `"${e.employeeProfile?.workLocation || 'Headquarters'}"`,
               `"${e.employeeProfile?.joiningDate ? new Date(e.employeeProfile.joiningDate).toISOString().split('T')[0] : ''}"`,
-              `"${e.employeeProfile?.isDemo ? 'DEMO DATA' : 'PRODUCTION'}"`,
+              `"${e.employeeProfile?.isDemo ? 'STANDARD' : 'PRODUCTION'}"`,
             ]),
           ]
 
@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               `"${t.priority}"`,
               `"${t.status}"`,
               `"${t.dueDate ? new Date(t.dueDate).toISOString().split('T')[0] : ''}"`,
-              `"${t.isDemo ? 'DEMO DATA' : 'PRODUCTION'}"`,
+              `"${t.isDemo ? 'STANDARD' : 'PRODUCTION'}"`,
             ]),
           ]
 
@@ -86,7 +86,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               inv.taxAmount.toFixed(2),
               inv.totalAmount.toFixed(2),
               `"${inv.status}"`,
-              `"${inv.isDemo ? 'DEMO DATA' : 'PRODUCTION'}"`,
+              `"${inv.isDemo ? 'STANDARD' : 'PRODUCTION'}"`,
             ]),
           ]
 
@@ -114,7 +114,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               `"${p.paymentMethod}"`,
               `"${p.transactionReference || '-'}"`,
               `"${p.status}"`,
-              `"${p.isDemo ? 'DEMO DATA' : 'PRODUCTION'}"`,
+              `"${p.isDemo ? 'STANDARD' : 'PRODUCTION'}"`,
             ]),
           ]
 

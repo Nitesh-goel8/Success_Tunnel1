@@ -639,25 +639,6 @@ export default function CRMModule() {
               </select>
             </>
           )}
-
-          <label
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-              fontSize: '0.8rem',
-              color: '#475569',
-              cursor: 'pointer',
-              marginLeft: '0.3rem',
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={showDemoOnly}
-              onChange={(e) => setShowDemoOnly(e.target.checked)}
-            />
-            Demo only
-          </label>
         </div>
       </div>
 
@@ -745,22 +726,6 @@ export default function CRMModule() {
                         e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.04)'
                       }}
                     >
-                      {lead.isDemo && (
-                        <div
-                          style={{
-                            fontSize: '0.65rem',
-                            fontWeight: 800,
-                            color: '#ea580c',
-                            background: '#ffedd5',
-                            padding: '0.1rem 0.4rem',
-                            borderRadius: '4px',
-                            display: 'inline-block',
-                            marginBottom: '0.4rem',
-                          }}
-                        >
-                          DEMO RECORD
-                        </div>
-                      )}
 
                       <div style={{ fontWeight: 700, fontSize: '0.875rem', color: '#0f172a', marginBottom: '0.25rem' }}>
                         {lead.title}
@@ -999,20 +964,6 @@ export default function CRMModule() {
                     </td>
                     <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: '#0f172a' }}>
                       {c.name}
-                      {c.isDemo && (
-                        <span
-                          style={{
-                            marginLeft: '0.4rem',
-                            fontSize: '0.65rem',
-                            background: '#ffedd5',
-                            color: '#ea580c',
-                            padding: '0.1rem 0.35rem',
-                            borderRadius: '4px',
-                          }}
-                        >
-                          DEMO
-                        </span>
-                      )}
                     </td>
                     <td style={{ padding: '0.75rem 1rem', color: '#475569' }}>
                       {c.company || '-'}
@@ -1241,20 +1192,6 @@ export default function CRMModule() {
                 <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#0284c7', fontSize: '0.85rem' }}>
                   {selectedLead.leadCode}
                 </span>
-                {selectedLead.isDemo && (
-                  <span
-                    style={{
-                      fontSize: '0.65rem',
-                      background: '#ffedd5',
-                      color: '#ea580c',
-                      padding: '0.1rem 0.4rem',
-                      borderRadius: '4px',
-                      fontWeight: 800,
-                    }}
-                  >
-                    DEMO DATA
-                  </span>
-                )}
               </div>
               <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: '0.25rem 0 0 0' }}>
                 {selectedLead.title}

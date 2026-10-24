@@ -415,11 +415,6 @@ export default function AttendanceModule() {
                   <tr key={r.id}>
                     <td style={{ fontWeight: 600, color: '#0f172a' }}>
                       {r.date}
-                      {r.isDemo && (
-                        <span style={{ marginLeft: '0.4rem', fontSize: '0.65rem', background: '#fef3c7', color: '#92400e', padding: '0.1rem 0.3rem', borderRadius: '3px' }}>
-                          DEMO
-                        </span>
-                      )}
                     </td>
                     <td>
                       <div style={{ fontWeight: 600 }}>{r.user?.name || 'User'}</div>

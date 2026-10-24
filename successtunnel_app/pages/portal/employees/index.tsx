@@ -315,11 +315,6 @@ export default function EmployeeDirectory() {
                       >
                         {profile.employeeCode || `ST-EMP-${emp.id}`}
                       </button>
-                      {profile.isDemo && (
-                        <span style={{ marginLeft: '0.4rem', fontSize: '0.65rem', background: '#fef3c7', color: '#92400e', padding: '0.1rem 0.3rem', borderRadius: '3px' }}>
-                          DEMO
-                        </span>
-                      )}
                     </td>
                     <td>
                       <div
@@ -725,13 +720,13 @@ export default function EmployeeDirectory() {
 
               {modalMode === 'create' && (
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Temporary Password (defaults to Demo@2026!)</label>
+                  <label className={styles.label}>Temporary Password</label>
                   <input
                     type="password"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className={styles.input}
-                    placeholder="Leave empty for default demo password"
+                    placeholder="Leave empty to generate standard temporary password"
                   />
                 </div>
               )}

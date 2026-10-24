@@ -559,12 +559,6 @@ export default function PortalShell({ children, title, breadcrumbs = [] }: Porta
               )}
             </div>
 
-            {/* DEMO ENVIRONMENT Badge */}
-            <div className={styles.demoBanner}>
-              <HiOutlineSparkles />
-              <span>DEMO ENVIRONMENT</span>
-            </div>
-
             {/* Notification Center */}
             <div className={styles.popoverContainer} ref={notificationRef}>
               <button

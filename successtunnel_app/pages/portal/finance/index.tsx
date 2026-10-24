@@ -666,20 +666,6 @@ export default function FinanceModule() {
                   <tr key={inv.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                     <td style={{ padding: '0.75rem 1rem', fontFamily: 'monospace', fontWeight: 700, color: '#0284c7' }}>
                       {inv.invoiceNumber}
-                      {inv.isDemo && (
-                        <span
-                          style={{
-                            marginLeft: '0.4rem',
-                            fontSize: '0.65rem',
-                            background: '#ffedd5',
-                            color: '#ea580c',
-                            padding: '0.1rem 0.35rem',
-                            borderRadius: '4px',
-                          }}
-                        >
-                          DEMO
-                        </span>
-                      )}
                     </td>
                     <td style={{ padding: '0.75rem 1rem' }}>
                       <div style={{ fontWeight: 700, color: '#0f172a' }}>{inv.customer?.company || inv.customer?.name || 'Direct Client'}</div>
@@ -784,20 +770,6 @@ export default function FinanceModule() {
                   <tr key={p.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                     <td style={{ padding: '0.75rem 1rem', fontFamily: 'monospace', fontWeight: 700, color: '#0284c7' }}>
                       {p.paymentNumber}
-                      {p.isDemo && (
-                        <span
-                          style={{
-                            marginLeft: '0.4rem',
-                            fontSize: '0.65rem',
-                            background: '#ffedd5',
-                            color: '#ea580c',
-                            padding: '0.1rem 0.35rem',
-                            borderRadius: '4px',
-                          }}
-                        >
-                          DEMO
-                        </span>
-                      )}
                     </td>
                     <td style={{ padding: '0.75rem 1rem', fontFamily: 'monospace', color: '#475569' }}>
                       {p.invoice?.invoiceNumber || '-'}

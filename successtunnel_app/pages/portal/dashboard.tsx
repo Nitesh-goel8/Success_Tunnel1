@@ -79,49 +79,7 @@ export default function PortalDashboard() {
       <Head>
         <title>ERP Dashboard — Success Tunnel</title>
       </Head>
-
-      {/* Demo Warning Banner */}
-      {stats?.hasDemoData && (
-        <div style={{
-          background: '#fffbeb',
-          border: '1px solid #fef3c7',
-          borderLeft: '4px solid #f59e0b',
-          padding: '0.875rem 1.25rem',
-          borderRadius: '6px',
-          marginBottom: '1.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '0.5rem',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <HiOutlineSparkles style={{ color: '#d97706', fontSize: '1.25rem' }} />
-            <div>
-              <span style={{ fontWeight: 700, color: '#92400e', fontSize: '0.85rem' }}>
-                DEMO ENVIRONMENT ACTIVE
-              </span>
-              <p style={{ margin: '0.15rem 0 0 0', fontSize: '0.8rem', color: '#b45309' }}>
-                This portal contains realistic demonstration records for testing and verification. All metrics reflect genuine database records in this environment.
-              </p>
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ fontSize: '0.75rem', color: '#78350f', background: '#fde68a', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
-              {stats?.reportingPeriod || 'YTD 2026'}
-            </span>
-            <button
-              onClick={loadStats}
-              className={`${styles.btn} ${styles.btnSecondary}`}
-              style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}
-            >
-              <HiOutlineRefresh /> Refresh
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Source Meta Bar */}
+{/* Source Meta Bar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', fontSize: '0.8rem', color: '#64748b' }}>
         <div>
           <strong>Data Source:</strong> {stats?.dataSource || 'Success Tunnel ERP Database'} • <strong>Reporting Period:</strong> {stats?.reportingPeriod || 'Current YTD'}

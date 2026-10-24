@@ -24,7 +24,7 @@ export default function DocumentRepository() {
   const [showUploadModal, setShowUploadModal] = useState(false)
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('POLICY')
-  const [fileUrl, setFileUrl] = useState('/docs/demo/corporate_policy_document.pdf')
+  const [fileUrl, setFileUrl] = useState('/docs/corporate_policy_document.pdf')
   const [fileSize, setFileSize] = useState('1.5 MB')
   const [fileType, setFileType] = useState('application/pdf')
   const [version, setVersion] = useState('v1.0')
@@ -196,11 +196,6 @@ export default function DocumentRepository() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       <HiOutlineDocumentText style={{ color: '#2563eb', fontSize: '1.2rem', flexShrink: 0 }} />
                       <span style={{ fontWeight: 600, color: '#0f172a' }}>{doc.title}</span>
-                      {doc.isDemo && (
-                        <span style={{ fontSize: '0.65rem', background: '#fef3c7', color: '#92400e', padding: '0.1rem 0.35rem', borderRadius: '3px', fontWeight: 700 }}>
-                          DEMO
-                        </span>
-                      )}
                     </div>
                   </td>
                   <td>
