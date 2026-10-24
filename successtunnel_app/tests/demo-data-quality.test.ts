@@ -213,12 +213,13 @@ async function runDemoQualityTests() {
     const missingPunchesFlagged = missingPunches.every((r) => r.correctionRequested === true && r.durationMinutes === 0)
     assert(missingPunchesFlagged, 'Missing check-outs are flagged with correctionRequested=true and 0 duration')
 
-    // Rule 4: Weekends have no active work punches
+    // Rule 4: Historical weekends have no active work punches
+    const todayStr = now.toISOString().split('T')[0]
     const weekendPunches = attendanceRecords.filter((r) => {
       const d = new Date(r.date).getDay()
-      return d === 0 || d === 6
+      return (d === 0 || d === 6) && r.date !== todayStr
     })
-    assert(weekendPunches.length === 0, 'No active work punches recorded on weekend days (weekly offs respected)')
+    assert(weekendPunches.length === 0, 'No active work punches recorded on historical weekend days (weekly offs respected)')
 
     // Rule 5: Approved leave days do not conflict with normal attendance
     const approvedLeaves = await prisma.leaveRequest.findMany({

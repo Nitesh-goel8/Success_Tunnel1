@@ -608,6 +608,7 @@ async function main() {
   console.log('Step 5/11: Generating dynamic 90-day attendance punch records...')
 
   const attendanceEmployees = [
+    seededUsers['admin@successtunnel.in'],
     seededUsers['amit.kumar@successtunnel.in'],
     seededUsers['pooja.mehta@successtunnel.in'],
     seededUsers['siddharth.rao@successtunnel.in'],
@@ -635,8 +636,8 @@ async function main() {
     const dateStr = targetDate.toISOString().split('T')[0]
     const dayOfWeek = targetDate.getDay() // 0 = Sun, 6 = Sat
 
-    // Skip weekends: business closed, no attendance punch
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
+    // Skip weekends: business closed, no attendance punch (preserve current active day punch)
+    if ((dayOfWeek === 0 || dayOfWeek === 6) && d !== 0) {
       continue
     }
 
