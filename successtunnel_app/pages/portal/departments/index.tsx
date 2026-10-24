@@ -7,21 +7,32 @@ import {
   HiOutlineOfficeBuilding,
   HiOutlineUserGroup,
   HiOutlinePlus,
+  HiOutlinePencil,
+  HiOutlineTrash,
   HiOutlineX,
   HiOutlineClipboardList,
+  HiOutlineEye,
 } from 'react-icons/hi'
 
 export default function DepartmentManagement() {
   const [departments, setDepartments] = useState<any[]>([])
   const [employees, setEmployees] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+
+  // Create / Edit Modal State
   const [showModal, setShowModal] = useState(false)
+  const [modalMode, setModalMode] = useState<'create' | 'edit'>('create')
+  const [selectedDept, setSelectedDept] = useState<any>(null)
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
   const [description, setDescription] = useState('')
   const [headId, setHeadId] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+
+  // View Department Members Modal
+  const [viewingDept, setViewingDept] = useState<any>(null)
+  const [loadingDeptDetails, setLoadingDeptDetails] = useState(false)
 
   const loadData = async () => {
     setLoading(true)
@@ -43,28 +54,78 @@ export default function DepartmentManagement() {
     loadData()
   }, [])
 
-  const handleCreateDepartment = async (e: React.FormEvent) => {
+  const handleOpenCreate = () => {
+    setModalMode('create')
+    setName('')
+    setCode('')
+    setDescription('')
+    setHeadId('')
+    setError('')
+    setShowModal(true)
+  }
+
+  const handleOpenEdit = (dept: any) => {
+    setModalMode('edit')
+    setSelectedDept(dept)
+    setName(dept.name || '')
+    setCode(dept.code || '')
+    setDescription(dept.description || '')
+    setHeadId(dept.head?.id ? dept.head.id.toString() : '')
+    setError('')
+    setShowModal(true)
+  }
+
+  const handleViewDetails = async (id: number) => {
+    setLoadingDeptDetails(true)
+    try {
+      const res = await axios.get(`/api/portal/departments/${id}`)
+      setViewingDept(res.data)
+    } catch (err) {
+      console.error('Failed to load department details', err)
+      alert('Could not retrieve department details')
+    } finally {
+      setLoadingDeptDetails(false)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
     setSubmitting(true)
 
     try {
-      await axios.post('/api/portal/departments', {
-        name,
-        code,
-        description,
-        headId: headId ? parseInt(headId) : null,
-      })
+      if (modalMode === 'create') {
+        await axios.post('/api/portal/departments', {
+          name,
+          code,
+          description,
+          headId: headId ? parseInt(headId) : null,
+        })
+      } else {
+        await axios.put(`/api/portal/departments/${selectedDept.id}`, {
+          name,
+          code,
+          description,
+          headId: headId ? parseInt(headId) : null,
+        })
+      }
       setShowModal(false)
-      setName('')
-      setCode('')
-      setDescription('')
-      setHeadId('')
       loadData()
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to create department')
+      setError(err.response?.data?.error || 'Operation failed')
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const handleDelete = async (dept: any) => {
+    if (!confirm(`Are you sure you want to delete department "${dept.name}"?`)) return
+
+    try {
+      await axios.delete(`/api/portal/departments/${dept.id}`)
+      loadData()
+    } catch (err: any) {
+      alert(err.response?.data?.error || 'Failed to remove department')
     }
   }
 
@@ -85,7 +146,7 @@ export default function DepartmentManagement() {
           </p>
         </div>
 
-        <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => setShowModal(true)}>
+        <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleOpenCreate}>
           <HiOutlinePlus style={{ fontSize: '1.1rem' }} />
           <span>New Department</span>
         </button>
@@ -98,7 +159,7 @@ export default function DepartmentManagement() {
         </div>
       ) : departments.length === 0 ? (
         <div className={styles.card} style={{ textAlign: 'center', padding: '3rem', color: '#64748b' }}>
-          No departments configured. Click &quot;New Department&quot; to establish an organizational unit.
+          No departments configured. Click &ldquo;New Department&rdquo; to establish an organizational unit.
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.25rem' }}>
@@ -151,9 +212,29 @@ export default function DepartmentManagement() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', color: '#2563eb' }}>
-                  <HiOutlineClipboardList />
-                  <span>{dept._count?.projects || 0} Projects</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <button
+                    className={styles.iconBtn}
+                    onClick={() => handleViewDetails(dept.id)}
+                    title="View Department Members"
+                  >
+                    <HiOutlineEye style={{ fontSize: '0.9rem', color: '#2563eb' }} />
+                  </button>
+                  <button
+                    className={styles.iconBtn}
+                    onClick={() => handleOpenEdit(dept)}
+                    title="Edit Department"
+                  >
+                    <HiOutlinePencil style={{ fontSize: '0.9rem' }} />
+                  </button>
+                  <button
+                    className={styles.iconBtn}
+                    onClick={() => handleDelete(dept)}
+                    title="Delete Department"
+                    style={{ color: '#dc2626' }}
+                  >
+                    <HiOutlineTrash style={{ fontSize: '0.9rem' }} />
+                  </button>
                 </div>
               </div>
             </div>
@@ -161,13 +242,109 @@ export default function DepartmentManagement() {
         </div>
       )}
 
-      {/* New Department Modal */}
+      {/* Department Details Modal */}
+      {viewingDept && (
+        <div className={styles.modalOverlay} onClick={() => setViewingDept(null)}>
+          <div
+            className={styles.modalContent}
+            style={{ maxWidth: '640px', maxHeight: '85vh', overflowY: 'auto' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.modalHeader}>
+              <div>
+                <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#2563eb', fontSize: '0.8rem' }}>
+                  {viewingDept.code}
+                </span>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0.2rem 0', color: '#0f172a' }}>
+                  {viewingDept.name}
+                </h2>
+              </div>
+              <button
+                className={styles.collapseBtn}
+                onClick={() => setViewingDept(null)}
+                style={{ color: '#64748b' }}
+              >
+                <HiOutlineX style={{ fontSize: '1.2rem' }} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1.25rem' }}>
+              {viewingDept.description || 'No description provided.'}
+            </p>
+
+            <div style={{ marginBottom: '1.5rem' }}>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 0.5rem 0', color: '#0f172a' }}>
+                Department Head
+              </h4>
+              <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '6px', fontSize: '0.85rem' }}>
+                {viewingDept.head?.name ? (
+                  <div>
+                    <strong>{viewingDept.head.name}</strong> ({viewingDept.head.email})
+                  </div>
+                ) : (
+                  <span style={{ color: '#94a3b8' }}>No department head currently designated.</span>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 0.5rem 0', color: '#0f172a' }}>
+                Department Personnel ({viewingDept.members?.length || 0})
+              </h4>
+              {!viewingDept.members || viewingDept.members.length === 0 ? (
+                <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>
+                  No employees currently assigned to this department.
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {viewingDept.members.map((m: any) => (
+                    <div
+                      key={m.id}
+                      style={{
+                        padding: '0.6rem 0.75rem',
+                        background: '#f8fafc',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        fontSize: '0.85rem',
+                      }}
+                    >
+                      <div>
+                        <strong>{m.name || 'Unnamed'}</strong> ({m.email})
+                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                          {m.employeeProfile?.designation || m.role} • {m.employeeProfile?.employeeCode || `ST-EMP-${m.id}`}
+                        </div>
+                      </div>
+                      <span className={`${styles.badge} ${m.status === 'active' ? styles.badgeSuccess : styles.badgeDanger}`}>
+                        {m.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+              <button
+                type="button"
+                className={`${styles.btn} ${styles.btnSecondary}`}
+                onClick={() => setViewingDept(null)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* New / Edit Department Modal */}
       {showModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
               <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: '#0f172a' }}>
-                Create New Department
+                {modalMode === 'create' ? 'Create New Department' : 'Edit Department Details'}
               </h2>
               <button
                 className={styles.collapseBtn}
@@ -192,7 +369,7 @@ export default function DepartmentManagement() {
               </div>
             )}
 
-            <form onSubmit={handleCreateDepartment}>
+            <form onSubmit={handleSubmit}>
               <div className={styles.formGroup}>
                 <label className={styles.label}>Department Name *</label>
                 <input
@@ -260,7 +437,7 @@ export default function DepartmentManagement() {
                   disabled={submitting}
                   className={`${styles.btn} ${styles.btnPrimary}`}
                 >
-                  {submitting ? 'Creating Unit...' : 'Establish Department'}
+                  {submitting ? 'Saving Unit...' : modalMode === 'create' ? 'Establish Department' : 'Update Department'}
                 </button>
               </div>
             </form>

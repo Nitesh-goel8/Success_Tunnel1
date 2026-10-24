@@ -100,6 +100,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               status: true,
             },
           },
+          assignedDocs: {
+            take: 5,
+            orderBy: { createdAt: 'desc' },
+            select: {
+              id: true,
+              title: true,
+              category: true,
+              fileUrl: true,
+              version: true,
+              createdAt: true,
+            },
+          },
+          uploadedDocs: {
+            take: 5,
+            orderBy: { createdAt: 'desc' },
+            select: {
+              id: true,
+              title: true,
+              category: true,
+              fileUrl: true,
+              version: true,
+              createdAt: true,
+            },
+          },
         },
       })
 

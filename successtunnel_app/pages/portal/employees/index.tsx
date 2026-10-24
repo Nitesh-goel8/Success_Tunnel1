@@ -6,17 +6,22 @@ import styles from '../../../components/portal/Portal.module.css'
 import {
   HiOutlineSearch,
   HiOutlinePlus,
-  HiOutlineFilter,
   HiOutlinePencil,
   HiOutlineTrash,
   HiOutlineX,
-  HiOutlineCheckCircle,
-  HiOutlineExclamationCircle,
+  HiOutlineEye,
+  HiOutlineUser,
+  HiOutlineBriefcase,
+  HiOutlineClock,
+  HiOutlineCalendar,
+  HiOutlineDocumentText,
+  HiOutlineClipboardList,
 } from 'react-icons/hi'
 
 export default function EmployeeDirectory() {
   const [employees, setEmployees] = useState<any[]>([])
   const [departments, setDepartments] = useState<any[]>([])
+  const [potentialManagers, setPotentialManagers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -25,7 +30,12 @@ export default function EmployeeDirectory() {
   const [selectedDept, setSelectedDept] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('ALL')
 
-  // Modal State
+  // Detailed Profile View State
+  const [viewingEmployee, setViewingEmployee] = useState<any>(null)
+  const [loadingProfile, setLoadingProfile] = useState(false)
+  const [profileTab, setProfileTab] = useState<'overview' | 'tasks' | 'attendance' | 'documents'>('overview')
+
+  // Create / Edit Modal State
   const [showModal, setShowModal] = useState(false)
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create')
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null)
@@ -40,6 +50,8 @@ export default function EmployeeDirectory() {
     workLocation: 'Headquarters - New Delhi',
     employmentType: 'Full-time',
     status: 'ACTIVE',
+    managerId: '',
+    emergencyContact: '',
   })
   const [submitting, setSubmitting] = useState(false)
   const [formError, setFormError] = useState('')
@@ -70,16 +82,34 @@ export default function EmployeeDirectory() {
   }, [fetchEmployees])
 
   useEffect(() => {
-    async function loadDepts() {
+    async function loadMeta() {
       try {
-        const res = await axios.get('/api/portal/departments')
-        setDepartments(res.data)
+        const [deptRes, mgrRes] = await Promise.all([
+          axios.get('/api/portal/departments'),
+          axios.get('/api/portal/employees?limit=50'),
+        ])
+        setDepartments(deptRes.data)
+        setPotentialManagers(mgrRes.data.data || [])
       } catch (err) {
-        console.error('Failed to load departments', err)
+        console.error('Failed to load metadata', err)
       }
     }
-    loadDepts()
+    loadMeta()
   }, [])
+
+  const handleOpenProfile = async (id: number) => {
+    setLoadingProfile(true)
+    setProfileTab('overview')
+    try {
+      const res = await axios.get(`/api/portal/employees/${id}`)
+      setViewingEmployee(res.data)
+    } catch (err) {
+      console.error('Failed to load profile details', err)
+      alert('Could not load detailed employee profile')
+    } finally {
+      setLoadingProfile(false)
+    }
+  }
 
   const handleOpenCreate = () => {
     setModalMode('create')
@@ -94,6 +124,8 @@ export default function EmployeeDirectory() {
       workLocation: 'Headquarters - New Delhi',
       employmentType: 'Full-time',
       status: 'ACTIVE',
+      managerId: '',
+      emergencyContact: '',
     })
     setFormError('')
     setShowModal(true)
@@ -113,6 +145,8 @@ export default function EmployeeDirectory() {
       workLocation: emp.employeeProfile?.workLocation || 'Headquarters - New Delhi',
       employmentType: emp.employeeProfile?.employmentType || 'Full-time',
       status: emp.employeeProfile?.status || 'ACTIVE',
+      managerId: emp.employeeProfile?.manager?.id?.toString() || '',
+      emergencyContact: emp.employeeProfile?.emergencyContact || '',
     })
     setFormError('')
     setShowModal(true)
@@ -221,9 +255,10 @@ export default function EmployeeDirectory() {
             >
               <option value="ALL">All Statuses</option>
               <option value="ACTIVE">Active</option>
-              <option value="INACTIVE">Inactive</option>
               <option value="PROBATION">Probation</option>
+              <option value="NOTICE">Notice Period</option>
               <option value="ON_LEAVE">On Leave</option>
+              <option value="INACTIVE">Inactive</option>
             </select>
           </div>
         </div>
@@ -238,7 +273,7 @@ export default function EmployeeDirectory() {
               <th>Name & Email</th>
               <th>Department</th>
               <th>Designation</th>
-              <th>Role</th>
+              <th>Reporting To</th>
               <th>Status</th>
               <th>Location</th>
               <th style={{ textAlign: 'right' }}>Actions</th>
@@ -264,9 +299,22 @@ export default function EmployeeDirectory() {
                 return (
                   <tr key={emp.id}>
                     <td>
-                      <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#2563eb' }}>
+                      <button
+                        onClick={() => handleOpenProfile(emp.id)}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontFamily: 'monospace',
+                          fontWeight: 700,
+                          color: '#2563eb',
+                          padding: 0,
+                          textDecoration: 'underline',
+                        }}
+                        title="Click to view full employee profile"
+                      >
                         {profile.employeeCode || `ST-EMP-${emp.id}`}
-                      </span>
+                      </button>
                       {profile.isDemo && (
                         <span style={{ marginLeft: '0.4rem', fontSize: '0.65rem', background: '#fef3c7', color: '#92400e', padding: '0.1rem 0.3rem', borderRadius: '3px' }}>
                           DEMO
@@ -274,7 +322,12 @@ export default function EmployeeDirectory() {
                       )}
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#0f172a' }}>{emp.name || 'Unnamed'}</div>
+                      <div
+                        style={{ fontWeight: 600, color: '#0f172a', cursor: 'pointer' }}
+                        onClick={() => handleOpenProfile(emp.id)}
+                      >
+                        {emp.name || 'Unnamed'}
+                      </div>
                       <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{emp.email}</div>
                     </td>
                     <td>
@@ -287,10 +340,12 @@ export default function EmployeeDirectory() {
                       )}
                     </td>
                     <td>{profile.designation || 'Staff'}</td>
-                    <td>
-                      <span style={{ fontSize: '0.75rem', textTransform: 'capitalize', color: '#475569' }}>
-                        {emp.role.replace('_', ' ')}
-                      </span>
+                    <td style={{ fontSize: '0.8rem', color: '#475569' }}>
+                      {profile.manager?.user?.name ? (
+                        <span>{profile.manager.user.name}</span>
+                      ) : (
+                        <span style={{ color: '#94a3b8' }}>None</span>
+                      )}
                     </td>
                     <td>
                       <span
@@ -310,6 +365,13 @@ export default function EmployeeDirectory() {
                     </td>
                     <td style={{ textAlign: 'right' }}>
                       <div style={{ display: 'inline-flex', gap: '0.4rem' }}>
+                        <button
+                          className={styles.iconBtn}
+                          onClick={() => handleOpenProfile(emp.id)}
+                          title="View Full Profile"
+                        >
+                          <HiOutlineEye style={{ fontSize: '0.9rem', color: '#2563eb' }} />
+                        </button>
                         <button
                           className={styles.iconBtn}
                           onClick={() => handleOpenEdit(emp)}
@@ -360,10 +422,252 @@ export default function EmployeeDirectory() {
         </div>
       )}
 
+      {/* Detailed Employee Profile Drawer / Modal */}
+      {viewingEmployee && (
+        <div className={styles.modalOverlay} onClick={() => setViewingEmployee(null)}>
+          <div
+            className={styles.modalContent}
+            style={{ maxWidth: '780px', maxHeight: '90vh', overflowY: 'auto' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.modalHeader}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div className={styles.avatar} style={{ width: 42, height: 42 }}>
+                  {viewingEmployee.name ? viewingEmployee.name.charAt(0).toUpperCase() : 'E'}
+                </div>
+                <div>
+                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
+                    {viewingEmployee.name}
+                  </h2>
+                  <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                    {viewingEmployee.employeeProfile?.employeeCode || `ST-EMP-${viewingEmployee.id}`} • {viewingEmployee.department?.name || 'General'}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                className={styles.collapseBtn}
+                onClick={() => setViewingEmployee(null)}
+                style={{ color: '#64748b' }}
+              >
+                <HiOutlineX style={{ fontSize: '1.2rem' }} />
+              </button>
+            </div>
+
+            {/* Profile Navigation Tabs */}
+            <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0', gap: '1rem', marginBottom: '1.25rem' }}>
+              <button
+                className={styles.tabBtn}
+                style={{
+                  padding: '0.5rem 0.75rem',
+                  border: 'none',
+                  background: 'transparent',
+                  fontWeight: profileTab === 'overview' ? 700 : 500,
+                  color: profileTab === 'overview' ? '#2563eb' : '#64748b',
+                  borderBottom: profileTab === 'overview' ? '2px solid #2563eb' : '2px solid transparent',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setProfileTab('overview')}
+              >
+                Profile Overview
+              </button>
+              <button
+                className={styles.tabBtn}
+                style={{
+                  padding: '0.5rem 0.75rem',
+                  border: 'none',
+                  background: 'transparent',
+                  fontWeight: profileTab === 'tasks' ? 700 : 500,
+                  color: profileTab === 'tasks' ? '#2563eb' : '#64748b',
+                  borderBottom: profileTab === 'tasks' ? '2px solid #2563eb' : '2px solid transparent',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setProfileTab('tasks')}
+              >
+                Assigned Work ({viewingEmployee.assignedTasks?.length || 0})
+              </button>
+              <button
+                className={styles.tabBtn}
+                style={{
+                  padding: '0.5rem 0.75rem',
+                  border: 'none',
+                  background: 'transparent',
+                  fontWeight: profileTab === 'attendance' ? 700 : 500,
+                  color: profileTab === 'attendance' ? '#2563eb' : '#64748b',
+                  borderBottom: profileTab === 'attendance' ? '2px solid #2563eb' : '2px solid transparent',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setProfileTab('attendance')}
+              >
+                Recent Attendance & Leaves
+              </button>
+              <button
+                className={styles.tabBtn}
+                style={{
+                  padding: '0.5rem 0.75rem',
+                  border: 'none',
+                  background: 'transparent',
+                  fontWeight: profileTab === 'documents' ? 700 : 500,
+                  color: profileTab === 'documents' ? '#2563eb' : '#64748b',
+                  borderBottom: profileTab === 'documents' ? '2px solid #2563eb' : '2px solid transparent',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setProfileTab('documents')}
+              >
+                Documents ({(viewingEmployee.assignedDocs?.length || 0) + (viewingEmployee.uploadedDocs?.length || 0)})
+              </button>
+            </div>
+
+            {/* TAB 1: Profile Overview */}
+            {profileTab === 'overview' && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', fontSize: '0.85rem' }}>
+                <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px' }}>
+                  <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700, marginBottom: '0.5rem' }}>
+                    Employment & Role
+                  </div>
+                  <div style={{ marginBottom: '0.5rem' }}><strong>Designation:</strong> {viewingEmployee.employeeProfile?.designation || 'Staff'}</div>
+                  <div style={{ marginBottom: '0.5rem' }}><strong>Department:</strong> {viewingEmployee.department?.name || 'Unassigned'}</div>
+                  <div style={{ marginBottom: '0.5rem' }}><strong>Employment Type:</strong> {viewingEmployee.employeeProfile?.employmentType || 'Full-time'}</div>
+                  <div style={{ marginBottom: '0.5rem' }}><strong>Work Location:</strong> {viewingEmployee.employeeProfile?.workLocation || 'Headquarters'}</div>
+                  <div><strong>Joining Date:</strong> {new Date(viewingEmployee.employeeProfile?.joiningDate || viewingEmployee.createdAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                </div>
+
+                <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px' }}>
+                  <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700, marginBottom: '0.5rem' }}>
+                    Contact & Hierarchy
+                  </div>
+                  <div style={{ marginBottom: '0.5rem' }}><strong>Corporate Email:</strong> {viewingEmployee.email}</div>
+                  <div style={{ marginBottom: '0.5rem' }}><strong>Phone Number:</strong> {viewingEmployee.phone || 'Not recorded'}</div>
+                  <div style={{ marginBottom: '0.5rem' }}><strong>Emergency Contact:</strong> {viewingEmployee.employeeProfile?.emergencyContact || 'Not recorded'}</div>
+                  <div style={{ marginBottom: '0.5rem' }}>
+                    <strong>Reporting Manager:</strong>{' '}
+                    {viewingEmployee.employeeProfile?.manager?.user?.name ? (
+                      <span>{viewingEmployee.employeeProfile.manager.user.name} ({viewingEmployee.employeeProfile.manager.designation})</span>
+                    ) : (
+                      <span style={{ color: '#94a3b8' }}>None</span>
+                    )}
+                  </div>
+                  <div>
+                    <strong>Direct Reports:</strong> {viewingEmployee.employeeProfile?.directReports?.length || 0} staff members
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: Assigned Tasks */}
+            {profileTab === 'tasks' && (
+              <div>
+                {!viewingEmployee.assignedTasks || viewingEmployee.assignedTasks.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '2rem', color: '#94a3b8' }}>
+                    No tasks currently assigned to this employee.
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {viewingEmployee.assignedTasks.map((task: any) => (
+                      <div key={task.id} style={{ padding: '0.75rem 1rem', background: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div>
+                          <span style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: '#2563eb', fontWeight: 700 }}>
+                            {task.taskCode}
+                          </span>
+                          <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.9rem' }}>{task.title}</div>
+                        </div>
+                        <span className={`${styles.badge} ${task.status === 'DONE' ? styles.badgeSuccess : styles.badgeInfo}`}>
+                          {task.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 3: Attendance & Leaves */}
+            {profileTab === 'attendance' && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                <div>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, margin: '0 0 0.5rem 0' }}>Recent Timesheet Logs</h4>
+                  {!viewingEmployee.attendance || viewingEmployee.attendance.length === 0 ? (
+                    <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>No recent clock-in entries.</div>
+                  ) : (
+                    viewingEmployee.attendance.map((att: any) => (
+                      <div key={att.id} style={{ padding: '0.5rem', borderBottom: '1px solid #f1f5f9', fontSize: '0.8rem', display: 'flex', justifyContent: 'space-between' }}>
+                        <span>{att.date}</span>
+                        <span style={{ fontWeight: 600 }}>{Math.round(att.durationMinutes / 60)} hrs ({att.status})</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, margin: '0 0 0.5rem 0' }}>Recent Leave Applications</h4>
+                  {!viewingEmployee.leaveRequests || viewingEmployee.leaveRequests.length === 0 ? (
+                    <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>No recent leave requests.</div>
+                  ) : (
+                    viewingEmployee.leaveRequests.map((leave: any) => (
+                      <div key={leave.id} style={{ padding: '0.5rem', borderBottom: '1px solid #f1f5f9', fontSize: '0.8rem', display: 'flex', justifyContent: 'space-between' }}>
+                        <span>{leave.leaveType} ({leave.totalDays}d)</span>
+                        <span className={`${styles.badge} ${leave.status === 'APPROVED' ? styles.badgeSuccess : styles.badgeWarning}`}>
+                          {leave.status}
+                        </span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: Documents */}
+            {profileTab === 'documents' && (
+              <div>
+                {(!viewingEmployee.assignedDocs || viewingEmployee.assignedDocs.length === 0) &&
+                (!viewingEmployee.uploadedDocs || viewingEmployee.uploadedDocs.length === 0) ? (
+                  <div style={{ textAlign: 'center', padding: '2rem', color: '#94a3b8' }}>
+                    No linked documents or records found for this employee.
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    {[...(viewingEmployee.assignedDocs || []), ...(viewingEmployee.uploadedDocs || [])].map((doc: any, i: number) => (
+                      <div key={i} style={{ padding: '0.75rem', background: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <HiOutlineDocumentText style={{ fontSize: '1.2rem', color: '#2563eb' }} />
+                          <div>
+                            <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#0f172a' }}>{doc.title}</div>
+                            <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{doc.category} • {doc.version || 'v1.0'}</div>
+                          </div>
+                        </div>
+                        <a
+                          href={doc.fileUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`${styles.btn} ${styles.btnSecondary}`}
+                          style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}
+                        >
+                          View Document
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+              <button
+                type="button"
+                className={`${styles.btn} ${styles.btnSecondary}`}
+                onClick={() => setViewingEmployee(null)}
+              >
+                Close Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Add / Edit Modal */}
       {showModal && (
         <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
+          <div className={styles.modalContent} style={{ maxWidth: '620px' }}>
             <div className={styles.modalHeader}>
               <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: '#0f172a' }}>
                 {modalMode === 'create' ? 'Add New Employee Record' : 'Edit Employee Details'}
@@ -488,6 +792,7 @@ export default function EmployeeDirectory() {
                   >
                     <option value="ACTIVE">ACTIVE</option>
                     <option value="PROBATION">PROBATION</option>
+                    <option value="NOTICE">NOTICE PERIOD</option>
                     <option value="ON_LEAVE">ON_LEAVE</option>
                     <option value="INACTIVE">INACTIVE</option>
                   </select>
@@ -495,6 +800,24 @@ export default function EmployeeDirectory() {
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Reporting Manager (Hierarchy)</label>
+                  <select
+                    value={formData.managerId}
+                    onChange={(e) => setFormData({ ...formData, managerId: e.target.value })}
+                    className={styles.select}
+                  >
+                    <option value="">No Direct Manager (Top-level / Self)</option>
+                    {potentialManagers
+                      .filter((m) => modalMode !== 'edit' || m.id !== selectedEmployee?.id)
+                      .map((mgr) => (
+                        <option key={mgr.id} value={mgr.employeeProfile?.id || mgr.id}>
+                          {mgr.name} — {mgr.employeeProfile?.designation || mgr.role} ({mgr.department?.code || 'GEN'})
+                        </option>
+                      ))}
+                  </select>
+                </div>
+
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Phone Number</label>
                   <input
@@ -505,7 +828,9 @@ export default function EmployeeDirectory() {
                     placeholder="+91 98765 00000"
                   />
                 </div>
+              </div>
 
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Work Location</label>
                   <input
@@ -514,6 +839,17 @@ export default function EmployeeDirectory() {
                     onChange={(e) => setFormData({ ...formData, workLocation: e.target.value })}
                     className={styles.input}
                     placeholder="e.g. Headquarters - New Delhi"
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Emergency Contact</label>
+                  <input
+                    type="text"
+                    value={formData.emergencyContact}
+                    onChange={(e) => setFormData({ ...formData, emergencyContact: e.target.value })}
+                    className={styles.input}
+                    placeholder="e.g. Parent/Spouse: +91 98111 22233"
                   />
                 </div>
               </div>
