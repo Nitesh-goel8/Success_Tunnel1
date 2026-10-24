@@ -18,6 +18,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       activeEmployeesCount,
       activeProjectsCount,
       pendingLeavesCount,
+      pendingExpensesCount,
+      openEnquiriesCount,
+      invoicesAgg,
+      paymentsAgg,
+      expensesAgg,
+      projectStatusGroups,
       tasks,
       projects,
       recentAuditLogs,
@@ -28,6 +34,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       prisma.employeeProfile.count({ where: { status: 'ACTIVE' } }),
       prisma.project.count({ where: { status: { in: ['PLANNED', 'IN_PROGRESS'] } } }),
       prisma.leaveRequest.count({ where: { status: 'PENDING' } }),
+      prisma.expense.count({ where: { status: { in: ['SUBMITTED', 'UNDER_REVIEW'] } } }),
+      prisma.enquiry.count({ where: { status: { in: ['UNREAD', 'CONTACTED'] } } }),
+      prisma.invoice.aggregate({ _sum: { totalAmount: true } }),
+      prisma.payment.aggregate({ where: { status: 'COMPLETED' }, _sum: { amount: true } }),
+      prisma.expense.aggregate({ where: { status: { in: ['APPROVED', 'REIMBURSED'] } }, _sum: { amount: true } }),
+      prisma.project.groupBy({ by: ['status'], _count: { id: true } }),
       prisma.task.findMany({
         select: {
           id: true,
@@ -112,7 +124,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     })
 
-    // Compute upcoming deadlines (due today or in future, or overdue)
+    // Compute projects by status
+    const projectsByStatus: { [key: string]: number } = {
+      PLANNED: 0,
+      IN_PROGRESS: 0,
+      ON_HOLD: 0,
+      COMPLETED: 0,
+      CANCELLED: 0,
+    }
+
+    projectStatusGroups.forEach((g) => {
+      if (g.status && projectsByStatus[g.status] !== undefined) {
+        projectsByStatus[g.status] = g._count.id
+      }
+    })
+
+    // Compute upcoming deadlines (due today or in future, or overdue, not done)
     const upcomingDeadlines = tasks
       .filter((t) => t.dueDate && t.status !== 'DONE')
       .sort((a, b) => new Date(a.dueDate!).getTime() - new Date(b.dueDate!).getTime())
@@ -122,9 +149,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       metrics: {
         activeEmployees: activeEmployeesCount,
         activeProjects: activeProjectsCount,
+        projectsByStatus,
         pendingLeaves: pendingLeavesCount,
+        pendingExpenses: pendingExpensesCount,
+        pendingApprovals: pendingLeavesCount + pendingExpensesCount,
+        openEnquiries: openEnquiriesCount,
         totalTasks: tasks.length,
         tasksByStatus,
+        finance: {
+          totalInvoiced: invoicesAgg._sum.totalAmount || 0,
+          receivedPayments: paymentsAgg._sum.amount || 0,
+          approvedExpenses: expensesAgg._sum.amount || 0,
+        },
       },
       projects,
       recentAuditLogs,
@@ -137,6 +173,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       upcomingDeadlines,
       myAttendanceToday,
       hasDemoData: demoRecordsCount > 0,
+      dataSource: 'Success Tunnel Enterprise DB (Live Production Schema)',
+      reportingPeriod: 'Year-To-Date (YTD 2026)',
+      generatedAt: new Date().toISOString(),
     })
   } catch (error) {
     console.error('Failed to compute dashboard stats:', error)

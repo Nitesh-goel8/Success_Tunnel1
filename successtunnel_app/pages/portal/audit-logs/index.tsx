@@ -8,6 +8,7 @@ import {
   HiOutlineSearch,
   HiOutlineFilter,
   HiOutlineRefresh,
+  HiOutlineDownload,
 } from 'react-icons/hi'
 
 export default function AuditTrailModule() {
@@ -60,9 +61,19 @@ export default function AuditTrailModule() {
           </p>
         </div>
 
-        <button onClick={loadLogs} className={`${styles.btn} ${styles.btnSecondary}`}>
-          <HiOutlineRefresh /> Refresh Logs
-        </button>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <a
+            href="/api/portal/reports?export=csv&module=audit-logs"
+            download="Success_Tunnel_Audit_Logs_Report.csv"
+            className={`${styles.btn} ${styles.btnPrimary}`}
+            style={{ textDecoration: 'none' }}
+          >
+            <HiOutlineDownload /> Export Compliance CSV
+          </a>
+          <button onClick={loadLogs} className={`${styles.btn} ${styles.btnSecondary}`}>
+            <HiOutlineRefresh /> Refresh Logs
+          </button>
+        </div>
       </div>
 
       {/* Filter Bar */}

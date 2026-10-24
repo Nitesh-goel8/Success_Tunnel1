@@ -123,6 +123,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           res.setHeader('Content-Disposition', 'attachment; filename="Success_Tunnel_Payments_Report.csv"')
           return res.status(200).send(csvContent)
         }
+
+        if (reportModule === 'audit-logs' || reportModule === 'audit') {
+          // Restricted to administrative roles
+          const isAdminRole = ['super_admin', 'admin', 'hr_admin', 'finance_admin'].includes(auth.role)
+          if (!isAdminRole) {
+            return res.status(403).json({ error: 'Access denied. Audit logs export requires administrative privileges.' })
+          }
+
+          const logs = await prisma.auditLog.findMany({
+            include: { user: { select: { name: true, email: true, role: true } } },
+            orderBy: { createdAt: 'desc' },
+            take: 2000,
+          })
+
+          const rows = [
+            ['Log ID', 'Timestamp (UTC)', 'Actor Name', 'Actor Email', 'Actor Role', 'Action', 'Module', 'Entity ID', 'Details', 'IP Origin'],
+            ...logs.map((l) => [
+              l.id,
+              `"${l.createdAt.toISOString()}"`,
+              `"${l.user?.name || 'System'}"`,
+              `"${l.user?.email || '-'}"`,
+              `"${l.user?.role || '-'}"`,
+              `"${l.action}"`,
+              `"${l.entityType}"`,
+              `"${l.entityId || '-'}"`,
+              `"${(l.details || '').replace(/"/g, '""')}"`,
+              `"${l.ipAddress || '127.0.0.1'}"`,
+            ]),
+          ]
+
+          const csvContent = rows.map((r) => r.join(',')).join('\n')
+          res.setHeader('Content-Type', 'text/csv; charset=utf-8')
+          res.setHeader('Content-Disposition', 'attachment; filename="Success_Tunnel_Audit_Logs_Report.csv"')
+          return res.status(200).send(csvContent)
+        }
       }
 
       // Default JSON Report Analytics

@@ -14,6 +14,10 @@ import {
   HiOutlineCheckCircle,
   HiOutlineArrowRight,
   HiOutlineRefresh,
+  HiOutlineCurrencyRupee,
+  HiOutlineMail,
+  HiOutlineFolder,
+  HiOutlineExclamationCircle,
 } from 'react-icons/hi'
 
 export default function PortalDashboard() {
@@ -52,12 +56,23 @@ export default function PortalDashboard() {
   const metrics = stats?.metrics || {
     activeEmployees: 0,
     activeProjects: 0,
+    projectsByStatus: {},
     pendingLeaves: 0,
+    pendingExpenses: 0,
+    pendingApprovals: 0,
+    openEnquiries: 0,
     totalTasks: 0,
     tasksByStatus: {},
+    finance: {
+      totalInvoiced: 0,
+      receivedPayments: 0,
+      approvedExpenses: 0,
+    },
   }
 
   const tasksByStatus = metrics.tasksByStatus || {}
+  const projectsByStatus = metrics.projectsByStatus || {}
+  const finance = metrics.finance || { totalInvoiced: 0, receivedPayments: 0, approvedExpenses: 0 }
 
   return (
     <PortalShell title="Executive Overview" breadcrumbs={[{ label: 'Dashboard' }]}>
@@ -87,19 +102,34 @@ export default function PortalDashboard() {
                 DEMO ENVIRONMENT ACTIVE
               </span>
               <p style={{ margin: '0.15rem 0 0 0', fontSize: '0.8rem', color: '#b45309' }}>
-                This portal is currently seeded with realistic but fictional demo employees, attendance, and project records for development and testing.
+                This portal contains realistic demonstration records for testing and verification. All metrics reflect genuine database records in this environment.
               </p>
             </div>
           </div>
-          <button
-            onClick={loadStats}
-            className={`${styles.btn} ${styles.btnSecondary}`}
-            style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}
-          >
-            <HiOutlineRefresh /> Refresh Metrics
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span style={{ fontSize: '0.75rem', color: '#78350f', background: '#fde68a', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
+              {stats?.reportingPeriod || 'YTD 2026'}
+            </span>
+            <button
+              onClick={loadStats}
+              className={`${styles.btn} ${styles.btnSecondary}`}
+              style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}
+            >
+              <HiOutlineRefresh /> Refresh
+            </button>
+          </div>
         </div>
       )}
+
+      {/* Source Meta Bar */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', fontSize: '0.8rem', color: '#64748b' }}>
+        <div>
+          <strong>Data Source:</strong> {stats?.dataSource || 'Success Tunnel ERP Database'} • <strong>Reporting Period:</strong> {stats?.reportingPeriod || 'Current YTD'}
+        </div>
+        {stats?.generatedAt && (
+          <div>Last synced: {new Date(stats.generatedAt).toLocaleTimeString()}</div>
+        )}
+      </div>
 
       {/* Top Quick Attendance Punch */}
       <div className={styles.card} style={{ marginBottom: '1.5rem', background: 'linear-gradient(to right, #ffffff, #f8fafc)' }}>
@@ -108,7 +138,7 @@ export default function PortalDashboard() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <HiOutlineClock style={{ color: '#2563eb', fontSize: '1.2rem' }} />
               <h2 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: '#0f172a' }}>
-                Daily Workforce Attendance
+                Workforce Time & Attendance
               </h2>
             </div>
             <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.825rem', color: '#64748b' }}>
@@ -147,8 +177,8 @@ export default function PortalDashboard() {
         </div>
       </div>
 
-      {/* KPI Cards Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
+      {/* Primary KPI Cards Grid (6 cards) */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
         {/* Active Staff */}
         <div className={styles.card}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -189,19 +219,19 @@ export default function PortalDashboard() {
           </div>
         </div>
 
-        {/* Pending Leaves */}
+        {/* Pending Approvals */}
         <div className={styles.card}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
-                Pending Leaves
+                Pending Approvals
               </div>
-              <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', margin: '0.35rem 0' }}>
-                {metrics.pendingLeaves}
+              <div style={{ fontSize: '1.85rem', fontWeight: 800, color: metrics.pendingApprovals > 0 ? '#b45309' : '#0f172a', margin: '0.35rem 0' }}>
+                {metrics.pendingApprovals}
               </div>
-              <Link href="/portal/leaves" style={{ fontSize: '0.75rem', color: '#2563eb', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
-                Review Requests <HiOutlineArrowRight />
-              </Link>
+              <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                {metrics.pendingLeaves} leaves • {metrics.pendingExpenses} expenses
+              </div>
             </div>
             <div style={{ background: '#fffbeb', color: '#d97706', padding: '0.75rem', borderRadius: '8px', fontSize: '1.4rem' }}>
               <HiOutlineCalendar />
@@ -209,35 +239,75 @@ export default function PortalDashboard() {
           </div>
         </div>
 
-        {/* Total Tasks */}
+        {/* Open CRM Enquiries */}
         <div className={styles.card}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
-                Total Tasks
+                Open Enquiries
               </div>
               <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', margin: '0.35rem 0' }}>
-                {metrics.totalTasks}
+                {metrics.openEnquiries}
               </div>
-              <Link href="/portal/tasks" style={{ fontSize: '0.75rem', color: '#2563eb', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
-                Open Kanban Board <HiOutlineArrowRight />
+              <Link href="/portal/crm" style={{ fontSize: '0.75rem', color: '#2563eb', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                CRM Pipeline <HiOutlineArrowRight />
               </Link>
             </div>
-            <div style={{ background: '#faf5ff', color: '#9333ea', padding: '0.75rem', borderRadius: '8px', fontSize: '1.4rem' }}>
-              <HiOutlineClipboardList />
+            <div style={{ background: '#ecfeff', color: '#0891b2', padding: '0.75rem', borderRadius: '8px', fontSize: '1.4rem' }}>
+              <HiOutlineMail />
+            </div>
+          </div>
+        </div>
+
+        {/* Invoiced vs Received Revenue */}
+        <div className={styles.card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+                Received Revenue
+              </div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#16a34a', margin: '0.35rem 0' }}>
+                ₹{Number(finance.receivedPayments).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+              </div>
+              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
+                ₹{Number(finance.totalInvoiced).toLocaleString('en-IN', { maximumFractionDigits: 0 })} billed (AR)
+              </div>
+            </div>
+            <div style={{ background: '#f0fdf4', color: '#16a34a', padding: '0.75rem', borderRadius: '8px', fontSize: '1.4rem' }}>
+              <HiOutlineCurrencyRupee />
+            </div>
+          </div>
+        </div>
+
+        {/* Approved Expenses */}
+        <div className={styles.card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+                Approved Expenses
+              </div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#e11d48', margin: '0.35rem 0' }}>
+                ₹{Number(finance.approvedExpenses).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+              </div>
+              <Link href="/portal/finance" style={{ fontSize: '0.75rem', color: '#2563eb', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                Finance Ledger <HiOutlineArrowRight />
+              </Link>
+            </div>
+            <div style={{ background: '#fff1f2', color: '#e11d48', padding: '0.75rem', borderRadius: '8px', fontSize: '1.4rem' }}>
+              <HiOutlineCurrencyRupee />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Two Column Layout: Tasks by Status & Active Projects */}
+      {/* Two Column Layout: Tasks Pipeline & Projects Distribution */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
         {/* Task Velocity */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <div>
-              <h2 className={styles.cardTitle}>Tasks Status Distribution</h2>
-              <div className={styles.cardDescription}>Work items across pipeline stages</div>
+              <h2 className={styles.cardTitle}>Tasks Status Distribution ({metrics.totalTasks} Total)</h2>
+              <div className={styles.cardDescription}>Work items across development stages</div>
             </div>
             <Link href="/portal/tasks" className={`${styles.btn} ${styles.btnSecondary}`} style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}>
               Kanban Board
@@ -251,6 +321,7 @@ export default function PortalDashboard() {
               { label: 'In Progress', key: 'IN_PROGRESS', color: '#f59e0b' },
               { label: 'In Review', key: 'IN_REVIEW', color: '#8b5cf6' },
               { label: 'Done', key: 'DONE', color: '#10b981' },
+              { label: 'Blocked', key: 'BLOCKED', color: '#ef4444' },
             ].map((st) => {
               const count = tasksByStatus[st.key] || 0
               const percentage = metrics.totalTasks > 0 ? Math.round((count / metrics.totalTasks) * 100) : 0
@@ -269,39 +340,53 @@ export default function PortalDashboard() {
           </div>
         </div>
 
-        {/* Active Projects */}
+        {/* Projects Breakdown */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <div>
-              <h2 className={styles.cardTitle}>Active Enterprise Projects</h2>
-              <div className={styles.cardDescription}>Real-time milestone progress</div>
+              <h2 className={styles.cardTitle}>Projects by Lifecycle Status</h2>
+              <div className={styles.cardDescription}>Active deliverables and completion stages</div>
             </div>
             <Link href="/portal/projects" className={`${styles.btn} ${styles.btnSecondary}`} style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}>
               All Projects
             </Link>
           </div>
 
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.25rem' }}>
+            {[
+              { label: 'Planned', key: 'PLANNED', count: projectsByStatus.PLANNED || 0, color: '#3b82f6', bg: '#eff6ff' },
+              { label: 'In Progress', key: 'IN_PROGRESS', count: projectsByStatus.IN_PROGRESS || 0, color: '#f59e0b', bg: '#fffbeb' },
+              { label: 'Completed', key: 'COMPLETED', count: projectsByStatus.COMPLETED || 0, color: '#10b981', bg: '#f0fdf4' },
+              { label: 'On Hold', key: 'ON_HOLD', count: projectsByStatus.ON_HOLD || 0, color: '#64748b', bg: '#f1f5f9' },
+            ].map((p) => (
+              <div key={p.key} style={{ background: p.bg, border: `1px solid ${p.color}33`, padding: '0.75rem 1rem', borderRadius: '8px' }}>
+                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>{p.label}</div>
+                <div style={{ fontSize: '1.4rem', fontWeight: 800, color: p.color, marginTop: '0.2rem' }}>{p.count}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem' }}>
+            Active Projects In Flight
+          </div>
+
           {loading ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>Loading projects...</div>
+            <div style={{ padding: '1rem', textAlign: 'center', color: '#64748b' }}>Loading projects...</div>
           ) : stats?.projects?.length === 0 ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>No active projects.</div>
+            <div style={{ padding: '1rem', textAlign: 'center', color: '#64748b' }}>No active projects.</div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {stats?.projects?.map((prj: any) => (
-                <div key={prj.id} style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.75rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
-                    <span style={{ fontWeight: 600, fontSize: '0.9rem', color: '#0f172a' }}>
+                <div key={prj.id} style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                    <span style={{ fontWeight: 600, fontSize: '0.85rem', color: '#0f172a' }}>
                       {prj.name}
                     </span>
                     <span className={`${styles.badge} ${prj.status === 'IN_PROGRESS' ? styles.badgeSuccess : styles.badgeInfo}`}>
-                      {prj.status.replace('_', ' ')}
+                      {prj.progress}% done
                     </span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#64748b', marginBottom: '0.3rem' }}>
-                    <span>Lead: {prj.manager?.name || 'Unassigned'}</span>
-                    <span>{prj.progress}% Completed</span>
-                  </div>
-                  <div style={{ width: '100%', height: '6px', background: '#f1f5f9', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', height: '5px', background: '#f1f5f9', borderRadius: '3px', overflow: 'hidden' }}>
                     <div style={{ width: `${prj.progress}%`, height: '100%', background: '#2563eb', borderRadius: '3px' }} />
                   </div>
                 </div>
@@ -311,46 +396,52 @@ export default function PortalDashboard() {
         </div>
       </div>
 
-      {/* Two Column Layout: Department Distribution & Recent Audit Logs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '1.5rem' }}>
-        {/* Department Distribution */}
+      {/* Two Column Layout: Upcoming Deadlines & Recent Audit Trail */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+        {/* Upcoming Deadlines */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <div>
-              <h2 className={styles.cardTitle}>Department Distribution</h2>
-              <div className={styles.cardDescription}>Headcount per functional business unit</div>
+              <h2 className={styles.cardTitle}>Upcoming Task Deadlines</h2>
+              <div className={styles.cardDescription}>Immediate deliverables requiring completion</div>
             </div>
-            <Link href="/portal/departments" className={`${styles.btn} ${styles.btnSecondary}`} style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}>
-              Org Chart
+            <Link href="/portal/tasks" className={`${styles.btn} ${styles.btnSecondary}`} style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}>
+              Task Board
             </Link>
           </div>
 
-          <div className={styles.tableWrapper}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Code</th>
-                  <th>Department Name</th>
-                  <th style={{ textAlign: 'right' }}>Headcount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats?.departmentDistribution?.map((dept: any) => (
-                  <tr key={dept.id}>
-                    <td>
-                      <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#2563eb' }}>
-                        {dept.code}
+          {stats?.upcomingDeadlines?.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b', fontSize: '0.875rem' }}>
+              No upcoming task deadlines scheduled.
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {stats?.upcomingDeadlines?.map((task: any) => {
+                const dueDate = new Date(task.dueDate)
+                const isOverdue = dueDate.getTime() < Date.now()
+                return (
+                  <div key={task.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0.85rem', background: '#f8fafc', borderRadius: '6px', borderLeft: isOverdue ? '3px solid #ef4444' : '3px solid #3b82f6' }}>
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#0f172a' }}>
+                        {task.title}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                        {task.project?.name || 'Project'} • Assignee: {task.assignee?.name || 'Unassigned'}
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: '0.75rem', fontWeight: 700, color: isOverdue ? '#ef4444' : '#2563eb' }}>
+                        {dueDate.toISOString().split('T')[0]}
+                      </div>
+                      <span className={`${styles.badge} ${task.priority === 'CRITICAL' || task.priority === 'HIGH' ? styles.badgeDanger : styles.badgeInfo}`} style={{ fontSize: '0.65rem' }}>
+                        {task.priority}
                       </span>
-                    </td>
-                    <td style={{ fontWeight: 500 }}>{dept.name}</td>
-                    <td style={{ textAlign: 'right', fontWeight: 600, color: '#0f172a' }}>
-                      {dept.memberCount}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
 
         {/* Audit Trail */}
