@@ -66,9 +66,12 @@ async function runDemoQualityTests() {
     )
 
     const validEmailDomains = employees.every(
-      (e) => e.user.email.endsWith('@example.com') || e.user.email === 'admin@successtunnel.in'
+      (e) => e.user.email.endsWith('@successtunnel.in')
     )
-    assert(validEmailDomains, 'All demo employees use reserved example domains or authorized admin email')
+    assert(validEmailDomains, 'All employees use corporate @successtunnel.in email domain')
+
+    const panipatHQ = employees.some((e) => e.workLocation.includes('Panipat'))
+    assert(panipatHQ, 'Headquarters office location is maintained in Panipat, Haryana')
 
     const allHaveDepartments = employees.every((e) => e.user.departmentId !== null)
     assert(allHaveDepartments, 'Every employee is assigned to a valid department')

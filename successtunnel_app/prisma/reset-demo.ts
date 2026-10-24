@@ -84,13 +84,34 @@ async function resetDemo() {
   const deletedProfiles = await prisma.employeeProfile.deleteMany({ where: { isDemo: true } })
   console.log(`  - Deleted ${deletedProfiles.count} demo employee profiles`)
 
+  const demoStaffEmails = [
+    'priya.sharma@successtunnel.in',
+    'kavita.nair@successtunnel.in',
+    'rohit.verma@successtunnel.in',
+    'amit.kumar@successtunnel.in',
+    'pooja.mehta@successtunnel.in',
+    'siddharth.rao@successtunnel.in',
+    'neha.gupta@successtunnel.in',
+    'rajesh.menon@successtunnel.in',
+    'sneha.patel@successtunnel.in',
+    'manish.joshi@successtunnel.in',
+    'deepak.chawla@successtunnel.in',
+    'vikram.singh@successtunnel.in',
+    'rahul.iyer@successtunnel.in',
+    'ananya.deshmukh@successtunnel.in',
+    'arjun.kapoor@successtunnel.in',
+  ]
+
   const deletedUsers = await prisma.user.deleteMany({
     where: {
-      email: { endsWith: '@example.com' },
+      OR: [
+        { email: { in: demoStaffEmails } },
+        { email: { endsWith: '@example.com' } },
+      ],
       NOT: { email: 'admin@successtunnel.in' },
     },
   })
-  console.log(`  - Deleted ${deletedUsers.count} fictional demo users (@example.com)`)
+  console.log(`  - Deleted ${deletedUsers.count} fictional demo users (@successtunnel.in)`)
 
   console.log('\n✅ DEMO RESET COMPLETE: All demo data cleanly purged without affecting production entities.\n')
 }

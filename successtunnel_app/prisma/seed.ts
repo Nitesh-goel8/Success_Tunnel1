@@ -67,7 +67,7 @@ async function main() {
       phone: '+91 98765 43210',
       employeeCode: 'ST-DIR-001',
       designation: 'Managing Director & Principal Architect',
-      workLocation: 'Headquarters - New Delhi',
+      workLocation: 'Headquarters - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2024-01-15'),
@@ -75,28 +75,28 @@ async function main() {
     // HR & People
     {
       name: 'Priya Sharma',
-      email: 'priya.sharma@example.com',
+      email: 'priya.sharma@successtunnel.in',
       password: defaultPassword,
       role: 'hr_admin',
       departmentCode: 'HR',
       phone: '+91 98111 22334',
       employeeCode: 'ST-HR-101',
       designation: 'Senior HR Director',
-      workLocation: 'Headquarters - New Delhi',
+      workLocation: 'Headquarters - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2024-03-01'),
     },
     {
       name: 'Kavita Nair',
-      email: 'kavita.nair@example.com',
+      email: 'kavita.nair@successtunnel.in',
       password: defaultPassword,
       role: 'hr_admin',
       departmentCode: 'HR',
       phone: '+91 98111 88990',
       employeeCode: 'ST-HR-102',
       designation: 'Talent Acquisition & Culture Lead',
-      workLocation: 'Headquarters - New Delhi',
+      workLocation: 'Headquarters - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2025-02-10'),
@@ -104,21 +104,21 @@ async function main() {
     // Engineering & Technology
     {
       name: 'Rohit Verma',
-      email: 'rohit.verma@example.com',
+      email: 'rohit.verma@successtunnel.in',
       password: defaultPassword,
       role: 'project_manager',
       departmentCode: 'ENG',
       phone: '+91 98222 33445',
       employeeCode: 'ST-PM-201',
       designation: 'Engineering Lead & Principal Project Manager',
-      workLocation: 'Headquarters - New Delhi',
+      workLocation: 'Headquarters - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2024-06-15'),
     },
     {
       name: 'Amit Kumar',
-      email: 'amit.kumar@example.com',
+      email: 'amit.kumar@successtunnel.in',
       password: defaultPassword,
       role: 'employee',
       departmentCode: 'ENG',
@@ -132,21 +132,21 @@ async function main() {
     },
     {
       name: 'Pooja Mehta',
-      email: 'pooja.mehta@example.com',
+      email: 'pooja.mehta@successtunnel.in',
       password: defaultPassword,
       role: 'employee',
       departmentCode: 'ENG',
       phone: '+91 98444 99887',
       employeeCode: 'ST-DEV-402',
       designation: 'Frontend UI/UX Specialist',
-      workLocation: 'Headquarters - New Delhi',
+      workLocation: 'Headquarters - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2025-01-20'),
     },
     {
       name: 'Siddharth Rao',
-      email: 'siddharth.rao@example.com',
+      email: 'siddharth.rao@successtunnel.in',
       password: defaultPassword,
       role: 'employee',
       departmentCode: 'ENG',
@@ -160,14 +160,14 @@ async function main() {
     },
     {
       name: 'Neha Gupta',
-      email: 'neha.gupta@example.com',
+      email: 'neha.gupta@successtunnel.in',
       password: defaultPassword,
       role: 'employee',
       departmentCode: 'ENG',
       phone: '+91 98444 33445',
       employeeCode: 'ST-DEV-404',
       designation: 'QA Automation Engineer',
-      workLocation: 'Headquarters - New Delhi',
+      workLocation: 'Headquarters - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2025-04-05'),
@@ -175,14 +175,14 @@ async function main() {
     // Product & Design
     {
       name: 'Rajesh Menon',
-      email: 'rajesh.menon@example.com',
+      email: 'rajesh.menon@successtunnel.in',
       password: defaultPassword,
       role: 'employee',
       departmentCode: 'PRD',
       phone: '+91 98777 11223',
       employeeCode: 'ST-PRD-701',
       designation: 'Senior Product Designer & UI/UX Lead',
-      workLocation: 'Headquarters - New Delhi',
+      workLocation: 'Headquarters - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2024-07-01'),
@@ -190,42 +190,42 @@ async function main() {
     // Finance & Administration
     {
       name: 'Sneha Patel',
-      email: 'sneha.patel@example.com',
+      email: 'sneha.patel@successtunnel.in',
       password: defaultPassword,
       role: 'finance_admin',
       departmentCode: 'FIN',
       phone: '+91 98333 44556',
       employeeCode: 'ST-FIN-301',
       designation: 'Finance Controller & Tax Advisor',
-      workLocation: 'Corporate Tower - Gurugram',
+      workLocation: 'Corporate Office - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2024-04-12'),
     },
     {
       name: 'Manish Joshi',
-      email: 'manish.joshi@example.com',
+      email: 'manish.joshi@successtunnel.in',
       password: defaultPassword,
       role: 'finance_admin',
       departmentCode: 'FIN',
       phone: '+91 98333 77889',
       employeeCode: 'ST-FIN-302',
       designation: 'Senior Accountant & Payroll Analyst',
-      workLocation: 'Corporate Tower - Gurugram',
+      workLocation: 'Corporate Office - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2025-03-01'),
     },
     {
       name: 'Deepak Chawla',
-      email: 'deepak.chawla@example.com',
+      email: 'deepak.chawla@successtunnel.in',
       password: defaultPassword,
       role: 'employee',
       departmentCode: 'FIN',
       phone: '+91 98333 22110',
       employeeCode: 'ST-FIN-303',
       designation: 'Audit & Compliance Associate',
-      workLocation: 'Corporate Tower - Gurugram',
+      workLocation: 'Corporate Office - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2025-07-15'),
@@ -233,28 +233,28 @@ async function main() {
     // Business Operations
     {
       name: 'Vikram Singh',
-      email: 'vikram.singh@example.com',
+      email: 'vikram.singh@successtunnel.in',
       password: defaultPassword,
       role: 'employee',
       departmentCode: 'OPS',
       phone: '+91 98555 66778',
       employeeCode: 'ST-OPS-501',
       designation: 'Business Operations Specialist',
-      workLocation: 'Headquarters - New Delhi',
+      workLocation: 'Headquarters - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2024-09-01'),
     },
     {
       name: 'Rahul Iyer',
-      email: 'rahul.iyer@example.com',
+      email: 'rahul.iyer@successtunnel.in',
       password: defaultPassword,
       role: 'employee',
       departmentCode: 'OPS',
       phone: '+91 98555 99001',
       employeeCode: 'ST-OPS-502',
       designation: 'Workspace & Facility Coordinator',
-      workLocation: 'Headquarters - New Delhi',
+      workLocation: 'Headquarters - Panipat, Haryana',
       employmentType: 'Full-time',
       status: 'ACTIVE',
       joiningDate: new Date('2025-05-18'),
@@ -262,7 +262,7 @@ async function main() {
     // Sales and Customer Success
     {
       name: 'Ananya Deshmukh',
-      email: 'ananya.deshmukh@example.com',
+      email: 'ananya.deshmukh@successtunnel.in',
       password: defaultPassword,
       role: 'employee',
       departmentCode: 'SLS',
@@ -276,7 +276,7 @@ async function main() {
     },
     {
       name: 'Arjun Kapoor',
-      email: 'arjun.kapoor@example.com',
+      email: 'arjun.kapoor@successtunnel.in',
       password: defaultPassword,
       role: 'project_manager',
       departmentCode: 'SLS',
@@ -344,11 +344,11 @@ async function main() {
 
   // Setup Organizational Reporting Hierarchy (managerId links between EmployeeProfiles)
   const adminProfile = seededProfiles['admin@successtunnel.in']
-  const priyaProfile = seededProfiles['priya.sharma@example.com']
-  const rohitProfile = seededProfiles['rohit.verma@example.com']
-  const snehaProfile = seededProfiles['sneha.patel@example.com']
-  const vikramProfile = seededProfiles['vikram.singh@example.com']
-  const arjunProfile = seededProfiles['arjun.kapoor@example.com']
+  const priyaProfile = seededProfiles['priya.sharma@successtunnel.in']
+  const rohitProfile = seededProfiles['rohit.verma@successtunnel.in']
+  const snehaProfile = seededProfiles['sneha.patel@successtunnel.in']
+  const vikramProfile = seededProfiles['vikram.singh@successtunnel.in']
+  const arjunProfile = seededProfiles['arjun.kapoor@successtunnel.in']
 
   // Department Heads report to Managing Director
   const deptHeads = [priyaProfile, rohitProfile, snehaProfile, vikramProfile, arjunProfile]
@@ -363,11 +363,11 @@ async function main() {
 
   // Engineering & Product Team report to Rohit Verma
   const engTeam = [
-    seededProfiles['amit.kumar@example.com'],
-    seededProfiles['pooja.mehta@example.com'],
-    seededProfiles['siddharth.rao@example.com'],
-    seededProfiles['neha.gupta@example.com'],
-    seededProfiles['rajesh.menon@example.com'],
+    seededProfiles['amit.kumar@successtunnel.in'],
+    seededProfiles['pooja.mehta@successtunnel.in'],
+    seededProfiles['siddharth.rao@successtunnel.in'],
+    seededProfiles['neha.gupta@successtunnel.in'],
+    seededProfiles['rajesh.menon@successtunnel.in'],
   ]
   for (const emp of engTeam) {
     if (emp && rohitProfile) {
@@ -380,8 +380,8 @@ async function main() {
 
   // Finance Team report to Sneha Patel
   const finTeam = [
-    seededProfiles['manish.joshi@example.com'],
-    seededProfiles['deepak.chawla@example.com'],
+    seededProfiles['manish.joshi@successtunnel.in'],
+    seededProfiles['deepak.chawla@successtunnel.in'],
   ]
   for (const emp of finTeam) {
     if (emp && snehaProfile) {
@@ -393,50 +393,50 @@ async function main() {
   }
 
   // HR Team report to Priya Sharma
-  if (seededProfiles['kavita.nair@example.com'] && priyaProfile) {
+  if (seededProfiles['kavita.nair@successtunnel.in'] && priyaProfile) {
     await prisma.employeeProfile.update({
-      where: { id: seededProfiles['kavita.nair@example.com'].id },
+      where: { id: seededProfiles['kavita.nair@successtunnel.in'].id },
       data: { managerId: priyaProfile.id },
     })
   }
 
   // Operations Team report to Vikram Singh
-  if (seededProfiles['rahul.iyer@example.com'] && vikramProfile) {
+  if (seededProfiles['rahul.iyer@successtunnel.in'] && vikramProfile) {
     await prisma.employeeProfile.update({
-      where: { id: seededProfiles['rahul.iyer@example.com'].id },
+      where: { id: seededProfiles['rahul.iyer@successtunnel.in'].id },
       data: { managerId: vikramProfile.id },
     })
   }
 
   // Sales Team report to Arjun Kapoor
-  if (seededProfiles['ananya.deshmukh@example.com'] && arjunProfile) {
+  if (seededProfiles['ananya.deshmukh@successtunnel.in'] && arjunProfile) {
     await prisma.employeeProfile.update({
-      where: { id: seededProfiles['ananya.deshmukh@example.com'].id },
+      where: { id: seededProfiles['ananya.deshmukh@successtunnel.in'].id },
       data: { managerId: arjunProfile.id },
     })
   }
 
   // Assign department head references
-  if (departments['HR'] && seededUsers['priya.sharma@example.com']) {
-    await prisma.department.update({ where: { id: departments['HR'].id }, data: { headId: seededUsers['priya.sharma@example.com'].id } })
+  if (departments['HR'] && seededUsers['priya.sharma@successtunnel.in']) {
+    await prisma.department.update({ where: { id: departments['HR'].id }, data: { headId: seededUsers['priya.sharma@successtunnel.in'].id } })
   }
-  if (departments['FIN'] && seededUsers['sneha.patel@example.com']) {
-    await prisma.department.update({ where: { id: departments['FIN'].id }, data: { headId: seededUsers['sneha.patel@example.com'].id } })
+  if (departments['FIN'] && seededUsers['sneha.patel@successtunnel.in']) {
+    await prisma.department.update({ where: { id: departments['FIN'].id }, data: { headId: seededUsers['sneha.patel@successtunnel.in'].id } })
   }
-  if (departments['ENG'] && seededUsers['rohit.verma@example.com']) {
-    await prisma.department.update({ where: { id: departments['ENG'].id }, data: { headId: seededUsers['rohit.verma@example.com'].id } })
+  if (departments['ENG'] && seededUsers['rohit.verma@successtunnel.in']) {
+    await prisma.department.update({ where: { id: departments['ENG'].id }, data: { headId: seededUsers['rohit.verma@successtunnel.in'].id } })
   }
-  if (departments['PRD'] && seededUsers['rajesh.menon@example.com']) {
-    await prisma.department.update({ where: { id: departments['PRD'].id }, data: { headId: seededUsers['rajesh.menon@example.com'].id } })
+  if (departments['PRD'] && seededUsers['rajesh.menon@successtunnel.in']) {
+    await prisma.department.update({ where: { id: departments['PRD'].id }, data: { headId: seededUsers['rajesh.menon@successtunnel.in'].id } })
   }
-  if (departments['OPS'] && seededUsers['vikram.singh@example.com']) {
-    await prisma.department.update({ where: { id: departments['OPS'].id }, data: { headId: seededUsers['vikram.singh@example.com'].id } })
+  if (departments['OPS'] && seededUsers['vikram.singh@successtunnel.in']) {
+    await prisma.department.update({ where: { id: departments['OPS'].id }, data: { headId: seededUsers['vikram.singh@successtunnel.in'].id } })
   }
-  if (departments['SLS'] && seededUsers['arjun.kapoor@example.com']) {
-    await prisma.department.update({ where: { id: departments['SLS'].id }, data: { headId: seededUsers['arjun.kapoor@example.com'].id } })
+  if (departments['SLS'] && seededUsers['arjun.kapoor@successtunnel.in']) {
+    await prisma.department.update({ where: { id: departments['SLS'].id }, data: { headId: seededUsers['arjun.kapoor@successtunnel.in'].id } })
   }
-  if (departments['CNS'] && seededUsers['arjun.kapoor@example.com']) {
-    await prisma.department.update({ where: { id: departments['CNS'].id }, data: { headId: seededUsers['arjun.kapoor@example.com'].id } })
+  if (departments['CNS'] && seededUsers['arjun.kapoor@successtunnel.in']) {
+    await prisma.department.update({ where: { id: departments['CNS'].id }, data: { headId: seededUsers['arjun.kapoor@successtunnel.in'].id } })
   }
 
   // ------------------------------------------------------------------
@@ -470,19 +470,19 @@ async function main() {
 
   const leaveData = [
     {
-      userEmail: 'amit.kumar@example.com',
+      userEmail: 'amit.kumar@successtunnel.in',
       leaveType: 'ANNUAL',
       startDate: dAgo(65),
       endDate: dAgo(63),
       totalDays: 3,
       reason: 'Annual family festival & travel back to hometown',
       status: 'APPROVED',
-      reviewedByEmail: 'priya.sharma@example.com',
+      reviewedByEmail: 'priya.sharma@successtunnel.in',
       reviewReason: 'Approved. Deliverables delegated to Siddharth.',
       reviewedAt: dAgo(67),
     },
     {
-      userEmail: 'sneha.patel@example.com',
+      userEmail: 'sneha.patel@successtunnel.in',
       leaveType: 'CASUAL',
       startDate: dAgo(50),
       endDate: dAgo(49),
@@ -494,19 +494,19 @@ async function main() {
       reviewedAt: dAgo(52),
     },
     {
-      userEmail: 'vikram.singh@example.com',
+      userEmail: 'vikram.singh@successtunnel.in',
       leaveType: 'SICK',
       startDate: dAgo(35),
       endDate: dAgo(35),
       totalDays: 1,
       reason: 'Medical recovery following outpatient surgery',
       status: 'APPROVED',
-      reviewedByEmail: 'priya.sharma@example.com',
+      reviewedByEmail: 'priya.sharma@successtunnel.in',
       reviewReason: 'Approved. Rest well.',
       reviewedAt: dAgo(35),
     },
     {
-      userEmail: 'rohit.verma@example.com',
+      userEmail: 'rohit.verma@successtunnel.in',
       leaveType: 'ANNUAL',
       startDate: dAgo(20),
       endDate: dAgo(17),
@@ -518,31 +518,31 @@ async function main() {
       reviewedAt: dAgo(23),
     },
     {
-      userEmail: 'pooja.mehta@example.com',
+      userEmail: 'pooja.mehta@successtunnel.in',
       leaveType: 'SICK',
       startDate: dAgo(12),
       endDate: dAgo(11),
       totalDays: 2,
       reason: 'Prescribed medical rest and recuperation',
       status: 'APPROVED',
-      reviewedByEmail: 'priya.sharma@example.com',
+      reviewedByEmail: 'priya.sharma@successtunnel.in',
       reviewReason: 'Approved. Medical certificate noted on file.',
       reviewedAt: dAgo(12),
     },
     {
-      userEmail: 'amit.kumar@example.com',
+      userEmail: 'amit.kumar@successtunnel.in',
       leaveType: 'ANNUAL',
       startDate: dAgo(5),
       endDate: dAgo(2),
       totalDays: 4,
       reason: 'Personal alumni reunion trip',
       status: 'REJECTED',
-      reviewedByEmail: 'rohit.verma@example.com',
+      reviewedByEmail: 'rohit.verma@successtunnel.in',
       reviewReason: 'Critical end-of-sprint milestone release scheduled that week.',
       reviewedAt: dAgo(7),
     },
     {
-      userEmail: 'deepak.chawla@example.com',
+      userEmail: 'deepak.chawla@successtunnel.in',
       leaveType: 'SICK',
       startDate: dAgo(1),
       endDate: now,
@@ -554,7 +554,7 @@ async function main() {
       reviewedAt: null,
     },
     {
-      userEmail: 'siddharth.rao@example.com',
+      userEmail: 'siddharth.rao@successtunnel.in',
       leaveType: 'CASUAL',
       startDate: dAhead(4),
       endDate: dAhead(6),
@@ -608,21 +608,21 @@ async function main() {
   console.log('Step 5/11: Generating dynamic 90-day attendance punch records...')
 
   const attendanceEmployees = [
-    seededUsers['amit.kumar@example.com'],
-    seededUsers['pooja.mehta@example.com'],
-    seededUsers['siddharth.rao@example.com'],
-    seededUsers['neha.gupta@example.com'],
-    seededUsers['rajesh.menon@example.com'],
-    seededUsers['rohit.verma@example.com'],
-    seededUsers['sneha.patel@example.com'],
-    seededUsers['manish.joshi@example.com'],
-    seededUsers['deepak.chawla@example.com'],
-    seededUsers['priya.sharma@example.com'],
-    seededUsers['kavita.nair@example.com'],
-    seededUsers['vikram.singh@example.com'],
-    seededUsers['rahul.iyer@example.com'],
-    seededUsers['ananya.deshmukh@example.com'],
-    seededUsers['arjun.kapoor@example.com'],
+    seededUsers['amit.kumar@successtunnel.in'],
+    seededUsers['pooja.mehta@successtunnel.in'],
+    seededUsers['siddharth.rao@successtunnel.in'],
+    seededUsers['neha.gupta@successtunnel.in'],
+    seededUsers['rajesh.menon@successtunnel.in'],
+    seededUsers['rohit.verma@successtunnel.in'],
+    seededUsers['sneha.patel@successtunnel.in'],
+    seededUsers['manish.joshi@successtunnel.in'],
+    seededUsers['deepak.chawla@successtunnel.in'],
+    seededUsers['priya.sharma@successtunnel.in'],
+    seededUsers['kavita.nair@successtunnel.in'],
+    seededUsers['vikram.singh@successtunnel.in'],
+    seededUsers['rahul.iyer@successtunnel.in'],
+    seededUsers['ananya.deshmukh@successtunnel.in'],
+    seededUsers['arjun.kapoor@successtunnel.in'],
   ].filter(Boolean)
 
   let attendanceCount = 0
@@ -706,7 +706,7 @@ async function main() {
             notes: 'Regularized punch approved by HR.',
             correctionRequested: false,
             correctionReason: 'Biometric card re-scanned and approved.',
-            correctionApprovedBy: seededUsers['priya.sharma@example.com']?.id,
+            correctionApprovedBy: seededUsers['priya.sharma@successtunnel.in']?.id,
             isDemo: true,
           },
           create: {
@@ -719,7 +719,7 @@ async function main() {
             notes: 'Regularized punch approved by HR.',
             correctionRequested: false,
             correctionReason: 'Biometric card re-scanned and approved.',
-            correctionApprovedBy: seededUsers['priya.sharma@example.com']?.id,
+            correctionApprovedBy: seededUsers['priya.sharma@successtunnel.in']?.id,
             isDemo: true,
           },
         })
@@ -830,10 +830,10 @@ async function main() {
   // 6. Seed 5 Fictional Projects
   // ------------------------------------------------------------------
   console.log('Step 6/11: Seeding 5 enterprise projects representing key business functions...')
-  const pmUser = seededUsers['rohit.verma@example.com']
-  const cnsLead = seededUsers['arjun.kapoor@example.com']
-  const opsUser = seededUsers['vikram.singh@example.com']
-  const finLead = seededUsers['sneha.patel@example.com']
+  const pmUser = seededUsers['rohit.verma@successtunnel.in']
+  const cnsLead = seededUsers['arjun.kapoor@successtunnel.in']
+  const opsUser = seededUsers['vikram.singh@successtunnel.in']
+  const finLead = seededUsers['sneha.patel@successtunnel.in']
 
   const demoProjects = [
     {
@@ -945,15 +945,15 @@ async function main() {
   // ------------------------------------------------------------------
   console.log('Step 7/11: Seeding 85 realistic tasks with full Kanban state distribution...')
 
-  const devAmit = seededUsers['amit.kumar@example.com']
-  const devPooja = seededUsers['pooja.mehta@example.com']
-  const devSid = seededUsers['siddharth.rao@example.com']
-  const qaNeha = seededUsers['neha.gupta@example.com']
-  const desRajesh = seededUsers['rajesh.menon@example.com']
-  const finManish = seededUsers['manish.joshi@example.com']
-  const finDeepak = seededUsers['deepak.chawla@example.com']
-  const opsRahul = seededUsers['rahul.iyer@example.com']
-  const slsAnanya = seededUsers['ananya.deshmukh@example.com']
+  const devAmit = seededUsers['amit.kumar@successtunnel.in']
+  const devPooja = seededUsers['pooja.mehta@successtunnel.in']
+  const devSid = seededUsers['siddharth.rao@successtunnel.in']
+  const qaNeha = seededUsers['neha.gupta@successtunnel.in']
+  const desRajesh = seededUsers['rajesh.menon@successtunnel.in']
+  const finManish = seededUsers['manish.joshi@successtunnel.in']
+  const finDeepak = seededUsers['deepak.chawla@successtunnel.in']
+  const opsRahul = seededUsers['rahul.iyer@successtunnel.in']
+  const slsAnanya = seededUsers['ananya.deshmukh@successtunnel.in']
 
   // Associate team members with projects
   const projectTeams = [
@@ -2066,62 +2066,62 @@ async function main() {
   console.log('Step 8/11: Seeding corporate expense ledger...')
   const expenseData = [
     {
-      userEmail: 'siddharth.rao@example.com',
+      userEmail: 'siddharth.rao@successtunnel.in',
       projectCode: 'ST-PRJ-2026-01',
       category: 'SOFTWARE',
       amount: 14500.0,
       description: 'Monthly cloud hosting servers & PostgreSQL database infrastructure',
       status: 'APPROVED',
-      reviewedByEmail: 'sneha.patel@example.com',
+      reviewedByEmail: 'sneha.patel@successtunnel.in',
       reviewNotes: 'Verified against AWS infrastructure invoice.',
       date: dAgo(60),
     },
     {
-      userEmail: 'pooja.mehta@example.com',
+      userEmail: 'pooja.mehta@successtunnel.in',
       projectCode: 'ST-PRJ-2026-01',
       category: 'SOFTWARE',
       amount: 4200.0,
       description: 'Figma Enterprise UI design seat subscription',
       status: 'APPROVED',
-      reviewedByEmail: 'sneha.patel@example.com',
+      reviewedByEmail: 'sneha.patel@successtunnel.in',
       reviewNotes: 'Approved as per approved department design budget.',
       date: dAgo(45),
     },
     {
-      userEmail: 'arjun.kapoor@example.com',
+      userEmail: 'arjun.kapoor@successtunnel.in',
       projectCode: 'ST-PRJ-2026-02',
       category: 'CLIENT_ENTERTAINMENT',
       amount: 8650.0,
       description: 'Executive luncheon with prospective enterprise client steering committee in Mumbai',
       status: 'APPROVED',
-      reviewedByEmail: 'sneha.patel@example.com',
+      reviewedByEmail: 'sneha.patel@successtunnel.in',
       reviewNotes: 'Client dinner receipt submitted and verified.',
       date: dAgo(30),
     },
     {
-      userEmail: 'amit.kumar@example.com',
+      userEmail: 'amit.kumar@successtunnel.in',
       projectCode: 'ST-PRJ-2026-01',
       category: 'HARDWARE',
       amount: 18900.0,
       description: 'Dual 27-inch 4K developer monitors for remote engineering workstation',
       status: 'APPROVED',
-      reviewedByEmail: 'sneha.patel@example.com',
+      reviewedByEmail: 'sneha.patel@successtunnel.in',
       reviewNotes: 'Approved under remote engineering workstation policy.',
       date: dAgo(22),
     },
     {
-      userEmail: 'neha.gupta@example.com',
+      userEmail: 'neha.gupta@successtunnel.in',
       projectCode: 'ST-PRJ-2026-05',
       category: 'TRAINING',
       amount: 25000.0,
       description: 'ISO 27001 Lead Auditor examination fee and certification materials',
       status: 'APPROVED',
-      reviewedByEmail: 'sneha.patel@example.com',
+      reviewedByEmail: 'sneha.patel@successtunnel.in',
       reviewNotes: 'Authorized under company professional development fund.',
       date: dAgo(15),
     },
     {
-      userEmail: 'vikram.singh@example.com',
+      userEmail: 'vikram.singh@successtunnel.in',
       projectCode: 'ST-PRJ-2026-03',
       category: 'OFFICE_SUPPLIES',
       amount: 12400.0,
@@ -2132,7 +2132,7 @@ async function main() {
       date: dAgo(6),
     },
     {
-      userEmail: 'ananya.deshmukh@example.com',
+      userEmail: 'ananya.deshmukh@successtunnel.in',
       projectCode: 'ST-PRJ-2026-02',
       category: 'TRAVEL',
       amount: 7800.0,
@@ -2179,7 +2179,7 @@ async function main() {
       customerCode: 'ST-CUST-1001',
       name: 'TechNova Enterprise Solutions Pvt Ltd',
       company: 'TechNova Enterprise Solutions Pvt Ltd',
-      email: 'procurement@example.com',
+      email: 'procurement@technova.in',
       phone: '+91 11 4567 8901',
       address: 'DLF Cyber City, Tower 10B, 8th Floor',
       city: 'Gurugram',
@@ -2192,7 +2192,7 @@ async function main() {
       customerCode: 'ST-CUST-1002',
       name: 'Apex Global Logistics Ltd',
       company: 'Apex Global Logistics Ltd',
-      email: 'operations@example.com',
+      email: 'operations@apexlogistics.in',
       phone: '+91 22 2890 1234',
       address: 'Andheri East Commercial Complex, 4th Floor',
       city: 'Mumbai',
@@ -2205,7 +2205,7 @@ async function main() {
       customerCode: 'ST-CUST-1003',
       name: 'Zenith Retail & Supermarkets LLP',
       company: 'Zenith Retail & Supermarkets LLP',
-      email: 'finance@example.com',
+      email: 'finance@zenithretail.in',
       phone: '+91 80 3456 7890',
       address: 'Koramangala 5th Block, 100 Feet Road',
       city: 'Bengaluru',
@@ -2218,7 +2218,7 @@ async function main() {
       customerCode: 'ST-CUST-1004',
       name: 'Starlight Healthcare Diagnostics',
       company: 'Starlight Healthcare Diagnostics',
-      email: 'partnerships@example.com',
+      email: 'partnerships@starlighthealth.in',
       phone: '+91 40 4567 8912',
       address: 'HITEC City, Phase 2, Mindspace',
       city: 'Hyderabad',
@@ -2231,7 +2231,7 @@ async function main() {
       customerCode: 'ST-CUST-1005',
       name: 'BlueWave Financial Services',
       company: 'BlueWave Financial Services',
-      email: 'compliance@example.com',
+      email: 'compliance@bluewave.in',
       phone: '+91 11 2345 6789',
       address: 'Barakhamba Road, Connaught Place',
       city: 'New Delhi',
@@ -2244,7 +2244,7 @@ async function main() {
       customerCode: 'ST-CUST-1006',
       name: 'Vanguard Manufacturing Corp',
       company: 'Vanguard Manufacturing Corp',
-      email: 'tax@example.com',
+      email: 'tax@vanguardcorp.in',
       phone: '+91 20 6789 0123',
       address: 'Bhosari Industrial Estate, MIDC',
       city: 'Pune',
@@ -2272,126 +2272,126 @@ async function main() {
       title: 'Enterprise ERP Modernization & HR Integration',
       customerCode: 'ST-CUST-1001',
       contactName: 'Vikramaditya Sen',
-      contactEmail: 'vikram.sen@example.com',
+      contactEmail: 'vikram.sen@technova.in',
       contactPhone: '+91 98111 55667',
       company: 'TechNova Enterprise Solutions Pvt Ltd',
       source: 'DIRECT',
       status: 'WON',
       priority: 'HIGH',
       estimatedValue: 480000.0,
-      assignedEmail: 'arjun.kapoor@example.com',
+      assignedEmail: 'arjun.kapoor@successtunnel.in',
     },
     {
       leadCode: 'ST-LEAD-2026-002',
       title: 'GST Return Automation & ITC Reconciliation',
       customerCode: 'ST-CUST-1002',
       contactName: 'Meenakshi Sundaram',
-      contactEmail: 'meenakshi.s@example.com',
+      contactEmail: 'meenakshi.s@apexlogistics.in',
       contactPhone: '+91 98222 66778',
       company: 'Apex Global Logistics Ltd',
       source: 'REFERRAL',
       status: 'WON',
       priority: 'HIGH',
       estimatedValue: 340000.0,
-      assignedEmail: 'arjun.kapoor@example.com',
+      assignedEmail: 'arjun.kapoor@successtunnel.in',
     },
     {
       leadCode: 'ST-LEAD-2026-003',
       title: 'Multi-Location Managed Coworking Workstations',
       customerCode: 'ST-CUST-1003',
       contactName: 'Harish Varma',
-      contactEmail: 'harish.varma@example.com',
+      contactEmail: 'harish.varma@zenithretail.in',
       contactPhone: '+91 98333 77889',
       company: 'Zenith Retail & Supermarkets LLP',
       source: 'WEBSITE_ENQUIRY',
       status: 'WON',
       priority: 'MEDIUM',
       estimatedValue: 240000.0,
-      assignedEmail: 'ananya.deshmukh@example.com',
+      assignedEmail: 'ananya.deshmukh@successtunnel.in',
     },
     {
       leadCode: 'ST-LEAD-2026-004',
       title: 'Healthcare Diagnostic Data Compliance & ISO 27001 Prep',
       customerCode: 'ST-CUST-1004',
       contactName: 'Dr. Sunita Reddy',
-      contactEmail: 'sunita.reddy@example.com',
+      contactEmail: 'sunita.reddy@starlighthealth.in',
       contactPhone: '+91 98444 88990',
       company: 'Starlight Healthcare Diagnostics',
       source: 'WEBSITE_ENQUIRY',
       status: 'PROPOSAL_SENT',
       priority: 'HIGH',
       estimatedValue: 310000.0,
-      assignedEmail: 'arjun.kapoor@example.com',
+      assignedEmail: 'arjun.kapoor@successtunnel.in',
     },
     {
       leadCode: 'ST-LEAD-2026-005',
       title: 'Statutory Financial Audit Automation Suite',
       customerCode: 'ST-CUST-1005',
       contactName: 'Aditya Birla',
-      contactEmail: 'aditya.birla@example.com',
+      contactEmail: 'aditya.birla@bluewave.in',
       contactPhone: '+91 98555 11223',
       company: 'BlueWave Financial Services',
       source: 'REFERRAL',
       status: 'QUALIFIED',
       priority: 'HIGH',
       estimatedValue: 280000.0,
-      assignedEmail: 'ananya.deshmukh@example.com',
+      assignedEmail: 'ananya.deshmukh@successtunnel.in',
     },
     {
       leadCode: 'ST-LEAD-2026-006',
       title: 'Automotive Factory E-Invoicing & Supply Chain Tax',
       customerCode: 'ST-CUST-1006',
       contactName: 'Naveen Deshpande',
-      contactEmail: 'naveen.d@example.com',
+      contactEmail: 'naveen.d@vanguardcorp.in',
       contactPhone: '+91 98666 22334',
       company: 'Vanguard Manufacturing Corp',
       source: 'COLD_OUTREACH',
       status: 'CONTACTED',
       priority: 'MEDIUM',
       estimatedValue: 195000.0,
-      assignedEmail: 'ananya.deshmukh@example.com',
+      assignedEmail: 'ananya.deshmukh@successtunnel.in',
     },
     {
       leadCode: 'ST-LEAD-2026-007',
       title: 'Cloud Infrastructure Security Hardening Assessment',
       customerCode: null,
       contactName: 'Rohan Mehra',
-      contactEmail: 'rohan.mehra@example.com',
+      contactEmail: 'rohan.mehra@kryptoncyber.in',
       contactPhone: '+91 98777 33445',
       company: 'Krypton Cyberworks',
       source: 'WEBSITE_ENQUIRY',
       status: 'NEW',
       priority: 'HIGH',
       estimatedValue: 150000.0,
-      assignedEmail: 'arjun.kapoor@example.com',
+      assignedEmail: 'arjun.kapoor@successtunnel.in',
     },
     {
       leadCode: 'ST-LEAD-2026-008',
       title: 'Trademark Registration & Brand Identity Protection',
       customerCode: null,
       contactName: 'Shalini Nambiar',
-      contactEmail: 'shalini.n@example.com',
+      contactEmail: 'shalini.n@urbanbloom.in',
       contactPhone: '+91 98888 44556',
       company: 'Urban Bloom Organics',
       source: 'WEBSITE_ENQUIRY',
       status: 'NEW',
       priority: 'LOW',
       estimatedValue: 45000.0,
-      assignedEmail: 'ananya.deshmukh@example.com',
+      assignedEmail: 'ananya.deshmukh@successtunnel.in',
     },
     {
       leadCode: 'ST-LEAD-2026-009',
       title: 'MSME Business Incorporation & Compliance Pack',
       customerCode: null,
       contactName: 'Gaurav Singhal',
-      contactEmail: 'gaurav.s@example.com',
+      contactEmail: 'gaurav.s@singhalrobotics.in',
       contactPhone: '+91 98999 55667',
       company: 'Singhal Robotics & Automation',
       source: 'WEBSITE_ENQUIRY',
       status: 'LOST',
       priority: 'LOW',
       estimatedValue: 35000.0,
-      assignedEmail: 'ananya.deshmukh@example.com',
+      assignedEmail: 'ananya.deshmukh@successtunnel.in',
     },
   ]
 

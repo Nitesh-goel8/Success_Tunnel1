@@ -71,7 +71,7 @@ model EmployeeProfile {
   user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   employeeCode     String           @unique // e.g. ST-EMP-101
   designation      String
-  workLocation     String           @default("Headquarters - Delhi NCR")
+  workLocation     String           @default("Headquarters - Panipat, Haryana")
   employmentType   String           @default("Full-time") // Full-time, Part-time, Contract, Intern
   joiningDate      DateTime         @default(now())
   emergencyContact String?

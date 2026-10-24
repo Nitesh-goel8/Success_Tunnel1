@@ -60,9 +60,9 @@ export default function Invoice({ payment }: InvoiceProps) {
               SUCCESS<span style={{ color: '#165df5' }}>TUNNEL</span>
             </h1>
             <p style={{ margin: '8px 0 0', fontSize: '0.88rem', color: '#64748b', lineHeight: 1.5 }}>
-              Plot 45, Corporate Sector,<br />
-              New Delhi, Delhi 110001<br />
-              support@successtunnel.in | +91 98765 43210
+              First Floor, Sudarshan Tower, Tau Devi Lal Complex,<br />
+              Behind Hive Hotel, Panipat 132103, Haryana, India<br />
+              support@successtunnel.in | +91 89507 71205
             </p>
           </div>
           <div style={{ textAlign: 'right' }}>
