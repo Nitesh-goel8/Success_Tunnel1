@@ -11,82 +11,123 @@ import { sampleServices } from '../lib/sampleData'
 import { useSiteSettings } from '../components/SiteSettingsProvider'
 import { toTelHref, toWhatsAppHref } from '../lib/siteSettings'
 import {
-  HiShieldCheck, HiGlobeAlt, HiUsers, HiStar,
+  HiShieldCheck, HiGlobeAlt, HiUsers,
   HiBriefcase, HiChartBar, HiAcademicCap, HiTrendingUp, HiOfficeBuilding, HiKey,
-  HiLocationMarker, HiPhone, HiMail, HiClock, HiChatAlt2, HiCheckCircle, HiArrowRight,
+  HiLocationMarker, HiPhone, HiMail, HiClock, HiCheckCircle, HiArrowRight,
 } from 'react-icons/hi'
 import { FaWhatsapp, FaRocket, FaIndustry, FaStore, FaUniversity, FaTools } from 'react-icons/fa'
 import { MdHealthAndSafety } from 'react-icons/md'
 
 const coreServices = [
-  { title: 'Consultancy', slug: 'consultancy', icon: '💼', excerpt: 'Strategic planning, corporate compliance, and tax advisory for scaling enterprises.' },
-  { title: 'Finance', slug: 'finance', icon: '📊', excerpt: 'Financial restructuring, investment planning, and capital procurement.' },
-  { title: 'Education', slug: 'education', icon: '🎓', excerpt: 'Corporate training programs, notes, and professional skill development.' },
-  { title: 'Investment', slug: 'investment', icon: '📈', excerpt: 'Disciplined portfolio allocation and capital preservation advisory.' },
-  { title: 'Real Estate', slug: 'real-estate', icon: '🏢', excerpt: 'Property acquisition, commercial portfolio planning, and advisory.' },
-  { title: 'Rental Space', slug: 'rental-space', icon: '🔑', excerpt: 'Flexible corporate workspace and managed office solutions.' },
+  {
+    title: 'Corporate Consultancy',
+    slug: 'consultancy',
+    icon: <HiBriefcase size={26} />,
+    excerpt: 'Comprehensive statutory compliance, corporate restructuring, income tax filings, GST representation, and MCA secretarial governance.',
+    tags: ['Income Tax Filings', 'GST Representation', 'MCA Governance', 'Entity Incorporation']
+  },
+  {
+    title: 'Corporate Finance',
+    slug: 'finance',
+    icon: <HiChartBar size={26} />,
+    excerpt: 'Working capital facilitation, project financing, debt syndication, and disciplined capital advisory for expanding enterprises.',
+    tags: ['Working Capital', 'Debt Syndication', 'Project Finance', 'CMA & Credit Advisory']
+  },
+  {
+    title: 'Executive Education',
+    slug: 'education',
+    icon: <HiAcademicCap size={26} />,
+    excerpt: 'Structured corporate training, executive taxation notes, and professional accounting programs for management teams.',
+    tags: ['Taxation Modules', 'GST & Tally Practical', 'Financial Accounting', 'Corporate Upskilling']
+  },
+  {
+    title: 'Investment Advisory',
+    slug: 'investment',
+    icon: <HiTrendingUp size={26} />,
+    excerpt: 'Disciplined capital preservation, treasury management, and portfolio structuring aligned with long-term strategic objectives.',
+    tags: ['Treasury Planning', 'Capital Preservation', 'Asset Allocation', 'Risk Mitigation']
+  },
+  {
+    title: 'Commercial Real Estate',
+    slug: 'real-estate',
+    icon: <HiOfficeBuilding size={26} />,
+    excerpt: 'Commercial asset acquisition, high-street retail portfolios, and strategic lease negotiations in Panipat and North India.',
+    tags: ['Commercial Asset Acquisition', 'Lease Negotiation', 'Portfolio Valuation', 'Due Diligence']
+  },
+  {
+    title: 'Managed Workspaces',
+    slug: 'rental-space',
+    icon: <HiKey size={26} />,
+    excerpt: 'Furnished corporate office suites, meeting rooms, and flexible executive workspace solutions located in central Panipat.',
+    tags: ['Plug & Play Offices', 'Executive Boardrooms', 'Flexible Leases', 'Panipat City Centre']
+  },
 ]
 
-const trustedBrands = [
-  'Corporate Advisory',
-  'Tax & Compliance',
-  'Commercial Property',
-  'Financial Planning',
-  'Corporate Workspace',
-  'Learning Portals',
+const trustedPillars = [
+  'Statutory Tax Filings',
+  'MCA Corporate Compliance',
+  'Commercial Real Estate',
+  'Debt Syndication & Finance',
+  'Managed Office Suites',
+  'Executive Training Portals',
 ]
 
 const industries = [
-  { id: 'startups', name: 'Startups', icon: <FaRocket size={22} /> },
-  { id: 'msme', name: 'MSME', icon: <FaIndustry size={22} /> },
-  { id: 'healthcare', name: 'Healthcare', icon: <MdHealthAndSafety size={22} /> },
-  { id: 'banking', name: 'Banking', icon: <FaUniversity size={22} /> },
-  { id: 'construction', name: 'Construction', icon: <FaTools size={22} /> },
-  { id: 'retail', name: 'Retail', icon: <FaStore size={22} /> }
-]
-
-const blogs = [
   {
-    category: 'FINANCE',
-    title: 'The Future of MSME Financing in 2024',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop',
-    excerpt: 'Exploring new avenues for debt-free capital in a rising interest rate environment.'
+    id: 'manufacturing',
+    name: 'Manufacturing & Textiles',
+    icon: <FaIndustry size={20} />,
+    desc: 'Customized GST audit, supply chain financing, and large industrial asset acquisition support for textile and manufacturing hubs in Panipat and Haryana.'
   },
   {
-    category: 'MANAGEMENT',
-    title: 'Bridging the Corporate Leadership Gap',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop',
-    excerpt: 'How to cultivate the next generation of executives through strategic training.'
+    id: 'startups',
+    name: 'Emerging Startups',
+    icon: <FaRocket size={20} />,
+    desc: 'End-to-end private limited incorporation, DPIIT recognition, compliance roadmaps, and initial seed round documentation.'
   },
   {
-    category: 'PROPERTIES',
-    title: 'Investing in Sustainable Commercial Spaces',
-    image: 'https://images.unsplash.com/photo-1464938050744-13748f5ad1a2?q=80&w=600&auto=format&fit=crop',
-    excerpt: 'Why ESG compliance is now the biggest driver for real estate ROI.'
+    id: 'msme',
+    name: 'MSME Enterprises',
+    icon: <FaTools size={20} />,
+    desc: 'Working capital limit enhancements, subsidy guidance, statutory book closure, and cost optimization advisory.'
+  },
+  {
+    id: 'healthcare',
+    name: 'Healthcare & Pharma',
+    icon: <MdHealthAndSafety size={20} />,
+    desc: 'Clinical asset leasing, specialized regulatory registrations, and structured financing for medical facilities and diagnostics.'
+  },
+  {
+    id: 'retail',
+    name: 'Retail & Distribution',
+    icon: <FaStore size={20} />,
+    desc: 'Prime high-street commercial leasing, multi-state GST registrations, and store inventory credit management.'
+  },
+  {
+    id: 'banking',
+    name: 'Financial Institutions',
+    icon: <FaUniversity size={20} />,
+    desc: 'Independent title due diligence, commercial property valuation audits, and specialized compliance verification.'
   }
 ]
 
 export default function Home({ services, featuredEducationContent }: { services: any[]; featuredEducationContent: any | null }) {
   const settings = useSiteSettings()
-  const serviceItems = Array.from(
-    new Map([...(services || []), ...sampleServices, ...coreServices].map(item => [item.slug, item])).values()
-  ).slice(0, 6)
-
-  const [activeInd, setActiveInd] = useState('startups')
+  const [activeInd, setActiveInd] = useState('manufacturing')
 
   return (
     <>
       <Head>
-        <title>Success Tunnel — Corporate Consultancy, Finance, Education & Real Estate</title>
+        <title>Success Tunnel — Corporate Consultancy, Finance, Real Estate & Advisory | Panipat</title>
         <meta
           name="description"
-          content="Success Tunnel is your strategic advisory partner in India, unifying corporate compliance, business finance, professional education, investment guidance, and real estate solutions."
+          content="Success Tunnel is an integrated corporate advisory group headquartered in Panipat, Haryana. Unifying statutory tax compliance, corporate finance, executive education, and commercial real estate."
         />
         <link rel="canonical" href="https://successtunnel.in" />
-        <meta property="og:title" content="Success Tunnel — Strategic Advisory & Execution" />
+        <meta property="og:title" content="Success Tunnel — Strategic Advisory & Corporate Execution" />
         <meta
           property="og:description"
-          content="One coordinated multidisciplinary partner across consulting, tax, finance, and commercial real estate."
+          content="One coordinated multidisciplinary advisory partner across corporate consulting, taxation, finance, and commercial real estate in Panipat, Haryana."
         />
         <meta property="og:url" content="https://successtunnel.in" />
         <meta property="og:type" content="website" />
@@ -107,7 +148,11 @@ export default function Home({ services, featuredEducationContent }: { services:
               },
               address: {
                 '@type': 'PostalAddress',
-                streetAddress: settings.officeAddress || 'New Delhi, India',
+                streetAddress: settings.officeAddress || 'First Floor, Sudarshan Tower, Tau Devi Lal Complex, Behind Hive Hotel, Panipat 132103, Haryana',
+                addressLocality: 'Panipat',
+                addressRegion: 'Haryana',
+                postalCode: '132103',
+                addressCountry: 'IN',
               },
             }),
           }}
@@ -118,120 +163,149 @@ export default function Home({ services, featuredEducationContent }: { services:
         <Nav />
 
         <main>
-          {/* 1. Hero Section */}
-          <section className="hero-section" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
+          {/* 1. EDITORIAL CORPORATE HERO */}
+          <section className="hero-section" style={{ paddingTop: '72px', paddingBottom: '72px' }}>
             <div className="container hero-grid" style={{ alignItems: 'center' }}>
               <div className="hero-copy">
-                <h1 style={{ 
-                  fontSize: 'clamp(2.4rem, 5.5vw, 4.6rem)', 
-                  lineHeight: '1.05', 
-                  letterSpacing: '-0.04em',
-                  fontWeight: 900,
-                  color: 'var(--primary)',
-                  margin: '0 0 24px 0',
-                  fontFamily: "'Sora', sans-serif"
-                }}>
-                  A Fastest Way<br />
-                  <span style={{ background: 'linear-gradient(135deg, var(--accent), #0b3a86)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>to Big Success.</span>
-                </h1>
-                <p style={{ 
-                  fontSize: '1.15rem', 
-                  lineHeight: '1.65', 
-                  color: 'var(--muted)', 
-                  marginBottom: '32px', 
-                  maxWidth: '520px' 
-                }}>
-                  Strategic consultancy, finance, education, investment, and real estate solutions designed to accelerate your growth and secure your future.
-                </p>
-                <div className="hero-actions">
-                  <a href="#contact" className="btn btn-primary" style={{ padding: '16px 28px' }}>
-                    Book Consultation &rarr;
-                  </a>
-                  <Link href="/services" className="btn btn-secondary" style={{ padding: '16px 28px' }}>
-                    Explore Services
-                  </Link>
+                <div className="editorial-tag" style={{ marginBottom: '20px' }}>
+                  <span className="editorial-tag-dot" />
+                  Panipat Corporate Headquarters &bull; Haryana
                 </div>
 
-                {/* Bottom Metrics inside Hero (Factual capabilities) */}
-                <div className="hero-metrics-bar">
-                  <div className="hero-metric-item">
-                    <div className="hero-metric-icon"><HiShieldCheck size={22} /></div>
-                    <div className="hero-metric-text">Direct Advisory<br/>&amp; Governance</div>
+                <h1 style={{
+                  fontSize: 'clamp(2.4rem, 5vw, 4.2rem)',
+                  lineHeight: '1.08',
+                  letterSpacing: '-0.035em',
+                  fontWeight: 800,
+                  color: 'var(--primary)',
+                  margin: '0 0 22px 0',
+                }}>
+                  Integrated Advisory for Growing Enterprises.
+                </h1>
+
+                <p style={{
+                  fontSize: '1.12rem',
+                  lineHeight: '1.68',
+                  color: 'var(--muted)',
+                  marginBottom: '32px',
+                  maxWidth: '540px'
+                }}>
+                  Unifying corporate legal compliance, tax structuring, working capital financing, and prime commercial real estate under one accountable governance framework.
+                </p>
+
+                <div className="hero-actions" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+                  <a href="#contact" className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '0.98rem' }}>
+                    Schedule Advisory Consultation &rarr;
+                  </a>
+                  <a href="#services" className="btn btn-secondary" style={{ padding: '14px 28px', fontSize: '0.98rem' }}>
+                    Explore Practice Areas
+                  </a>
+                </div>
+
+                {/* Verified Factual Capability Pillars */}
+                <div className="credential-strip">
+                  <div className="credential-item">
+                    <div className="credential-icon"><HiShieldCheck size={20} /></div>
+                    <div>
+                      <div className="credential-label">Direct Governance</div>
+                      <div className="credential-sub">MCA &amp; Income Tax Compliance</div>
+                    </div>
                   </div>
-                  <div className="hero-metric-item">
-                    <div className="hero-metric-icon"><HiGlobeAlt size={22} /></div>
-                    <div className="hero-metric-text">Multidisciplinary<br/>Practice</div>
+                  <div className="credential-item">
+                    <div className="credential-icon"><HiGlobeAlt size={20} /></div>
+                    <div>
+                      <div className="credential-label">Multidisciplinary</div>
+                      <div className="credential-sub">6 Coordinated Disciplines</div>
+                    </div>
                   </div>
-                  <div className="hero-metric-item">
-                    <div className="hero-metric-icon"><HiBriefcase size={22} /></div>
-                    <div className="hero-metric-text">Coordinated<br/>Execution</div>
+                  <div className="credential-item">
+                    <div className="credential-icon"><HiLocationMarker size={20} /></div>
+                    <div>
+                      <div className="credential-label">Regional Anchor</div>
+                      <div className="credential-sub">Panipat Commercial Core</div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Right Side: Interactive Branch Diagram */}
-              <div className="hero-diagram-container">
-                <svg className="hero-svg-overlay" viewBox="0 0 500 500">
-                  <circle cx="250" cy="250" r="160" fill="none" stroke="rgba(22, 93, 245, 0.12)" strokeWidth="1.5" strokeDasharray="6,6" />
-                  <circle cx="250" cy="250" r="90" fill="none" stroke="rgba(22, 93, 245, 0.08)" strokeWidth="1.5" />
-                  
-                  <line x1="250" y1="250" x2="135" y2="120" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
-                  <line x1="250" y1="250" x2="365" y2="120" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
-                  <line x1="250" y1="250" x2="410" y2="250" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
-                  <line x1="250" y1="250" x2="365" y2="380" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
-                  <line x1="250" y1="250" x2="135" y2="380" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
-                  <line x1="250" y1="250" x2="90" y2="250" stroke="rgba(22, 93, 245, 0.25)" strokeWidth="1.5" />
-
-                  <circle cx="190" cy="185" r="4.5" fill="var(--accent)" />
-                  <circle cx="310" cy="185" r="4.5" fill="var(--accent)" />
-                  <circle cx="350" cy="250" r="4.5" fill="var(--accent)" />
-                  <circle cx="310" cy="315" r="4.5" fill="var(--accent)" />
-                  <circle cx="190" cy="315" r="4.5" fill="var(--accent)" />
-                  <circle cx="150" cy="250" r="4.5" fill="var(--accent)" />
-                </svg>
-
-                <div className="hero-center-node">
-                  <Image
-                    src="/logo.jpeg"
-                    alt="SuccessTunnel"
-                    width={70}
-                    height={70}
-                    style={{ borderRadius: '50%', objectFit: 'cover' }}
-                    priority
-                  />
+              {/* Right Side: Architectural Executive Practice Matrix */}
+              <div className="editorial-matrix-card">
+                <div className="editorial-matrix-header">
+                  <div className="editorial-matrix-brand">
+                    <Image
+                      src="/logo.jpeg"
+                      alt="Success Tunnel"
+                      width={44}
+                      height={44}
+                      style={{ borderRadius: '10px', objectFit: 'contain', background: '#fff', border: '1px solid var(--line)', padding: '2px' }}
+                      priority
+                    />
+                    <div>
+                      <div style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                        Success Tunnel
+                      </div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--muted)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        Executive Advisory Matrix
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: 700, color: '#059669', background: '#ecfdf5', padding: '4px 10px', borderRadius: '999px', border: '1px solid #a7f3d0' }}>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
+                    Active In-Person Hub
+                  </div>
                 </div>
 
-                <Link href="/services/consultancy" className="hero-outer-node theme-consultancy" style={{ top: '65px', left: '40px' }}>
-                  <span><HiBriefcase size={15} /></span> Consultancy
-                </Link>
-                <Link href="/services/finance" className="hero-outer-node theme-finance" style={{ top: '65px', right: '40px' }}>
-                  <span><HiChartBar size={15} /></span> Finance
-                </Link>
-                <Link href="/education" className="hero-outer-node theme-education" style={{ top: '228px', right: '10px' }}>
-                  <span><HiAcademicCap size={15} /></span> Education
-                </Link>
-                <Link href="/services/investment" className="hero-outer-node theme-investment" style={{ bottom: '65px', right: '40px' }}>
-                  <span><HiTrendingUp size={15} /></span> Investment
-                </Link>
-                <Link href="/services/real-estate" className="hero-outer-node theme-real-estate" style={{ bottom: '65px', left: '40px' }}>
-                  <span><HiOfficeBuilding size={15} /></span> Real Estate
-                </Link>
-                <Link href="/services/rental-space" className="hero-outer-node theme-rental-space" style={{ top: '228px', left: '10px' }}>
-                  <span><HiKey size={15} /></span> Rental Space
-                </Link>
+                <div className="editorial-matrix-grid">
+                  <Link href="/services/consultancy" className="editorial-discipline-cell">
+                    <div className="editorial-discipline-num">01 / STATUTORY</div>
+                    <div className="editorial-discipline-title">Corporate Consultancy</div>
+                    <p className="editorial-discipline-desc">Income Tax filings, GST litigation, and MCA legal secretarial governance.</p>
+                  </Link>
+
+                  <Link href="/services/finance" className="editorial-discipline-cell">
+                    <div className="editorial-discipline-num">02 / CAPITAL</div>
+                    <div className="editorial-discipline-title">Corporate Finance</div>
+                    <p className="editorial-discipline-desc">Working capital credit limits, project finance, and debt syndication.</p>
+                  </Link>
+
+                  <Link href="/services/real-estate" className="editorial-discipline-cell">
+                    <div className="editorial-discipline-num">03 / PROPERTY</div>
+                    <div className="editorial-discipline-title">Commercial Real Estate</div>
+                    <p className="editorial-discipline-desc">High-street retail, commercial acquisition, and strategic leasing.</p>
+                  </Link>
+
+                  <Link href="/education" className="editorial-discipline-cell">
+                    <div className="editorial-discipline-num">04 / KNOWLEDGE</div>
+                    <div className="editorial-discipline-title">Executive Education</div>
+                    <p className="editorial-discipline-desc">Corporate tax modules, accounting practice notes, and skills building.</p>
+                  </Link>
+                </div>
+
+                <div className="editorial-matrix-footer">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <HiLocationMarker size={16} style={{ color: 'var(--accent)' }} />
+                    <span>Sudarshan Tower, Panipat HQ</span>
+                  </div>
+                  <div style={{ fontWeight: 600, color: 'var(--primary)' }}>
+                    SLA: 24h Advisory Response
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* 2. Capability Channels */}
-          <section className="trusted-logos-section">
+          {/* 2. Practice Pillars Ticker */}
+          <section style={{ background: '#ffffff', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', padding: '24px 0' }}>
             <div className="container">
-              <div className="trusted-title">Coordinated Professional Practice Areas</div>
-              <div className="logo-slider">
-                <div className="logo-slide-track">
-                  {trustedBrands.map((brand, idx) => (
-                    <div key={idx} className="logo-item">
-                      <span>✓</span> {brand}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                  Core Advisory Practice Pillars
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '28px', flexWrap: 'wrap' }}>
+                  {trustedPillars.map((pillar, idx) => (
+                    <div key={idx} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem', fontWeight: 600, color: 'var(--text)' }}>
+                      <span style={{ color: 'var(--accent)', fontWeight: 800 }}>&bull;</span>
+                      {pillar}
                     </div>
                   ))}
                 </div>
@@ -239,101 +313,163 @@ export default function Home({ services, featuredEducationContent }: { services:
             </div>
           </section>
 
-          {/* 3. Services Grid */}
+          {/* 3. PRACTICE ECOSYSTEM / SERVICES GRID */}
           <section className="section-surface" id="services">
             <div className="container">
-              <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                <span className="eyebrow">PRACTICE ECOSYSTEM</span>
-                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--primary)', fontWeight: 700, margin: '12px 0 0' }}>
-                  Expertise Across Growth Channels
+              <div style={{ textAlign: 'center', marginBottom: '56px' }}>
+                <div className="editorial-tag" style={{ marginBottom: '16px' }}>
+                  <span className="editorial-tag-dot" />
+                  Multidisciplinary Practice Ecosystem
+                </div>
+                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: 'var(--primary)', fontWeight: 800, margin: '8px 0 16px' }}>
+                  Structured Capabilities Across Enterprise Lifecycles
                 </h2>
-              </div>
-
-              <div className="expertise-grid">
-                {serviceItems.map(service => (
-                  <div key={service.slug} className={`expertise-card theme-${service.slug}`}>
-                    <div className="expertise-icon-wrapper">
-                      {service.slug === 'consultancy' ? <HiBriefcase size={28} /> :
-                       service.slug === 'finance' ? <HiChartBar size={28} /> :
-                       service.slug === 'education' ? <HiAcademicCap size={28} /> :
-                       service.slug === 'investment' ? <HiTrendingUp size={28} /> :
-                       service.slug === 'real-estate' ? <HiOfficeBuilding size={28} /> : <HiKey size={28} />}
-                    </div>
-                    <h3>{service.title}</h3>
-                    <p>{service.excerpt}</p>
-                    <Link href={`/services/${service.slug}`} className="expertise-card-link">
-                      Learn More &rarr;
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 4. Industries We Serve */}
-          <section className="section-surface" style={{ background: '#f8fafc' }}>
-            <div className="container">
-              <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--primary)', fontWeight: 700, margin: '0' }}>
-                  Industries We Support
-                </h2>
-              </div>
-
-              <div className="industries-pill-grid">
-                {industries.map(ind => (
-                  <div
-                    key={ind.id}
-                    className={`industry-pill-item ${activeInd === ind.id ? 'active' : ''}`}
-                    onClick={() => setActiveInd(ind.id)}
-                  >
-                    <div className="industry-icon-container">{ind.icon}</div>
-                    <span>{ind.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 5. Execution Standards (Factual principles replacing fake testimonials) */}
-          <section className="section-surface">
-            <div className="container">
-              <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-                <span className="eyebrow">STANDARDS &amp; GOVERNANCE</span>
-                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--primary)', fontWeight: 700, margin: '10px 0 16px' }}>
-                  Execution Standards &amp; Quality Commitments
-                </h2>
-                <p style={{ maxWidth: '640px', margin: '0 auto', color: 'var(--muted)', fontSize: '1.05rem', lineHeight: '1.6' }}>
-                  Our team adheres to strict advisory standards to deliver transparent outcomes with zero ambiguity.
+                <p style={{ maxWidth: '640px', margin: '0 auto', color: 'var(--muted)', fontSize: '1.05rem', lineHeight: '1.65' }}>
+                  Direct engagement across corporate law, capital planning, taxation, and physical infrastructure without inter-firm handoffs.
                 </p>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '40px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '24px' }}>
+                {coreServices.map((service, index) => (
+                  <div key={service.slug} className="expertise-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                      <div className="expertise-icon-wrapper">
+                        {service.icon}
+                      </div>
+                      <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--muted-light)', fontFamily: 'Sora, sans-serif' }}>
+                        0{index + 1}
+                      </span>
+                    </div>
+
+                    <h3>{service.title}</h3>
+                    <p>{service.excerpt}</p>
+
+                    <div className="expertise-tag-list">
+                      {service.tags.map((tag, tIdx) => (
+                        <span key={tIdx} className="expertise-pill-tag">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--line)' }}>
+                      <Link href={service.slug === 'education' ? '/education' : `/services/${service.slug}`} className="expertise-card-link">
+                        Explore Advisory Practice <HiArrowRight size={14} />
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 4. INDUSTRIES WE SUPPORT */}
+          <section style={{ background: '#ffffff', padding: '80px 0', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
+            <div className="container">
+              <div style={{ textAlign: 'center', marginBottom: '44px' }}>
+                <div className="editorial-tag" style={{ marginBottom: '16px' }}>
+                  <span className="editorial-tag-dot" />
+                  Sector Experience
+                </div>
+                <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.6rem)', color: 'var(--primary)', fontWeight: 800, margin: '8px 0 14px' }}>
+                  Sector-Specific Guidance Across Haryana &amp; National Markets
+                </h2>
+                <p style={{ maxWidth: '600px', margin: '0 auto', color: 'var(--muted)', fontSize: '1rem', lineHeight: '1.6' }}>
+                  Select an industry segment to see how our multidisciplinary advisory coordinates compliance, financing, and facilities.
+                </p>
+              </div>
+
+              {/* Industry Buttons */}
+              <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '32px' }}>
+                {industries.map(ind => {
+                  const isActive = activeInd === ind.id
+                  return (
+                    <button
+                      key={ind.id}
+                      onClick={() => setActiveInd(ind.id)}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '10px 18px',
+                        borderRadius: '10px',
+                        fontSize: '0.88rem',
+                        fontWeight: 700,
+                        border: '1px solid',
+                        borderColor: isActive ? 'var(--primary)' : 'var(--line)',
+                        background: isActive ? 'var(--primary)' : '#ffffff',
+                        color: isActive ? '#ffffff' : 'var(--muted)',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      {ind.icon}
+                      <span>{ind.name}</span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* Active Industry Panel */}
+              {(() => {
+                const current = industries.find(i => i.id === activeInd) || industries[0]
+                return (
+                  <div style={{ maxWidth: '780px', margin: '0 auto', background: 'var(--surface-soft)', border: '1px solid var(--line)', borderRadius: '16px', padding: '32px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '10px' }}>
+                      {current.name} Practice Brief
+                    </div>
+                    <p style={{ fontSize: '1rem', color: 'var(--muted)', lineHeight: '1.7', margin: 0 }}>
+                      {current.desc}
+                    </p>
+                  </div>
+                )
+              })()}
+            </div>
+          </section>
+
+          {/* 5. STANDARDS & GOVERNANCE */}
+          <section className="section-surface">
+            <div className="container">
+              <div style={{ textAlign: 'center', marginBottom: '52px' }}>
+                <div className="editorial-tag" style={{ marginBottom: '16px' }}>
+                  <span className="editorial-tag-dot" />
+                  Institutional Governance
+                </div>
+                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--primary)', fontWeight: 800, margin: '8px 0 16px' }}>
+                  Advisory Governance &amp; Execution Principles
+                </h2>
+                <p style={{ maxWidth: '640px', margin: '0 auto', color: 'var(--muted)', fontSize: '1.05rem', lineHeight: '1.6' }}>
+                  We operate with transparent client covenants, verified audit trails, and partner accountability.
+                </p>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '36px' }}>
                 {[
                   {
                     title: 'Regulatory Accuracy',
-                    desc: 'Timely tax filings, statutory compliance, and rigorous legal adherence without guesswork.',
+                    desc: 'Timely tax filings, statutory MCA compliance, and audit defense without procedural ambiguities.',
                   },
                   {
-                    title: 'Multidisciplinary Team',
-                    desc: 'Coordinated experts across consultancy, accounting, lending, and property under one roof.',
+                    title: 'Multidisciplinary Standard',
+                    desc: 'Accounting, debt advisory, corporate law, and commercial property professionals collaborating on a single mandate.',
                   },
                   {
                     title: 'Confidentiality & Security',
-                    desc: 'Strict non-disclosure protocols, secure storage, and role-enforced access controls.',
+                    desc: 'Strict non-disclosure protocols, secure cloud records, and role-enforced client data access controls.',
                   },
                   {
                     title: 'Milestone Transparency',
-                    desc: 'Progress mathematically verified from completed deliverables and tasks.',
+                    desc: 'Mathematical tracking from documented scope definitions to final statutory approvals and disbursements.',
                   },
                 ].map((item, idx) => (
-                  <div key={idx} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '28px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
-                    <div style={{ color: '#2563eb', fontSize: '1.5rem', marginBottom: '12px' }}>
+                  <div key={idx} style={{ background: '#ffffff', border: '1px solid var(--line)', borderRadius: '14px', padding: '28px', boxShadow: 'var(--shadow-sm)' }}>
+                    <div style={{ color: 'var(--accent)', fontSize: '1.6rem', marginBottom: '14px' }}>
                       <HiCheckCircle />
                     </div>
                     <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '8px' }}>
                       {item.title}
                     </h3>
-                    <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.6', margin: 0 }}>
+                    <p style={{ color: 'var(--muted)', fontSize: '0.92rem', lineHeight: '1.6', margin: 0 }}>
                       {item.desc}
                     </p>
                   </div>
@@ -342,42 +478,54 @@ export default function Home({ services, featuredEducationContent }: { services:
 
               <div style={{ textAlign: 'center' }}>
                 <Link href="/projects" className="btn btn-secondary" style={{ padding: '12px 24px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  Explore Verified Projects &amp; Case Studies <HiArrowRight />
+                  Review Verified Projects &amp; Deliverables <HiArrowRight />
                 </Link>
               </div>
             </div>
           </section>
 
-          {/* 6. About Us Section (Cleaned of fake stats) */}
-          <section className="section-surface" id="about" style={{ background: '#f8fafc', scrollMarginTop: '100px' }}>
+          {/* 6. ABOUT US / PANIPAT HEADQUARTERS */}
+          <section id="about" style={{ background: '#ffffff', padding: '96px 0', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', scrollMarginTop: '80px' }}>
             <div className="container">
-              <div className="about-grid">
+              <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '56px', alignItems: 'center' }}>
                 <div>
-                  <span className="eyebrow" style={{ color: 'var(--accent)', background: 'rgba(22, 93, 245, 0.08)' }}>ABOUT US</span>
-                  <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', color: 'var(--primary)', fontWeight: 800, lineHeight: '1.15', margin: '16px 0 20px', letterSpacing: '-0.03em' }}>
-                    One Partner.<br />Every Growth Need.
+                  <div className="editorial-tag" style={{ marginBottom: '18px' }}>
+                    <span className="editorial-tag-dot" />
+                    Firm Narrative
+                  </div>
+                  <h2 style={{ fontSize: 'clamp(2rem, 4.2vw, 3rem)', color: 'var(--primary)', fontWeight: 800, lineHeight: '1.14', margin: '0 0 20px', letterSpacing: '-0.03em' }}>
+                    Regional Anchor.<br />Multidisciplinary Depth.
                   </h2>
-                  <p style={{ fontSize: '1.05rem', color: 'var(--muted)', lineHeight: '1.75', marginBottom: '20px' }}>
-                    Success Tunnel eliminates the friction that holds growing businesses back. Instead of juggling disconnected advisors, you get one strategic partner for consultancy, finance, education, investment, and real estate.
+                  <p style={{ fontSize: '1.08rem', color: 'var(--muted)', lineHeight: '1.75', marginBottom: '18px' }}>
+                    Success Tunnel was founded in Panipat to resolve the fragmentation that slows business leaders down. In conventional setups, promoters must separately engage distinct CA firms, loan brokers, real estate brokers, and corporate lawyers who rarely communicate with one another.
                   </p>
-                  <p style={{ fontSize: '1.05rem', color: 'var(--muted)', lineHeight: '1.75', marginBottom: '32px' }}>
-                    Our multidisciplinary team delivers practical solutions with complete clarity at every stage.
+                  <p style={{ fontSize: '1.08rem', color: 'var(--muted)', lineHeight: '1.75', marginBottom: '32px' }}>
+                    Our integrated advisory model brings all essential enterprise growth disciplines under one roof, providing accountable governance, rapid execution, and complete strategic alignment.
                   </p>
-                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                    <Link href="/contact" className="cta-btn-primary" style={{ fontSize: '0.95rem' }}>Book Consultation &rarr;</Link>
+                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+                    <a href="#contact" className="btn btn-primary" style={{ padding: '12px 26px' }}>
+                      Book Consultation &rarr;
+                    </a>
+                    <Link href="/about" className="btn btn-secondary" style={{ padding: '12px 26px' }}>
+                      Read Firm Overview
+                    </Link>
                   </div>
                 </div>
 
-                <div className="about-stats-grid">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
                   {[
-                    { number: 'Consultancy', label: 'Income Tax, GST, MCA & Registrations' },
-                    { number: 'Finance', label: 'Financial Direction & Capital Planning' },
-                    { number: 'Property', label: 'Commercial Real Estate & Workspace' },
-                    { number: 'Education', label: 'Professional Learning & Resources' },
+                    { title: 'Statutory Advisory', desc: 'Income Tax, GST, MCA Corporate Filings & Registrations' },
+                    { title: 'Capital Planning', desc: 'Working Capital, Project Loans & Structured Financing' },
+                    { title: 'Commercial Property', desc: 'Prime Corporate Asset Acquisition & Managed Workspaces' },
+                    { title: 'Knowledge Portals', desc: 'Executive Tax Training, Case Studies & Calculators' },
                   ].map((stat, i) => (
-                    <div key={i} style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '16px', padding: '24px 20px', textAlign: 'center', boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)' }}>
-                      <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--accent)', fontFamily: 'Sora, sans-serif', lineHeight: 1.2 }}>{stat.number}</div>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: 500, marginTop: '8px' }}>{stat.label}</div>
+                    <div key={i} style={{ background: 'var(--surface-soft)', border: '1px solid var(--line)', borderRadius: '14px', padding: '24px 20px', textAlign: 'left' }}>
+                      <div style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Sora, sans-serif', lineHeight: 1.25, marginBottom: '8px' }}>
+                        {stat.title}
+                      </div>
+                      <div style={{ fontSize: '0.82rem', color: 'var(--muted)', lineHeight: '1.5' }}>
+                        {stat.desc}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -385,39 +533,57 @@ export default function Home({ services, featuredEducationContent }: { services:
             </div>
           </section>
 
-          {/* 7. CTA Section */}
-          <section className="container">
-            <div className="cta-banner-container">
-              <h2>Ready to Accelerate Your Business Growth?</h2>
-              <div className="cta-actions">
-                <a href="#contact" className="cta-btn-primary">Book Consultation</a>
-                <Link href="/contact" className="cta-btn-secondary">Contact Us</Link>
+          {/* 7. CTA STRIP */}
+          <section className="container" style={{ margin: '48px auto' }}>
+            <div style={{ background: 'var(--primary)', color: '#ffffff', borderRadius: '24px', padding: '56px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '24px' }}>
+              <div>
+                <h2 style={{ color: '#ffffff', fontSize: 'clamp(1.8rem, 3.5vw, 2.4rem)', fontWeight: 800, margin: '0 0 10px', letterSpacing: '-0.02em' }}>
+                  Ready to Coordinate Your Business Growth?
+                </h2>
+                <p style={{ color: '#cbd5e1', fontSize: '1.05rem', margin: 0, maxWidth: '580px' }}>
+                  Meet our advisory partners at our Panipat headquarters or connect virtually for a detailed requirement review.
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <a href="#contact" className="btn" style={{ background: '#ffffff', color: 'var(--primary)', fontWeight: 700, padding: '14px 28px' }}>
+                  Schedule In-Person Meeting
+                </a>
+                <Link href="/contact" className="btn" style={{ background: 'rgba(255,255,255,0.1)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.25)', fontWeight: 700, padding: '14px 28px' }}>
+                  Submit Enquiry
+                </Link>
               </div>
             </div>
           </section>
 
-          {/* 8. Contact Section */}
-          <section className="section-surface" id="contact" style={{ scrollMarginTop: '100px' }}>
+          {/* 8. EXECUTIVE CONTACT & CALLBACK FORM */}
+          <section className="section-surface" id="contact" style={{ scrollMarginTop: '80px' }}>
             <div className="container contact-section-grid">
               <div className="contact-info-panel">
-                <span className="eyebrow" style={{ marginBottom: '24px' }}>TALK TO US</span>
-                <h3>Let&apos;s Discuss Your Vision</h3>
+                <div className="editorial-tag" style={{ marginBottom: '18px' }}>
+                  <span className="editorial-tag-dot" />
+                  Direct Consultation
+                </div>
+                <h3 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)', margin: '0 0 24px', letterSpacing: '-0.02em' }}>
+                  Speak Directly with Our Advisory Partners
+                </h3>
 
                 <div className="contact-detail-item">
                   <div className="contact-icon-wrapper"><HiLocationMarker size={22} /></div>
                   <div className="contact-detail-text">
-                    <h4>Office Address</h4>
-                    <p>{settings.officeAddress}</p>
+                    <h4>Panipat Headquarters</h4>
+                    <p>{settings.officeAddress || 'First Floor, Sudarshan Tower, Tau Devi Lal Complex, Behind Hive Hotel, Panipat 132103, Haryana'}</p>
                   </div>
                 </div>
 
                 <div className="contact-detail-item">
                   <div className="contact-icon-wrapper"><HiPhone size={22} /></div>
                   <div className="contact-detail-text">
-                    <h4>Call Us</h4>
+                    <h4>Telephone Support</h4>
                     <p>
-                        <a href={`tel:${toTelHref(settings.contactPhone1)}`} style={{ color: 'var(--primary)', fontWeight: 700, display: 'block' }}>{settings.contactPhone1}</a>
+                      <a href={`tel:${toTelHref(settings.contactPhone1)}`} style={{ color: 'var(--primary)', fontWeight: 700, display: 'block' }}>{settings.contactPhone1}</a>
+                      {settings.contactPhone2 && (
                         <a href={`tel:${toTelHref(settings.contactPhone2)}`} style={{ color: 'var(--muted)', fontSize: '0.9rem', display: 'block' }}>{settings.contactPhone2}</a>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -425,16 +591,24 @@ export default function Home({ services, featuredEducationContent }: { services:
                 <div className="contact-detail-item">
                   <div className="contact-icon-wrapper"><HiMail size={22} /></div>
                   <div className="contact-detail-text">
-                    <h4>Email Us</h4>
-                    <p><a href={`mailto:${settings.contactEmail}`} style={{ color: 'var(--primary)', fontWeight: 700 }}>{settings.contactEmail}</a></p>
+                    <h4>Corporate Email</h4>
+                    <p>
+                      <a href={`mailto:${settings.contactEmail || 'contact@successtunnel.in'}`} style={{ color: 'var(--primary)', fontWeight: 700 }}>
+                        {settings.contactEmail || 'contact@successtunnel.in'}
+                      </a>
+                    </p>
                   </div>
                 </div>
 
                 <div className="contact-detail-item">
                   <div className="contact-icon-wrapper"><FaWhatsapp size={22} /></div>
                   <div className="contact-detail-text">
-                    <h4>WhatsApp</h4>
-                    <p><a href={`https://wa.me/${toWhatsAppHref(settings.whatsappNumber)}`} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', fontWeight: 700 }}>Chat on WhatsApp &rarr;</a></p>
+                    <h4>WhatsApp Direct</h4>
+                    <p>
+                      <a href={`https://wa.me/${toWhatsAppHref(settings.whatsappNumber)}`} target="_blank" rel="noreferrer" style={{ color: '#16a34a', fontWeight: 700 }}>
+                        Chat with our Advisory Desk &rarr;
+                      </a>
+                    </p>
                   </div>
                 </div>
 
@@ -450,13 +624,14 @@ export default function Home({ services, featuredEducationContent }: { services:
               <div className="contact-form-card">
                 <GuidedEnquiry
                   page="Homepage"
-                  title="Get a quick callback"
-                  subtitle="Tell us what you need and we'll help with the next step."
+                  title="Schedule Advisory Callback"
+                  subtitle="Specify your business requirement to connect with the designated practice partner."
                 />
               </div>
             </div>
           </section>
         </main>
+
         <EducationVideoPromo video={featuredEducationContent} />
         <Footer />
       </div>
