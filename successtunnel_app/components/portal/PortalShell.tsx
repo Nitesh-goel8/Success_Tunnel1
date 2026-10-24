@@ -26,6 +26,7 @@ import {
   HiOutlineUser,
   HiOutlineCheck,
   HiOutlineCode,
+  HiOutlineUserGroup,
 } from 'react-icons/hi'
 
 export interface BreadcrumbItem {
@@ -67,6 +68,8 @@ interface SearchResults {
   projects: Array<{ id: number; code: string; title: string; status: string; progress: number; href: string }>
   tasks: Array<{ id: number; code: string; title: string; status: string; priority: string; href: string }>
   employees: Array<{ id: number; name: string; email: string; designation: string; department: string; employeeCode?: string; href: string }>
+  leads?: Array<{ id: number; code: string; title: string; contactName: string; status: string; value: number; href: string }>
+  customers?: Array<{ id: number; code: string; name: string; company: string; status: string; href: string }>
 }
 
 export default function PortalShell({ children, title, breadcrumbs = [] }: PortalShellProps) {
@@ -233,6 +236,12 @@ export default function PortalShell({ children, title, breadcrumbs = [] }: Porta
         { label: 'Projects', href: '/portal/projects', icon: HiOutlineClipboardList },
         { label: 'Task Kanban', href: '/portal/tasks', icon: HiOutlineClipboardList },
         { label: 'Engineering Hub', href: '/portal/engineering', icon: HiOutlineCode },
+      ],
+    },
+    {
+      section: 'Sales & CRM',
+      items: [
+        { label: 'CRM & Pipeline', href: '/portal/crm', icon: HiOutlineUserGroup },
       ],
     },
     {
@@ -488,10 +497,60 @@ export default function PortalShell({ children, title, breadcrumbs = [] }: Porta
                     </div>
                   )}
 
+                  {/* CRM Lead matches */}
+                  {searchResults.leads && searchResults.leads.length > 0 && (
+                    <div>
+                      <div className={styles.searchGroupTitle}>CRM Leads</div>
+                      {searchResults.leads.map((l) => (
+                        <Link
+                          key={l.id}
+                          href={l.href}
+                          className={styles.searchResultItem}
+                          onClick={() => {
+                            setShowSearchDropdown(false)
+                            setSearchQuery('')
+                          }}
+                        >
+                          <div>
+                            <div className={styles.searchResultTitle}>{l.title}</div>
+                            <div className={styles.searchResultMeta}>{l.code} • {l.contactName}</div>
+                          </div>
+                          <span className={styles.searchResultMeta}>{l.status}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Customer matches */}
+                  {searchResults.customers && searchResults.customers.length > 0 && (
+                    <div>
+                      <div className={styles.searchGroupTitle}>Customers</div>
+                      {searchResults.customers.map((c) => (
+                        <Link
+                          key={c.id}
+                          href={c.href}
+                          className={styles.searchResultItem}
+                          onClick={() => {
+                            setShowSearchDropdown(false)
+                            setSearchQuery('')
+                          }}
+                        >
+                          <div>
+                            <div className={styles.searchResultTitle}>{c.name}</div>
+                            <div className={styles.searchResultMeta}>{c.code} {c.company ? `• ${c.company}` : ''}</div>
+                          </div>
+                          <span className={styles.searchResultMeta}>{c.status}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
                   {searchResults.navigation.length === 0 &&
                     searchResults.projects.length === 0 &&
                     searchResults.tasks.length === 0 &&
-                    searchResults.employees.length === 0 && (
+                    searchResults.employees.length === 0 &&
+                    (!searchResults.leads || searchResults.leads.length === 0) &&
+                    (!searchResults.customers || searchResults.customers.length === 0) && (
                       <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.825rem' }}>
                         No records matching &ldquo;{searchQuery}&rdquo;
                       </div>

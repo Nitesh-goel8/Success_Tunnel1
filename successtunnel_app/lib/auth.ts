@@ -48,10 +48,12 @@ export function checkModulePermission(
       if (module === 'AUDIT_LOGS' || module === 'REPORTS') return action === 'view'
       if (module === 'PROJECTS' || module === 'TASKS') return action === 'view'
       if (module === 'FINANCE') return action === 'view' || action === 'create' // own expense
+      if (module === 'CRM') return action === 'view'
       return false
 
     case 'project_manager':
       if (module === 'PROJECTS' || module === 'TASKS') return true
+      if (module === 'CRM') return true
       if (module === 'EMPLOYEES' || module === 'DOCUMENTS') return action === 'view'
       if (module === 'REPORTS') return action === 'view'
       if (module === 'ATTENDANCE' || module === 'LEAVES') return action === 'view' || action === 'create' // self-service
@@ -61,6 +63,7 @@ export function checkModulePermission(
     case 'finance_admin':
       if (module === 'FINANCE') return true
       if (module === 'REPORTS' || module === 'AUDIT_LOGS') return action === 'view'
+      if (module === 'CRM') return action === 'view'
       if (module === 'EMPLOYEES' || module === 'PROJECTS' || module === 'DOCUMENTS') return action === 'view'
       if (module === 'ATTENDANCE' || module === 'LEAVES') return action === 'view' || action === 'create'
       return false
@@ -72,6 +75,7 @@ export function checkModulePermission(
       }
       if (module === 'TASKS') return action === 'view' || action === 'edit' // status changes on assigned tasks
       if (module === 'PROJECTS') return action === 'view'
+      if (module === 'CRM') return action === 'view'
       return false
 
     default:

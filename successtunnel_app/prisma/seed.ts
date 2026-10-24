@@ -1487,16 +1487,252 @@ async function main() {
     })
   }
 
+  
+  // ------------------------------------------------------------------
+  // 10. Seed Fictional Demo CRM Customers & Pipeline Deals
+  // ------------------------------------------------------------------
+  console.log('Step 10/10: Seeding clearly fictional CRM customer directory & deal pipeline...')
+  const demoCustomers = [
+    {
+      customerCode: 'ST-CUST-1001',
+      name: 'TechNova Solutions Pvt Ltd',
+      company: 'TechNova Enterprise Group',
+      email: 'procurement@technova.example.com',
+      phone: '+91 98111 22334',
+      address: 'Plot 44, Sector 62, Electronic City',
+      city: 'Noida, Uttar Pradesh',
+      website: 'https://technova.example.com',
+      status: 'ACTIVE',
+      notes: 'Strategic technology client with enterprise cloud and compliance contracts.',
+      isDemo: true,
+    },
+    {
+      customerCode: 'ST-CUST-1002',
+      name: 'Apex Global Logistics Ltd',
+      company: 'Apex Supply Chain Network',
+      email: 'operations@apexlogistics.example.com',
+      phone: '+91 98222 33445',
+      address: 'DLF Cyber City, Tower B, 8th Floor',
+      city: 'Gurugram, Haryana',
+      website: 'https://apexlogistics.example.com',
+      status: 'ACTIVE',
+      notes: 'Quarterly GST reconciliation and tax compliance consulting account.',
+      isDemo: true,
+    },
+    {
+      customerCode: 'ST-CUST-1003',
+      name: 'Zenith Retail Ventures',
+      company: 'Zenith Supermarkets Network',
+      email: 'accounts@zenithretail.example.com',
+      phone: '+91 98333 44556',
+      address: 'Barakhamba Road, Connaught Place',
+      city: 'New Delhi',
+      website: 'https://zenithretail.example.com',
+      status: 'ACTIVE',
+      notes: 'Commercial lease and coworking workstation hub tenant.',
+      isDemo: true,
+    },
+  ]
+
+  const seededCustomers: { [code: string]: any } = {}
+  for (const cust of demoCustomers) {
+    const record = await prisma.customer.upsert({
+      where: { customerCode: cust.customerCode },
+      update: cust,
+      create: cust,
+    })
+    seededCustomers[cust.customerCode] = record
+  }
+
+  // Link ST-PRJ-2026-01 to TechNova and ST-PRJ-2026-02 to Apex Global
+  if (seededCustomers['ST-CUST-1001']) {
+    await prisma.project.updateMany({
+      where: { projectCode: 'ST-PRJ-2026-01' },
+      data: { customerId: seededCustomers['ST-CUST-1001'].id },
+    })
+  }
+  if (seededCustomers['ST-CUST-1002']) {
+    await prisma.project.updateMany({
+      where: { projectCode: 'ST-PRJ-2026-02' },
+      data: { customerId: seededCustomers['ST-CUST-1002'].id },
+    })
+  }
+
+  // Seed Demo Website Enquiries
+  const sampleEnquiries = [
+    {
+      name: 'Vikrant Khanna',
+      email: 'vikrant.khanna@example.com',
+      phone: '+91 99887 76655',
+      city: 'Gurugram',
+      service: 'Income Tax Planning',
+      message: 'Looking for corporate income tax advisory and annual compliance filing for our Series-A startup.',
+      page: '/services/consultancy',
+      status: 'UNREAD',
+    },
+    {
+      name: 'Radhika Sen',
+      email: 'radhika.sen@example.com',
+      phone: '+91 98765 12340',
+      city: 'Delhi NCR',
+      service: 'Managed Rental Hub',
+      message: 'Need 25 dedicated workstations with 24/7 power backup and high-speed internet in Noida hub.',
+      page: '/services/rentals',
+      status: 'UNREAD',
+    },
+  ]
+
+  for (const enq of sampleEnquiries) {
+    const existing = await prisma.enquiry.findFirst({
+      where: { email: enq.email, message: enq.message },
+    })
+    if (!existing) {
+      await prisma.enquiry.create({ data: enq })
+    }
+  }
+
+  // Seed Demo Pipeline Leads
+  const demoLeads = [
+    {
+      leadCode: 'ST-LEAD-2026-0001',
+      title: 'Corporate GST Reconciliation & Advisory',
+      contactName: 'Sanjay Aggarwal',
+      contactEmail: 'sanjay.aggarwal@example.com',
+      contactPhone: '+91 98101 11222',
+      company: 'Aggarwal Pharma Distributors',
+      source: 'WEBSITE_ENQUIRY',
+      status: 'NEW',
+      priority: 'HIGH',
+      estimatedValue: 125000.0,
+      currency: 'INR',
+      notes: 'Submitted enquiry through corporate consultancy portal requesting input tax credit reconciliation.',
+      isDemo: true,
+    },
+    {
+      leadCode: 'ST-LEAD-2026-0002',
+      title: 'Enterprise ERP Implementation & Data Migration',
+      contactName: 'Pooja Iyer',
+      contactEmail: 'pooja.iyer@example.com',
+      contactPhone: '+91 98202 22333',
+      company: 'Iyer Logistics & Freight',
+      source: 'DIRECT',
+      status: 'CONTACTED',
+      priority: 'HIGH',
+      estimatedValue: 480000.0,
+      currency: 'INR',
+      notes: 'Initial discovery call completed on Oct 14. Architecture requirements document requested.',
+      nextFollowUp: new Date('2026-10-28'),
+      isDemo: true,
+    },
+    {
+      leadCode: 'ST-LEAD-2026-0003',
+      title: 'Managed Workstation Hub Lease (30 Desks)',
+      contactName: 'Naveen Jindal',
+      contactEmail: 'naveen.jindal@example.com',
+      contactPhone: '+91 98303 33444',
+      company: 'Jindal Analytics Pvt Ltd',
+      source: 'REFERRAL',
+      status: 'QUALIFIED',
+      priority: 'MEDIUM',
+      estimatedValue: 270000.0,
+      currency: 'INR',
+      notes: 'Client conducted site visit of Noida hub on Oct 18. Budget confirmed by their finance department.',
+      nextFollowUp: new Date('2026-10-26'),
+      isDemo: true,
+    },
+    {
+      leadCode: 'ST-LEAD-2026-0004',
+      title: 'ISO 27001 InfoSec Readiness Assessment',
+      contactName: 'Meera Nambiar',
+      contactEmail: 'meera.nambiar@example.com',
+      contactPhone: '+91 98404 44555',
+      company: 'Nambiar FinTech Labs',
+      source: 'PARTNER',
+      status: 'PROPOSAL_SENT',
+      priority: 'HIGH',
+      estimatedValue: 350000.0,
+      currency: 'INR',
+      notes: 'Formal statement of work and audit proposal shared on Oct 20. Under executive board review.',
+      nextFollowUp: new Date('2026-10-29'),
+      isDemo: true,
+    },
+    {
+      leadCode: 'ST-LEAD-2026-0005',
+      title: 'TechNova Cloud ERP Enterprise License',
+      customerId: seededCustomers['ST-CUST-1001']?.id,
+      contactName: 'Devendra Joshi',
+      contactEmail: 'procurement@technova.example.com',
+      contactPhone: '+91 98111 22334',
+      company: 'TechNova Solutions Pvt Ltd',
+      source: 'DIRECT',
+      status: 'WON',
+      priority: 'HIGH',
+      estimatedValue: 580000.0,
+      currency: 'INR',
+      notes: 'Contract executed and project initiated under ST-PRJ-2026-01.',
+      isDemo: true,
+    },
+    {
+      leadCode: 'ST-LEAD-2026-0006',
+      title: 'Legacy On-Premise Unix Server Maintenance',
+      contactName: 'Kishore Bhasin',
+      contactEmail: 'kishore.bhasin@example.com',
+      contactPhone: '+91 98505 55666',
+      company: 'Bhasin Heavy Engineering',
+      source: 'COLD_OUTREACH',
+      status: 'LOST',
+      priority: 'LOW',
+      estimatedValue: 75000.0,
+      currency: 'INR',
+      notes: 'Client decided to defer hardware upgrade to next fiscal year.',
+      isDemo: true,
+    },
+  ]
+
+  for (const ld of demoLeads) {
+    const existing = await prisma.lead.findUnique({
+      where: { leadCode: ld.leadCode },
+    })
+
+    if (!existing) {
+      const createdLead = await prisma.lead.create({
+        data: ld,
+      })
+
+      if (ld.status === 'WON') {
+        await prisma.leadActivity.create({
+          data: {
+            leadId: createdLead.id,
+            type: 'STATUS_CHANGE',
+            summary: 'Enterprise contract finalized and deal won',
+            details: 'Signed master services agreement and allocated engineering resources.',
+          },
+        })
+      } else if (ld.status === 'PROPOSAL_SENT') {
+        await prisma.leadActivity.create({
+          data: {
+            leadId: createdLead.id,
+            type: 'PROPOSAL',
+            summary: 'Commercial proposal v1.2 dispatched via email',
+            details: 'Includes SLA terms, security milestone breakdown, and licensing quotes.',
+          },
+        })
+      } else {
+        await prisma.leadActivity.create({
+          data: {
+            leadId: createdLead.id,
+            type: 'NOTE',
+            summary: `Lead registered in pipeline at stage: ${ld.status}`,
+          },
+        })
+      }
+    }
+  }
+
   console.log('\n======================================================================')
   console.log('✅ SUCCESS: 3 MONTHS OF REALISTIC FAKE DEMO DATA SEEDED INTO DATABASE!')
   console.log('======================================================================\n')
 }
 
-main()
-  .catch((e) => {
-    console.error('Fatal seeding error:', e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+
+  

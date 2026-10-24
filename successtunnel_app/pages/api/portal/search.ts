@@ -20,6 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       projects: [],
       tasks: [],
       employees: [],
+      leads: [],
+      customers: [],
     })
   }
 
@@ -36,6 +38,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { label: 'Project Roadmaps', href: '/portal/projects', category: 'Projects', icon: 'clipboard-list' },
       { label: 'Task Kanban Board', href: '/portal/tasks', category: 'Projects', icon: 'clipboard-check' },
       { label: 'Engineering Hub & Git Ledger', href: '/portal/engineering', category: 'Projects', icon: 'code' },
+      { label: 'CRM & Lead Pipeline', href: '/portal/crm', category: 'Sales & CRM', icon: 'user-group' },
+      { label: 'Customer Directory', href: '/portal/crm?tab=customers', category: 'Sales & CRM', icon: 'users' },
+      { label: 'Website Enquiries', href: '/portal/crm?tab=enquiries', category: 'Sales & CRM', icon: 'mail' },
       { label: 'Workforce Attendance', href: '/portal/attendance', category: 'Workforce', icon: 'clock' },
       { label: 'Leaves & Holidays', href: '/portal/leaves', category: 'Workforce', icon: 'calendar' },
       { label: 'Corporate Documents', href: '/portal/documents', category: 'Documents', icon: 'document-text' },
@@ -76,7 +81,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         { taskCode: { contains: query } },
       ],
     }
-    // Non-admins see tasks if assigned or created or part of their department
     if (!isSuperAdmin && auth.role === 'employee') {
       taskWhere.assigneeId = auth.id
     }
@@ -126,6 +130,47 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       take: 5,
     })
 
+    // 5. Query CRM Leads
+    const leads = await prisma.lead.findMany({
+      where: {
+        OR: [
+          { title: { contains: query } },
+          { leadCode: { contains: query } },
+          { contactName: { contains: query } },
+          { company: { contains: query } },
+        ],
+      },
+      select: {
+        id: true,
+        leadCode: true,
+        title: true,
+        contactName: true,
+        status: true,
+        estimatedValue: true,
+      },
+      take: 5,
+    })
+
+    // 6. Query Customers
+    const customers = await prisma.customer.findMany({
+      where: {
+        OR: [
+          { name: { contains: query } },
+          { customerCode: { contains: query } },
+          { company: { contains: query } },
+          { email: { contains: query } },
+        ],
+      },
+      select: {
+        id: true,
+        customerCode: true,
+        name: true,
+        company: true,
+        status: true,
+      },
+      take: 5,
+    })
+
     return res.status(200).json({
       query,
       navigation: matchedNav,
@@ -154,6 +199,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         department: e.department?.name || 'General',
         employeeCode: e.employeeProfile?.employeeCode || `ST-EMP-${e.id}`,
         href: `/portal/employees?search=${encodeURIComponent(e.email)}`,
+      })),
+      leads: leads.map((l) => ({
+        id: l.id,
+        code: l.leadCode,
+        title: l.title,
+        contactName: l.contactName,
+        status: l.status,
+        value: l.estimatedValue,
+        href: `/portal/crm?leadId=${l.id}`,
+      })),
+      customers: customers.map((c) => ({
+        id: c.id,
+        code: c.customerCode,
+        name: c.name,
+        company: c.company || '',
+        status: c.status,
+        href: `/portal/crm?tab=customers&search=${encodeURIComponent(c.customerCode)}`,
       })),
     })
   } catch (error: any) {

@@ -43,6 +43,8 @@ model User {
   reviewedExpenses Expense[]        @relation("ExpenseReviewer")
   notifications    Notification[]
   auditLogs        AuditLog[]
+  assignedLeads    Lead[]            @relation("LeadAssignee")
+  leadActivities   LeadActivity[]    @relation("UserLeadActivities")
 }
 
 // ----------------------------------------------------------------------
@@ -108,6 +110,8 @@ model Project {
   members           ProjectMember[]
   tasks             Task[]
   expenses          Expense[]
+  customerId        Int?
+  customer          Customer?       @relation(fields: [customerId], references: [id])
 }
 
 model ProjectMember {
@@ -297,6 +301,72 @@ model AuditLog {
 }
 
 // ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+// Customer & CRM Management
+// ----------------------------------------------------------------------
+
+model Customer {
+  id           Int       @id @default(autoincrement())
+  customerCode String    @unique // e.g. ST-CUST-1001
+  name         String
+  company      String?
+  email        String
+  phone        String?
+  address      String?
+  city         String?
+  website      String?
+  status       String    @default("ACTIVE") // ACTIVE, INACTIVE, LEAD
+  notes        String?
+  isDemo       Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+
+  leads        Lead[]
+  projects     Project[]
+}
+
+model Lead {
+  id             Int            @id @default(autoincrement())
+  leadCode       String         @unique // e.g. ST-LEAD-2026-001
+  title          String
+  customerId     Int?
+  customer       Customer?      @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  contactName    String
+  contactEmail   String
+  contactPhone   String?
+  company        String?
+  source         String         @default("WEBSITE_ENQUIRY") // WEBSITE_ENQUIRY, REFERRAL, COLD_OUTREACH, PARTNER, DIRECT, OTHER
+  status         String         @default("NEW") // NEW, CONTACTED, QUALIFIED, PROPOSAL_SENT, WON, LOST
+  priority       String         @default("MEDIUM") // LOW, MEDIUM, HIGH
+  estimatedValue Float          @default(0.0)
+  currency       String         @default("INR")
+  assignedToId   Int?
+  assignedTo     User?          @relation("LeadAssignee", fields: [assignedToId], references: [id])
+  enquiryId      Int?
+  enquiry        Enquiry?       @relation(fields: [enquiryId], references: [id], onDelete: SetNull)
+  notes          String?
+  nextFollowUp   DateTime?
+  isDemo         Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @default(now()) @updatedAt
+
+  activities     LeadActivity[]
+}
+
+model LeadActivity {
+  id           Int       @id @default(autoincrement())
+  leadId       Int
+  lead         Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  userId       Int?
+  user         User?     @relation("UserLeadActivities", fields: [userId], references: [id])
+  type         String    // CALL, EMAIL, MEETING, NOTE, PROPOSAL, STATUS_CHANGE
+  summary      String
+  details      String?
+  followUpDate DateTime?
+  isCompleted  Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+}
+
 // Existing Success Tunnel Website CMS Models (Preserved 100%)
 // ----------------------------------------------------------------------
 
@@ -394,7 +464,10 @@ model Enquiry {
   service   String?
   message   String?
   page      String?
+  status    String   @default("UNREAD") // UNREAD, CONTACTED, CONVERTED_TO_LEAD, ARCHIVED
   createdAt DateTime @default(now())
+
+  leads     Lead[]
 }
 
 model RentalPayment {
