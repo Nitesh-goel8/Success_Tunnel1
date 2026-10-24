@@ -4,185 +4,176 @@ import { HiOutlineSearch, HiOutlineDocumentText, HiOutlineChatAlt2, HiOutlineSpa
 const workflowStages = [
   {
     step: '01',
-    icon: <HiOutlineSearch size={28} />,
+    icon: <HiOutlineSearch size={24} />,
     title: 'Discovery & Practice Scoping',
     subtitle: 'Initial Engagement',
     description:
-      'Explore our multidisciplinary practices. Select the relevant advisory domain or submit an enquiry outlining your objectives, timeline, and current operational constraints.',
-    color: '#38bdf8',
+      'We assess your statutory requirements, current business structure, and growth objectives to define the exact advisory scope and deliverables.',
   },
   {
     step: '02',
-    icon: <HiOutlineDocumentText size={28} />,
-    title: 'Audit & Requirements Review',
+    icon: <HiOutlineDocumentText size={24} />,
+    title: 'Audit & Records Review',
     subtitle: 'Data Assessment',
     description:
-      'Our senior practitioners at Panipat HQ conduct a structured review of existing documentation—financial records, compliance history, or commercial real estate specifications.',
-    color: '#60a5fa',
+      'Our senior practitioners at Panipat HQ conduct a structured review of existing filings, financial accounts, or commercial real estate specifications.',
   },
   {
     step: '03',
-    icon: <HiOutlineChatAlt2 size={28} />,
-    title: 'Tailored Strategy & Architecture',
+    icon: <HiOutlineChatAlt2 size={24} />,
+    title: 'Tailored Strategy Architecture',
     subtitle: 'Solution Blueprint',
     description:
-      'We deliver a comprehensive roadmap specifying statutory filings, capital structure, syllabus modules, or property lease terms with fixed milestones and verified deliverables.',
-    color: '#a855f7',
+      'We construct a comprehensive execution roadmap with fixed statutory deadlines, bank CMA models, or lease terms—eliminating administrative ambiguity.',
   },
   {
     step: '04',
-    icon: <HiOutlineSparkles size={28} />,
-    title: 'Coordinated Execution & Review',
-    subtitle: 'Continuous Governance',
+    icon: <HiOutlineSparkles size={24} />,
+    title: 'Execution & Ongoing Governance',
+    subtitle: 'Continuous Review',
     description:
-      'Our team executes filings, completes lender syndication, conducts training, or closes property transactions, backed by ongoing milestone reviews and compliance tracking.',
-    color: '#10b981',
+      'Our team executes filings, secures debt syndication, or completes lease transitions, backed by transparent milestone tracking and regular reviews.',
   },
 ]
 
 export default function ProcessTimeline() {
   return (
-    <section className="process-timeline-section" style={{ position: 'relative', overflow: 'hidden' }}>
+    <section className="process-timeline-section" style={{ padding: '80px 0', position: 'relative' }}>
       <div className="container">
         {/* Section Header */}
-        <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 56px' }}>
-          <span className="eyebrow" style={{ color: '#60a5fa', background: 'rgba(96, 165, 250, 0.08)' }}>
+        <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 48px' }}>
+          <span className="eyebrow" style={{ color: '#38bdf8', background: 'rgba(56, 189, 248, 0.08)' }}>
             STRUCTURED METHODOLOGY
           </span>
           <h2
             style={{
-              fontSize: 'clamp(2rem, 4.5vw, 3.2rem)',
+              fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
               color: '#f8fafc',
               fontWeight: 800,
               letterSpacing: '-0.03em',
-              margin: '16px 0 18px',
+              margin: '14px 0 14px',
               fontFamily: "'Sora', sans-serif",
             }}
           >
             A Systematic Path from Brief to Results
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: '1.1rem', lineHeight: '1.7', margin: 0 }}>
-            Every engagement follows a verified four-phase advisory process designed to eliminate ambiguity, ensure legal compliance, and deliver measurable outcomes.
+          <p style={{ color: '#94a3b8', fontSize: '1.05rem', lineHeight: '1.7', margin: 0 }}>
+            Every engagement follows a verified four-phase advisory process designed to eliminate regulatory friction, ensure compliance, and deliver measurable business outcomes.
           </p>
         </div>
 
-        {/* 4-Step Connected Grid */}
+        {/* 4-Step Connected Grid with Unified Palette */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '24px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '20px',
             position: 'relative',
           }}
         >
           {workflowStages.map((stage, idx) => (
             <div
               key={stage.step}
-              className="process-stage-card"
               style={{
-                background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(9, 13, 22, 0.9) 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '20px',
-                padding: '32px 28px',
-                position: 'relative',
+                background: 'linear-gradient(180deg, rgba(13, 21, 39, 0.7) 0%, rgba(9, 14, 26, 0.9) 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.07)',
+                borderRadius: '16px',
+                padding: '28px 24px',
                 display: 'flex',
                 flexDirection: 'column',
-                transition: 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
+                justifyContent: 'space-between',
               }}
             >
-              {/* Step Number & Icon Header */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '24px',
-                }}
-              >
+              <div>
+                {/* Step Number & Icon Header */}
                 <div
                   style={{
-                    width: '54px',
-                    height: '54px',
-                    borderRadius: '14px',
-                    background: `linear-gradient(135deg, ${stage.color}22, rgba(15, 23, 42, 0.6))`,
-                    border: `1px solid ${stage.color}44`,
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    color: stage.color,
+                    justifyContent: 'space-between',
+                    marginBottom: '18px',
                   }}
                 >
-                  {stage.icon}
+                  <div
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '10px',
+                      background: 'rgba(30, 58, 138, 0.2)',
+                      border: '1px solid rgba(56, 189, 248, 0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#38bdf8',
+                    }}
+                  >
+                    {stage.icon}
+                  </div>
+
+                  <span
+                    style={{
+                      fontSize: '1.4rem',
+                      fontWeight: 900,
+                      fontFamily: "'Sora', sans-serif",
+                      color: 'rgba(255, 255, 255, 0.15)',
+                      letterSpacing: '-0.02em',
+                    }}
+                  >
+                    {stage.step}
+                  </span>
                 </div>
 
                 <div
                   style={{
-                    fontSize: '2rem',
-                    fontWeight: 900,
-                    fontFamily: "'Sora', sans-serif",
-                    color: 'rgba(255, 255, 255, 0.12)',
-                    letterSpacing: '-0.04em',
+                    fontSize: '0.74rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    color: '#38bdf8',
+                    marginBottom: '6px',
                   }}
                 >
-                  {stage.step}
+                  {stage.subtitle}
                 </div>
+
+                <h3
+                  style={{
+                    fontSize: '1.15rem',
+                    fontWeight: 700,
+                    color: '#f8fafc',
+                    marginBottom: '10px',
+                    fontFamily: "'Sora', sans-serif",
+                    lineHeight: '1.3',
+                  }}
+                >
+                  {stage.title}
+                </h3>
+
+                <p
+                  style={{
+                    color: '#94a3b8',
+                    fontSize: '0.88rem',
+                    lineHeight: '1.65',
+                    margin: 0,
+                  }}
+                >
+                  {stage.description}
+                </p>
               </div>
 
-              {/* Subtitle Eyebrow */}
               <div
                 style={{
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  color: stage.color,
-                  marginBottom: '8px',
-                }}
-              >
-                {stage.subtitle}
-              </div>
-
-              {/* Title */}
-              <h3
-                style={{
-                  fontSize: '1.25rem',
-                  fontWeight: 700,
-                  color: '#f8fafc',
-                  marginBottom: '14px',
-                  fontFamily: "'Sora', sans-serif",
-                  lineHeight: '1.3',
-                }}
-              >
-                {stage.title}
-              </h3>
-
-              {/* Description */}
-              <p
-                style={{
-                  color: '#94a3b8',
-                  fontSize: '0.92rem',
-                  lineHeight: '1.65',
-                  margin: 0,
-                  flexGrow: 1,
-                }}
-              >
-                {stage.description}
-              </p>
-
-              {/* Bottom Subtle Indicator */}
-              <div
-                style={{
-                  marginTop: '24px',
-                  paddingTop: '16px',
+                  marginTop: '20px',
+                  paddingTop: '12px',
                   borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-                  fontSize: '0.82rem',
+                  fontSize: '0.78rem',
                   color: '#64748b',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
                 }}
               >
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: stage.color }} />
+                <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#38bdf8' }} />
                 <span>Phase {idx + 1} of 4</span>
               </div>
             </div>

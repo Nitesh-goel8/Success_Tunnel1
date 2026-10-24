@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { HiArrowRight } from 'react-icons/hi'
 
@@ -7,7 +7,6 @@ interface PerspectiveServiceCardProps {
   slug: string
   icon: React.ReactNode
   excerpt: string
-  accentColor: string
   pillarNumber: string
   keyTags: string[]
 }
@@ -17,105 +16,63 @@ export default function PerspectiveServiceCard({
   slug,
   icon,
   excerpt,
-  accentColor,
   pillarNumber,
   keyTags,
 }: PerspectiveServiceCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const [rotateX, setRotateX] = useState(0)
-  const [rotateY, setRotateY] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const rotX = ((y - centerY) / centerY) * -6 // max tilt 6 deg
-    const rotY = ((x - centerX) / centerX) * 6
-    setRotateX(rotX)
-    setRotateY(rotY)
-  }
-
-  const handleMouseEnter = () => {
-    setIsHovered(true)
-  }
-
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-    setRotateX(0)
-    setRotateY(0)
-  }
 
   return (
     <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
-        perspective: '1000px',
         height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <div
-        className="perspective-card-inner"
+        className="editorial-service-card"
         style={{
-          transform: isHovered ? `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)` : 'none',
-          transition: isHovered ? 'transform 0.1s ease-out, box-shadow 0.25s ease' : 'transform 0.4s ease-out, box-shadow 0.4s ease',
-          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(9, 13, 22, 0.95) 100%)',
-          border: isHovered ? `1px solid ${accentColor}88` : '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '20px',
-          padding: '32px 28px',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          background: isHovered
+            ? 'linear-gradient(180deg, rgba(20, 30, 55, 0.85) 0%, rgba(11, 18, 33, 0.95) 100%)'
+            : 'linear-gradient(180deg, rgba(13, 21, 39, 0.7) 0%, rgba(9, 14, 26, 0.9) 100%)',
+          border: isHovered ? '1px solid rgba(56, 189, 248, 0.35)' : '1px solid rgba(255, 255, 255, 0.07)',
+          borderRadius: '16px',
+          padding: 'clamp(24px, 3vw, 32px)',
+          transition: 'transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease',
+          transform: isHovered ? 'translateY(-4px)' : 'none',
+          boxShadow: isHovered
+            ? '0 16px 36px rgba(0, 0, 0, 0.35), 0 0 24px rgba(37, 99, 235, 0.12)'
+            : '0 4px 16px rgba(0, 0, 0, 0.15)',
           position: 'relative',
-          overflow: 'hidden',
-          boxShadow: isHovered ? `0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px ${accentColor}25` : '0 8px 24px rgba(0, 0, 0, 0.2)',
         }}
       >
-        {/* Glow Accent Circle */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '-40px',
-            right: '-40px',
-            width: '140px',
-            height: '140px',
-            borderRadius: '50%',
-            background: accentColor,
-            opacity: isHovered ? 0.2 : 0.08,
-            filter: 'blur(30px)',
-            transition: 'opacity 0.3s ease',
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Top Header: Icon & Pillar Number */}
         <div>
+          {/* Card Top: Numbering & Subdued Icon */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginBottom: '22px',
+              marginBottom: '20px',
             }}
           >
             <div
               style={{
-                width: '52px',
-                height: '52px',
-                borderRadius: '14px',
-                background: `linear-gradient(135deg, ${accentColor}22, rgba(15, 23, 42, 0.8))`,
-                border: `1px solid ${accentColor}44`,
+                width: '44px',
+                height: '44px',
+                borderRadius: '10px',
+                background: 'rgba(30, 58, 138, 0.2)',
+                border: '1px solid rgba(56, 189, 248, 0.2)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: accentColor,
+                color: '#38bdf8',
               }}
             >
               {icon}
@@ -123,11 +80,11 @@ export default function PerspectiveServiceCard({
 
             <span
               style={{
-                fontSize: '0.82rem',
-                fontWeight: 800,
-                color: 'rgba(255, 255, 255, 0.25)',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                color: '#64748b',
                 fontFamily: "'Sora', sans-serif",
-                letterSpacing: '0.05em',
+                letterSpacing: '0.08em',
               }}
             >
               {pillarNumber}
@@ -137,12 +94,13 @@ export default function PerspectiveServiceCard({
           {/* Title */}
           <h3
             style={{
-              fontSize: '1.35rem',
-              fontWeight: 800,
+              fontSize: '1.25rem',
+              fontWeight: 700,
               color: '#f8fafc',
-              marginBottom: '12px',
+              marginBottom: '10px',
               fontFamily: "'Sora', sans-serif",
-              lineHeight: '1.25',
+              letterSpacing: '-0.02em',
+              lineHeight: '1.3',
             }}
           >
             {title}
@@ -152,7 +110,7 @@ export default function PerspectiveServiceCard({
           <p
             style={{
               color: '#94a3b8',
-              fontSize: '0.94rem',
+              fontSize: '0.92rem',
               lineHeight: '1.65',
               marginBottom: '20px',
             }}
@@ -160,7 +118,7 @@ export default function PerspectiveServiceCard({
             {excerpt}
           </p>
 
-          {/* Tags */}
+          {/* Clean Neutral Tags */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '24px' }}>
             {keyTags.map((tag, i) => (
               <span
@@ -168,10 +126,10 @@ export default function PerspectiveServiceCard({
                 style={{
                   fontSize: '0.74rem',
                   fontWeight: 600,
-                  padding: '4px 8px',
+                  padding: '3px 8px',
                   borderRadius: '6px',
                   background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
                   color: '#cbd5e1',
                 }}
               >
@@ -188,16 +146,16 @@ export default function PerspectiveServiceCard({
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px',
-              color: accentColor,
+              gap: '6px',
+              color: '#38bdf8',
               fontWeight: 700,
-              fontSize: '0.92rem',
+              fontSize: '0.88rem',
               textDecoration: 'none',
               transition: 'gap 0.2s ease',
             }}
           >
-            <span>Explore Practice</span>
-            <HiArrowRight size={16} />
+            <span>Practice Scope &amp; Filings</span>
+            <HiArrowRight size={15} />
           </Link>
         </div>
       </div>

@@ -225,7 +225,6 @@ export default function Services({ services }: { services: any[] }) {
                     slug={service.slug}
                     icon={service.icon}
                     excerpt={service.excerpt}
-                    accentColor={service.accentColor}
                     pillarNumber={service.pillarNumber}
                     keyTags={service.keyTags}
                   />
