@@ -35,6 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { label: 'Departments & Org', href: '/portal/departments', category: 'HR & Directory', icon: 'office-building' },
       { label: 'Project Roadmaps', href: '/portal/projects', category: 'Projects', icon: 'clipboard-list' },
       { label: 'Task Kanban Board', href: '/portal/tasks', category: 'Projects', icon: 'clipboard-check' },
+      { label: 'Engineering Hub & Git Ledger', href: '/portal/engineering', category: 'Projects', icon: 'code' },
       { label: 'Workforce Attendance', href: '/portal/attendance', category: 'Workforce', icon: 'clock' },
       { label: 'Leaves & Holidays', href: '/portal/leaves', category: 'Workforce', icon: 'calendar' },
       { label: 'Corporate Documents', href: '/portal/documents', category: 'Documents', icon: 'document-text' },

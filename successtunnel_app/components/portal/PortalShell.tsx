@@ -25,6 +25,7 @@ import {
   HiOutlineSearch,
   HiOutlineUser,
   HiOutlineCheck,
+  HiOutlineCode,
 } from 'react-icons/hi'
 
 export interface BreadcrumbItem {
@@ -231,6 +232,7 @@ export default function PortalShell({ children, title, breadcrumbs = [] }: Porta
       items: [
         { label: 'Projects', href: '/portal/projects', icon: HiOutlineClipboardList },
         { label: 'Task Kanban', href: '/portal/tasks', icon: HiOutlineClipboardList },
+        { label: 'Engineering Hub', href: '/portal/engineering', icon: HiOutlineCode },
       ],
     },
     {
