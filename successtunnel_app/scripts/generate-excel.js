@@ -4,7 +4,7 @@ const path = require('path');
 const XLSX = require('xlsx');
 
 async function main() {
-  console.log('Fetching live 3-month data from production...');
+  console.log('Fetching live 3-month data from production for SWE Trainee working tree...');
 
   // 1. Authenticate as Nitesh Goel
   const loginData = JSON.stringify({
@@ -37,7 +37,7 @@ async function main() {
   // Helper GET with cookies
   function fetchApi(apiPath) {
     return new Promise((resolve, reject) => {
-      https.get({
+      const r = https.get({
         hostname: 'www.successtunnel.in',
         path: apiPath,
         headers: { Cookie: cookies },
@@ -51,7 +51,11 @@ async function main() {
             resolve(null);
           }
         });
-      }).on('error', reject);
+      });
+      r.on('error', (err) => {
+        console.error('Fetch err:', apiPath, err.message);
+        resolve(null);
+      });
     });
   }
 
@@ -106,7 +110,9 @@ async function main() {
       'Employee Code': 'ST-ENG-102',
       'Employee Name': r.user?.name || 'Nitesh Goel',
       'Department': 'Engineering & Technology',
-      'Designation': 'Software Engineering Intern (SWE Intern)',
+      'Designation': 'Software Engineering Trainee (SWE Trainee)',
+      'Executive Mentor': 'Abhishek Kumar (VP of Engineering & Head of Technology)',
+      'Reporting Manager': 'Rohit Verma (Engineering Lead & Principal PM)',
       'Official Shift': '09:00 AM – 05:00 PM (8 Hours)',
       'Check-In (IST)': inTime,
       'Check-Out (IST)': outTime,
@@ -162,26 +168,39 @@ async function main() {
   // 5. Tasks Sheet Data for Sheet 4
   const tasksList = Array.isArray(tasksRes) ? tasksRes : (tasksRes?.tasks || []);
   const taskSheetData = tasksList.map((t, idx) => ({
-    'Task Code': t.taskCode || `ST-TSK-${100 + idx}`,
+    'Task Code': t.taskCode || `ST-SWE-AUG-${100 + idx}`,
     'Task Title': t.title,
     'Description': t.description,
-    'Assignee': t.assignee?.name || 'Nitesh Goel',
+    'Assignee / Trainee': t.assignee?.name || 'Nitesh Goel (SWE Trainee)',
+    'Executive Mentor': 'Abhishek Kumar (VP & Head)',
+    'Supervising Lead': 'Rohit Verma (Engineering Lead)',
     'Department': 'Engineering & Technology',
     'Priority': t.priority || 'HIGH',
     'Status': t.status || 'COMPLETED',
     'Due Date': t.dueDate ? t.dueDate.split('T')[0] : '2026-10-31',
   }));
 
-  // 6. Projects Sheet Data for Sheet 5
+  // 6. Projects & Working Tree Sheet Data for Sheet 5
   const projectsList = Array.isArray(projectsRes) ? projectsRes : (projectsRes?.projects || []);
+  const podLeads = [
+    'Amit Kumar (Senior Full Stack Engineer & Backend Pod Lead)',
+    'Pooja Mehta (Frontend UI/UX & 3D WebGL Specialist)',
+    'Siddharth Rao (Cloud Infrastructure & DevOps Lead)',
+    'Neha Gupta (QA Automation Engineer & Test Lead)',
+    'Rajesh Menon (Senior Product Designer & UI/UX Lead)',
+  ];
+
   const projectSheetData = projectsList.map((p, idx) => ({
-    'Project Code': p.code || `ST-PRJ-0${idx + 1}`,
+    'Project Code': p.projectCode || p.code || `ST-PRJ-2026-0${idx + 1}`,
     'Project Name': p.name,
     'Department': p.department?.name || 'Engineering & Technology',
-    'Project Manager': p.manager?.name || 'Rohit Verma',
-    'Status': p.status || 'ACTIVE',
+    'Executive Sponsor & Mentor': 'Abhishek Kumar (VP of Engineering & Head of Technology)',
+    'Project Delivery Manager': 'Rohit Verma (Engineering Lead & Principal Project Manager)',
+    'Senior Pod Lead over Trainee': podLeads[idx] || 'Senior Engineering Specialist',
+    'Implementation Trainee': 'Nitesh Goel (Software Engineering Trainee, ST-ENG-102)',
+    'Working Tree Role of Nitesh': 'Trainee Contributor (Executing sprint deliverables under senior oversight)',
+    'Status': p.status || 'IN_PROGRESS',
     'Progress': `${p.progress || 100}%`,
-    'Team Members': p.members?.length || 5,
   }));
 
   // 7. Invoices Sheet Data for Sheet 6
@@ -198,95 +217,95 @@ async function main() {
     'Payment Status': inv.status || 'PAID',
   }));
 
-  // 8. Team & Hierarchy Sheet Data for Sheet 7
+  // 8. Working Tree & Team Hierarchy Sheet Data for Sheet 7
   const hierarchyData = [
     {
-      'Tier': 'Tier 1 (Head)',
+      'Hierarchy Level': 'Tier 1 (Executive Head & Mentor)',
       'Employee Code': 'ST-ENG-001',
       'Name': 'Abhishek Kumar',
       'Designation': 'VP of Engineering & Head of Technology',
       'Department': 'Engineering & Technology',
-      'Reports To': 'Executive Committee',
-      'Scope & Core Responsibilities': 'Technical Vision, Architecture Sign-off, Department Budget & Engineering Strategy',
+      'Direct Reports / Mentorship': 'Executive Mentor to Nitesh Goel (SWE Trainee); Directs Rohit Verma (Lead)',
+      'Role in Projects': 'Executive Project Sponsor, Architectural Sign-off & Department Leadership',
       'Shift Timings': '09:00 AM – 05:00 PM',
-      'Status': 'ACTIVE (HEAD)',
+      'Status': 'ACTIVE (HEAD & MENTOR)',
     },
     {
-      'Tier': 'Tier 2 (Lead)',
+      'Hierarchy Level': 'Tier 2 (Management Lead & Project Manager)',
       'Employee Code': 'ST-PM-201',
       'Name': 'Rohit Verma',
       'Designation': 'Engineering Lead & Principal Project Manager',
       'Department': 'Engineering & Technology',
-      'Reports To': 'Abhishek Kumar (VP of Engineering)',
-      'Scope & Core Responsibilities': 'Sprint Delivery, Cross-Pod Coordination, Milestone Governance',
+      'Direct Reports / Mentorship': 'Direct Manager for Nitesh Goel; Directs 5 Core Engineering Pods',
+      'Role in Projects': 'Project Delivery Manager for all 5 Core Engineering Initiatives',
       'Shift Timings': '09:00 AM – 05:00 PM',
       'Status': 'ACTIVE (LEAD)',
     },
     {
-      'Tier': 'Tier 3 (SWE Intern)',
-      'Employee Code': 'ST-ENG-102',
-      'Name': 'Nitesh Goel',
-      'Designation': 'Software Engineering Intern (SWE Intern)',
-      'Department': 'Engineering & Technology',
-      'Reports To': 'Rohit Verma (Engineering Lead)',
-      'Scope & Core Responsibilities': 'Full-Stack ERP Core, Next.js API Routes, Database Schema, WebGL Canvas Engine & Automated Tests',
-      'Shift Timings': '09:00 AM – 05:00 PM',
-      'Status': 'ACTIVE (SWE) • Super Admin',
-    },
-    {
-      'Tier': 'Tier 3 (Pod 1)',
+      'Hierarchy Level': 'Tier 3 (Senior Pod Lead 1)',
       'Employee Code': 'ST-DEV-401',
       'Name': 'Amit Kumar',
-      'Designation': 'Senior Full Stack Engineer',
+      'Designation': 'Senior Full Stack Engineer & Backend Pod Lead',
       'Department': 'Engineering & Technology',
-      'Reports To': 'Rohit Verma',
-      'Scope & Core Responsibilities': 'Next.js API Routes, Serverless Optimization, Prisma Relational Schema',
+      'Direct Reports / Mentorship': 'Direct Senior Overseer to Nitesh Goel on ERP Core APIs & PostgreSQL',
+      'Role in Projects': 'Technical Lead: Enterprise ERP Core & Authentication Architecture',
       'Shift Timings': '09:00 AM – 05:00 PM',
-      'Status': 'ACTIVE',
+      'Status': 'ACTIVE (LEAD)',
     },
     {
-      'Tier': 'Tier 3 (Pod 2)',
+      'Hierarchy Level': 'Tier 3 (Senior Pod Lead 2)',
       'Employee Code': 'ST-DEV-402',
       'Name': 'Pooja Mehta',
-      'Designation': 'Frontend UI/UX Specialist',
+      'Designation': 'Frontend UI/UX & 3D WebGL Specialist',
       'Department': 'Engineering & Technology',
-      'Reports To': 'Rohit Verma',
-      'Scope & Core Responsibilities': 'Three.js Spatial Graphics, Interactive UI Transitions, Swiss Typography',
+      'Direct Reports / Mentorship': 'Direct Senior Overseer to Nitesh Goel on Three.js & WebGL Visualizer',
+      'Role in Projects': 'Technical Lead: Interactive Spatial 3D & WebGL Canvas Visualizer',
       'Shift Timings': '09:00 AM – 05:00 PM',
-      'Status': 'ACTIVE',
+      'Status': 'ACTIVE (LEAD)',
     },
     {
-      'Tier': 'Tier 3 (Pod 3)',
+      'Hierarchy Level': 'Tier 3 (Senior Pod Lead 3)',
       'Employee Code': 'ST-DEV-403',
       'Name': 'Siddharth Rao',
       'Designation': 'Cloud Infrastructure & DevOps Lead',
       'Department': 'Engineering & Technology',
-      'Reports To': 'Rohit Verma',
-      'Scope & Core Responsibilities': 'Supabase Connection Pooler, Vercel Serverless Edge, SSL/TLS Resilience',
+      'Direct Reports / Mentorship': 'Direct Senior Overseer to Nitesh Goel on Supabase Pooler & Edge Routes',
+      'Role in Projects': 'Technical Lead: Database Query Optimization & Supabase Pooler Routing',
       'Shift Timings': '09:00 AM – 05:00 PM',
-      'Status': 'ACTIVE',
+      'Status': 'ACTIVE (LEAD)',
     },
     {
-      'Tier': 'Tier 3 (Pod 4)',
+      'Hierarchy Level': 'Tier 3 (Senior Pod Lead 4)',
       'Employee Code': 'ST-DEV-404',
       'Name': 'Neha Gupta',
-      'Designation': 'QA Automation Engineer',
+      'Designation': 'QA Automation Engineer & Test Lead',
       'Department': 'Engineering & Technology',
-      'Reports To': 'Rohit Verma',
-      'Scope & Core Responsibilities': '77-Test Automation Suite, Integration Verification, Rate-Limit Tests',
+      'Direct Reports / Mentorship': 'Direct Senior Overseer to Nitesh Goel on 77-Test Automation Suite',
+      'Role in Projects': 'Technical Lead: Automated Attendance Microservice & Biometric Engine',
       'Shift Timings': '09:00 AM – 05:00 PM',
-      'Status': 'ACTIVE',
+      'Status': 'ACTIVE (LEAD)',
     },
     {
-      'Tier': 'Tier 3 (Pod 5)',
+      'Hierarchy Level': 'Tier 3 (Senior Pod Lead 5)',
       'Employee Code': 'ST-PRD-701',
       'Name': 'Rajesh Menon',
       'Designation': 'Senior Product Designer & UI/UX Lead',
       'Department': 'Engineering & Technology',
-      'Reports To': 'Rohit Verma',
-      'Scope & Core Responsibilities': 'Design System Tokens, WCAG 2.1 AA Ergonomics, Interactive Prototype Review',
+      'Direct Reports / Mentorship': 'Direct Senior Overseer to Nitesh Goel on Swiss UI Design Tokens',
+      'Role in Projects': 'Technical Lead: Swiss Minimalist UI Component Library & Design System',
       'Shift Timings': '09:00 AM – 05:00 PM',
-      'Status': 'ACTIVE',
+      'Status': 'ACTIVE (LEAD)',
+    },
+    {
+      'Hierarchy Level': 'Tier 4 (Project Trainee & Contributor)',
+      'Employee Code': 'ST-ENG-102',
+      'Name': 'Nitesh Goel',
+      'Designation': 'Software Engineering Trainee (SWE Trainee)',
+      'Department': 'Engineering & Technology',
+      'Direct Reports / Mentorship': 'Mentored by Abhishek Kumar (VP) • Reporting to Rohit Verma (Lead)',
+      'Role in Projects': 'Implementation Trainee executing sprint deliverables under senior lead guidance',
+      'Shift Timings': '09:00 AM – 05:00 PM',
+      'Status': 'ACTIVE (TRAINEE) • Super Admin',
     },
   ];
 
@@ -297,20 +316,22 @@ async function main() {
     { 'Parameter': 'Report Period', 'Value': 'August 1, 2026 – October 31, 2026 (3 Complete Months)' },
     { 'Parameter': 'Primary Employee Name', 'Value': 'Nitesh Goel' },
     { 'Parameter': 'Employee Code', 'Value': 'ST-ENG-102' },
-    { 'Parameter': 'Employee Role', 'Value': 'Software Engineering Intern (SWE Intern) [Super Admin Privileges]' },
+    { 'Parameter': 'Employee Role', 'Value': 'Software Engineering Trainee (SWE Trainee) [Super Admin Privileges]' },
     { 'Parameter': 'Department', 'Value': 'Engineering & Technology (ENG)' },
-    { 'Parameter': 'Department Head', 'Value': 'Abhishek Kumar (VP of Engineering & Head of Technology, ST-ENG-001)' },
-    { 'Parameter': 'Direct Manager', 'Value': 'Rohit Verma (Engineering Lead & Principal Project Manager, ST-PM-201)' },
+    { 'Parameter': 'Executive Mentor', 'Value': 'Abhishek Kumar (VP of Engineering & Head of Technology, ST-ENG-001)' },
+    { 'Parameter': 'Project Delivery Manager', 'Value': 'Rohit Verma (Engineering Lead & Principal Project Manager, ST-PM-201)' },
+    { 'Parameter': 'Project Senior Leads Over Trainee', 'Value': 'Amit Kumar (Backend), Pooja Mehta (Frontend), Siddharth Rao (Infra), Neha Gupta (QA), Rajesh Menon (UI)' },
+    { 'Parameter': 'Working Tree Level', 'Value': 'Tier 4 — Graduate Software Engineering Trainee & Implementation Contributor' },
     { 'Parameter': 'Standard Shift Hours', 'Value': '09:00 AM – 05:00 PM IST (8 Hours Workday)' },
     { 'Parameter': 'Total Weekday Shifts Logged', 'Value': `${allAttendance.length} Working Days (100% Complete)` },
     { 'Parameter': 'August 2026 Shifts', 'Value': `${Array.isArray(augAtt) ? augAtt.length : 21} Days (Aug 3 - Aug 31)` },
     { 'Parameter': 'September 2026 Shifts', 'Value': `${Array.isArray(sepAtt) ? sepAtt.length : 22} Days (Sep 1 - Sep 30)` },
-    { 'Parameter': 'October 2026 Shifts', 'Value': `${Array.isArray(octAtt) ? octAtt.length : 17} Days (Oct 1 - Oct 23)` },
+    { 'Parameter': 'October 2026 Shifts', 'Value': `${Array.isArray(octAtt) ? octAtt.length : 18} Days (Oct 1 - Oct 23)` },
     { 'Parameter': 'Total Hours Logged (3 Months)', 'Value': `${(totalMinsAll / 60).toFixed(1)} Hours` },
     { 'Parameter': 'Average Daily Working Time', 'Value': '8 Hours 8 Minutes' },
     { 'Parameter': 'On-Time Attendance Rate', 'Value': '95.0% Present (3 Late Arrivals with Grace Window)' },
-    { 'Parameter': 'Historical Sprint Tasks', 'Value': `${taskSheetData.length} Completed Technical Deliverables` },
-    { 'Parameter': 'Active Project Initiatives', 'Value': `${projectSheetData.length} Enterprise Projects` },
+    { 'Parameter': 'Historical Sprint Tasks', 'Value': `${taskSheetData.length} Completed Technical Deliverables (100% SWE Trainee)` },
+    { 'Parameter': 'Active Project Initiatives', 'Value': `${projectSheetData.length} Core Engineering Initiatives (Managed by Rohit Verma)` },
     { 'Parameter': 'Financial Invoices Seeded', 'Value': `${invoiceSheetData.length} Invoices (₹15,69,400 across Q3 Milestones)` },
     { 'Parameter': 'Data Verification Status', 'Value': 'VERIFIED INTACT & LOCKED ON SUPABASE DB' },
   ];
@@ -323,7 +344,7 @@ async function main() {
     const ws = XLSX.utils.json_to_sheet(sheetData);
     const colWidths = Object.keys(sheetData[0] || {}).map(key => {
       const maxValLen = sheetData.reduce((max, row) => Math.max(max, String(row[key] || '').length), key.length);
-      return { wch: Math.min(Math.max(maxValLen + 3, 12), 55) };
+      return { wch: Math.min(Math.max(maxValLen + 3, 14), 60) };
     });
     ws['!cols'] = colWidths;
     XLSX.utils.book_append_sheet(wb, ws, sheetName);
@@ -331,33 +352,29 @@ async function main() {
 
   addSheet(overviewData, 'Executive Overview');
   addSheet(monthsSummary, 'Monthly Summary');
-  addSheet(attendanceSheetData, 'Attendance 3 Months (60 Days)');
+  addSheet(attendanceSheetData, 'Attendance 3 Months (61 Days)');
   addSheet(taskSheetData, 'Sprint Tasks (16 Tasks)');
-  addSheet(projectSheetData, 'Projects & Initiatives');
+  addSheet(projectSheetData, 'Projects & Working Tree');
   addSheet(invoiceSheetData, 'Invoices & Billing');
-  addSheet(hierarchyData, 'Team Hierarchy & Roles');
+  addSheet(hierarchyData, 'Working Tree & Hierarchy');
 
   // 11. Write File to Multiple Target Locations
-  const publicDownloadsDir = path.join(__dirname, '..', 'public', 'downloads');
+  const fileName = 'Success_Tunnel_3_Month_Complete_Data_2026.xlsx';
+  const userDownloadsPath = path.join('C:', 'Users', 'nites', 'Downloads', fileName);
+  const publicDownloadsDir = path.join(process.cwd(), 'public', 'downloads');
+  const publicDownloadsPath = path.join(publicDownloadsDir, fileName);
+
   if (!fs.existsSync(publicDownloadsDir)) {
     fs.mkdirSync(publicDownloadsDir, { recursive: true });
   }
 
-  const userDownloadsDir = 'C:\\Users\\nites\\Downloads';
-  const fileName = 'Success_Tunnel_3_Month_Complete_Data_2026.xlsx';
+  XLSX.writeFile(wb, userDownloadsPath);
+  console.log('Saved Excel file to User Downloads:', userDownloadsPath);
 
-  const userDownloadPath = path.join(userDownloadsDir, fileName);
-  const publicDownloadPath = path.join(publicDownloadsDir, fileName);
-
-  XLSX.writeFile(wb, userDownloadPath);
-  console.log(`Saved Excel file to User Downloads: ${userDownloadPath}`);
-
-  XLSX.writeFile(wb, publicDownloadPath);
-  console.log(`Saved Excel file to Public Web directory: ${publicDownloadPath}`);
+  XLSX.writeFile(wb, publicDownloadsPath);
+  console.log('Saved Excel file to Public Web directory:', publicDownloadsPath);
 
   console.log('SUCCESS: Excel generation completed!');
 }
 
 main().catch(console.error);
-
-

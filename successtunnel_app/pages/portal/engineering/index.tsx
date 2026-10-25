@@ -442,42 +442,8 @@ export default function EngineeringWorkspace() {
             <div style={{ width: '2px', height: '24px', background: '#94a3b8' }} />
           </div>
 
-          {/* Tier 3: Core Engineering Pods */}
+          {/* Tier 3: Core Engineering Pods & Senior Specialists */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '1.25rem' }}>
-            
-            {/* Pod 0: Nitesh Goel (Software Engineering Intern - SWE Intern) */}
-            <div className={styles.card} style={{ borderTop: '4px solid #2563eb', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 16px rgba(37, 99, 235, 0.08)' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                  <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#eff6ff', color: '#1d4ed8', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
-                      ST-ENG-102
-                    </span>
-                    <span style={{ fontSize: '0.65rem', fontWeight: 800, background: '#10b981', color: '#ffffff', padding: '0.1rem 0.4rem', borderRadius: '4px' }}>
-                      SUPER ADMIN
-                    </span>
-                  </div>
-                  <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
-                    In Active Sprint
-                  </span>
-                </div>
-                <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', margin: '0.2rem 0 0.1rem 0' }}>
-                  Nitesh Goel
-                </h4>
-                <div style={{ fontSize: '0.825rem', color: '#2563eb', fontWeight: 600, marginBottom: '0.75rem' }}>
-                  Software Engineering Intern (SWE Intern)
-                </div>
-                <div style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.5' }}>
-                  <strong>Pod Focus:</strong> Core Application Systems, Scalable Next.js Serverless APIs, Supabase Relational Schema, and High-Performance Spatial 3D Experience.
-                </div>
-              </div>
-
-              <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', fontSize: '0.75rem', color: '#64748b' }}>
-                <div><strong>Manager:</strong> Rohit Verma (Engineering Lead)</div>
-                <div><strong>Direct Initiative:</strong> Enterprise Core Platform & Real-Time Engine</div>
-              </div>
-            </div>
             
             {/* Pod 1 */}
             <div className={styles.card} style={{ borderTop: '4px solid #3b82f6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -492,7 +458,7 @@ export default function EngineeringWorkspace() {
                   Amit Kumar
                 </h4>
                 <div style={{ fontSize: '0.825rem', color: '#2563eb', fontWeight: 600, marginBottom: '0.75rem' }}>
-                  Senior Full Stack Engineer
+                  Senior Full Stack Engineer & Backend Pod Lead
                 </div>
                 <div style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.5' }}>
                   <strong>Pod Focus:</strong> Core APIs, Serverless Functions, Prisma Relational Models & PostgreSQL Query Optimization.
@@ -500,8 +466,8 @@ export default function EngineeringWorkspace() {
               </div>
 
               <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', fontSize: '0.75rem', color: '#64748b' }}>
-                <div><strong>Manager:</strong> Rohit Verma</div>
-                <div><strong>Direct Initiative:</strong> Corporate Advisory & Debt Engine</div>
+                <div><strong>Manager:</strong> Rohit Verma (Engineering Lead)</div>
+                <div><strong>Direct Initiative:</strong> Enterprise ERP Core & Authentication Architecture</div>
               </div>
             </div>
 
@@ -526,8 +492,8 @@ export default function EngineeringWorkspace() {
               </div>
 
               <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', fontSize: '0.75rem', color: '#64748b' }}>
-                <div><strong>Manager:</strong> Rohit Verma</div>
-                <div><strong>Direct Initiative:</strong> Panipat Commercial Real Estate Portfolio</div>
+                <div><strong>Manager:</strong> Rohit Verma (Engineering Lead)</div>
+                <div><strong>Direct Initiative:</strong> Interactive Spatial 3D & WebGL Canvas Visualizer</div>
               </div>
             </div>
 
@@ -552,8 +518,8 @@ export default function EngineeringWorkspace() {
               </div>
 
               <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', fontSize: '0.75rem', color: '#64748b' }}>
-                <div><strong>Manager:</strong> Rohit Verma</div>
-                <div><strong>Direct Initiative:</strong> High-Throughput Production Scalability</div>
+                <div><strong>Manager:</strong> Rohit Verma (Engineering Lead)</div>
+                <div><strong>Direct Initiative:</strong> Database Query Optimization & Supabase Pooler Routing</div>
               </div>
             </div>
 
@@ -570,7 +536,7 @@ export default function EngineeringWorkspace() {
                   Neha Gupta
                 </h4>
                 <div style={{ fontSize: '0.825rem', color: '#059669', fontWeight: 600, marginBottom: '0.75rem' }}>
-                  QA Automation Engineer
+                  QA Automation Engineer & Test Lead
                 </div>
                 <div style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.5' }}>
                   <strong>Pod Focus:</strong> Test Harness Suites (77/77 Passing), End-to-End Regression Verification, API Auth Assertion.
@@ -578,8 +544,8 @@ export default function EngineeringWorkspace() {
               </div>
 
               <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', fontSize: '0.75rem', color: '#64748b' }}>
-                <div><strong>Manager:</strong> Rohit Verma</div>
-                <div><strong>Direct Initiative:</strong> Statutory Tax & Regulatory Governance System</div>
+                <div><strong>Manager:</strong> Rohit Verma (Engineering Lead)</div>
+                <div><strong>Direct Initiative:</strong> Automated Attendance Microservice & Biometric Engine</div>
               </div>
             </div>
 
@@ -604,11 +570,69 @@ export default function EngineeringWorkspace() {
               </div>
 
               <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', fontSize: '0.75rem', color: '#64748b' }}>
-                <div><strong>Manager:</strong> Rohit Verma</div>
-                <div><strong>Direct Initiative:</strong> Enterprise Portal Ergonomics & Mobile Shell</div>
+                <div><strong>Manager:</strong> Rohit Verma (Engineering Lead)</div>
+                <div><strong>Direct Initiative:</strong> Swiss Minimalist UI Component Library & Design System</div>
               </div>
             </div>
 
+          </div>
+
+          {/* Connector to Tier 4 Trainee Level */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '1.5rem 0 0.75rem 0' }}>
+            <div style={{ width: '2px', height: '24px', background: '#94a3b8' }} />
+            <div style={{
+              background: '#0f172a',
+              color: '#ffffff',
+              borderRadius: '12px',
+              padding: '0.2rem 0.75rem',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              letterSpacing: '0.04em',
+            }}>
+              TIER 4: PROJECT TRAINEES & ASSOCIATE CONTRIBUTORS
+            </div>
+            <div style={{ width: '2px', height: '24px', background: '#94a3b8' }} />
+          </div>
+
+          {/* Tier 4 Card: Nitesh Goel */}
+          <div style={{ maxWidth: '680px', margin: '0 auto 1.5rem auto' }}>
+            <div className={styles.card} style={{ borderTop: '4px solid #2563eb', boxShadow: '0 4px 16px rgba(37, 99, 235, 0.08)' }}>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                  <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#eff6ff', color: '#1d4ed8', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
+                      ST-ENG-102
+                    </span>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 800, background: '#3b82f6', color: '#ffffff', padding: '0.1rem 0.4rem', borderRadius: '4px' }}>
+                      TRAINEE
+                    </span>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 700, background: '#10b981', color: '#ffffff', padding: '0.1rem 0.4rem', borderRadius: '4px' }}>
+                      SUPER ADMIN
+                    </span>
+                  </div>
+                  <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
+                    Active Traineeship
+                  </span>
+                </div>
+                <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0f172a', margin: '0.2rem 0 0.1rem 0' }}>
+                  Nitesh Goel
+                </h4>
+                <div style={{ fontSize: '0.85rem', color: '#2563eb', fontWeight: 600, marginBottom: '0.75rem' }}>
+                  Software Engineering Trainee (SWE Trainee)
+                </div>
+                <div style={{ fontSize: '0.825rem', color: '#475569', lineHeight: '1.6' }}>
+                  <strong>Working Tree Role:</strong> Implementation Trainee working under senior engineering guidance. Mentored directly by Abhishek Kumar on architectural standards and systems design. Executes sprint tickets assigned by Rohit Verma across Next.js APIs, Supabase database schemas, and Three.js spatial canvas modules.
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', fontSize: '0.75rem', color: '#64748b', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.5rem' }}>
+                <div><strong>Executive Mentor:</strong> Abhishek Kumar (VP & Head)</div>
+                <div><strong>Direct Delivery Manager:</strong> Rohit Verma (Engineering Lead)</div>
+                <div><strong>Module Mentors:</strong> Amit Kumar (Backend) & Pooja Mehta (Frontend)</div>
+                <div><strong>Assigned Deliverables:</strong> ERP API Routes, DB Schemas, WebGL Canvas Engine</div>
+              </div>
+            </div>
           </div>
 
           {/* Work Hierarchy Breakdown Matrix */}
@@ -670,22 +694,6 @@ export default function EngineeringWorkspace() {
                     <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE (LEAD)</span></td>
                   </tr>
 
-                  <tr style={{ background: '#eff6ff' }}>
-                    <td>
-                      <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#2563eb', color: '#ffffff', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>
-                        TIER 3 SWE INTERN
-                      </span>
-                    </td>
-                    <td>
-                      <strong>Nitesh Goel</strong>
-                      <div style={{ fontSize: '0.75rem', color: '#1d4ed8', fontWeight: 600 }}>Software Engineering Intern (SWE Intern) [Super Admin]</div>
-                    </td>
-                    <td><code>ST-ENG-102</code></td>
-                    <td>Rohit Verma</td>
-                    <td>Full-Stack ERP Core, Next.js API Routes, Database Schema, WebGL Canvas Engine & Automated Tests</td>
-                    <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE (SWE INTERN)</span></td>
-                  </tr>
-
                   <tr>
                     <td>
                       <span style={{ fontSize: '0.7rem', fontWeight: 600, background: '#f1f5f9', color: '#475569', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>
@@ -694,7 +702,7 @@ export default function EngineeringWorkspace() {
                     </td>
                     <td>
                       <strong>Amit Kumar</strong>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Senior Full Stack Engineer</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Senior Full Stack Engineer & Backend Pod Lead</div>
                     </td>
                     <td><code>ST-DEV-401</code></td>
                     <td>Rohit Verma</td>
@@ -710,7 +718,7 @@ export default function EngineeringWorkspace() {
                     </td>
                     <td>
                       <strong>Pooja Mehta</strong>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Frontend UI/UX Specialist</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Frontend UI/UX & 3D WebGL Specialist</div>
                     </td>
                     <td><code>ST-DEV-402</code></td>
                     <td>Rohit Verma</td>
@@ -742,7 +750,7 @@ export default function EngineeringWorkspace() {
                     </td>
                     <td>
                       <strong>Neha Gupta</strong>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>QA Automation Engineer</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>QA Automation Engineer & Test Lead</div>
                     </td>
                     <td><code>ST-DEV-404</code></td>
                     <td>Rohit Verma</td>
@@ -764,6 +772,22 @@ export default function EngineeringWorkspace() {
                     <td>Rohit Verma</td>
                     <td>Design System Tokens, WCAG 2.1 AA Ergonomics, Interactive Prototype Review</td>
                     <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE</span></td>
+                  </tr>
+
+                  <tr style={{ background: '#eff6ff' }}>
+                    <td>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#3b82f6', color: '#ffffff', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>
+                        TIER 4 TRAINEE
+                      </span>
+                    </td>
+                    <td>
+                      <strong>Nitesh Goel</strong>
+                      <div style={{ fontSize: '0.75rem', color: '#1d4ed8', fontWeight: 600 }}>Software Engineering Trainee (SWE Trainee) [Super Admin]</div>
+                    </td>
+                    <td><code>ST-ENG-102</code></td>
+                    <td>Rohit Verma (Lead) • Mentored by Abhishek Kumar (VP)</td>
+                    <td>Implementation Trainee under Senior Leads: Next.js APIs, DB Schemas, WebGL Canvas Engine & Automated Tests</td>
+                    <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE (TRAINEE)</span></td>
                   </tr>
                 </tbody>
               </table>
