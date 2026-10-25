@@ -199,8 +199,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       reportingPeriod: 'Year-To-Date (YTD 2026)',
       generatedAt: new Date().toISOString(),
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to compute dashboard stats:', error)
-    return res.status(500).json({ error: 'Failed to retrieve dashboard metrics' })
+    return res.status(500).json({
+      error: 'Failed to retrieve dashboard metrics',
+      details: error?.message || String(error),
+      stack: error?.stack,
+    })
   }
 }
