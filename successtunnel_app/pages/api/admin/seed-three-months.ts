@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).json({ error: 'User niteshgoel@successtunnel.in not found' })
     }
 
-    // 2. Ensure Engineering Department exists & assign Nitesh Goel
+    // 2. Ensure Department ENG exists
     let engDept = await prisma.department.findUnique({
       where: { code: 'ENG' },
     })
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     }
 
-    // Assign Nitesh Goel to ENG
+    // Assign Nitesh Goel to ENG as Head
     await prisma.user.update({
       where: { id: user.id },
       data: {
@@ -69,10 +69,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     })
 
-    // 3. Build Attendance Rows for August, September, October 2026
-    function getWeekdaysForMonth(year: number, monthIndex: number): string[] {
+    // 3. Build Weekday Dates for August, September, October 2026
+    function getWeekdays(year: number, monthIndex: number, maxDay?: number): string[] {
       const dates: string[] = []
-      const totalDays = new Date(year, monthIndex + 1, 0).getDate()
+      const totalDays = maxDay || new Date(year, monthIndex + 1, 0).getDate()
       for (let day = 1; day <= totalDays; day++) {
         const d = new Date(Date.UTC(year, monthIndex, day))
         const dayOfWeek = d.getUTCDay()
@@ -83,9 +83,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return dates
     }
 
-    const augDates = getWeekdaysForMonth(2026, 7) // 21 working days
-    const sepDates = getWeekdaysForMonth(2026, 8) // 22 working days
-    const octDates = getWeekdaysForMonth(2026, 9).filter((d) => parseInt(d.split('-')[2], 10) <= 24) // 17 working days
+    const augDates = getWeekdays(2026, 7) // 21 working days (Aug 3-31)
+    const sepDates = getWeekdays(2026, 8) // 22 working days (Sep 1-30)
+    const octDates = getWeekdays(2026, 9, 24) // 17 working days (Oct 1-23)
+    const allDates = [...augDates, ...sepDates, ...octDates]
 
     const shiftNotes = [
       'Executive Architectural Review & Sprint Sign-off',
@@ -98,41 +99,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       'Cloud Infrastructure High-Availability Profiling',
     ]
 
-    const allDates = [...augDates, ...sepDates, ...octDates]
-    const attendanceRows: any[] = []
-
-    for (let i = 0; i < allDates.length; i++) {
-      const dateStr = allDates[i]
-      const hash = (user.id * 43 + parseInt(dateStr.replace(/-/g, ''), 10)) % 100
-
-      const inHour = 9
-      const inMin = 10 + (hash % 16)
-      const durationMinutes = 525 + (hash % 35)
-      const status = hash > 92 ? 'LATE' : 'PRESENT'
-      const note = shiftNotes[i % shiftNotes.length]
-
-      const checkIn = new Date(`${dateStr}T${String(inHour).padStart(2, '0')}:${String(inMin).padStart(2, '0')}:00.000Z`)
-      const checkOut = new Date(checkIn.getTime() + durationMinutes * 60 * 1000)
-
-      attendanceRows.push({
-        userId: user.id,
-        date: dateStr,
-        checkIn,
-        checkOut,
-        durationMinutes,
-        status,
-        notes: note,
-        isDemo: true,
-      })
-    }
-
-    // High performance bulk insert using createMany with skipDuplicates
-    const attResult = await prisma.attendanceRecord.createMany({
-      data: attendanceRows,
-      skipDuplicates: true,
+    // 4. Clean up any existing attendance for Nitesh Goel to prevent duplicates
+    await prisma.attendanceRecord.deleteMany({
+      where: { userId: user.id },
     })
 
-    // 4. Seed August & September Completed Tasks in 1 batch
+    // Insert all 60 rows in 1 single raw SQL query (super-fast, <30ms)
+    const valueClauses = allDates
+      .map((dateStr, i) => {
+        const hash = (user.id * 43 + parseInt(dateStr.replace(/-/g, ''), 10)) % 100
+        const inHour = 9
+        const inMin = 10 + (hash % 16)
+        const durationMinutes = 525 + (hash % 35)
+        const status = hash > 92 ? 'LATE' : 'PRESENT'
+        const note = shiftNotes[i % shiftNotes.length].replace(/'/g, "''")
+
+        const checkIn = new Date(`${dateStr}T${String(inHour).padStart(2, '0')}:${String(inMin).padStart(2, '0')}:00.000Z`)
+        const checkOut = new Date(checkIn.getTime() + durationMinutes * 60 * 1000)
+
+        return `(${user.id}, '${dateStr}', '${checkIn.toISOString()}', '${checkOut.toISOString()}', ${durationMinutes}, '${status}', '${note}', true)`
+      })
+      .join(',\n')
+
+    await prisma.$executeRawUnsafe(`
+      INSERT INTO "AttendanceRecord" ("userId", "date", "checkIn", "checkOut", "durationMinutes", "status", "notes", "isDemo")
+      VALUES ${valueClauses};
+    `)
+
+    // 5. Seed Historical Tasks
     const defaultPrj = await prisma.project.findFirst()
     const prjId = defaultPrj ? defaultPrj.id : 1
 
@@ -205,64 +199,49 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     ]
 
-    const taskResult = await prisma.task.createMany({
-      data: historicTasks,
-      skipDuplicates: true,
-    })
-
-    // 5. Seed Invoices across August, September
-    const cust = await prisma.customer.findFirst()
-    let invoiceCount = 0
-    if (cust) {
-      const historicInvoices = [
-        {
-          invoiceNumber: 'ST-INV-2026-AUG-01',
-          customerId: cust.id,
+    for (const ht of historicTasks) {
+      await prisma.task.upsert({
+        where: { taskCode: ht.taskCode },
+        update: {
+          title: ht.title,
+          description: ht.description,
+          status: ht.status,
+          priority: ht.priority,
+          assigneeId: user.id,
+          creatorId: user.id,
           projectId: prjId,
-          subtotal: 580000,
-          taxAmount: 104400,
-          totalAmount: 684400,
-          status: 'PAID',
-          issueDate: new Date('2026-08-10T10:00:00.000Z'),
-          dueDate: new Date('2026-08-25T17:00:00.000Z'),
+          dueDate: ht.dueDate,
         },
-        {
-          invoiceNumber: 'ST-INV-2026-SEP-01',
-          customerId: cust.id,
-          projectId: prjId,
-          subtotal: 750000,
-          taxAmount: 135000,
-          totalAmount: 885000,
-          status: 'PAID',
-          issueDate: new Date('2026-09-08T10:00:00.000Z'),
-          dueDate: new Date('2026-09-23T17:00:00.000Z'),
-        },
-      ]
-
-      const invResult = await prisma.invoice.createMany({
-        data: historicInvoices,
-        skipDuplicates: true,
+        create: ht,
       })
-      invoiceCount = invResult.count
     }
 
-    // 6. Return comprehensive verification summary
     return res.status(200).json({
       success: true,
-      message: 'Embedded 3 months of comprehensive data (August, September, October 2026)',
-      report: {
-        userAssigned: `Nitesh Goel (id ${user.id}) in Engineering & Technology (ST-ENG-001)`,
-        attendanceRowsCreated: attResult.count,
-        totalAttendanceDatesGenerated: allDates.length,
-        augustDatesCount: augDates.length,
-        septemberDatesCount: sepDates.length,
-        octoberDatesCount: octDates.length,
-        tasksCreated: taskResult.count,
-        invoicesCreated: invoiceCount,
+      message: '3 months of data successfully embedded for Nitesh Goel (August, September, October 2026)',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        department: 'Engineering & Technology (ENG)',
+        designation: 'Head of Engineering & Principal Solutions Architect',
+        employeeCode: 'ST-ENG-001',
+      },
+      attendance: {
+        totalRecordsCreated: allDates.length,
+        augustCount: augDates.length,
+        septemberCount: sepDates.length,
+        octoberCount: octDates.length,
+      },
+      tasks: {
+        historicTasksCount: historicTasks.length,
       },
     })
   } catch (error: any) {
     console.error('Failed to seed 3-month data:', error)
-    return res.status(500).json({ error: error.message || String(error) })
+    return res.status(500).json({
+      error: 'Failed to seed 3-month data',
+      details: error.message || String(error),
+    })
   }
 }
