@@ -135,6 +135,75 @@ export default function PortalDashboard() {
         </div>
       </div>
 
+      
+      {/* Executive Work Hierarchy & Role Card */}
+      <div className={styles.card} style={{
+        marginBottom: '1.5rem',
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+        color: '#ffffff',
+        border: '1px solid #334155',
+        borderRadius: '10px',
+        padding: '1.25rem 1.5rem',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #2563eb 0%, #38bdf8 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              fontSize: '1.25rem',
+              color: '#ffffff',
+            }}>
+              NG
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.65rem', fontWeight: 800, background: '#38bdf8', color: '#0f172a', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
+                  HEAD OF DEPARTMENT
+                </span>
+                <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.15)', color: '#e2e8f0', padding: '0.1rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
+                  ST-ENG-001
+                </span>
+                <span style={{ fontSize: '0.65rem', fontWeight: 700, background: '#10b981', color: '#ffffff', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
+                  SUPER ADMIN
+                </span>
+              </div>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0.2rem 0 0.1rem 0', color: '#ffffff' }}>
+                Nitesh Goel — Engineering & Technology (ENG)
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.825rem', color: '#93c5fd' }}>
+                Head of Engineering & Principal Solutions Architect • Directing 5 Core Pods & 7 Engineers
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            <Link
+              href="/portal/engineering?tab=hierarchy"
+              className={styles.btn}
+              style={{
+                background: '#2563eb',
+                color: '#ffffff',
+                border: 'none',
+                fontSize: '0.825rem',
+                padding: '0.45rem 0.9rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+              }}
+            >
+              <span>View Engineering Work Hierarchy</span>
+              <HiOutlineArrowRight />
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* Primary KPI Cards Grid (6 cards) */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
         {/* Active Staff */}

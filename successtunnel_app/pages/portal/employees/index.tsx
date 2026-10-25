@@ -16,6 +16,9 @@ import {
   HiOutlineCalendar,
   HiOutlineDocumentText,
   HiOutlineClipboardList,
+  HiOutlineArrowNarrowDown,
+  HiOutlineUserGroup,
+  HiOutlineViewGrid,
 } from 'react-icons/hi'
 
 export default function EmployeeDirectory() {
@@ -29,6 +32,7 @@ export default function EmployeeDirectory() {
   const [search, setSearch] = useState('')
   const [selectedDept, setSelectedDept] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('ALL')
+  const [viewMode, setViewMode] = useState<'table' | 'hierarchy'>('table')
 
   // Detailed Profile View State
   const [viewingEmployee, setViewingEmployee] = useState<any>(null)
@@ -205,7 +209,214 @@ export default function EmployeeDirectory() {
         </button>
       </div>
 
-      {/* Filter Bar */}
+      
+      {/* VIEW MODE: HIERARCHY TREE */}
+      {viewMode === 'hierarchy' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2rem' }}>
+          
+          {/* Top Level: Nitesh Goel */}
+          <div className={styles.card} style={{
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+            color: '#ffffff',
+            borderRadius: '12px',
+            border: '1px solid #334155',
+            padding: '1.5rem',
+            maxWidth: '820px',
+            margin: '0 auto',
+            width: '100%',
+            boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.25)',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <div style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '10px',
+                  background: 'linear-gradient(135deg, #2563eb 0%, #38bdf8 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.5rem',
+                  fontWeight: 800,
+                  color: '#ffffff',
+                }}>
+                  NG
+                </div>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 800, background: '#38bdf8', color: '#0f172a', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
+                      HEAD OF DEPARTMENT
+                    </span>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 700, background: 'rgba(255,255,255,0.15)', color: '#e2e8f0', padding: '0.1rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
+                      ST-ENG-001
+                    </span>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 700, background: '#10b981', color: '#ffffff', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
+                      SUPER ADMIN
+                    </span>
+                  </div>
+                  <h2 style={{ fontSize: '1.35rem', fontWeight: 800, margin: '0.25rem 0 0.1rem 0', color: '#ffffff' }}>
+                    Nitesh Goel
+                  </h2>
+                  <div style={{ fontSize: '0.875rem', color: '#93c5fd', fontWeight: 600 }}>
+                    Head of Engineering & Principal Solutions Architect
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>
+                  Department
+                </div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#38bdf8', marginTop: '0.15rem' }}>
+                  Engineering & Technology (ENG)
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#cbd5e1', marginTop: '0.15rem' }}>
+                  Top Executive Authority • Directing 5 Operational Leads
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Connector Down */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '-0.75rem 0' }}>
+            <div style={{ width: '2px', height: '24px', background: '#94a3b8' }} />
+            <div style={{
+              background: '#2563eb',
+              color: '#ffffff',
+              borderRadius: '50%',
+              width: '24px',
+              height: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '0.8rem',
+            }}>
+              <HiOutlineArrowNarrowDown />
+            </div>
+            <div style={{ width: '2px', height: '24px', background: '#94a3b8' }} />
+          </div>
+
+          {/* Direct Reports Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>
+            
+            {/* Engineering Lead Node */}
+            <div className={styles.card} style={{ borderTop: '4px solid #2563eb' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#eff6ff', color: '#1d4ed8', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
+                  ST-PM-201
+                </span>
+                <span className={`${styles.badge} ${styles.badgeSuccess}`}>Tier 2 Lead</span>
+              </div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', margin: '0.2rem 0 0.1rem 0' }}>
+                Rohit Verma
+              </h4>
+              <div style={{ fontSize: '0.825rem', color: '#2563eb', fontWeight: 600, marginBottom: '0.5rem' }}>
+                Engineering Lead & Principal Project Manager
+              </div>
+              <p style={{ fontSize: '0.775rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
+                Reports to: <strong>Nitesh Goel</strong> • Supervises 5 Core Engineering Pods
+              </p>
+
+              <div style={{ background: '#f8fafc', padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', color: '#334155' }}>
+                <strong>Direct Pod Team:</strong>
+                <ul style={{ margin: '0.25rem 0 0 0', paddingLeft: '1.2rem', lineHeight: '1.5' }}>
+                  <li>Amit Kumar (Senior Full Stack Engineer)</li>
+                  <li>Pooja Mehta (Frontend UI/UX Specialist)</li>
+                  <li>Siddharth Rao (Cloud DevOps & SRE Lead)</li>
+                  <li>Neha Gupta (QA Automation Engineer)</li>
+                  <li>Rajesh Menon (Product & Design Lead)</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* HR Director Node */}
+            <div className={styles.card} style={{ borderTop: '4px solid #8b5cf6' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#f5f3ff', color: '#6d28d9', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
+                  ST-HR-101
+                </span>
+                <span className={`${styles.badge} ${styles.badgeSuccess}`}>Department Head</span>
+              </div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', margin: '0.2rem 0 0.1rem 0' }}>
+                Priya Sharma
+              </h4>
+              <div style={{ fontSize: '0.825rem', color: '#7c3aed', fontWeight: 600, marginBottom: '0.5rem' }}>
+                Senior HR Director
+              </div>
+              <p style={{ fontSize: '0.775rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
+                Reports to: <strong>Nitesh Goel</strong> • Department: HR & People
+              </p>
+
+              <div style={{ background: '#f8fafc', padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', color: '#334155' }}>
+                <strong>Direct Team:</strong>
+                <ul style={{ margin: '0.25rem 0 0 0', paddingLeft: '1.2rem', lineHeight: '1.5' }}>
+                  <li>Kavita Nair (Talent Acquisition & Culture Lead)</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Finance Controller Node */}
+            <div className={styles.card} style={{ borderTop: '4px solid #10b981' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#ecfdf5', color: '#047857', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
+                  ST-FIN-301
+                </span>
+                <span className={`${styles.badge} ${styles.badgeSuccess}`}>Department Head</span>
+              </div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', margin: '0.2rem 0 0.1rem 0' }}>
+                Sneha Patel
+              </h4>
+              <div style={{ fontSize: '0.825rem', color: '#059669', fontWeight: 600, marginBottom: '0.5rem' }}>
+                Finance Controller & Tax Advisor
+              </div>
+              <p style={{ fontSize: '0.775rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
+                Reports to: <strong>Nitesh Goel</strong> • Department: Finance & Admin
+              </p>
+
+              <div style={{ background: '#f8fafc', padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', color: '#334155' }}>
+                <strong>Direct Team:</strong>
+                <ul style={{ margin: '0.25rem 0 0 0', paddingLeft: '1.2rem', lineHeight: '1.5' }}>
+                  <li>Manish Joshi (Senior Accountant & Payroll Analyst)</li>
+                  <li>Deepak Chawla (Audit & Compliance Associate)</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Sales & Operations Nodes */}
+            <div className={styles.card} style={{ borderTop: '4px solid #f59e0b' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#fffbeb', color: '#b45309', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
+                  ST-SLS-602
+                </span>
+                <span className={`${styles.badge} ${styles.badgeSuccess}`}>Department Head</span>
+              </div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', margin: '0.2rem 0 0.1rem 0' }}>
+                Arjun Kapoor
+              </h4>
+              <div style={{ fontSize: '0.825rem', color: '#d97706', fontWeight: 600, marginBottom: '0.5rem' }}>
+                Head of Sales & Customer Success
+              </div>
+              <p style={{ fontSize: '0.775rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
+                Reports to: <strong>Nitesh Goel</strong> • Department: Sales & Growth
+              </p>
+
+              <div style={{ background: '#f8fafc', padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', color: '#334155' }}>
+                <strong>Direct Team:</strong>
+                <ul style={{ margin: '0.25rem 0 0 0', paddingLeft: '1.2rem', lineHeight: '1.5' }}>
+                  <li>Ananya Deshmukh (Corporate Account Executive)</li>
+                  <li>Vikram Singh (Business Operations Specialist)</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      )}
+
+      {viewMode === 'table' && (
+        <>
+          {/* Filter Bar */}
       <div className={styles.card} style={{ marginBottom: '1.5rem', padding: '1rem' }}>
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
           {/* Search Box */}
@@ -415,6 +626,9 @@ export default function EmployeeDirectory() {
             Next
           </button>
         </div>
+      )}
+
+      </>
       )}
 
       {/* Detailed Employee Profile Drawer / Modal */}
