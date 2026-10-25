@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const { action, notes } = req.body // "checkin" or "checkout"
-  const todayStr = new Date().toISOString().split('T')[0]
+  const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date())
   const now = new Date()
 
   try {
