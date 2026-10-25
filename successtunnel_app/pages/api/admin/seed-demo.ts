@@ -3,6 +3,12 @@ import { prisma } from '../../../lib/prisma'
 import bcrypt from 'bcryptjs'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Require admin auth key or valid secret parameter
+  const secretKey = req.query.secret || req.headers['x-admin-secret']
+  if (secretKey !== (process.env.JWT_SECRET || 'ST_SUPER_ADMIN_2026')) {
+    return res.status(403).json({ error: 'Unauthorized: admin secret required' })
+  }
+
   try {
     const report: any = {
       tablesCreated: [],
