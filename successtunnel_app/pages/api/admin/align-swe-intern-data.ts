@@ -279,6 +279,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     }
 
+    // Purge legacy non-tech tasks so only authentic SWE Intern deliverables remain
+    await prisma.$executeRawUnsafe(`DELETE FROM "Task" WHERE "taskCode" NOT LIKE 'ST-SWE-%'`)
+
     // 5. Align All 60 Attendance Records with Authentic Daily SWE Intern Log Entries
     const sweDailyDeliverables = [
       // August 2026 (21 days)

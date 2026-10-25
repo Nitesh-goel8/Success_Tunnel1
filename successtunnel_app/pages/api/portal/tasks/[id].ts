@@ -159,6 +159,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  res.setHeader('Allow', ['GET', 'PUT', 'POST'])
+  // Delete Task
+  if (req.method === 'DELETE') {
+    if (auth.role !== 'super_admin' && auth.role !== 'admin') {
+      return res.status(403).json({ error: 'Forbidden: admin access required' })
+    }
+    try {
+      await prisma.task.delete({ where: { id: taskId } })
+      return res.status(200).json({ ok: true, message: `Task ${taskId} deleted successfully` })
+    } catch (error: any) {
+      console.error('Failed to delete task:', error)
+      return res.status(500).json({ error: error.message || 'Failed to delete task' })
+    }
+  }
+
+  res.setHeader('Allow', ['GET', 'PUT', 'POST', 'DELETE'])
   return res.status(405).json({ error: `Method ${req.method} not allowed` })
 }
