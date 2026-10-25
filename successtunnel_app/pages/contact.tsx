@@ -128,7 +128,7 @@ export default function Contact() {
                   <div className="contact-icon-wrapper"><HiClock size={22} /></div>
                   <div className="contact-detail-text">
                     <h4>Business Hours</h4>
-                    <p>{settings.workingHours || 'Mon - Sat: 10:00 AM - 6:00 PM'}</p>
+                    <p>{settings.workingHours || 'Mon - Sat: 9:00 AM - 5:00 PM'}</p>
                   </div>
                 </div>
               </div>

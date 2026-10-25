@@ -29,7 +29,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   officeAddress:
     'First Floor, Sudarshan Tower, Tau Devi Lal Complex, Behind Hive Hotel, Panipat 132103, Haryana, India',
   whatsappNumber: '+918950771205',
-  workingHours: 'Mon - Sat: 10:00 AM - 6:00 PM',
+  workingHours: 'Mon - Sat: 9:00 AM - 5:00 PM',
   mapEmbedUrl: 'https://www.google.com/maps?q=Sudarshan+Tower+Panipat+Haryana+132103&output=embed',
   mapLink: 'https://maps.app.goo.gl/n4wZ51qrRY1zSPeb8',
   contactPerson: 'Neeraj Aggarwal',

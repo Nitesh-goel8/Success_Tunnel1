@@ -111,7 +111,7 @@ export default function AdminSettings() {
                   <Field label="Primary Contact Phone" name="contactPhone1" value={settings.contactPhone1} onChange={handleInputChange} placeholder="+91 89507 71205" />
                   <Field label="Secondary Contact Phone" name="contactPhone2" value={settings.contactPhone2} onChange={handleInputChange} placeholder="+91 72061 89559" />
                   <Field label="WhatsApp Number" name="whatsappNumber" value={settings.whatsappNumber} onChange={handleInputChange} placeholder="+918950771205" />
-                  <Field label="Working Hours" name="workingHours" value={settings.workingHours} onChange={handleInputChange} placeholder="Mon - Sat: 10:00 AM - 6:00 PM" />
+                  <Field label="Working Hours" name="workingHours" value={settings.workingHours} onChange={handleInputChange} placeholder="Mon - Sat: 9:00 AM - 5:00 PM" />
                   <Field label="Contact Person" name="contactPerson" value={settings.contactPerson} onChange={handleInputChange} placeholder="Neeraj Aggarwal" />
                   <Field label="Contact Role" name="contactRole" value={settings.contactRole} onChange={handleInputChange} placeholder="Chartered Accountant & Principal Advisor" />
                 </div>

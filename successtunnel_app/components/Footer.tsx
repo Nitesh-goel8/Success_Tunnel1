@@ -93,7 +93,7 @@ export default function Footer() {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#64748b', fontSize: '0.82rem', marginTop: '4px' }}>
               <HiOutlineClock size={16} style={{ flexShrink: 0 }} />
-              <span>{settings.workingHours || 'Mon - Sat: 10:00 AM - 6:00 PM'}</span>
+              <span>{settings.workingHours || 'Mon - Sat: 9:00 AM - 5:00 PM'}</span>
             </div>
           </div>
         </div>

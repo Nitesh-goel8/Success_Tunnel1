@@ -27,7 +27,7 @@ export default function AttendanceModule() {
   const [showCorrectionModal, setShowCorrectionModal] = useState(false)
   const [correctionDate, setCorrectionDate] = useState('')
   const [correctionCheckIn, setCorrectionCheckIn] = useState('09:00')
-  const [correctionCheckOut, setCorrectionCheckOut] = useState('18:00')
+  const [correctionCheckOut, setCorrectionCheckOut] = useState('17:00')
   const [correctionReason, setCorrectionReason] = useState('')
   const [submittingCorrection, setSubmittingCorrection] = useState(false)
   const [correctionError, setCorrectionError] = useState('')
@@ -247,11 +247,14 @@ export default function AttendanceModule() {
       <div className={styles.card} style={{ marginBottom: '1.5rem', background: '#ffffff', borderLeft: '4px solid #2563eb' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
               <HiOutlineClock style={{ color: '#2563eb', fontSize: '1.4rem' }} />
               <h2 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: '#0f172a' }}>
                 Today&apos;s Time Clock — {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })}
               </h2>
+              <span style={{ fontSize: '0.725rem', background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 700 }}>
+                Shift: 9:00 AM – 5:00 PM
+              </span>
             </div>
 
             <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#475569' }}>

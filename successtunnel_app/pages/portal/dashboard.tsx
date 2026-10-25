@@ -98,6 +98,9 @@ export default function PortalDashboard() {
               <h2 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: '#0f172a' }}>
                 Workforce Time & Attendance
               </h2>
+              <span style={{ fontSize: '0.7rem', background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', padding: '0.1rem 0.45rem', borderRadius: '4px', fontWeight: 700 }}>
+                Shift: 9:00 AM – 5:00 PM
+              </span>
             </div>
             <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.825rem', color: '#64748b' }}>
               {stats?.myAttendanceToday?.checkIn

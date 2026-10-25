@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       const parsedCheckIn = checkIn ? new Date(checkIn) : new Date(`${date}T09:00:00Z`)
-      const parsedCheckOut = checkOut ? new Date(checkOut) : new Date(`${date}T18:00:00Z`)
+      const parsedCheckOut = checkOut ? new Date(checkOut) : new Date(`${date}T17:00:00Z`)
       const durationMs = Math.max(0, parsedCheckOut.getTime() - parsedCheckIn.getTime())
       const durationMinutes = Math.round(durationMs / (1000 * 60))
 

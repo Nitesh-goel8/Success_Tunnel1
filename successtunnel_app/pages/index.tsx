@@ -922,7 +922,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                   </div>
                   <div className="contact-detail-text">
                     <h4 style={{ color: '#1d1d1f' }}>Working Hours</h4>
-                    <p style={{ color: '#86868b' }}>{settings.workingHours || 'Mon - Sat: 10:00 AM - 6:00 PM'}</p>
+                    <p style={{ color: '#86868b' }}>{settings.workingHours || 'Mon - Sat: 9:00 AM - 5:00 PM'}</p>
                   </div>
                 </div>
               </div>
