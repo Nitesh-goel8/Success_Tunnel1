@@ -28,7 +28,48 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     }
 
-    // 2. Provision Abhishek Kumar as VP of Engineering & Head of Technology
+    // 2. Free up 'ST-ENG-001' code by assigning Nitesh Goel to 'ST-ENG-102'
+    // This prevents unique constraint violations on employeeCode
+    await prisma.employeeProfile.updateMany({
+      where: { employeeCode: 'ST-ENG-001' },
+      data: { employeeCode: 'ST-ENG-102' },
+    })
+
+    // 3. Find Nitesh Goel user and update to Software Engineer (SWE)
+    const niteshUser = await prisma.user.findUnique({
+      where: { email: 'niteshgoel@successtunnel.in' },
+    })
+
+    let niteshProfile = null
+    if (niteshUser) {
+      await prisma.user.update({
+        where: { id: niteshUser.id },
+        data: {
+          departmentId: engDept.id,
+          role: 'super_admin', // Keep super_admin auth privileges
+          status: 'active',
+        },
+      })
+
+      niteshProfile = await prisma.employeeProfile.upsert({
+        where: { userId: niteshUser.id },
+        update: {
+          employeeCode: 'ST-ENG-102',
+          designation: 'Software Engineer (SWE)',
+          workLocation: 'Engineering Center / Hybrid',
+          status: 'ACTIVE',
+        },
+        create: {
+          userId: niteshUser.id,
+          employeeCode: 'ST-ENG-102',
+          designation: 'Software Engineer (SWE)',
+          workLocation: 'Engineering Center / Hybrid',
+          status: 'ACTIVE',
+        },
+      })
+    }
+
+    // 4. Provision Abhishek Kumar as VP of Engineering & Head of Technology
     const hashedPassword = await bcrypt.hash('Abhishek@2026!', 10)
     let abhishekUser = await prisma.user.findUnique({
       where: { email: 'abhishek.kumar@successtunnel.in' },
@@ -58,7 +99,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     }
 
-    // 3. Upsert Abhishek Kumar Employee Profile as Department Head
+    // 5. Upsert Abhishek Kumar Employee Profile as Department Head (ST-ENG-001)
     const abhishekProfile = await prisma.employeeProfile.upsert({
       where: { userId: abhishekUser.id },
       update: {
@@ -77,7 +118,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     })
 
-    // 4. Set Abhishek Kumar as Department Head of Engineering (ENG)
+    // 6. Set Abhishek Kumar as Department Head of Engineering (ENG)
     await prisma.department.update({
       where: { id: engDept.id },
       data: {
@@ -85,11 +126,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     })
 
-    // 5. Provision or Update Rohit Verma as Tier 2 Engineering Lead (ST-PM-201)
-    let rohitProfile = await prisma.employeeProfile.findFirst({
-      where: { employeeCode: 'ST-PM-201' },
-    })
-
+    // 7. Provision or Update Rohit Verma as Tier 2 Engineering Lead (ST-PM-201)
     let rohitUser = await prisma.user.findUnique({
       where: { email: 'rohit.verma@successtunnel.in' },
     })
@@ -109,7 +146,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     }
 
-    rohitProfile = await prisma.employeeProfile.upsert({
+    const rohitProfile = await prisma.employeeProfile.upsert({
       where: { userId: rohitUser.id },
       update: {
         employeeCode: 'ST-PM-201',
@@ -128,38 +165,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     })
 
-    // 6. Update Nitesh Goel as normal Software Engineer (SWE) reporting to Rohit Verma & Abhishek Kumar
-    const niteshUser = await prisma.user.findUnique({
-      where: { email: 'niteshgoel@successtunnel.in' },
-    })
-
-    let niteshProfile = null
-    if (niteshUser) {
-      await prisma.user.update({
-        where: { id: niteshUser.id },
+    // 8. Connect Nitesh Goel to report to Rohit Verma
+    if (niteshProfile) {
+      await prisma.employeeProfile.update({
+        where: { id: niteshProfile.id },
         data: {
-          departmentId: engDept.id,
-          // Retain super_admin role for auth privileges, while employee designation is Software Engineer (SWE)
-          role: 'super_admin',
-          status: 'active',
-        },
-      })
-
-      niteshProfile = await prisma.employeeProfile.upsert({
-        where: { userId: niteshUser.id },
-        update: {
-          employeeCode: 'ST-ENG-102',
-          designation: 'Software Engineer (SWE)',
-          workLocation: 'Engineering Center / Hybrid',
-          status: 'ACTIVE',
-          managerId: rohitProfile.id,
-        },
-        create: {
-          userId: niteshUser.id,
-          employeeCode: 'ST-ENG-102',
-          designation: 'Software Engineer (SWE)',
-          workLocation: 'Engineering Center / Hybrid',
-          status: 'ACTIVE',
           managerId: rohitProfile.id,
         },
       })
@@ -178,13 +188,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name: rohitUser.name,
         designation: rohitProfile.designation,
         employeeCode: rohitProfile.employeeCode,
-        reportsTo: 'Abhishek Kumar',
+        reportsTo: 'Abhishek Kumar (VP of Engineering)',
       },
       niteshGoel: {
         name: niteshUser?.name,
         email: niteshUser?.email,
-        designation: niteshProfile?.designation,
-        employeeCode: niteshProfile?.employeeCode,
+        designation: 'Software Engineer (SWE)',
+        employeeCode: 'ST-ENG-102',
         department: 'Engineering & Technology',
         role: niteshUser?.role,
         reportsTo: 'Rohit Verma (Engineering Lead)',
