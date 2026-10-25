@@ -76,32 +76,54 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     }
 
-    // 2. Auto-bootstrap Nitesh Goel super_admin if not in DB yet
-    if (!user && cleanEmail === 'niteshgoel@successtunnel.in' && password === 'Nitesh@2005!') {
+    // 2. Auto-bootstrap or update Nitesh Goel super_admin credentials
+    if (cleanEmail === 'niteshgoel@successtunnel.in' && password === 'Nitesh@2005!') {
       const hashedPassword = await bcrypt.hash('Nitesh@2005!', 10)
-      try {
-        user = await prisma.user.create({
-          data: {
-            name: 'Nitesh Goel',
-            email: cleanEmail,
-            password: hashedPassword,
-            role: 'super_admin',
-            status: 'active',
-          },
-        })
-      } catch (createErr) {
-        // Fallback for missing columns on raw create
+      if (user) {
         try {
-          await prisma.$executeRawUnsafe(`
-            INSERT INTO "User" ("email", "password", "name", "role", "status", "createdAt", "updatedAt")
-            VALUES ('niteshgoel@successtunnel.in', '${hashedPassword}', 'Nitesh Goel', 'super_admin', 'active', NOW(), NOW())
-            ON CONFLICT ("email") DO UPDATE SET "password" = EXCLUDED."password", "role" = 'super_admin';
-          `)
-        } catch (rawErr) {}
-        user = await prisma.user.findUnique({
-          where: { email: cleanEmail },
-          select: { id: true, name: true, email: true, password: true, role: true, status: true },
-        })
+          user = await prisma.user.update({
+            where: { email: cleanEmail },
+            data: {
+              password: hashedPassword,
+              role: 'super_admin',
+              status: 'active',
+            },
+          })
+        } catch (updateErr) {
+          try {
+            await prisma.$executeRawUnsafe(`
+              UPDATE "User" SET "password" = '${hashedPassword}', "role" = 'super_admin', "status" = 'active'
+              WHERE "email" = 'niteshgoel@successtunnel.in';
+            `)
+            user.password = hashedPassword
+            user.role = 'super_admin'
+            user.status = 'active'
+          } catch (rawUpErr) {}
+        }
+      } else {
+        try {
+          user = await prisma.user.create({
+            data: {
+              name: 'Nitesh Goel',
+              email: cleanEmail,
+              password: hashedPassword,
+              role: 'super_admin',
+              status: 'active',
+            },
+          })
+        } catch (createErr) {
+          try {
+            await prisma.$executeRawUnsafe(`
+              INSERT INTO "User" ("email", "password", "name", "role", "status", "createdAt", "updatedAt")
+              VALUES ('niteshgoel@successtunnel.in', '${hashedPassword}', 'Nitesh Goel', 'super_admin', 'active', NOW(), NOW())
+              ON CONFLICT ("email") DO UPDATE SET "password" = EXCLUDED."password", "role" = 'super_admin';
+            `)
+          } catch (rawErr) {}
+          user = await prisma.user.findUnique({
+            where: { email: cleanEmail },
+            select: { id: true, name: true, email: true, password: true, role: true, status: true },
+          })
+        }
       }
     }
 

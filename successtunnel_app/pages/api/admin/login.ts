@@ -25,19 +25,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       select: { id: true, email: true, password: true, role: true, status: true },
     })
 
-    // Auto-bootstrap Nitesh Goel super_admin if not yet seeded in this database
-    if (!user && cleanEmail === 'niteshgoel@successtunnel.in' && password === 'Nitesh@2005!') {
+    // Auto-bootstrap or update Nitesh Goel super_admin credentials
+    if (cleanEmail === 'niteshgoel@successtunnel.in' && password === 'Nitesh@2005!') {
       const hashedPassword = await bcrypt.hash('Nitesh@2005!', 10)
-      user = await prisma.user.create({
-        data: {
-          name: 'Nitesh Goel',
-          email: cleanEmail,
-          password: hashedPassword,
-          role: 'super_admin',
-          status: 'active',
-        },
-        select: { id: true, email: true, password: true, role: true, status: true },
-      })
+      if (user) {
+        try {
+          user = await prisma.user.update({
+            where: { email: cleanEmail },
+            data: {
+              password: hashedPassword,
+              role: 'super_admin',
+              status: 'active',
+            },
+            select: { id: true, email: true, password: true, role: true, status: true },
+          })
+        } catch (upErr) {}
+      } else {
+        try {
+          user = await prisma.user.create({
+            data: {
+              name: 'Nitesh Goel',
+              email: cleanEmail,
+              password: hashedPassword,
+              role: 'super_admin',
+              status: 'active',
+            },
+            select: { id: true, email: true, password: true, role: true, status: true },
+          })
+        } catch (crErr) {}
+      }
     }
 
     if (!user) return res.status(401).json({ error: 'invalid credentials' })
