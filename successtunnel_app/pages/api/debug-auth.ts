@@ -22,6 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "phone" TEXT;',
       'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "avatarUrl" TEXT;',
       'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "lastLoginAt" TIMESTAMP(3);',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;',
     ]
 
     for (const stmt of alterStatements) {
@@ -59,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           "userId" INTEGER UNIQUE NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
           "employeeCode" TEXT UNIQUE NOT NULL,
           "designation" TEXT NOT NULL,
-          "workLocation" TEXT NOT NULL DEFAULT 'Headquarters - Panipat, Haryana',
+          "workLocation" TEXT NOT NULL DEFAULT 'Headquarters',
           "employmentType" TEXT NOT NULL DEFAULT 'Full-time',
           "joiningDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           "emergencyContact" TEXT,
@@ -94,8 +96,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         report.userStatus = `Updated existing user #${existingUser.id} to super_admin with Nitesh@2005!`
       } else {
         await prisma.$executeRawUnsafe(`
-          INSERT INTO "User" ("email", "password", "name", "role", "status", "createdAt", "updatedAt")
-          VALUES ('${email}', '${hashedPassword}', 'Nitesh Goel', 'super_admin', 'active', NOW(), NOW());
+          INSERT INTO "User" ("email", "password", "name", "role", "status")
+          VALUES ('${email}', '${hashedPassword}', 'Nitesh Goel', 'super_admin', 'active');
         `)
         report.userStatus = `Created new super_admin user ${email} with Nitesh@2005!`
       }
