@@ -109,8 +109,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       employeeProfileId: user.employeeProfile?.id || null,
     })
 
+    const isHttps = req.headers['x-forwarded-proto'] === 'https' || (req.socket as any)?.encrypted
     const isProd = process.env.NODE_ENV === 'production'
-    const secureFlag = isProd ? '; Secure' : ''
+    const secureFlag = isHttps || (isProd && !req.headers.host?.includes('localhost') && !req.headers.host?.includes('127.0.0.1')) ? '; Secure' : ''
     res.setHeader(
       'Set-Cookie',
       `st_auth=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=Lax${secureFlag}`
