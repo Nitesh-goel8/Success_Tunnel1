@@ -214,7 +214,7 @@ export default function EmployeeDirectory() {
       {viewMode === 'hierarchy' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2rem' }}>
           
-          {/* Top Level: Nitesh Goel */}
+          {/* Top Level: Abhishek Kumar */}
           <div className={styles.card} style={{
             background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             color: '#ffffff',
@@ -240,7 +240,7 @@ export default function EmployeeDirectory() {
                   fontWeight: 800,
                   color: '#ffffff',
                 }}>
-                  NG
+                  AK
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
@@ -251,14 +251,14 @@ export default function EmployeeDirectory() {
                       ST-ENG-001
                     </span>
                     <span style={{ fontSize: '0.65rem', fontWeight: 700, background: '#10b981', color: '#ffffff', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
-                      SUPER ADMIN
+                      ACTIVE
                     </span>
                   </div>
                   <h2 style={{ fontSize: '1.35rem', fontWeight: 800, margin: '0.25rem 0 0.1rem 0', color: '#ffffff' }}>
-                    Nitesh Goel
+                    Abhishek Kumar
                   </h2>
                   <div style={{ fontSize: '0.875rem', color: '#93c5fd', fontWeight: 600 }}>
-                    Head of Engineering & Principal Solutions Architect
+                    VP of Engineering & Head of Technology
                   </div>
                 </div>
               </div>
@@ -271,7 +271,7 @@ export default function EmployeeDirectory() {
                   Engineering & Technology (ENG)
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#cbd5e1', marginTop: '0.15rem' }}>
-                  Top Executive Authority • Directing 5 Operational Leads
+                  Top Technical Executive • Directing Engineering Pods
                 </div>
               </div>
             </div>
@@ -314,12 +314,13 @@ export default function EmployeeDirectory() {
                 Engineering Lead & Principal Project Manager
               </div>
               <p style={{ fontSize: '0.775rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
-                Reports to: <strong>Nitesh Goel</strong> • Supervises 5 Core Engineering Pods
+                Reports to: <strong>Abhishek Kumar</strong> • Supervises Core Engineering Pods
               </p>
 
               <div style={{ background: '#f8fafc', padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', color: '#334155' }}>
                 <strong>Direct Pod Team:</strong>
                 <ul style={{ margin: '0.25rem 0 0 0', paddingLeft: '1.2rem', lineHeight: '1.5' }}>
+                  <li><strong>Nitesh Goel</strong> (Software Engineer - SWE [Super Admin])</li>
                   <li>Amit Kumar (Senior Full Stack Engineer)</li>
                   <li>Pooja Mehta (Frontend UI/UX Specialist)</li>
                   <li>Siddharth Rao (Cloud DevOps & SRE Lead)</li>
@@ -344,7 +345,7 @@ export default function EmployeeDirectory() {
                 Senior HR Director
               </div>
               <p style={{ fontSize: '0.775rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
-                Reports to: <strong>Nitesh Goel</strong> • Department: HR & People
+                Reports to: <strong>Executive Leadership</strong> • Department: HR & People
               </p>
 
               <div style={{ background: '#f8fafc', padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', color: '#334155' }}>
@@ -370,7 +371,7 @@ export default function EmployeeDirectory() {
                 Finance Controller & Tax Advisor
               </div>
               <p style={{ fontSize: '0.775rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
-                Reports to: <strong>Nitesh Goel</strong> • Department: Finance & Admin
+                Reports to: <strong>Executive Leadership</strong> • Department: Finance & Admin
               </p>
 
               <div style={{ background: '#f8fafc', padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', color: '#334155' }}>
@@ -397,7 +398,7 @@ export default function EmployeeDirectory() {
                 Head of Sales & Customer Success
               </div>
               <p style={{ fontSize: '0.775rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
-                Reports to: <strong>Nitesh Goel</strong> • Department: Sales & Growth
+                Reports to: <strong>Executive Leadership</strong> • Department: Sales & Growth
               </p>
 
               <div style={{ background: '#f8fafc', padding: '0.6rem 0.75rem', borderRadius: '6px', fontSize: '0.75rem', color: '#334155' }}>

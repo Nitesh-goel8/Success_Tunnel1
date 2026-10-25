@@ -232,7 +232,7 @@ export default function EngineeringWorkspace() {
       {activeTab === 'hierarchy' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
           
-          {/* Executive Architectural Node */}
+          {/* Executive Architectural Node: Abhishek Kumar */}
           <div className={styles.card} style={{
             background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             color: '#ffffff',
@@ -240,6 +240,7 @@ export default function EngineeringWorkspace() {
             border: '1px solid #334155',
             boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.3)',
             padding: '1.75rem',
+            transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -256,7 +257,7 @@ export default function EngineeringWorkspace() {
                   color: '#ffffff',
                   boxShadow: '0 4px 12px rgba(37, 99, 235, 0.4)',
                 }}>
-                  NG
+                  AK
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -291,14 +292,14 @@ export default function EngineeringWorkspace() {
                       padding: '0.15rem 0.5rem',
                       borderRadius: '4px',
                     }}>
-                      SUPER ADMIN
+                      ACTIVE
                     </span>
                   </div>
                   <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0.35rem 0 0.15rem 0', color: '#ffffff' }}>
-                    Nitesh Goel
+                    Abhishek Kumar
                   </h2>
                   <div style={{ fontSize: '0.95rem', color: '#93c5fd', fontWeight: 600 }}>
-                    Head of Engineering & Principal Solutions Architect
+                    VP of Engineering & Head of Technology
                   </div>
                 </div>
               </div>
@@ -317,7 +318,7 @@ export default function EngineeringWorkspace() {
                   Engineering & Technology (ENG)
                 </div>
                 <div style={{ fontSize: '0.8rem', color: '#cbd5e1', marginTop: '0.2rem' }}>
-                  5 Core Pods • 7 Team Members
+                  5 Core Pods • 8 Active Engineers
                 </div>
               </div>
             </div>
@@ -332,12 +333,12 @@ export default function EngineeringWorkspace() {
               border: '1px solid rgba(255, 255, 255, 0.05)',
             }}>
               <div>
-                <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Direct Reporting Authority</div>
+                <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Direct Authority</div>
                 <div style={{ fontSize: '0.85rem', color: '#f1f5f9', marginTop: '0.25rem', fontWeight: 600 }}>Top Technical Executive & Architectural Sign-off</div>
               </div>
               <div>
                 <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Core Responsibilities</div>
-                <div style={{ fontSize: '0.85rem', color: '#f1f5f9', marginTop: '0.25rem', fontWeight: 600 }}>System Topology, WebGL Visualizer, DB Resilience</div>
+                <div style={{ fontSize: '0.85rem', color: '#f1f5f9', marginTop: '0.25rem', fontWeight: 600 }}>Technology Strategy, System Topology, Engineering Governance</div>
               </div>
               <div>
                 <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Operational Location</div>
@@ -415,10 +416,10 @@ export default function EngineeringWorkspace() {
                   Direct Reports to
                 </div>
                 <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1d4ed8', marginTop: '0.15rem' }}>
-                  Nitesh Goel (Head of Engineering)
+                  Abhishek Kumar (VP of Engineering)
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600, marginTop: '0.15rem' }}>
-                  Directs 5 Core Engineering Pods
+                  Directs 5 Core Engineering Pods & 6 Engineers
                 </div>
               </div>
             </div>
@@ -443,6 +444,40 @@ export default function EngineeringWorkspace() {
 
           {/* Tier 3: Core Engineering Pods */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '1.25rem' }}>
+            
+            {/* Pod 0: Nitesh Goel (Software Engineer - SWE) */}
+            <div className={styles.card} style={{ borderTop: '4px solid #2563eb', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 16px rgba(37, 99, 235, 0.08)' }}>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                  <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#eff6ff', color: '#1d4ed8', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
+                      ST-ENG-102
+                    </span>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 800, background: '#10b981', color: '#ffffff', padding: '0.1rem 0.4rem', borderRadius: '4px' }}>
+                      SUPER ADMIN
+                    </span>
+                  </div>
+                  <span className={`${styles.badge} ${styles.badgeSuccess}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
+                    In Active Sprint
+                  </span>
+                </div>
+                <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', margin: '0.2rem 0 0.1rem 0' }}>
+                  Nitesh Goel
+                </h4>
+                <div style={{ fontSize: '0.825rem', color: '#2563eb', fontWeight: 600, marginBottom: '0.75rem' }}>
+                  Software Engineer (SWE)
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.5' }}>
+                  <strong>Pod Focus:</strong> Core Application Systems, Scalable Next.js APIs, Supabase Relational Schema, and High-Performance Spatial 3D Experience.
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', fontSize: '0.75rem', color: '#64748b' }}>
+                <div><strong>Manager:</strong> Rohit Verma (Engineering Lead)</div>
+                <div><strong>Direct Initiative:</strong> Enterprise Core Platform & Real-Time Engine</div>
+              </div>
+            </div>
             
             {/* Pod 1 */}
             <div className={styles.card} style={{ borderTop: '4px solid #3b82f6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -586,7 +621,7 @@ export default function EngineeringWorkspace() {
                 </p>
               </div>
               <span className={`${styles.badge} ${styles.badgeSuccess}`}>
-                Active Roster (7 Engineers)
+                Active Roster (8 Engineers)
               </span>
             </div>
 
@@ -606,17 +641,17 @@ export default function EngineeringWorkspace() {
                   <tr style={{ background: '#f8fafc' }}>
                     <td>
                       <span style={{ fontSize: '0.7rem', fontWeight: 800, background: '#0f172a', color: '#38bdf8', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>
-                        TIER 1 ARCHITECT
+                        TIER 1 VP / HEAD
                       </span>
                     </td>
                     <td>
-                      <strong>Nitesh Goel</strong>
-                      <div style={{ fontSize: '0.75rem', color: '#2563eb' }}>Head of Engineering & Principal Solutions Architect</div>
+                      <strong>Abhishek Kumar</strong>
+                      <div style={{ fontSize: '0.75rem', color: '#2563eb' }}>VP of Engineering & Head of Technology</div>
                     </td>
                     <td><code>ST-ENG-001</code></td>
-                    <td><span style={{ color: '#059669', fontWeight: 600 }}>Department Head</span></td>
-                    <td>Enterprise Systems Architecture, WebGL 3D Engine, Production Database Resilience</td>
-                    <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE (LEAD)</span></td>
+                    <td><span style={{ color: '#059669', fontWeight: 600 }}>Executive Committee</span></td>
+                    <td>Technical Vision, Department Architecture, Resource Allocation & System Governance</td>
+                    <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE (HEAD)</span></td>
                   </tr>
 
                   <tr>
@@ -630,9 +665,25 @@ export default function EngineeringWorkspace() {
                       <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Engineering Lead & Principal Project Manager</div>
                     </td>
                     <td><code>ST-PM-201</code></td>
-                    <td>Nitesh Goel</td>
+                    <td>Abhishek Kumar</td>
                     <td>Sprint Delivery, Cross-Pod Coordination, Milestone Governance</td>
-                    <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE</span></td>
+                    <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE (LEAD)</span></td>
+                  </tr>
+
+                  <tr style={{ background: '#eff6ff' }}>
+                    <td>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#2563eb', color: '#ffffff', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>
+                        TIER 3 SWE
+                      </span>
+                    </td>
+                    <td>
+                      <strong>Nitesh Goel</strong>
+                      <div style={{ fontSize: '0.75rem', color: '#1d4ed8', fontWeight: 600 }}>Software Engineer (SWE) [Super Admin]</div>
+                    </td>
+                    <td><code>ST-ENG-102</code></td>
+                    <td>Rohit Verma</td>
+                    <td>Enterprise Architecture, Next.js Serverless APIs, Relational DB & 3D Spatial Systems</td>
+                    <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE (SWE)</span></td>
                   </tr>
 
                   <tr>

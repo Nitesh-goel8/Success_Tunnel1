@@ -163,11 +163,11 @@ export default function PortalDashboard() {
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '0.65rem', fontWeight: 800, background: '#38bdf8', color: '#0f172a', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
-                  HEAD OF DEPARTMENT
+                <span style={{ fontSize: '0.65rem', fontWeight: 800, background: '#3b82f6', color: '#ffffff', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
+                  SOFTWARE ENGINEER (SWE)
                 </span>
                 <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.15)', color: '#e2e8f0', padding: '0.1rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
-                  ST-ENG-001
+                  ST-ENG-102
                 </span>
                 <span style={{ fontSize: '0.65rem', fontWeight: 700, background: '#10b981', color: '#ffffff', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
                   SUPER ADMIN
@@ -177,7 +177,7 @@ export default function PortalDashboard() {
                 Nitesh Goel — Engineering & Technology (ENG)
               </h3>
               <p style={{ margin: 0, fontSize: '0.825rem', color: '#93c5fd' }}>
-                Head of Engineering & Principal Solutions Architect • Directing 5 Core Pods & 7 Engineers
+                Software Engineer (SWE) • Core Platform & Architecture Pod • Reporting to Rohit Verma & Abhishek Kumar (Head)
               </p>
             </div>
           </div>

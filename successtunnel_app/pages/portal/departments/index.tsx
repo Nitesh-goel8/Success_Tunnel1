@@ -217,7 +217,7 @@ export default function DepartmentManagement() {
       {viewMode === 'hierarchy' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2rem' }}>
           
-          {/* Top Executive Node: Nitesh Goel */}
+          {/* Top Executive Node: Abhishek Kumar */}
           <div className={styles.card} style={{
             background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             color: '#ffffff',
@@ -244,25 +244,25 @@ export default function DepartmentManagement() {
                   color: '#ffffff',
                   boxShadow: '0 4px 12px rgba(37, 99, 235, 0.35)',
                 }}>
-                  NG
+                  AK
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
                     <span style={{ fontSize: '0.65rem', fontWeight: 800, background: '#38bdf8', color: '#0f172a', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
-                      EXECUTIVE & TECH LEADERSHIP
+                      DEPARTMENT HEAD
                     </span>
                     <span style={{ fontSize: '0.65rem', fontWeight: 700, background: 'rgba(255,255,255,0.15)', color: '#e2e8f0', padding: '0.1rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
                       ST-ENG-001
                     </span>
                     <span style={{ fontSize: '0.65rem', fontWeight: 700, background: '#10b981', color: '#ffffff', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
-                      SUPER ADMIN
+                      ACTIVE
                     </span>
                   </div>
                   <h2 style={{ fontSize: '1.35rem', fontWeight: 800, margin: '0.25rem 0 0.1rem 0', color: '#ffffff' }}>
-                    Nitesh Goel
+                    Abhishek Kumar
                   </h2>
                   <div style={{ fontSize: '0.875rem', color: '#93c5fd', fontWeight: 600 }}>
-                    Head of Engineering & Principal Solutions Architect
+                    VP of Engineering & Head of Technology
                   </div>
                 </div>
               </div>
@@ -275,7 +275,7 @@ export default function DepartmentManagement() {
                   Engineering & Technology (ENG)
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#cbd5e1', marginTop: '0.15rem' }}>
-                  Supervising 5 Operational Departments
+                  Leading Engineering Operations & Core Technology Pods
                 </div>
               </div>
             </div>
