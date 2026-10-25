@@ -58,14 +58,13 @@ export default function Footer() {
             <Link href="/resources" style={{ color: '#94a3b8', textDecoration: 'none' }}>Knowledge Base & Tools</Link>
             <Link href="/properties" style={{ color: '#94a3b8', textDecoration: 'none' }}>Commercial Properties</Link>
             <Link href="/contact" style={{ color: '#94a3b8', textDecoration: 'none' }}>Contact & Enquiries</Link>
-            <Link href="/portal/login" style={{ color: '#38bdf8', textDecoration: 'none', fontWeight: 600 }}>Staff ERP Portal</Link>
             <Link href="/privacy" style={{ color: '#64748b', textDecoration: 'none', fontSize: '0.82rem' }}>Privacy Policy</Link>
             <Link href="/terms" style={{ color: '#64748b', textDecoration: 'none', fontSize: '0.82rem' }}>Terms of Service</Link>
           </div>
         </div>
 
         <div className="footer-column">
-          <h4 style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: 700, marginBottom: '16px', letterSpacing: '0.04em' }}>Panipat Headquarters</h4>
+          <h4 style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: 700, marginBottom: '16px', letterSpacing: '0.04em' }}>Corporate Headquarters</h4>
           <div className="footer-links" style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.88rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <HiOutlineMail size={16} style={{ color: '#38bdf8', flexShrink: 0 }} />

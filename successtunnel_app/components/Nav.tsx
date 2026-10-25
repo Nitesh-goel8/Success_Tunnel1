@@ -63,7 +63,7 @@ export default function Nav() {
               {settings.businessName || 'Success Tunnel'}
             </span>
             <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em', color: '#86868b', textTransform: 'uppercase' }}>
-              Advisory Group &bull; Panipat
+              Advisory Group &bull; Corporate Chambers
             </span>
           </div>
         </Link>
@@ -165,26 +165,6 @@ export default function Nav() {
         </nav>
 
         <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Link
-            href="/portal/login"
-            style={{
-              color: '#515154',
-              fontSize: '0.82rem',
-              fontWeight: 600,
-              padding: '8px 16px',
-              borderRadius: '999px',
-              border: '1px solid #e5e5ea',
-              background: '#f5f5f7',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#34c759' }} />
-            Staff ERP
-          </Link>
           <Link
             href="/contact"
             className="btn btn-primary"

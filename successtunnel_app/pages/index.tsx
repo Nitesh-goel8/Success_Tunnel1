@@ -87,8 +87,8 @@ const coreServices = [
     title: 'Managed Workspaces',
     slug: 'rental-space',
     icon: <HiKey size={24} />,
-    excerpt: 'Furnished corporate office suites, meeting rooms, and flexible executive workspace solutions located in central Panipat.',
-    tags: ['Executive Boardrooms', 'Central Panipat', 'Flexible Leases', 'Plug & Play'],
+    excerpt: 'Furnished corporate office suites, meeting rooms, and flexible executive workspace solutions.',
+    tags: ['Executive Boardrooms', 'Prime Commercial', 'Flexible Leases', 'Plug & Play'],
     highlight: 'Operational Suites'
   },
   {
@@ -123,7 +123,7 @@ const industries = [
     id: 'manufacturing',
     name: 'Manufacturing & Textiles',
     icon: <FaIndustry size={18} />,
-    desc: 'Customized GST audit defense, supply chain credit limits, and large industrial real estate acquisitions for textile manufacturing hubs across Panipat and Northern India.'
+    desc: 'Customized GST audit defense, supply chain credit limits, and large industrial real estate acquisitions for enterprise manufacturing and supply-chain hubs.'
   },
   {
     id: 'startups',
@@ -165,10 +165,10 @@ export default function Home({ services, featuredEducationContent }: { services:
   return (
     <>
       <Head>
-        <title>Success Tunnel — Strategic Corporate Advisory, Finance &amp; Commercial Real Estate | Panipat</title>
+        <title>Success Tunnel — Strategic Corporate Advisory, Finance &amp; Commercial Real Estate </title>
         <meta
           name="description"
-          content="Strategic clarity and architectural execution. Professional enterprise services across corporate taxation, debt syndication, executive education, and commercial real estate in Panipat, Haryana."
+          content="Strategic clarity and architectural execution. Professional enterprise services across corporate taxation, debt syndication, executive education, and commercial real estate."
         />
         <link rel="canonical" href="https://successtunnel.in" />
         <meta property="og:title" content="Success Tunnel — Strategic Clarity &amp; Architectural Execution" />
@@ -252,7 +252,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                     }}
                   >
                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#0071e3' }} />
-                    Success Tunnel &bull; Panipat Advisory Chambers
+                    Success Tunnel &bull; Corporate Advisory Practice
                   </div>
 
                   {/* Refined Master Typography (Balanced Size) */}
@@ -282,7 +282,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                       fontWeight: 400,
                     }}
                   >
-                    Unifying statutory corporate compliance, debt syndication, and prime commercial real estate under one accountable Panipat partner.
+                    Unifying statutory corporate compliance, debt syndication, and prime commercial real estate under one accountable corporate partner.
                   </p>
 
                   {/* Dual Action CTA Buttons */}
@@ -326,11 +326,11 @@ export default function Home({ services, featuredEducationContent }: { services:
 
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                       <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#f5f5f7', border: '1px solid #e5e5ea', color: '#0071e3', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <HiLocationMarker size={20} />
+                        <HiOfficeBuilding size={20} />
                       </div>
                       <div>
-                        <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#1d1d1f' }}>Panipat Headquarters</div>
-                        <div style={{ fontSize: '0.8rem', color: '#86868b' }}>First Floor, Sudarshan Tower, Tau Devi Lal Complex.</div>
+                        <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#1d1d1f' }}>Corporate Advisory Chambers</div>
+                        <div style={{ fontSize: '0.8rem', color: '#86868b' }}>Dedicated counsel suites, executive boardrooms &amp; audit chambers.</div>
                       </div>
                     </div>
                   </div>
@@ -638,7 +638,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                   Regional Industry Depth
                 </div>
                 <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.7rem)', color: '#1d1d1f', fontWeight: 800, margin: '8px 0 14px', letterSpacing: '-0.025em' }}>
-                  Sector-Specific Guidance Across Haryana &amp; National Markets
+                  Sector-Specific Guidance Across Key Enterprise Markets
                 </h2>
                 <p style={{ maxWidth: '600px', margin: '0 auto', color: '#86868b', fontSize: '1rem', lineHeight: '1.6' }}>
                   Select an industry segment to inspect how our multidisciplinary advisory coordinates compliance, financing, and facilities.
@@ -769,7 +769,7 @@ export default function Home({ services, featuredEducationContent }: { services:
           </section>
 
           {/* =========================================================
-              7. CORPORATE HEADQUARTERS & PANIPAT ANCHOR
+              7. CORPORATE HEADQUARTERS & ADVISORY CHAMBERS
               ========================================================= */}
           <section id="about" style={{ padding: '80px 0', scrollMarginTop: '80px', background: '#fbfbfd' }}>
             <div className="container">
@@ -792,13 +792,13 @@ export default function Home({ services, featuredEducationContent }: { services:
                     }}
                   >
                     <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0071e3' }} />
-                    Panipat Headquarters
+                    Corporate Headquarters
                   </div>
                   <h2 style={{ fontSize: 'clamp(2rem, 3.8vw, 2.8rem)', color: '#1d1d1f', fontWeight: 800, lineHeight: '1.18', margin: '0 0 20px', letterSpacing: '-0.025em' }}>
-                    Regional Chambers.<br />Multidisciplinary Depth.
+                    Institutional Chambers.<br />Multidisciplinary Depth.
                   </h2>
                   <p style={{ fontSize: '1.05rem', color: '#86868b', lineHeight: '1.75', marginBottom: '16px' }}>
-                    Success Tunnel was founded in Panipat to resolve the fragmentation that slows business leaders down. In conventional setups, promoters must separately engage distinct CA firms, loan brokers, real estate brokers, and corporate lawyers who rarely communicate with one another.
+                    Success Tunnel was established to resolve the fragmentation that slows business leaders down. In conventional setups, promoters must separately engage distinct CA firms, loan brokers, real estate brokers, and corporate lawyers who rarely communicate with one another.
                   </p>
                   <p style={{ fontSize: '1.05rem', color: '#86868b', lineHeight: '1.75', marginBottom: '28px' }}>
                     Our integrated advisory model brings all essential enterprise growth disciplines under one roof, providing accountable governance, rapid execution, and complete strategic alignment.
@@ -868,7 +868,7 @@ export default function Home({ services, featuredEducationContent }: { services:
                     <HiLocationMarker size={22} />
                   </div>
                   <div className="contact-detail-text">
-                    <h4 style={{ color: '#1d1d1f' }}>Panipat Headquarters</h4>
+                    <h4 style={{ color: '#1d1d1f' }}>Corporate Headquarters</h4>
                     <p style={{ color: '#86868b' }}>{settings.officeAddress || 'First Floor, Sudarshan Tower, Tau Devi Lal Complex, Behind Hive Hotel, Panipat 132103, Haryana'}</p>
                   </div>
                 </div>
