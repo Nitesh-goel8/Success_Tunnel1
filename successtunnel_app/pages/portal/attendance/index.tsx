@@ -360,6 +360,36 @@ export default function AttendanceModule() {
             />
           </div>
 
+          {/* Quick Month Switcher Pills for 3-Month Data */}
+          <div style={{ display: "flex", gap: "0.4rem", alignItems: "flex-end", paddingBottom: "2px", flexWrap: "wrap" }}>
+            {[
+              { m: "2026-10", label: "October 2026" },
+              { m: "2026-09", label: "September 2026" },
+              { m: "2026-08", label: "August 2026" },
+            ].map(({ m, label }) => {
+              const isActive = selectedMonth === m
+              return (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setSelectedMonth(m)}
+                  style={{
+                    border: "1px solid " + (isActive ? "#2563eb" : "#cbd5e1"),
+                    background: isActive ? "#eff6ff" : "#ffffff",
+                    color: isActive ? "#1d4ed8" : "#475569",
+                    fontWeight: isActive ? 700 : 500,
+                    borderRadius: "6px",
+                    padding: "0.45rem 0.75rem",
+                    cursor: "pointer",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
+
           {employees.length > 0 && (
             <div style={{ flex: '0 1 240px' }}>
               <label className={styles.label}>Personnel Filter (HR/Admin)</label>
