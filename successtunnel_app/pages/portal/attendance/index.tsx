@@ -14,6 +14,18 @@ import {
   HiOutlineCheck,
 } from 'react-icons/hi'
 
+const formatAttendanceTime = (dateStr: string | Date | null | undefined) => {
+  if (!dateStr) return '—'
+  const d = new Date(dateStr)
+  if (isNaN(d.getTime())) return '—'
+  return d.toLocaleTimeString('en-US', {
+    timeZone: 'Asia/Kolkata',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  })
+}
+
 export default function AttendanceModule() {
   const [records, setRecords] = useState<any[]>([])
   const [employees, setEmployees] = useState<any[]>([])
@@ -82,8 +94,8 @@ export default function AttendanceModule() {
     setSubmittingCorrection(true)
     setCorrectionError('')
     try {
-      const fullCheckIn = `${correctionDate}T${correctionCheckIn}:00Z`
-      const fullCheckOut = `${correctionDate}T${correctionCheckOut}:00Z`
+      const fullCheckIn = new Date(`${correctionDate}T${correctionCheckIn}:00+05:30`).toISOString()
+      const fullCheckOut = new Date(`${correctionDate}T${correctionCheckOut}:00+05:30`).toISOString()
 
       await axios.post('/api/portal/attendance/correction', {
         date: correctionDate,
@@ -260,9 +272,9 @@ export default function AttendanceModule() {
             <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#475569' }}>
               {todayRecord ? (
                 <span>
-                  Check-in recorded at: <strong>{new Date(todayRecord.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong>
+                  Check-in recorded at: <strong>{formatAttendanceTime(todayRecord.checkIn)}</strong>
                   {todayRecord.checkOut && (
-                    <span> | Check-out: <strong>{new Date(todayRecord.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong> ({Math.round(todayRecord.durationMinutes / 60)} hrs {todayRecord.durationMinutes % 60} mins)</span>
+                    <span> | Check-out: <strong>{formatAttendanceTime(todayRecord.checkOut)}</strong> ({Math.round(todayRecord.durationMinutes / 60)} hrs {todayRecord.durationMinutes % 60} mins)</span>
                   )}
                 </span>
               ) : (
@@ -458,10 +470,10 @@ export default function AttendanceModule() {
                         {r.user?.department?.name || 'Unassigned'}
                       </span>
                     </td>
-                    <td>{new Date(r.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                    <td>{formatAttendanceTime(r.checkIn)}</td>
                     <td>
                       {r.checkOut
-                        ? new Date(r.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                        ? formatAttendanceTime(r.checkOut)
                         : '—'}
                     </td>
                     <td style={{ fontWeight: 500 }}>

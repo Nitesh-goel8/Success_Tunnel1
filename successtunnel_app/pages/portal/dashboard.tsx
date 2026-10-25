@@ -104,7 +104,7 @@ export default function PortalDashboard() {
             </div>
             <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.825rem', color: '#64748b' }}>
               {stats?.myAttendanceToday?.checkIn
-                ? `Logged in today at ${new Date(stats.myAttendanceToday.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                ? `Logged in today at ${new Date(stats.myAttendanceToday.checkIn).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true })}`
                 : 'No check-in recorded for your profile today.'}
             </p>
           </div>
