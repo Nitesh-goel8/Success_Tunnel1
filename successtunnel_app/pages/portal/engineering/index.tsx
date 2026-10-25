@@ -25,7 +25,7 @@ import {
 export default function EngineeringWorkspace() {
   const router = useRouter()
   const [gitData, setGitData] = useState<{ branch: string; repository: string; commits: any[] }>({
-    branch: 'main',
+    branch: 'feat/swe-intern-nitesh-portal-core',
     repository: 'Nitesh-goel8/Success_Tunnel1',
     commits: [],
   })
@@ -445,7 +445,7 @@ export default function EngineeringWorkspace() {
           {/* Tier 3: Core Engineering Pods */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '1.25rem' }}>
             
-            {/* Pod 0: Nitesh Goel (Software Engineer - SWE) */}
+            {/* Pod 0: Nitesh Goel (Software Engineering Intern - SWE Intern) */}
             <div className={styles.card} style={{ borderTop: '4px solid #2563eb', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 16px rgba(37, 99, 235, 0.08)' }}>
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
@@ -466,10 +466,10 @@ export default function EngineeringWorkspace() {
                   Nitesh Goel
                 </h4>
                 <div style={{ fontSize: '0.825rem', color: '#2563eb', fontWeight: 600, marginBottom: '0.75rem' }}>
-                  Software Engineer (SWE)
+                  Software Engineering Intern (SWE Intern)
                 </div>
                 <div style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.5' }}>
-                  <strong>Pod Focus:</strong> Core Application Systems, Scalable Next.js APIs, Supabase Relational Schema, and High-Performance Spatial 3D Experience.
+                  <strong>Pod Focus:</strong> Core Application Systems, Scalable Next.js Serverless APIs, Supabase Relational Schema, and High-Performance Spatial 3D Experience.
                 </div>
               </div>
 
@@ -673,17 +673,17 @@ export default function EngineeringWorkspace() {
                   <tr style={{ background: '#eff6ff' }}>
                     <td>
                       <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#2563eb', color: '#ffffff', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>
-                        TIER 3 SWE
+                        TIER 3 SWE INTERN
                       </span>
                     </td>
                     <td>
                       <strong>Nitesh Goel</strong>
-                      <div style={{ fontSize: '0.75rem', color: '#1d4ed8', fontWeight: 600 }}>Software Engineer (SWE) [Super Admin]</div>
+                      <div style={{ fontSize: '0.75rem', color: '#1d4ed8', fontWeight: 600 }}>Software Engineering Intern (SWE Intern) [Super Admin]</div>
                     </td>
                     <td><code>ST-ENG-102</code></td>
                     <td>Rohit Verma</td>
-                    <td>Enterprise Architecture, Next.js Serverless APIs, Relational DB & 3D Spatial Systems</td>
-                    <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE (SWE)</span></td>
+                    <td>Full-Stack ERP Core, Next.js API Routes, Database Schema, WebGL Canvas Engine & Automated Tests</td>
+                    <td><span className={`${styles.badge} ${styles.badgeSuccess}`}>ACTIVE (SWE INTERN)</span></td>
                   </tr>
 
                   <tr>

@@ -167,7 +167,7 @@ export default function PortalDashboard() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '0.65rem', fontWeight: 800, background: '#3b82f6', color: '#ffffff', padding: '0.1rem 0.45rem', borderRadius: '4px' }}>
-                  SOFTWARE ENGINEER (SWE)
+                  SWE INTERN
                 </span>
                 <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.15)', color: '#e2e8f0', padding: '0.1rem 0.45rem', borderRadius: '4px', fontFamily: 'monospace' }}>
                   ST-ENG-102
@@ -180,7 +180,7 @@ export default function PortalDashboard() {
                 Nitesh Goel — Engineering & Technology (ENG)
               </h3>
               <p style={{ margin: 0, fontSize: '0.825rem', color: '#93c5fd' }}>
-                Software Engineer (SWE) • Core Platform & Architecture Pod • Reporting to Rohit Verma & Abhishek Kumar (Head)
+                Software Engineering Intern (SWE Intern) • Core Platform & Architecture Pod • Reporting to Rohit Verma (Engineering Lead) & Abhishek Kumar (VP & Head)
               </p>
             </div>
           </div>

@@ -106,7 +106,7 @@ async function main() {
       'Employee Code': 'ST-ENG-102',
       'Employee Name': r.user?.name || 'Nitesh Goel',
       'Department': 'Engineering & Technology',
-      'Designation': 'Software Engineer (SWE)',
+      'Designation': 'Software Engineering Intern (SWE Intern)',
       'Official Shift': '09:00 AM – 05:00 PM (8 Hours)',
       'Check-In (IST)': inTime,
       'Check-Out (IST)': outTime,
@@ -223,13 +223,13 @@ async function main() {
       'Status': 'ACTIVE (LEAD)',
     },
     {
-      'Tier': 'Tier 3 (SWE)',
+      'Tier': 'Tier 3 (SWE Intern)',
       'Employee Code': 'ST-ENG-102',
       'Name': 'Nitesh Goel',
-      'Designation': 'Software Engineer (SWE)',
+      'Designation': 'Software Engineering Intern (SWE Intern)',
       'Department': 'Engineering & Technology',
       'Reports To': 'Rohit Verma (Engineering Lead)',
-      'Scope & Core Responsibilities': 'Core Platform Engineering, Next.js Serverless APIs, PostgreSQL Optimization, 3D Spatial Systems',
+      'Scope & Core Responsibilities': 'Full-Stack ERP Core, Next.js API Routes, Database Schema, WebGL Canvas Engine & Automated Tests',
       'Shift Timings': '09:00 AM – 05:00 PM',
       'Status': 'ACTIVE (SWE) • Super Admin',
     },
@@ -297,7 +297,7 @@ async function main() {
     { 'Parameter': 'Report Period', 'Value': 'August 1, 2026 – October 31, 2026 (3 Complete Months)' },
     { 'Parameter': 'Primary Employee Name', 'Value': 'Nitesh Goel' },
     { 'Parameter': 'Employee Code', 'Value': 'ST-ENG-102' },
-    { 'Parameter': 'Employee Role', 'Value': 'Software Engineer (SWE) [Super Admin Privileges]' },
+    { 'Parameter': 'Employee Role', 'Value': 'Software Engineering Intern (SWE Intern) [Super Admin Privileges]' },
     { 'Parameter': 'Department', 'Value': 'Engineering & Technology (ENG)' },
     { 'Parameter': 'Department Head', 'Value': 'Abhishek Kumar (VP of Engineering & Head of Technology, ST-ENG-001)' },
     { 'Parameter': 'Direct Manager', 'Value': 'Rohit Verma (Engineering Lead & Principal Project Manager, ST-PM-201)' },
@@ -359,3 +359,5 @@ async function main() {
 }
 
 main().catch(console.error);
+
+

@@ -46,14 +46,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
 
     return res.status(200).json({
-      branch: 'cleanup/codebase-hygiene',
+      branch: 'feat/swe-intern-nitesh-portal-core',
       repository: 'Nitesh-goel8/Success_Tunnel1',
       commits,
     })
   } catch (error: any) {
     console.error('Failed to retrieve git history:', error)
     return res.status(200).json({
-      branch: 'cleanup/codebase-hygiene',
+      branch: 'feat/swe-intern-nitesh-portal-core',
       repository: 'Nitesh-goel8/Success_Tunnel1',
       commits: [
         {
