@@ -12,6 +12,7 @@ import {
   HiOutlineExclamation,
   HiOutlineX,
   HiOutlineCheck,
+  HiOutlineDownload,
 } from 'react-icons/hi'
 
 const formatAttendanceTime = (dateStr: string | Date | null | undefined) => {
@@ -154,7 +155,27 @@ export default function AttendanceModule() {
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.6rem' }}>
+        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+          <a
+            href="/downloads/Success_Tunnel_3_Month_Complete_Data_2026.xlsx"
+            download="Success_Tunnel_3_Month_Complete_Data_2026.xlsx"
+            className={`${styles.btn} ${styles.btnPrimary}`}
+            style={{
+              background: '#047857',
+              borderColor: '#047857',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              fontSize: '0.85rem',
+              padding: '0.5rem 0.9rem',
+              color: '#ffffff',
+              textDecoration: 'none',
+              borderRadius: '6px',
+              fontWeight: 600,
+            }}
+          >
+            <HiOutlineDownload /> Export Excel (3 Months)
+          </a>
           <button
             onClick={() => setShowCorrectionModal(true)}
             style={{
