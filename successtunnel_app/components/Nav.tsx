@@ -40,10 +40,11 @@ export default function Nav() {
     <header
       className="site-header"
       style={{
-        background: scrolled ? 'rgba(8, 13, 24, 0.95)' : 'rgba(8, 13, 24, 0.82)',
-        backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        boxShadow: scrolled ? '0 10px 30px rgba(0, 0, 0, 0.45)' : 'none',
+        background: scrolled ? 'rgba(255, 255, 255, 0.92)' : 'rgba(251, 251, 253, 0.85)',
+        backdropFilter: 'saturate(180%) blur(20px)',
+        WebkitBackdropFilter: 'saturate(180%) blur(20px)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+        boxShadow: scrolled ? '0 4px 20px rgba(0, 0, 0, 0.04)' : 'none',
         transition: 'background 0.3s ease, box-shadow 0.3s ease',
       }}
     >
@@ -54,14 +55,14 @@ export default function Nav() {
             alt="Success Tunnel Logo"
             width={40}
             height={40}
-            style={{ borderRadius: '8px', objectFit: 'contain', background: '#080d18', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '2px' }}
+            style={{ borderRadius: '10px', objectFit: 'contain', background: '#ffffff', border: '1px solid #e5e5ea', padding: '2px' }}
             priority
           />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1d1d1f', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
               {settings.businessName || 'Success Tunnel'}
             </span>
-            <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.14em', color: '#8F9CAE', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em', color: '#86868b', textTransform: 'uppercase' }}>
               Advisory Group &bull; Panipat
             </span>
           </div>
@@ -167,30 +168,31 @@ export default function Nav() {
           <Link
             href="/portal/login"
             style={{
-              color: 'var(--muted)',
+              color: '#515154',
               fontSize: '0.82rem',
               fontWeight: 600,
-              padding: '7px 14px',
-              borderRadius: '8px',
-              border: '1px solid var(--line)',
-              background: 'var(--surface-soft)',
+              padding: '8px 16px',
+              borderRadius: '999px',
+              border: '1px solid #e5e5ea',
+              background: '#f5f5f7',
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
+              transition: 'all 0.2s ease',
             }}
           >
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#34c759' }} />
             Staff ERP
           </Link>
           <Link
             href="/contact"
             className="btn btn-primary"
             style={{
-              padding: '9px 18px',
+              padding: '9px 20px',
               fontSize: '0.88rem',
-              fontWeight: 700,
-              borderRadius: '10px',
+              fontWeight: 600,
+              borderRadius: '999px',
             }}
           >
             Book Consultation &rarr;
