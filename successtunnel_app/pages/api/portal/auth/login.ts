@@ -43,13 +43,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const cleanEmail = email.trim().toLowerCase()
 
   try {
-    // 1. Self-heal: ensure departmentId exists on User table (Postgres and SQLite)
-    try {
-      await prisma.$executeRawUnsafe('ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "departmentId" INTEGER;')
-    } catch (e1) {
-      try {
-        await prisma.$executeRawUnsafe('ALTER TABLE User ADD COLUMN departmentId INTEGER;')
-      } catch (e2) {}
+    // 1. Self-heal: ensure all columns exist on User table (Postgres and SQLite)
+    const healStmts = [
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "departmentId" INTEGER;',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "status" TEXT DEFAULT \'active\';',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "phone" TEXT;',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "avatarUrl" TEXT;',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "lastLoginAt" TIMESTAMP(3);',
+    ]
+    for (const stmt of healStmts) {
+      try { await prisma.$executeRawUnsafe(stmt) } catch (e) {}
     }
 
     let user: any = null

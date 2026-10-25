@@ -11,13 +11,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const cleanEmail = email.trim().toLowerCase()
 
   try {
-    // Auto-heal missing departmentId column on User table
-    try {
-      await prisma.$executeRawUnsafe('ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "departmentId" INTEGER;')
-    } catch (e1) {
-      try {
-        await prisma.$executeRawUnsafe('ALTER TABLE User ADD COLUMN departmentId INTEGER;')
-      } catch (e2) {}
+    // Auto-heal missing columns on User table
+    const healStmts = [
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "departmentId" INTEGER;',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "status" TEXT DEFAULT \'active\';',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "phone" TEXT;',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "avatarUrl" TEXT;',
+      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "lastLoginAt" TIMESTAMP(3);',
+    ]
+    for (const stmt of healStmts) {
+      try { await prisma.$executeRawUnsafe(stmt) } catch (e) {}
     }
 
     let user = await prisma.user.findUnique({
