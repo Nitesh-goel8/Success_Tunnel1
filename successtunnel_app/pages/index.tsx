@@ -17,37 +17,7 @@ import {
 } from 'react-icons/hi'
 import { FaWhatsapp, FaRocket, FaIndustry, FaStore, FaUniversity, FaTools } from 'react-icons/fa'
 import { MdHealthAndSafety } from 'react-icons/md'
-
-// Dynamic import for the signature 3D Architectural Spatial Campus (client-side only)
-const ArchitecturalCampus3D = dynamic(
-  () => import('../components/3d/ArchitecturalCampus3D'),
-  {
-    ssr: false,
-    loading: () => (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          minHeight: '480px',
-          background: '#f8fafc',
-          borderRadius: '28px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#1d1d1f',
-          padding: '24px',
-          textAlign: 'center'
-        }}
-      >
-        <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#0071e3', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, marginBottom: '14px' }}>
-          ST
-        </div>
-        <p style={{ fontWeight: 600, margin: 0, fontSize: '0.95rem', color: '#1d1d1f' }}>Loading Architectural Campus 3D...</p>
-      </div>
-    )
-  }
-)
+import ArchitecturalPortfolioHero from '../components/ArchitecturalPortfolioHero'
 
 const practicePillars = [
   { name: 'Corporate Advisory', slug: 'consultancy', icon: <HiBriefcase size={20} />, code: 'ADV-01', desc: 'MCA compliance, statutory restructuring, tax litigation, and corporate legal governance.' },
@@ -160,7 +130,6 @@ const industries = [
 export default function Home({ services, featuredEducationContent }: { services: any[]; featuredEducationContent: any | null }) {
   const settings = useSiteSettings()
   const [activeInd, setActiveInd] = useState('manufacturing')
-  const [activeTower, setActiveTower] = useState(0)
 
   return (
     <>
@@ -211,195 +180,9 @@ export default function Home({ services, featuredEducationContent }: { services:
 
         <main>
           {/* =========================================================
-              1. SWISS MINIMALIST HERO: SIDE-BY-SIDE EDITORIAL & 3D CAMPUS
+              1. 3D ARCHITECTURAL SPATIAL CAMPUS HERO & SYNCHRONIZED PORTFOLIO
               ========================================================= */}
-          <section
-            style={{
-              paddingTop: '60px',
-              paddingBottom: '72px',
-              borderBottom: '1px solid #e5e5ea',
-              background: '#fbfbfd',
-              position: 'relative',
-            }}
-          >
-            <div className="container">
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-                  gap: '48px',
-                  alignItems: 'center',
-                }}
-              >
-                {/* Left Column: Refined Editorial, Positioning & Trust Pillars */}
-                <div>
-                  {/* Top Eyebrow Tag */}
-                  <div
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      padding: '6px 14px',
-                      borderRadius: '999px',
-                      background: '#f5f5f7',
-                      border: '1px solid #e5e5ea',
-                      fontSize: '0.78rem',
-                      fontWeight: 600,
-                      letterSpacing: '0.06em',
-                      textTransform: 'uppercase',
-                      color: '#515154',
-                      marginBottom: '20px',
-                    }}
-                  >
-                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#0071e3' }} />
-                    Success Tunnel &bull; Corporate Advisory Practice
-                  </div>
-
-                  {/* Refined Master Typography (Balanced Size) */}
-                  <h1
-                    style={{
-                      fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)',
-                      lineHeight: '1.08',
-                      letterSpacing: '-0.03em',
-                      fontWeight: 800,
-                      color: '#1d1d1f',
-                      margin: '0 0 18px 0',
-                      fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-                    }}
-                  >
-                    Strategic Clarity.<br />
-                    <span style={{ color: '#0071e3' }}>Architectural Execution.</span>
-                  </h1>
-
-                  {/* Subtitle Description */}
-                  <p
-                    style={{
-                      fontSize: 'clamp(1rem, 1.4vw, 1.15rem)',
-                      lineHeight: '1.65',
-                      color: '#86868b',
-                      margin: '0 0 28px 0',
-                      maxWidth: '540px',
-                      fontWeight: 400,
-                    }}
-                  >
-                    Unifying statutory corporate compliance, debt syndication, and prime commercial real estate under one accountable corporate partner.
-                  </p>
-
-                  {/* Dual Action CTA Buttons */}
-                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '36px' }}>
-                    <a href="#contact" className="btn btn-primary" style={{ padding: '12px 28px', fontSize: '0.95rem', fontWeight: 600 }}>
-                      Schedule Private Consultation &rarr;
-                    </a>
-                    <a href="#services" className="btn btn-secondary" style={{ padding: '12px 26px', fontSize: '0.95rem', fontWeight: 600 }}>
-                      Explore Practice Disciplines
-                    </a>
-                  </div>
-
-                  {/* 3 Authentic Trust Pillars */}
-                  <div
-                    style={{
-                      paddingTop: '24px',
-                      borderTop: '1px solid #e5e5ea',
-                      display: 'grid',
-                      gap: '16px',
-                    }}
-                  >
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#f5f5f7', border: '1px solid #e5e5ea', color: '#0071e3', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <HiShieldCheck size={20} />
-                      </div>
-                      <div>
-                        <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#1d1d1f' }}>Direct Statutory Governance</div>
-                        <div style={{ fontSize: '0.8rem', color: '#86868b' }}>MCA filings, GST litigation &amp; audit defense.</div>
-                      </div>
-                    </div>
-
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#f5f5f7', border: '1px solid #e5e5ea', color: '#0071e3', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <HiGlobeAlt size={20} />
-                      </div>
-                      <div>
-                        <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#1d1d1f' }}>6 Integrated Disciplines</div>
-                        <div style={{ fontSize: '0.8rem', color: '#86868b' }}>Single mandate coordination across capital, law &amp; property.</div>
-                      </div>
-                    </div>
-
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#f5f5f7', border: '1px solid #e5e5ea', color: '#0071e3', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <HiOfficeBuilding size={20} />
-                      </div>
-                      <div>
-                        <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#1d1d1f' }}>Corporate Advisory Chambers</div>
-                        <div style={{ fontSize: '0.8rem', color: '#86868b' }}>Dedicated counsel suites, executive boardrooms &amp; audit chambers.</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Column: 3D Architectural Spatial Campus Stage */}
-                <div
-                  style={{
-                    background: '#ffffff',
-                    border: '1px solid #e5e5ea',
-                    borderRadius: '28px',
-                    padding: '20px',
-                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {/* 3D WebGL Canvas */}
-                  <div style={{ minHeight: '440px', width: '100%', position: 'relative', borderRadius: '20px', overflow: 'hidden', background: '#f5f5f7' }}>
-                    <ArchitecturalCampus3D activeTowerIndex={activeTower} onSelectTower={setActiveTower} />
-                  </div>
-
-                  {/* Interactive Tower Selector Tabs */}
-                  <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid #e5e5ea' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '6px' }}>
-                      <span style={{ fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#86868b' }}>
-                        Explore Campus Towers:
-                      </span>
-                      <span style={{ fontSize: '0.78rem', color: '#0071e3', fontWeight: 600 }}>
-                        {practicePillars[activeTower]?.name} ({practicePillars[activeTower]?.code})
-                      </span>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
-                      {practicePillars.map((p, idx) => {
-                        const isSelected = activeTower === idx
-                        return (
-                          <button
-                            key={p.code}
-                            type="button"
-                            onClick={() => setActiveTower(idx)}
-                            style={{
-                              padding: '8px 10px',
-                              borderRadius: '10px',
-                              border: '1px solid',
-                              borderColor: isSelected ? '#0071e3' : '#e5e5ea',
-                              background: isSelected ? '#eff6ff' : '#f5f5f7',
-                              color: isSelected ? '#0071e3' : '#1d1d1f',
-                              fontSize: '0.76rem',
-                              fontWeight: isSelected ? 700 : 500,
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '6px',
-                              transition: 'all 0.15s ease',
-                            }}
-                          >
-                            <span style={{ opacity: isSelected ? 1 : 0.6 }}>{p.icon}</span>
-                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name.split(' ')[0]}</span>
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <ArchitecturalPortfolioHero />
 
           {/* =========================================================
               2. CAPABILITY TICKER / PRACTICE PILLARS
