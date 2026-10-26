@@ -7,6 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!auth) return
 
   if (req.method === 'GET') {
+    res.setHeader('Cache-Control', 'private, max-age=10, stale-while-revalidate=20')
     try {
       const projectId = req.query.projectId ? parseInt(req.query.projectId as string) : undefined
       const assigneeId = req.query.assigneeId ? parseInt(req.query.assigneeId as string) : undefined

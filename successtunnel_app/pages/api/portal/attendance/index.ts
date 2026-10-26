@@ -7,6 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!auth) return
 
   if (req.method === 'GET') {
+    res.setHeader('Cache-Control', 'private, max-age=10, stale-while-revalidate=20')
     try {
       const isPrivileged =
         auth.role === 'super_admin' || auth.role === 'hr_admin' || auth.role === 'admin'
