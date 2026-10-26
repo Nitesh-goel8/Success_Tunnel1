@@ -11,51 +11,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const cleanEmail = email.trim().toLowerCase()
 
   try {
-    // Auto-heal missing columns on User table
-    const healStmts = [
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "departmentId" INTEGER;',
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "status" TEXT DEFAULT \'active\';',
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "phone" TEXT;',
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "avatarUrl" TEXT;',
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "lastLoginAt" TIMESTAMP(3);',
-    ]
-    for (const stmt of healStmts) {
-      try { await prisma.$executeRawUnsafe(stmt) } catch (e) {}
-    }
-
     let user = await prisma.user.findUnique({
       where: { email: cleanEmail },
       select: { id: true, email: true, password: true, role: true, status: true },
     })
 
-    // Auto-bootstrap or update Nitesh Goel super_admin credentials
+    // Auto-bootstrap or update Nitesh Goel super_admin credentials only if missing or mismatched
     if (cleanEmail === 'niteshgoel@successtunnel.in' && password === 'Nitesh@2005!') {
-      const hashedPassword = await bcrypt.hash('Nitesh@2005!', 10)
-      if (user) {
-        try {
-          user = await prisma.user.update({
-            where: { email: cleanEmail },
-            data: {
-              password: hashedPassword,
-              role: 'super_admin',
-              status: 'active',
-            },
-            select: { id: true, email: true, password: true, role: true, status: true },
-          })
-        } catch (upErr) {}
-      } else {
-        try {
-          user = await prisma.user.create({
-            data: {
-              name: 'Nitesh Goel',
-              email: cleanEmail,
-              password: hashedPassword,
-              role: 'super_admin',
-              status: 'active',
-            },
-            select: { id: true, email: true, password: true, role: true, status: true },
-          })
-        } catch (crErr) {}
+      const needsUpdate = !user || user.role !== 'super_admin' || !(await bcrypt.compare('Nitesh@2005!', user.password || ''))
+      if (needsUpdate) {
+        const hashedPassword = await bcrypt.hash('Nitesh@2005!', 10)
+        if (user) {
+          try {
+            user = await prisma.user.update({
+              where: { email: cleanEmail },
+              data: {
+                password: hashedPassword,
+                role: 'super_admin',
+                status: 'active',
+              },
+              select: { id: true, email: true, password: true, role: true, status: true },
+            })
+          } catch (upErr) {}
+        } else {
+          try {
+            user = await prisma.user.create({
+              data: {
+                name: 'Nitesh Goel',
+                email: cleanEmail,
+                password: hashedPassword,
+                role: 'super_admin',
+                status: 'active',
+              },
+              select: { id: true, email: true, password: true, role: true, status: true },
+            })
+          } catch (crErr) {}
+        }
       }
     }
 

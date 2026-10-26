@@ -7,21 +7,41 @@ declare global {
 
 function getOptimizedDatabaseUrl(): string | undefined {
   let url = process.env.DATABASE_URL
-  if (!url) return undefined
+  if (!url || url.startsWith('file:')) return url
 
-  // Supabase Serverless Pooler optimization:
-  // Convert port 5432 (session mode max 15) to 6543 (transaction pooler)
-  if (url.includes('.pooler.supabase.com:5432')) {
-    url = url.replace(':5432', ':6543')
-    if (!url.includes('pgbouncer=true')) {
-      const sep = url.includes('?') ? '&' : '?'
-      url = `${url}${sep}pgbouncer=true&connection_limit=1`
+  try {
+    const parsed = new URL(url)
+    const isSupabasePooler = parsed.hostname.includes('pooler.supabase.com')
+
+    // If Supabase pooler is configured on port 5432 (session mode limit 15), switch to port 6543 (transaction pooler)
+    if (isSupabasePooler && parsed.port === '5432') {
+      parsed.port = '6543'
     }
-  } else if (!url.includes('connection_limit=') && !url.startsWith('file:')) {
-    const sep = url.includes('?') ? '&' : '?'
-    url = `${url}${sep}connection_limit=1`
+
+    // When connecting via port 6543 or pooler, enable pgbouncer mode for Prisma compatibility
+    if (parsed.port === '6543' || isSupabasePooler) {
+      if (!parsed.searchParams.has('pgbouncer')) {
+        parsed.searchParams.set('pgbouncer', 'true')
+      }
+    }
+
+    // Set connection limit to 5 per serverless lambda (allows concurrent Promise.all without connection starvation)
+    if (!parsed.searchParams.has('connection_limit')) {
+      parsed.searchParams.set('connection_limit', '5')
+    }
+
+    // Fail-fast connection & pool timeouts (10 seconds) instead of hanging indefinitely
+    if (!parsed.searchParams.has('pool_timeout')) {
+      parsed.searchParams.set('pool_timeout', '10')
+    }
+    if (!parsed.searchParams.has('connect_timeout')) {
+      parsed.searchParams.set('connect_timeout', '10')
+    }
+
+    return parsed.toString()
+  } catch (e) {
+    return url
   }
-  return url
 }
 
 const optimizedUrl = getOptimizedDatabaseUrl()

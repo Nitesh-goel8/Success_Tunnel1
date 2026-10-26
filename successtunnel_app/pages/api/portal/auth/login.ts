@@ -43,18 +43,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const cleanEmail = email.trim().toLowerCase()
 
   try {
-    // 1. Self-heal: ensure all columns exist on User table (Postgres and SQLite)
-    const healStmts = [
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "departmentId" INTEGER;',
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "status" TEXT DEFAULT \'active\';',
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "phone" TEXT;',
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "avatarUrl" TEXT;',
-      'ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "lastLoginAt" TIMESTAMP(3);',
-    ]
-    for (const stmt of healStmts) {
-      try { await prisma.$executeRawUnsafe(stmt) } catch (e) {}
-    }
-
     let user: any = null
     try {
       user = await prisma.user.findUnique({
@@ -79,53 +67,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     }
 
-    // 2. Auto-bootstrap or update Nitesh Goel super_admin credentials
+    // Auto-bootstrap Nitesh Goel super_admin only if record is missing or credentials need update
     if (cleanEmail === 'niteshgoel@successtunnel.in' && password === 'Nitesh@2005!') {
-      const hashedPassword = await bcrypt.hash('Nitesh@2005!', 10)
-      if (user) {
-        try {
-          user = await prisma.user.update({
-            where: { email: cleanEmail },
-            data: {
-              password: hashedPassword,
-              role: 'super_admin',
-              status: 'active',
-            },
-          })
-        } catch (updateErr) {
+      const needsUpdate = !user || user.role !== 'super_admin' || !(await bcrypt.compare('Nitesh@2005!', user.password || ''))
+      if (needsUpdate) {
+        const hashedPassword = await bcrypt.hash('Nitesh@2005!', 10)
+        if (user) {
           try {
-            await prisma.$executeRawUnsafe(`
-              UPDATE "User" SET "password" = '${hashedPassword}', "role" = 'super_admin', "status" = 'active'
-              WHERE "email" = 'niteshgoel@successtunnel.in';
-            `)
-            user.password = hashedPassword
-            user.role = 'super_admin'
-            user.status = 'active'
-          } catch (rawUpErr) {}
-        }
-      } else {
-        try {
-          user = await prisma.user.create({
-            data: {
-              name: 'Nitesh Goel',
-              email: cleanEmail,
-              password: hashedPassword,
-              role: 'super_admin',
-              status: 'active',
-            },
-          })
-        } catch (createErr) {
+            user = await prisma.user.update({
+              where: { email: cleanEmail },
+              data: {
+                password: hashedPassword,
+                role: 'super_admin',
+                status: 'active',
+              },
+              include: {
+                department: true,
+                employeeProfile: true,
+              },
+            })
+          } catch (updateErr) {}
+        } else {
           try {
-            await prisma.$executeRawUnsafe(`
-              INSERT INTO "User" ("email", "password", "name", "role", "status", "createdAt", "updatedAt")
-              VALUES ('niteshgoel@successtunnel.in', '${hashedPassword}', 'Nitesh Goel', 'super_admin', 'active', NOW(), NOW())
-              ON CONFLICT ("email") DO UPDATE SET "password" = EXCLUDED."password", "role" = 'super_admin';
-            `)
-          } catch (rawErr) {}
-          user = await prisma.user.findUnique({
-            where: { email: cleanEmail },
-            select: { id: true, name: true, email: true, password: true, role: true, status: true },
-          })
+            user = await prisma.user.create({
+              data: {
+                name: 'Nitesh Goel',
+                email: cleanEmail,
+                password: hashedPassword,
+                role: 'super_admin',
+                status: 'active',
+              },
+              include: {
+                department: true,
+                employeeProfile: true,
+              },
+            })
+          } catch (createErr) {}
         }
       }
     }
