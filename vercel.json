@@ -1,13 +1,5 @@
 {
   "framework": "nextjs",
   "installCommand": "if [ -d successtunnel_app ]; then cd successtunnel_app; fi; npm install",
-  "buildCommand": "if [ -d successtunnel_app ]; then cd successtunnel_app; fi; npm run build",
-  "functions": {
-    "successtunnel_app/pages/api/**/*": {
-      "maxDuration": 30
-    },
-    "pages/api/**/*": {
-      "maxDuration": 30
-    }
-  }
+  "buildCommand": "if [ -d successtunnel_app ]; then cd successtunnel_app; fi; npm run build"
 }
