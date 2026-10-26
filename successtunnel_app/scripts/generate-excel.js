@@ -326,7 +326,7 @@ async function main() {
     { 'Parameter': 'Total Weekday Shifts Logged', 'Value': `${allAttendance.length} Working Days (100% Complete)` },
     { 'Parameter': 'August 2026 Shifts', 'Value': `${Array.isArray(augAtt) ? augAtt.length : 21} Days (Aug 3 - Aug 31)` },
     { 'Parameter': 'September 2026 Shifts', 'Value': `${Array.isArray(sepAtt) ? sepAtt.length : 22} Days (Sep 1 - Sep 30)` },
-    { 'Parameter': 'October 2026 Shifts', 'Value': `${Array.isArray(octAtt) ? octAtt.length : 18} Days (Oct 1 - Oct 23)` },
+    { 'Parameter': 'October 2026 Shifts', 'Value': `${Array.isArray(octAtt) ? octAtt.length : 17} Days (Oct 1 - Oct 23)` },
     { 'Parameter': 'Total Hours Logged (3 Months)', 'Value': `${(totalMinsAll / 60).toFixed(1)} Hours` },
     { 'Parameter': 'Average Daily Working Time', 'Value': '8 Hours 8 Minutes' },
     { 'Parameter': 'On-Time Attendance Rate', 'Value': '95.0% Present (3 Late Arrivals with Grace Window)' },
@@ -352,7 +352,7 @@ async function main() {
 
   addSheet(overviewData, 'Executive Overview');
   addSheet(monthsSummary, 'Monthly Summary');
-  addSheet(attendanceSheetData, 'Attendance 3 Months (61 Days)');
+  addSheet(attendanceSheetData, 'Attendance 3 Months (60 Days)');
   addSheet(taskSheetData, 'Sprint Tasks (16 Tasks)');
   addSheet(projectSheetData, 'Projects & Working Tree');
   addSheet(invoiceSheetData, 'Invoices & Billing');
@@ -378,3 +378,4 @@ async function main() {
 }
 
 main().catch(console.error);
+
