@@ -166,6 +166,21 @@ export default function Nav() {
 
         <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Link
+            href="/portal/dashboard"
+            className="btn btn-secondary"
+            style={{
+              padding: '8px 16px',
+              fontSize: '0.84rem',
+              fontWeight: 600,
+              borderRadius: '999px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            <span>Staff Portal</span>
+          </Link>
+          <Link
             href="/contact"
             className="btn btn-primary"
             style={{

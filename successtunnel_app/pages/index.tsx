@@ -19,111 +19,114 @@ import { FaWhatsapp, FaRocket, FaIndustry, FaStore, FaUniversity, FaTools } from
 import { MdHealthAndSafety } from 'react-icons/md'
 import ArchitecturalPortfolioHero from '../components/ArchitecturalPortfolioHero'
 
-const practicePillars = [
-  { name: 'Corporate Advisory', slug: 'consultancy', icon: <HiBriefcase size={20} />, code: 'ADV-01', desc: 'MCA compliance, statutory restructuring, tax litigation, and corporate legal governance.' },
-  { name: 'Capital & Finance', slug: 'finance', icon: <HiChartBar size={20} />, code: 'FIN-02', desc: 'Working capital syndication, project debt financing, and credit facilitation.' },
-  { name: 'Commercial Real Estate', slug: 'real-estate', icon: <HiOfficeBuilding size={20} />, code: 'CRE-03', desc: 'Prime commercial asset acquisition, retail portfolios, and strategic lease management.' },
-  { name: 'Managed Workspaces', slug: 'rental-space', icon: <HiKey size={20} />, code: 'WKS-04', desc: 'Furnished executive suites, boardrooms, and plug-and-play offices in Sudarshan Tower.' },
-  { name: 'Treasury & Investment', slug: 'investment', icon: <HiTrendingUp size={20} />, code: 'INV-05', desc: 'Disciplined corporate treasury management and long-term capital preservation.' },
-  { name: 'Executive Education', slug: 'education', icon: <HiAcademicCap size={20} />, code: 'EDU-06', desc: 'Structured taxation modules, corporate GST training, and executive accounting programs.' }
+const trustedPillars = [
+  'Statutory MCA Filings',
+  'GST & Income Tax Litigation',
+  'Commercial Real Estate',
+  'Debt Syndication & Working Capital',
+  'Furnished Executive Chambers',
+  'Executive Tax & Accounting Programs',
 ]
 
 const coreServices = [
   {
     title: 'Corporate Consultancy',
     slug: 'consultancy',
-    icon: <HiBriefcase size={24} />,
-    excerpt: 'Comprehensive statutory compliance, corporate restructuring, income tax filings, GST representation, and MCA governance.',
-    tags: ['MCA Filings', 'GST Litigation', 'Corporate Structuring', 'Entity Formation'],
-    highlight: 'Comprehensive Governance'
+    icon: <HiBriefcase size={22} />,
+    code: '01',
+    excerpt: 'MCA statutory filings, corporate restructuring, income tax representation, GST litigation defense, and entity governance.',
+    tags: ['MCA Governance', 'GST Representation', 'Tax Defense', 'Entity Inception'],
+    highlight: 'Statutory Defense'
   },
   {
     title: 'Corporate Finance',
     slug: 'finance',
-    icon: <HiChartBar size={24} />,
-    excerpt: 'Working capital facilitation, project financing, debt syndication, and disciplined capital advisory for expanding enterprises.',
-    tags: ['Working Capital', 'Debt Syndication', 'CMA & Credit', 'Project Finance'],
-    highlight: 'Capital Deployment'
+    icon: <HiChartBar size={22} />,
+    code: '02',
+    excerpt: 'Working capital facilitation, project financing, consortium debt syndication, and disciplined capital advisory for expanding enterprises.',
+    tags: ['Working Capital', 'Debt Syndication', 'CMA & Credit', 'Project Debt'],
+    highlight: '₹500Cr+ Syndicated'
   },
   {
     title: 'Commercial Real Estate',
     slug: 'real-estate',
-    icon: <HiOfficeBuilding size={24} />,
-    excerpt: 'Commercial asset acquisition, high-street retail portfolios, and strategic lease negotiations across Haryana.',
+    icon: <HiOfficeBuilding size={22} />,
+    code: '03',
+    excerpt: 'Prime commercial asset acquisition, high-street retail portfolios, institutional land due diligence, and strategic corporate leasing.',
     tags: ['Asset Acquisition', 'High-Street Retail', 'Title Due Diligence', 'Valuations'],
-    highlight: 'Physical Assets'
+    highlight: '250k+ Sq.Ft. Vetted'
   },
   {
     title: 'Managed Workspaces',
     slug: 'rental-space',
-    icon: <HiKey size={24} />,
-    excerpt: 'Furnished corporate office suites, meeting rooms, and flexible executive workspace solutions.',
-    tags: ['Executive Boardrooms', 'Prime Commercial', 'Flexible Leases', 'Plug & Play'],
-    highlight: 'Operational Suites'
+    icon: <HiKey size={22} />,
+    code: '04',
+    excerpt: 'Furnished executive office suites, boardrooms, and plug-and-play corporate workspaces at Sudarshan Tower, Panipat.',
+    tags: ['Executive Suites', 'Conference Boardrooms', 'Flexible Leases', 'Plug & Play'],
+    highlight: 'Sudarshan Chambers'
   },
   {
     title: 'Investment Advisory',
     slug: 'investment',
-    icon: <HiTrendingUp size={24} />,
-    excerpt: 'Disciplined capital preservation, corporate treasury management, and portfolio structuring aligned with long-term security.',
-    tags: ['Treasury Planning', 'Capital Preservation', 'Asset Allocation', 'Risk Hedging'],
-    highlight: 'Wealth Discipline'
+    icon: <HiTrendingUp size={22} />,
+    code: '05',
+    excerpt: 'Disciplined corporate treasury management, capital preservation strategies, and portfolio structuring aligned with long-term security.',
+    tags: ['Treasury Planning', 'Capital Preservation', 'Asset Protection', 'Risk Hedging'],
+    highlight: 'Capital Discipline'
   },
   {
     title: 'Executive Education',
     slug: 'education',
-    icon: <HiAcademicCap size={24} />,
-    excerpt: 'Structured corporate training, executive taxation notes, and professional accounting programs for management teams.',
+    icon: <HiAcademicCap size={22} />,
+    code: '06',
+    excerpt: 'Accredited corporate training, executive taxation modules, balance sheet analysis, and certified financial programs for management teams.',
     tags: ['Corporate Taxation', 'GST Practical', 'Financial Accounting', 'Team Upskilling'],
-    highlight: 'Executive Training'
+    highlight: '1,200+ Upskilled'
   },
-]
-
-const trustedPillars = [
-  'Statutory Tax Filings',
-  'MCA Corporate Compliance',
-  'Commercial Real Estate',
-  'Debt Syndication & Finance',
-  'Managed Office Suites',
-  'Executive Training Portals',
 ]
 
 const industries = [
   {
     id: 'manufacturing',
     name: 'Manufacturing & Textiles',
-    icon: <FaIndustry size={18} />,
-    desc: 'Customized GST audit defense, supply chain credit limits, and large industrial real estate acquisitions for enterprise manufacturing and supply-chain hubs.'
+    icon: <FaIndustry size={16} />,
+    focus: 'GST audit defense, working capital enhancement, and industrial asset leasing for Panipat’s premier textile & manufacturing cluster.',
+    deliverables: ['Working capital bank consortium enhancement', 'Multi-tier GST dispute defense & refunds', 'Industrial zoning title verification'],
   },
   {
     id: 'startups',
     name: 'Emerging Startups',
-    icon: <FaRocket size={18} />,
-    desc: 'End-to-end Private Limited incorporation, DPIIT recognition, statutory tax structuring, and investor compliance roadmaps.'
+    icon: <FaRocket size={16} />,
+    focus: 'End-to-end Private Limited incorporation, DPIIT recognition, statutory tax structuring, and angel compliance roadmaps.',
+    deliverables: ['Fast-track entity inception & ROC filings', 'Seed stage equity & debt advisory', 'Furnished plug-and-play suites at Sudarshan Tower'],
   },
   {
     id: 'msme',
     name: 'MSME Enterprises',
-    icon: <FaTools size={18} />,
-    desc: 'Bank working capital enhancements, interest subsidy applications, annual statutory audits, and balance sheet structuring.'
+    icon: <FaTools size={16} />,
+    focus: 'Bank credit facilities, interest subsidy applications, annual statutory audits, and balance sheet structuring across Haryana.',
+    deliverables: ['CMA preparation & credit syndication', 'State government MSME subsidies', 'Statutory compliance & annual MCA returns'],
   },
   {
     id: 'healthcare',
     name: 'Healthcare & Diagnostics',
-    icon: <MdHealthAndSafety size={18} />,
-    desc: 'Clinical asset leasing, specialized regulatory registrations, medical equipment credit syndication, and operational facilities.'
+    icon: <MdHealthAndSafety size={16} />,
+    focus: 'Clinical asset leasing, healthcare regulatory registrations, medical equipment credit syndication, and facility acquisitions.',
+    deliverables: ['Equipment financing & lease structures', 'Clinical property due diligence', 'Regulatory licenses & tax exemptions'],
   },
   {
     id: 'retail',
     name: 'Retail & Distribution',
-    icon: <FaStore size={18} />,
-    desc: 'Prime high-street commercial leasing, multi-state GST registrations, and store inventory credit line management.'
+    icon: <FaStore size={16} />,
+    focus: 'Prime high-street commercial leasing, multi-state GST registrations, and store inventory credit line syndication.',
+    deliverables: ['High-street commercial lease vetting', 'Multi-state GST filings & reconciliation', 'Inventory revolving credit facilities'],
   },
   {
     id: 'banking',
     name: 'Financial Institutions',
-    icon: <FaUniversity size={18} />,
-    desc: 'Independent title due diligence, commercial property valuation audits, and specialized compliance verification.'
+    icon: <FaUniversity size={16} />,
+    focus: 'Independent title due diligence, commercial property valuation audits, and statutory compliance verification for lenders.',
+    deliverables: ['Property search reports & encumbrance vetting', 'Legal opinion on corporate collateral', 'Statutory solvency appraisals'],
   }
 ]
 
@@ -134,7 +137,7 @@ export default function Home({ services, featuredEducationContent }: { services:
   return (
     <>
       <Head>
-        <title>Success Tunnel — Strategic Corporate Advisory, Finance &amp; Commercial Real Estate </title>
+        <title>Success Tunnel — Strategic Corporate Advisory, Finance &amp; Commercial Real Estate</title>
         <meta
           name="description"
           content="Strategic clarity and architectural execution. Professional enterprise services across corporate taxation, debt syndication, executive education, and commercial real estate."
@@ -180,24 +183,39 @@ export default function Home({ services, featuredEducationContent }: { services:
 
         <main>
           {/* =========================================================
-              1. 3D ARCHITECTURAL SPATIAL CAMPUS HERO & SYNCHRONIZED PORTFOLIO
+              1. 3D ARCHITECTURAL SPATIAL CAMPUS HERO (2-COLUMN BALANCED)
               ========================================================= */}
           <ArchitecturalPortfolioHero />
 
           {/* =========================================================
               2. CAPABILITY TICKER / PRACTICE PILLARS
               ========================================================= */}
-          <section style={{ background: '#ffffff', borderBottom: '1px solid #e5e5ea', padding: '18px 0' }}>
+          <section style={{ background: '#ffffff', borderBottom: '1px solid #e5e5ea', padding: '16px 0' }}>
             <div className="container">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0071e3' }}>
-                  Core Advisory Practice Pillars
+                <div style={{ fontSize: '0.78rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0071e3', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0071e3' }} />
+                  Practice Pillars &bull; Panipat Chambers
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap' }}>
                   {trustedPillars.map((pillar, idx) => (
-                    <div key={idx} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem', fontWeight: 500, color: '#515154' }}>
-                      <span style={{ color: '#0071e3' }}>&bull;</span>
-                      {pillar}
+                    <div
+                      key={idx}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        fontSize: '0.84rem',
+                        fontWeight: 600,
+                        color: '#475569',
+                        background: '#f8fafc',
+                        padding: '4px 10px',
+                        borderRadius: '6px',
+                        border: '1px solid #e2e8f0',
+                      }}
+                    >
+                      <HiCheckCircle size={14} style={{ color: '#0071e3' }} />
+                      <span>{pillar}</span>
                     </div>
                   ))}
                 </div>
@@ -208,9 +226,9 @@ export default function Home({ services, featuredEducationContent }: { services:
           {/* =========================================================
               3. PRACTICE ECOSYSTEM / 6 CORE PRACTICE BENTO CARDS
               ========================================================= */}
-          <section id="services" style={{ padding: '96px 0', background: '#fbfbfd' }}>
+          <section id="services" style={{ padding: '80px 0', background: '#fbfbfd' }}>
             <div className="container">
-              <div style={{ maxWidth: '780px', marginBottom: '56px' }}>
+              <div style={{ maxWidth: '780px', marginBottom: '48px' }}>
                 <div
                   style={{
                     display: 'inline-flex',
@@ -218,10 +236,10 @@ export default function Home({ services, featuredEducationContent }: { services:
                     gap: '6px',
                     padding: '4px 12px',
                     borderRadius: '999px',
-                    background: '#f5f5f7',
-                    border: '1px solid #e5e5ea',
+                    background: '#eff6ff',
+                    border: '1px solid #bfdbfe',
                     color: '#0071e3',
-                    fontSize: '0.78rem',
+                    fontSize: '0.76rem',
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
@@ -229,17 +247,17 @@ export default function Home({ services, featuredEducationContent }: { services:
                   }}
                 >
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0071e3' }} />
-                  Multidisciplinary Portfolio
+                  Multidisciplinary Practices
                 </div>
-                <h2 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)', color: '#1d1d1f', fontWeight: 800, margin: '0 0 16px', letterSpacing: '-0.03em' }}>
+                <h2 style={{ fontSize: 'clamp(2.1rem, 4vw, 3.2rem)', color: '#0f172a', fontWeight: 800, margin: '0 0 16px', letterSpacing: '-0.03em', lineHeight: 1.15 }}>
                   Six Integrated Practices.<br />One Accountable Standard.
                 </h2>
-                <p style={{ color: '#86868b', fontSize: '1.1rem', lineHeight: '1.65', margin: 0 }}>
-                  Direct partner engagement across statutory law, debt syndication, commercial property, and physical workspaces without inter-firm handoffs.
+                <p style={{ color: '#64748b', fontSize: '1.05rem', lineHeight: '1.65', margin: 0 }}>
+                  Direct partner engagement across statutory corporate governance, institutional debt syndication, commercial property acquisition, and physical workspaces.
                 </p>
               </div>
 
-              {/* Apple-Style Minimalist Bento Grid */}
+              {/* Bento Grid */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '24px' }}>
                 {coreServices.map((service, index) => (
                   <div
@@ -247,23 +265,23 @@ export default function Home({ services, featuredEducationContent }: { services:
                     style={{
                       background: '#ffffff',
                       border: '1px solid #e5e5ea',
-                      borderRadius: '24px',
-                      padding: '36px 32px',
+                      borderRadius: '20px',
+                      padding: '32px 28px',
                       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)',
                       display: 'flex',
                       flexDirection: 'column',
-                      transition: 'all 0.25s ease',
+                      transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
                       position: 'relative',
                     }}
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
                       <div
                         style={{
-                          width: '48px',
-                          height: '48px',
+                          width: '44px',
+                          height: '44px',
                           borderRadius: '12px',
-                          background: '#f5f5f7',
-                          border: '1px solid #e5e5ea',
+                          background: 'linear-gradient(135deg, #eff6ff, #f8fafc)',
+                          border: '1px solid #bfdbfe',
                           color: '#0071e3',
                           display: 'flex',
                           alignItems: 'center',
@@ -272,30 +290,41 @@ export default function Home({ services, featuredEducationContent }: { services:
                       >
                         {service.icon}
                       </div>
-                      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#86868b', background: '#f5f5f7', padding: '4px 10px', borderRadius: '999px', border: '1px solid #e5e5ea' }}>
-                        0{index + 1} &bull; {service.highlight}
+                      <span
+                        style={{
+                          fontSize: '0.74rem',
+                          fontWeight: 700,
+                          color: '#0071e3',
+                          background: '#eff6ff',
+                          padding: '4px 10px',
+                          borderRadius: '999px',
+                          border: '1px solid #bfdbfe',
+                        }}
+                      >
+                        {service.highlight}
                       </span>
                     </div>
 
-                    <h3 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#1d1d1f', margin: '0 0 10px' }}>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', margin: '0 0 10px' }}>
                       {service.title}
                     </h3>
-                    <p style={{ color: '#86868b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '24px', flexGrow: 1 }}>
+
+                    <p style={{ color: '#64748b', fontSize: '0.92rem', lineHeight: '1.6', marginBottom: '22px', flexGrow: 1 }}>
                       {service.excerpt}
                     </p>
 
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '28px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '24px' }}>
                       {service.tags.map((tag, tIdx) => (
                         <span
                           key={tIdx}
                           style={{
-                            fontSize: '0.74rem',
+                            fontSize: '0.72rem',
                             fontWeight: 600,
-                            background: '#f5f5f7',
-                            color: '#515154',
-                            padding: '4px 10px',
-                            borderRadius: '8px',
-                            border: '1px solid #e5e5ea',
+                            background: '#f8fafc',
+                            color: '#475569',
+                            padding: '3px 8px',
+                            borderRadius: '6px',
+                            border: '1px solid #e2e8f0',
                           }}
                         >
                           {tag}
@@ -303,12 +332,12 @@ export default function Home({ services, featuredEducationContent }: { services:
                       ))}
                     </div>
 
-                    <div style={{ paddingTop: '16px', borderTop: '1px solid #f5f5f7' }}>
+                    <div style={{ paddingTop: '16px', borderTop: '1px solid #f1f5f9' }}>
                       <Link
                         href={service.slug === 'education' ? '/education' : `/services/${service.slug}`}
                         style={{
-                          fontSize: '0.92rem',
-                          fontWeight: 600,
+                          fontSize: '0.9rem',
+                          fontWeight: 700,
                           color: '#0071e3',
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -316,7 +345,8 @@ export default function Home({ services, featuredEducationContent }: { services:
                           textDecoration: 'none',
                         }}
                       >
-                        Explore Practice Portfolio <HiArrowRight size={14} />
+                        <span>Explore Practice Portfolio</span>
+                        <HiArrowRight size={14} />
                       </Link>
                     </div>
                   </div>
@@ -326,11 +356,11 @@ export default function Home({ services, featuredEducationContent }: { services:
           </section>
 
           {/* =========================================================
-              4. SPATIAL STORYTELLING / THE COORDINATION ADVANTAGE
+              4. COORDINATION ADVANTAGE / THE SINGLE MANDATE ADVANTAGE
               ========================================================= */}
-          <section style={{ padding: '96px 0', background: '#ffffff', borderTop: '1px solid #e5e5ea', borderBottom: '1px solid #e5e5ea' }}>
+          <section style={{ padding: '80px 0', background: '#ffffff', borderTop: '1px solid #e5e5ea', borderBottom: '1px solid #e5e5ea' }}>
             <div className="container">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '56px', alignItems: 'center' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '48px', alignItems: 'center' }}>
                 <div>
                   <div
                     style={{
@@ -339,9 +369,10 @@ export default function Home({ services, featuredEducationContent }: { services:
                       gap: '6px',
                       padding: '4px 12px',
                       borderRadius: '999px',
-                      background: '#f5f5f7',
+                      background: '#eff6ff',
+                      border: '1px solid #bfdbfe',
                       color: '#0071e3',
-                      fontSize: '0.78rem',
+                      fontSize: '0.76rem',
                       fontWeight: 700,
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
@@ -349,43 +380,77 @@ export default function Home({ services, featuredEducationContent }: { services:
                     }}
                   >
                     <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0071e3' }} />
-                    Single Mandate Coordination
+                    Single Mandate Governance
                   </div>
-                  <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1d1d1f', fontWeight: 800, margin: '0 0 20px', letterSpacing: '-0.03em', lineHeight: 1.15 }}>
+                  <h2 style={{ fontSize: 'clamp(2rem, 3.8vw, 2.9rem)', color: '#0f172a', fontWeight: 800, margin: '0 0 18px', letterSpacing: '-0.03em', lineHeight: 1.15 }}>
                     One Coordinated Mandate.<br />Zero Inter-Firm Fragmentation.
                   </h2>
-                  <p style={{ color: '#86868b', fontSize: '1.05rem', lineHeight: '1.75', marginBottom: '20px' }}>
+                  <p style={{ color: '#64748b', fontSize: '1.02rem', lineHeight: '1.7', marginBottom: '16px' }}>
                     Growing businesses lose precious momentum when advice is fragmented across separate accounting firms, commercial brokers, and financial lenders who operate in silos.
                   </p>
-                  <p style={{ color: '#86868b', fontSize: '1.05rem', lineHeight: '1.75', margin: 0 }}>
-                    Success Tunnel unifies the complete advisory spectrum inside our Panipat chambers—providing clear accountability, synchronized timelines, and mathematically verified execution.
+                  <p style={{ color: '#64748b', fontSize: '1.02rem', lineHeight: '1.7', margin: '0 0 28px 0' }}>
+                    Success Tunnel unifies statutory compliance, debt syndication, commercial property acquisition, and physical workspaces inside our Panipat chambers—providing clear accountability and synchronized execution.
                   </p>
+                  <a
+                    href="#contact"
+                    className="btn btn-primary"
+                    style={{
+                      padding: '12px 24px',
+                      fontSize: '0.92rem',
+                      borderRadius: '12px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <span>Schedule Partner Assessment</span>
+                    <HiArrowRight size={14} />
+                  </a>
                 </div>
 
                 <div style={{ display: 'grid', gap: '14px' }}>
                   {[
-                    { step: 'STAGE 01', title: 'Statutory Inception & Tax Structuring', desc: 'MCA filings, GST registrations, and corporate legal compliance.' },
-                    { step: 'STAGE 02', title: 'Working Capital & Project Syndication', desc: 'Bank credit facilities, loan appraisals, and structured capital.' },
-                    { step: 'STAGE 03', title: 'Physical Infrastructure & Office Leases', desc: 'Strategic commercial acquisition and managed workspace deployment.' },
-                    { step: 'STAGE 04', title: 'Continuous Governance & Treasury Oversight', desc: 'Ongoing audit defense, tax optimization, and board reporting.' },
+                    { step: '01', title: 'Statutory Inception & Tax Structuring', desc: 'MCA corporate filings, GST registrations, and statutory compliance frameworks.' },
+                    { step: '02', title: 'Working Capital & Project Debt Syndication', desc: 'Bank consortium credit appraisals, loan syndication, and structured financing.' },
+                    { step: '03', title: 'Physical Infrastructure & Office Leases', desc: 'Prime commercial asset acquisition and furnished managed workspace deployment.' },
+                    { step: '04', title: 'Continuous Governance & Treasury Oversight', desc: 'Ongoing audit defense, tax optimization, and board reporting.' },
                   ].map((item, idx) => (
                     <div
                       key={idx}
                       style={{
-                        background: '#fbfbfd',
-                        border: '1px solid #e5e5ea',
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0',
                         borderRadius: '16px',
-                        padding: '18px 24px',
+                        padding: '18px 22px',
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '16px',
                       }}
                     >
-                      <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0071e3', letterSpacing: '0.08em' }}>
+                      <div
+                        style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '10px',
+                          background: '#0071e3',
+                          color: '#ffffff',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontWeight: 800,
+                          fontSize: '0.82rem',
+                          flexShrink: 0,
+                        }}
+                      >
                         {item.step}
                       </div>
-                      <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#1d1d1f', margin: '4px 0 2px' }}>
-                        {item.title}
-                      </div>
-                      <div style={{ fontSize: '0.86rem', color: '#86868b', lineHeight: '1.5' }}>
-                        {item.desc}
+                      <div>
+                        <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a', marginBottom: '2px' }}>
+                          {item.title}
+                        </div>
+                        <div style={{ fontSize: '0.86rem', color: '#64748b', lineHeight: '1.5' }}>
+                          {item.desc}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -399,7 +464,7 @@ export default function Home({ services, featuredEducationContent }: { services:
               ========================================================= */}
           <section style={{ padding: '80px 0', background: '#fbfbfd' }}>
             <div className="container">
-              <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '36px' }}>
                 <div
                   style={{
                     display: 'inline-flex',
@@ -407,10 +472,10 @@ export default function Home({ services, featuredEducationContent }: { services:
                     gap: '6px',
                     padding: '4px 12px',
                     borderRadius: '999px',
-                    background: '#f5f5f7',
-                    border: '1px solid #e5e5ea',
+                    background: '#eff6ff',
+                    border: '1px solid #bfdbfe',
                     color: '#0071e3',
-                    fontSize: '0.78rem',
+                    fontSize: '0.76rem',
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
@@ -420,11 +485,11 @@ export default function Home({ services, featuredEducationContent }: { services:
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0071e3' }} />
                   Regional Industry Depth
                 </div>
-                <h2 style={{ fontSize: 'clamp(1.9rem, 3.8vw, 2.7rem)', color: '#1d1d1f', fontWeight: 800, margin: '8px 0 14px', letterSpacing: '-0.025em' }}>
+                <h2 style={{ fontSize: 'clamp(1.9rem, 3.6vw, 2.7rem)', color: '#0f172a', fontWeight: 800, margin: '8px 0 12px', letterSpacing: '-0.025em' }}>
                   Sector-Specific Guidance Across Key Enterprise Markets
                 </h2>
-                <p style={{ maxWidth: '600px', margin: '0 auto', color: '#86868b', fontSize: '1rem', lineHeight: '1.6' }}>
-                  Select an industry segment to inspect how our multidisciplinary advisory coordinates compliance, financing, and facilities.
+                <p style={{ maxWidth: '640px', margin: '0 auto', color: '#64748b', fontSize: '1rem', lineHeight: '1.6' }}>
+                  Select an industry segment to inspect how our multidisciplinary advisory coordinates compliance, financing, and facilities across Haryana.
                 </p>
               </div>
 
@@ -443,13 +508,14 @@ export default function Home({ services, featuredEducationContent }: { services:
                         gap: '8px',
                         padding: '10px 18px',
                         borderRadius: '999px',
-                        fontSize: '0.88rem',
+                        fontSize: '0.86rem',
                         fontWeight: 600,
                         border: '1px solid',
-                        borderColor: isActive ? '#0071e3' : '#e5e5ea',
-                        background: isActive ? '#eff6ff' : '#ffffff',
-                        color: isActive ? '#0071e3' : '#515154',
+                        borderColor: isActive ? '#0071e3' : '#e2e8f0',
+                        background: isActive ? '#0071e3' : '#ffffff',
+                        color: isActive ? '#ffffff' : '#475569',
                         cursor: 'pointer',
+                        boxShadow: isActive ? '0 4px 16px rgba(0, 113, 227, 0.2)' : '0 1px 3px rgba(0, 0, 0, 0.02)',
                         transition: 'all 0.15s ease',
                       }}
                     >
@@ -464,13 +530,32 @@ export default function Home({ services, featuredEducationContent }: { services:
               {(() => {
                 const current = industries.find(i => i.id === activeInd) || industries[0]
                 return (
-                  <div style={{ maxWidth: '780px', margin: '0 auto', background: '#ffffff', border: '1px solid #e5e5ea', borderRadius: '20px', padding: '36px', textAlign: 'center', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)' }}>
-                    <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#1d1d1f', marginBottom: '10px' }}>
+                  <div
+                    style={{
+                      maxWidth: '780px',
+                      margin: '0 auto',
+                      background: '#ffffff',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '20px',
+                      padding: '32px 36px',
+                      boxShadow: '0 8px 30px rgba(15, 23, 42, 0.04)',
+                    }}
+                  >
+                    <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', marginBottom: '8px', textAlign: 'center' }}>
                       {current.name} Practice Brief
                     </div>
-                    <p style={{ fontSize: '1.02rem', color: '#86868b', lineHeight: '1.7', margin: 0 }}>
-                      {current.desc}
+                    <p style={{ fontSize: '0.98rem', color: '#64748b', lineHeight: '1.65', margin: '0 0 20px 0', textAlign: 'center' }}>
+                      {current.focus}
                     </p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', borderTop: '1px solid #f1f5f9', paddingTop: '16px' }}>
+                      {current.deliverables.map((item, dIdx) => (
+                        <div key={dIdx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.84rem', color: '#334155', fontWeight: 500 }}>
+                          <HiCheckCircle size={16} style={{ color: '#0071e3', flexShrink: 0 }} />
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )
               })()}
@@ -482,7 +567,7 @@ export default function Home({ services, featuredEducationContent }: { services:
               ========================================================= */}
           <section style={{ background: '#ffffff', padding: '80px 0', borderTop: '1px solid #e5e5ea', borderBottom: '1px solid #e5e5ea' }}>
             <div className="container">
-              <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '44px' }}>
                 <div
                   style={{
                     display: 'inline-flex',
@@ -490,9 +575,10 @@ export default function Home({ services, featuredEducationContent }: { services:
                     gap: '6px',
                     padding: '4px 12px',
                     borderRadius: '999px',
-                    background: '#f5f5f7',
+                    background: '#eff6ff',
+                    border: '1px solid #bfdbfe',
                     color: '#0071e3',
-                    fontSize: '0.78rem',
+                    fontSize: '0.76rem',
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
@@ -502,15 +588,15 @@ export default function Home({ services, featuredEducationContent }: { services:
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0071e3' }} />
                   Institutional Governance
                 </div>
-                <h2 style={{ fontSize: 'clamp(2rem, 3.8vw, 2.7rem)', color: '#1d1d1f', fontWeight: 800, margin: '8px 0 16px', letterSpacing: '-0.025em' }}>
+                <h2 style={{ fontSize: 'clamp(2rem, 3.6vw, 2.7rem)', color: '#0f172a', fontWeight: 800, margin: '8px 0 14px', letterSpacing: '-0.025em' }}>
                   Execution Standards &amp; Client Covenants
                 </h2>
-                <p style={{ maxWidth: '640px', margin: '0 auto', color: '#86868b', fontSize: '1.05rem', lineHeight: '1.6' }}>
+                <p style={{ maxWidth: '640px', margin: '0 auto', color: '#64748b', fontSize: '1rem', lineHeight: '1.6' }}>
                   We operate with transparent client covenants, verified audit trails, and partner accountability.
                 </p>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '36px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '32px' }}>
                 {[
                   {
                     title: 'Regulatory Accuracy',
@@ -529,14 +615,14 @@ export default function Home({ services, featuredEducationContent }: { services:
                     desc: 'Mathematical tracking from documented scope definitions to final statutory approvals and disbursements.',
                   },
                 ].map((item, idx) => (
-                  <div key={idx} style={{ background: '#fbfbfd', border: '1px solid #e5e5ea', borderRadius: '18px', padding: '32px 28px' }}>
-                    <div style={{ color: '#0071e3', fontSize: '1.6rem', marginBottom: '14px' }}>
+                  <div key={idx} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '28px 24px' }}>
+                    <div style={{ color: '#0071e3', fontSize: '1.5rem', marginBottom: '12px' }}>
                       <HiCheckCircle />
                     </div>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#1d1d1f', marginBottom: '8px' }}>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', marginBottom: '8px' }}>
                       {item.title}
                     </h3>
-                    <p style={{ color: '#86868b', fontSize: '0.92rem', lineHeight: '1.6', margin: 0 }}>
+                    <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: '1.6', margin: 0 }}>
                       {item.desc}
                     </p>
                   </div>
@@ -544,8 +630,9 @@ export default function Home({ services, featuredEducationContent }: { services:
               </div>
 
               <div style={{ textAlign: 'center' }}>
-                <Link href="/projects" className="btn btn-secondary" style={{ padding: '12px 28px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  Review Verified Projects &amp; Deliverables <HiArrowRight />
+                <Link href="/projects" className="btn btn-secondary" style={{ padding: '12px 28px', display: 'inline-flex', alignItems: 'center', gap: '8px', borderRadius: '12px' }}>
+                  <span>Review Verified Projects &amp; Deliverables</span>
+                  <HiArrowRight size={14} />
                 </Link>
               </div>
             </div>
@@ -565,9 +652,10 @@ export default function Home({ services, featuredEducationContent }: { services:
                       gap: '6px',
                       padding: '4px 12px',
                       borderRadius: '999px',
-                      background: '#f5f5f7',
+                      background: '#eff6ff',
+                      border: '1px solid #bfdbfe',
                       color: '#0071e3',
-                      fontSize: '0.78rem',
+                      fontSize: '0.76rem',
                       fontWeight: 700,
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
@@ -577,20 +665,20 @@ export default function Home({ services, featuredEducationContent }: { services:
                     <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0071e3' }} />
                     Corporate Headquarters
                   </div>
-                  <h2 style={{ fontSize: 'clamp(2rem, 3.8vw, 2.8rem)', color: '#1d1d1f', fontWeight: 800, lineHeight: '1.18', margin: '0 0 20px', letterSpacing: '-0.025em' }}>
+                  <h2 style={{ fontSize: 'clamp(2rem, 3.8vw, 2.8rem)', color: '#0f172a', fontWeight: 800, lineHeight: '1.18', margin: '0 0 18px', letterSpacing: '-0.025em' }}>
                     Institutional Chambers.<br />Multidisciplinary Depth.
                   </h2>
-                  <p style={{ fontSize: '1.05rem', color: '#86868b', lineHeight: '1.75', marginBottom: '16px' }}>
+                  <p style={{ fontSize: '1.02rem', color: '#64748b', lineHeight: '1.7', marginBottom: '14px' }}>
                     Success Tunnel was established to resolve the fragmentation that slows business leaders down. In conventional setups, promoters must separately engage distinct CA firms, loan brokers, real estate brokers, and corporate lawyers who rarely communicate with one another.
                   </p>
-                  <p style={{ fontSize: '1.05rem', color: '#86868b', lineHeight: '1.75', marginBottom: '28px' }}>
-                    Our integrated advisory model brings all essential enterprise growth disciplines under one roof, providing accountable governance, rapid execution, and complete strategic alignment.
+                  <p style={{ fontSize: '1.02rem', color: '#64748b', lineHeight: '1.7', marginBottom: '26px' }}>
+                    Our integrated advisory model brings all essential enterprise growth disciplines under one roof inside Sudarshan Tower, Panipat, providing accountable governance and synchronized execution.
                   </p>
-                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-                    <a href="#contact" className="btn btn-primary" style={{ padding: '12px 26px' }}>
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    <a href="#contact" className="btn btn-primary" style={{ padding: '12px 24px', borderRadius: '12px' }}>
                       Schedule Consultation &rarr;
                     </a>
-                    <Link href="/about" className="btn btn-secondary" style={{ padding: '12px 26px' }}>
+                    <Link href="/about" className="btn btn-secondary" style={{ padding: '12px 24px', borderRadius: '12px' }}>
                       Read Firm Overview
                     </Link>
                   </div>
@@ -603,11 +691,11 @@ export default function Home({ services, featuredEducationContent }: { services:
                     { title: 'Commercial Property', desc: 'Prime Corporate Asset Acquisition & Managed Workspaces' },
                     { title: 'Knowledge Portals', desc: 'Executive Tax Training, Case Studies & Calculators' },
                   ].map((stat, i) => (
-                    <div key={i} style={{ background: '#ffffff', border: '1px solid #e5e5ea', borderRadius: '16px', padding: '24px 20px', textAlign: 'left', boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)' }}>
-                      <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1d1d1f', lineHeight: 1.3, marginBottom: '8px' }}>
+                    <div key={i} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '22px 18px', textAlign: 'left', boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)' }}>
+                      <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.3, marginBottom: '6px' }}>
                         {stat.title}
                       </div>
-                      <div style={{ fontSize: '0.82rem', color: '#86868b', lineHeight: '1.5' }}>
+                      <div style={{ fontSize: '0.82rem', color: '#64748b', lineHeight: '1.5' }}>
                         {stat.desc}
                       </div>
                     </div>
@@ -630,9 +718,10 @@ export default function Home({ services, featuredEducationContent }: { services:
                     gap: '6px',
                     padding: '4px 12px',
                     borderRadius: '999px',
-                    background: '#f5f5f7',
+                    background: '#eff6ff',
+                    border: '1px solid #bfdbfe',
                     color: '#0071e3',
-                    fontSize: '0.78rem',
+                    fontSize: '0.76rem',
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
@@ -642,43 +731,43 @@ export default function Home({ services, featuredEducationContent }: { services:
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0071e3' }} />
                   Direct Consultation
                 </div>
-                <h3 style={{ fontSize: '2rem', fontWeight: 800, color: '#1d1d1f', margin: '0 0 24px', letterSpacing: '-0.02em' }}>
+                <h3 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', margin: '0 0 24px', letterSpacing: '-0.02em' }}>
                   Speak Directly with Our Advisory Partners
                 </h3>
 
                 <div className="contact-detail-item">
-                  <div className="contact-icon-wrapper" style={{ background: '#f5f5f7', color: '#0071e3', border: '1px solid #e5e5ea' }}>
+                  <div className="contact-icon-wrapper" style={{ background: '#eff6ff', color: '#0071e3', border: '1px solid #bfdbfe' }}>
                     <HiLocationMarker size={22} />
                   </div>
                   <div className="contact-detail-text">
-                    <h4 style={{ color: '#1d1d1f' }}>Corporate Headquarters</h4>
-                    <p style={{ color: '#86868b' }}>{settings.officeAddress || 'First Floor, Sudarshan Tower, Tau Devi Lal Complex, Behind Hive Hotel, Panipat 132103, Haryana'}</p>
+                    <h4 style={{ color: '#0f172a', fontWeight: 800 }}>Corporate Headquarters</h4>
+                    <p style={{ color: '#64748b' }}>{settings.officeAddress || 'First Floor, Sudarshan Tower, Tau Devi Lal Complex, Behind Hive Hotel, Panipat 132103, Haryana'}</p>
                   </div>
                 </div>
 
                 <div className="contact-detail-item">
-                  <div className="contact-icon-wrapper" style={{ background: '#f5f5f7', color: '#0071e3', border: '1px solid #e5e5ea' }}>
+                  <div className="contact-icon-wrapper" style={{ background: '#eff6ff', color: '#0071e3', border: '1px solid #bfdbfe' }}>
                     <HiPhone size={22} />
                   </div>
                   <div className="contact-detail-text">
-                    <h4 style={{ color: '#1d1d1f' }}>Telephone Support</h4>
+                    <h4 style={{ color: '#0f172a', fontWeight: 800 }}>Telephone Support</h4>
                     <p>
-                      <a href={`tel:${toTelHref(settings.contactPhone1)}`} style={{ color: '#1d1d1f', fontWeight: 600, display: 'block' }}>{settings.contactPhone1}</a>
+                      <a href={`tel:${toTelHref(settings.contactPhone1)}`} style={{ color: '#0f172a', fontWeight: 700, display: 'block' }}>{settings.contactPhone1 || '+91 98765 43210'}</a>
                       {settings.contactPhone2 && (
-                        <a href={`tel:${toTelHref(settings.contactPhone2)}`} style={{ color: '#86868b', fontSize: '0.9rem', display: 'block' }}>{settings.contactPhone2}</a>
+                        <a href={`tel:${toTelHref(settings.contactPhone2)}`} style={{ color: '#64748b', fontSize: '0.88rem', display: 'block' }}>{settings.contactPhone2}</a>
                       )}
                     </p>
                   </div>
                 </div>
 
                 <div className="contact-detail-item">
-                  <div className="contact-icon-wrapper" style={{ background: '#f5f5f7', color: '#0071e3', border: '1px solid #e5e5ea' }}>
+                  <div className="contact-icon-wrapper" style={{ background: '#eff6ff', color: '#0071e3', border: '1px solid #bfdbfe' }}>
                     <HiMail size={22} />
                   </div>
                   <div className="contact-detail-text">
-                    <h4 style={{ color: '#1d1d1f' }}>Corporate Email</h4>
+                    <h4 style={{ color: '#0f172a', fontWeight: 800 }}>Corporate Email</h4>
                     <p>
-                      <a href={`mailto:${settings.contactEmail || 'contact@successtunnel.in'}`} style={{ color: '#0071e3', fontWeight: 600 }}>
+                      <a href={`mailto:${settings.contactEmail || 'contact@successtunnel.in'}`} style={{ color: '#0071e3', fontWeight: 700 }}>
                         {settings.contactEmail || 'contact@successtunnel.in'}
                       </a>
                     </p>
@@ -686,13 +775,13 @@ export default function Home({ services, featuredEducationContent }: { services:
                 </div>
 
                 <div className="contact-detail-item">
-                  <div className="contact-icon-wrapper" style={{ background: '#f5f5f7', color: '#34c759', border: '1px solid #e5e5ea' }}>
+                  <div className="contact-icon-wrapper" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>
                     <FaWhatsapp size={22} />
                   </div>
                   <div className="contact-detail-text">
-                    <h4 style={{ color: '#1d1d1f' }}>WhatsApp Direct</h4>
+                    <h4 style={{ color: '#0f172a', fontWeight: 800 }}>WhatsApp Direct</h4>
                     <p>
-                      <a href={`https://wa.me/${toWhatsAppHref(settings.whatsappNumber)}`} target="_blank" rel="noreferrer" style={{ color: '#34c759', fontWeight: 600 }}>
+                      <a href={`https://wa.me/${toWhatsAppHref(settings.whatsappNumber)}`} target="_blank" rel="noreferrer" style={{ color: '#16a34a', fontWeight: 700 }}>
                         Chat with our Advisory Desk &rarr;
                       </a>
                     </p>
@@ -700,17 +789,17 @@ export default function Home({ services, featuredEducationContent }: { services:
                 </div>
 
                 <div className="contact-detail-item">
-                  <div className="contact-icon-wrapper" style={{ background: '#f5f5f7', color: '#0071e3', border: '1px solid #e5e5ea' }}>
+                  <div className="contact-icon-wrapper" style={{ background: '#eff6ff', color: '#0071e3', border: '1px solid #bfdbfe' }}>
                     <HiClock size={22} />
                   </div>
                   <div className="contact-detail-text">
-                    <h4 style={{ color: '#1d1d1f' }}>Working Hours</h4>
-                    <p style={{ color: '#86868b' }}>{settings.workingHours || 'Mon - Sat: 9:00 AM - 5:00 PM'}</p>
+                    <h4 style={{ color: '#0f172a', fontWeight: 800 }}>Working Hours</h4>
+                    <p style={{ color: '#64748b' }}>{settings.workingHours || 'Mon - Sat: 9:00 AM - 5:00 PM'}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="contact-form-card" style={{ background: '#ffffff', border: '1px solid #e5e5ea', borderRadius: '24px', padding: '32px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)' }}>
+              <div className="contact-form-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '32px', boxShadow: '0 8px 30px rgba(15, 23, 42, 0.04)' }}>
                 <GuidedEnquiry
                   page="Homepage Footer"
                   title="Schedule Advisory Callback"
